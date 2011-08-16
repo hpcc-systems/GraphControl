@@ -1,17 +1,8 @@
 project ( GraphControl )
 cmake_minimum_required (VERSION 2.6)
 
-MACRO (MACRO_ENSURE_OUT_OF_SOURCE_BUILD _errorMessage)
-   STRING(COMPARE EQUAL "${CMAKE_SOURCE_DIR}" "${CMAKE_BINARY_DIR}" insource)
-   IF (insource)
-      MESSAGE(FATAL_ERROR "${_errorMessage}")
-   ENDIF(insource)
-ENDMACRO (MACRO_ENSURE_OUT_OF_SOURCE_BUILD)
-
-set (HPCC_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/..)
-set (CMAKE_MODULE_PATH "${HPCC_SOURCE_DIR}/cmake_modules/")
 if ("${EXTERNALS_DIRECTORY}" STREQUAL "")
-	set (EXTERNALS_DIRECTORY ${HPCC_SOURCE_DIR}/Third_party)
+	set (EXTERNALS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../../HPCC/dev/Third_party")
 endif()
 
 if (WIN32)
@@ -23,13 +14,14 @@ set ( LIBRARY_OUTPUT_PATH "/usr/lib/mozilla/plugins" )
 endif (WIN32)
 
 find_package(Threads REQUIRED)
+
+SET( BOOST_ROOT "${EXTERNALS_DIRECTORY}/boost" )
 SET( Boost_ADDITIONAL_VERSIONS "1.44" "1.43" "1.43.0" "1.42" "1.42.0" )
 SET( Boost_USE_STATIC_LIBS ON )
-SET( BOOST_ROOT "${EXTERNALS_DIRECTORY}/boost" )
 FIND_PACKAGE( Boost 1.44 COMPONENTS thread date_time )
 IF( Boost_FOUND )
 ELSE( Boost_FOUND )
-    MESSAGE( "BOOST libraries were not found" )
+    MESSAGE( "BOOST libraries were not found:  " ${BOOST_ROOT})
 ENDIF( Boost_FOUND )
 
 if (WIN32)
