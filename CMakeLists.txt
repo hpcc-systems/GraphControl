@@ -1,4 +1,4 @@
-project (GraphControl)
+project ( GraphControl )
 cmake_minimum_required (VERSION 2.6)
 
 MACRO (MACRO_ENSURE_OUT_OF_SOURCE_BUILD _errorMessage)
