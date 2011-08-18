@@ -8,37 +8,37 @@
 project( gvplugin_core )
 
 set (	SRCS
-	${EXTERNALS_DIRECTORY}/graphviz2/plugin/core/gvloadimage_core.c
-	${EXTERNALS_DIRECTORY}/graphviz2/plugin/core/gvplugin_core.c
-	${EXTERNALS_DIRECTORY}/graphviz2/plugin/core/gvplugin_core.def
-	${EXTERNALS_DIRECTORY}/graphviz2/plugin/core/gvrender_core_dot.c
-	${EXTERNALS_DIRECTORY}/graphviz2/plugin/core/gvrender_core_fig.c
-	${EXTERNALS_DIRECTORY}/graphviz2/plugin/core/gvrender_core_map.c
-	${EXTERNALS_DIRECTORY}/graphviz2/plugin/core/gvrender_core_ps.c
-	${EXTERNALS_DIRECTORY}/graphviz2/plugin/core/gvrender_core_svg.c
-	${EXTERNALS_DIRECTORY}/graphviz2/plugin/core/gvrender_core_tk.c
-	${EXTERNALS_DIRECTORY}/graphviz2/plugin/core/gvrender_core_vml.c
+	${GRAPHVIZ_INCLUDE_DIRS}/plugin/core/gvloadimage_core.c
+	${GRAPHVIZ_INCLUDE_DIRS}/plugin/core/gvplugin_core.c
+	${GRAPHVIZ_INCLUDE_DIRS}/plugin/core/gvplugin_core.def
+	${GRAPHVIZ_INCLUDE_DIRS}/plugin/core/gvrender_core_dot.c
+	${GRAPHVIZ_INCLUDE_DIRS}/plugin/core/gvrender_core_fig.c
+	${GRAPHVIZ_INCLUDE_DIRS}/plugin/core/gvrender_core_map.c
+	${GRAPHVIZ_INCLUDE_DIRS}/plugin/core/gvrender_core_ps.c
+	${GRAPHVIZ_INCLUDE_DIRS}/plugin/core/gvrender_core_svg.c
+	${GRAPHVIZ_INCLUDE_DIRS}/plugin/core/gvrender_core_tk.c
+	${GRAPHVIZ_INCLUDE_DIRS}/plugin/core/gvrender_core_vml.c
 	)
 
 include_directories (
-	${EXTERNALS_DIRECTORY}/graphviz2/plugin/core
-	${EXTERNALS_DIRECTORY}/graphviz2/plugin/libltdl
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/agutil
-	${EXTERNALS_DIRECTORY}/graphviz2/windows/lib/cdt
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/graph
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/vpsc
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/vmalloc
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/twopigen
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/sparse
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/sfio
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/sfdpgen
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/rbtree
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/pathplan
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/common
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gvc
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/cdt
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/cgraph
-	${EXTERNALS_DIRECTORY}/graphviz2
+	${GRAPHVIZ_INCLUDE_DIRS}/plugin/core
+	${GRAPHVIZ_INCLUDE_DIRS}/plugin/libltdl
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/agutil
+	${GRAPHVIZ_INCLUDE_DIRS}/windows/lib/cdt
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/graph
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/vpsc
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/vmalloc
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/twopigen
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/sparse
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/sfio
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/sfdpgen
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/rbtree
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/pathplan
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/common
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gvc
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/cdt
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph
+	${GRAPHVIZ_INCLUDE_DIRS}
 	)
 
 #ADD_DEFINITIONS( -DHAVE_CONFIG_H -DHAVE_SETMODE -DMSWIN32 -DNONDLL)

@@ -8,15 +8,15 @@
 project( xdot ) 
 
 set (	SRCS 
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/xdot/xdot.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/xdot/xdot.c
 	)
 
 include_directories ( 
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/xdot
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/common
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/cgraph
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/cdt
-	${EXTERNALS_DIRECTORY}/graphviz2
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/xdot
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/common
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/cdt
+	${GRAPHVIZ_INCLUDE_DIRS}
 	)
 
 if (WIN32)

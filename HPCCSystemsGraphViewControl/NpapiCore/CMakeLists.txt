@@ -8,35 +8,35 @@
 project( NpapiCore ) 
 
 set (	SRCS 
-	${EXTERNALS_DIRECTORY}/firebreath/src/NpapiCore/NpapiBrowserHost.cpp
-	${EXTERNALS_DIRECTORY}/firebreath/src/NpapiCore/NpapiPlugin.cpp
-	${EXTERNALS_DIRECTORY}/firebreath/src/NpapiCore/NpapiPluginModule.cpp
-	${EXTERNALS_DIRECTORY}/firebreath/src/NpapiCore/NpapiPluginModule_NPP.cpp
-	${EXTERNALS_DIRECTORY}/firebreath/src/NpapiCore/NpapiStream.cpp
-	${EXTERNALS_DIRECTORY}/firebreath/src/NpapiCore/NpapiTypes.cpp
+	${FIREBREATH_INCLUDE_DIRS}/src/NpapiCore/NpapiBrowserHost.cpp
+	${FIREBREATH_INCLUDE_DIRS}/src/NpapiCore/NpapiPlugin.cpp
+	${FIREBREATH_INCLUDE_DIRS}/src/NpapiCore/NpapiPluginModule.cpp
+	${FIREBREATH_INCLUDE_DIRS}/src/NpapiCore/NpapiPluginModule_NPP.cpp
+	${FIREBREATH_INCLUDE_DIRS}/src/NpapiCore/NpapiStream.cpp
+	${FIREBREATH_INCLUDE_DIRS}/src/NpapiCore/NpapiTypes.cpp
 
-	${EXTERNALS_DIRECTORY}/firebreath/src/NpapiCore/NPJavascriptObject.cpp
-	${EXTERNALS_DIRECTORY}/firebreath/src/NpapiCore/NPObjectAPI.cpp
+	${FIREBREATH_INCLUDE_DIRS}/src/NpapiCore/NPJavascriptObject.cpp
+	${FIREBREATH_INCLUDE_DIRS}/src/NpapiCore/NPObjectAPI.cpp
 	)
 
 if (WIN32)
 set (	OS_SRCS 
-	${EXTERNALS_DIRECTORY}/firebreath/src/NpapiCore/Win/NpapiBrowserHostAsyncWin.cpp
+	${FIREBREATH_INCLUDE_DIRS}/src/NpapiCore/Win/NpapiBrowserHostAsyncWin.cpp
 	)
 else (WIN32)
 set (	OS_SRCS 
-	#${EXTERNALS_DIRECTORY}/firebreath/src/NpapiCore/X11/NpapiCoreX11.cpp
+	#${FIREBREATH_INCLUDE_DIRS}/src/NpapiCore/X11/NpapiCoreX11.cpp
 	)
 endif (WIN32)
 
 include_directories ( 
 	..
 	../gen
-	${EXTERNALS_DIRECTORY}/firebreath/src/3rdParty/gecko-sdk/includes
-	${EXTERNALS_DIRECTORY}/firebreath/src/ActiveXPlugin
-	${EXTERNALS_DIRECTORY}/firebreath/src/NpapiCore
-	${EXTERNALS_DIRECTORY}/firebreath/src/ScriptingCore
-	${EXTERNALS_DIRECTORY}/firebreath/src/PluginCore
+	${FIREBREATH_INCLUDE_DIRS}/src/3rdParty/gecko-sdk/includes
+	${FIREBREATH_INCLUDE_DIRS}/src/ActiveXPlugin
+	${FIREBREATH_INCLUDE_DIRS}/src/NpapiCore
+	${FIREBREATH_INCLUDE_DIRS}/src/ScriptingCore
+	${FIREBREATH_INCLUDE_DIRS}/src/PluginCore
 	)
 
 if (Boost_FOUND)

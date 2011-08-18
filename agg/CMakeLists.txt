@@ -17,57 +17,57 @@ set (	DEFS
 endif (WIN32)
 
 set (	SRCS 
-	${EXTERNALS_DIRECTORY}/agg/src/agg_arc.cpp
-	${EXTERNALS_DIRECTORY}/agg/src/agg_arrowhead.cpp
-	${EXTERNALS_DIRECTORY}/agg/src/agg_bezier_arc.cpp
-	${EXTERNALS_DIRECTORY}/agg/src/agg_bspline.cpp
-	#${EXTERNALS_DIRECTORY}/agg/src/agg_color_rgba.cpp
-	${EXTERNALS_DIRECTORY}/agg/src/agg_curves.cpp
-	${EXTERNALS_DIRECTORY}/agg/src/agg_embedded_raster_fonts.cpp
-	${EXTERNALS_DIRECTORY}/agg/src/agg_gsv_text.cpp
-	${EXTERNALS_DIRECTORY}/agg/src/agg_image_filters.cpp
-	${EXTERNALS_DIRECTORY}/agg/src/agg_line_aa_basics.cpp
-	${EXTERNALS_DIRECTORY}/agg/src/agg_line_profile_aa.cpp
-	${EXTERNALS_DIRECTORY}/agg/src/agg_rounded_rect.cpp
-	${EXTERNALS_DIRECTORY}/agg/src/agg_sqrt_tables.cpp
-	${EXTERNALS_DIRECTORY}/agg/src/agg_trans_affine.cpp
-	${EXTERNALS_DIRECTORY}/agg/src/agg_trans_double_path.cpp
-	${EXTERNALS_DIRECTORY}/agg/src/agg_trans_single_path.cpp
-	${EXTERNALS_DIRECTORY}/agg/src/agg_trans_warp_magnifier.cpp
-	${EXTERNALS_DIRECTORY}/agg/src/agg_vcgen_bspline.cpp
-	${EXTERNALS_DIRECTORY}/agg/src/agg_vcgen_contour.cpp
-	${EXTERNALS_DIRECTORY}/agg/src/agg_vcgen_dash.cpp
-	${EXTERNALS_DIRECTORY}/agg/src/agg_vcgen_markers_term.cpp
-	${EXTERNALS_DIRECTORY}/agg/src/agg_vcgen_smooth_poly1.cpp
-	${EXTERNALS_DIRECTORY}/agg/src/agg_vcgen_stroke.cpp
-	${EXTERNALS_DIRECTORY}/agg/src/agg_vpgen_clip_polygon.cpp
-	#${EXTERNALS_DIRECTORY}/agg/src/agg_vpgen_clip_polyline.cpp
-	${EXTERNALS_DIRECTORY}/agg/src/agg_vpgen_segmentator.cpp
+	${AGG_INCLUDE_DIRS}/src/agg_arc.cpp
+	${AGG_INCLUDE_DIRS}/src/agg_arrowhead.cpp
+	${AGG_INCLUDE_DIRS}/src/agg_bezier_arc.cpp
+	${AGG_INCLUDE_DIRS}/src/agg_bspline.cpp
+	#${AGG_INCLUDE_DIRS}/src/agg_color_rgba.cpp
+	${AGG_INCLUDE_DIRS}/src/agg_curves.cpp
+	${AGG_INCLUDE_DIRS}/src/agg_embedded_raster_fonts.cpp
+	${AGG_INCLUDE_DIRS}/src/agg_gsv_text.cpp
+	${AGG_INCLUDE_DIRS}/src/agg_image_filters.cpp
+	${AGG_INCLUDE_DIRS}/src/agg_line_aa_basics.cpp
+	${AGG_INCLUDE_DIRS}/src/agg_line_profile_aa.cpp
+	${AGG_INCLUDE_DIRS}/src/agg_rounded_rect.cpp
+	${AGG_INCLUDE_DIRS}/src/agg_sqrt_tables.cpp
+	${AGG_INCLUDE_DIRS}/src/agg_trans_affine.cpp
+	${AGG_INCLUDE_DIRS}/src/agg_trans_double_path.cpp
+	${AGG_INCLUDE_DIRS}/src/agg_trans_single_path.cpp
+	${AGG_INCLUDE_DIRS}/src/agg_trans_warp_magnifier.cpp
+	${AGG_INCLUDE_DIRS}/src/agg_vcgen_bspline.cpp
+	${AGG_INCLUDE_DIRS}/src/agg_vcgen_contour.cpp
+	${AGG_INCLUDE_DIRS}/src/agg_vcgen_dash.cpp
+	${AGG_INCLUDE_DIRS}/src/agg_vcgen_markers_term.cpp
+	${AGG_INCLUDE_DIRS}/src/agg_vcgen_smooth_poly1.cpp
+	${AGG_INCLUDE_DIRS}/src/agg_vcgen_stroke.cpp
+	${AGG_INCLUDE_DIRS}/src/agg_vpgen_clip_polygon.cpp
+	#${AGG_INCLUDE_DIRS}/src/agg_vpgen_clip_polyline.cpp
+	${AGG_INCLUDE_DIRS}/src/agg_vpgen_segmentator.cpp
 
-	${EXTERNALS_DIRECTORY}/agg/font_freetype/agg_font_freetype.cpp
-	#${EXTERNALS_DIRECTORY}/agg/font_freetype/agg_font_freetype2.cpp
+	${AGG_INCLUDE_DIRS}/font_freetype/agg_font_freetype.cpp
+	#${AGG_INCLUDE_DIRS}/font_freetype/agg_font_freetype2.cpp
 
-	${EXTERNALS_DIRECTORY}/agg/agg2d/agg2d.cpp
+	${AGG_INCLUDE_DIRS}/agg2d/agg2d.cpp
 	)
 
 	include_directories ( 
-	${EXTERNALS_DIRECTORY}/agg/include
-	${EXTERNALS_DIRECTORY}/agg/font_freetype
-	${EXTERNALS_DIRECTORY}/agg/agg2d
+	${AGG_INCLUDE_DIRS}/include
+	${AGG_INCLUDE_DIRS}/font_freetype
+	${AGG_INCLUDE_DIRS}/agg2d
 
-	${EXTERNALS_DIRECTORY}/freetype2/include
-	${EXTERNALS_DIRECTORY}/freetype2/include/freetype
+	${FREETYPE_INCLUDE_DIR_freetype2}
+	${FREETYPE_INCLUDE_DIR_freetype2}/freetype
 	)
 
 set (	SRCS_OS
-	#${EXTERNALS_DIRECTORY}/agg/src/platform/win32/agg_platform_support.cpp
-	${EXTERNALS_DIRECTORY}/agg/src/platform/win32/agg_win32_bmp.cpp
+	#${AGG_INCLUDE_DIRS}/src/platform/win32/agg_platform_support.cpp
+	${AGG_INCLUDE_DIRS}/src/platform/win32/agg_win32_bmp.cpp
 	)
 
 if (WIN32)
 set (	SRCS_OS
-	#${EXTERNALS_DIRECTORY}/agg/src/platform/win32/agg_platform_support.cpp
-	${EXTERNALS_DIRECTORY}/agg/src/platform/win32/agg_win32_bmp.cpp
+	#${AGG_INCLUDE_DIRS}/src/platform/win32/agg_platform_support.cpp
+	${AGG_INCLUDE_DIRS}/src/platform/win32/agg_win32_bmp.cpp
 	)
 else (WIN32)
 set (	SRCS_OS
@@ -90,6 +90,6 @@ endif ()
 
 if (WIN32)
 target_link_libraries ( agg 
-	${EXTERNALS_DIRECTORY}/freetype2/objs/win32/vc2008/freetype239MT_D.lib
+	${FREETYPE_LIBRARY}
 )
 endif (WIN32)

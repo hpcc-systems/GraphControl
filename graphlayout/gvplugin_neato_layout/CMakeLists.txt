@@ -8,30 +8,30 @@
 project( gvplugin_neato_layout )
 
 set (	SRCS
-	${EXTERNALS_DIRECTORY}/graphviz2/plugin/neato_layout/gvlayout_neato_layout.c
-	${EXTERNALS_DIRECTORY}/graphviz2/plugin/neato_layout/gvplugin_neato_layout.c
-	${EXTERNALS_DIRECTORY}/graphviz2/plugin/neato_layout/gvplugin_neato_layout.def
+	${GRAPHVIZ_INCLUDE_DIRS}/plugin/neato_layout/gvlayout_neato_layout.c
+	${GRAPHVIZ_INCLUDE_DIRS}/plugin/neato_layout/gvplugin_neato_layout.c
+	${GRAPHVIZ_INCLUDE_DIRS}/plugin/neato_layout/gvplugin_neato_layout.def
 	)
 
 include_directories (
-	${EXTERNALS_DIRECTORY}/graphviz2/plugin/neato_layout
-	${EXTERNALS_DIRECTORY}/graphviz2/plugin/libltdl
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/agutil
-	${EXTERNALS_DIRECTORY}/graphviz2/windows/lib/cdt
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/graph
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/vpsc
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/vmalloc
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/twopigen
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/sparse
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/sfio
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/sfdpgen
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/rbtree
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/pathplan
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/common
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gvc
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/cdt
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/cgraph
-	${EXTERNALS_DIRECTORY}/graphviz2
+	${GRAPHVIZ_INCLUDE_DIRS}/plugin/neato_layout
+	${GRAPHVIZ_INCLUDE_DIRS}/plugin/libltdl
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/agutil
+	${GRAPHVIZ_INCLUDE_DIRS}/windows/lib/cdt
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/graph
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/vpsc
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/vmalloc
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/twopigen
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/sparse
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/sfio
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/sfdpgen
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/rbtree
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/pathplan
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/common
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gvc
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/cdt
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph
+	${GRAPHVIZ_INCLUDE_DIRS}
 	)
 
 #ADD_DEFINITIONS( -DHAVE_CONFIG_H -DHAVE_SETMODE -DMSWIN32 -DNONDLL)

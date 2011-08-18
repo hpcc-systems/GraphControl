@@ -8,21 +8,21 @@
 project( pathplan )
 
 set (	SRCS
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/pathplan/cvt.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/pathplan/inpoly.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/pathplan/route.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/pathplan/shortest.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/pathplan/shortestpth.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/pathplan/solvers.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/pathplan/triang.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/pathplan/util.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/pathplan/visibility.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/pathplan/cvt.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/pathplan/inpoly.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/pathplan/route.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/pathplan/shortest.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/pathplan/shortestpth.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/pathplan/solvers.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/pathplan/triang.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/pathplan/util.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/pathplan/visibility.c
 	)
 
 include_directories (
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/pathplan
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/cgraph
-	${EXTERNALS_DIRECTORY}/graphviz2
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/pathplan
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph
+	${GRAPHVIZ_INCLUDE_DIRS}
 	)
 
 if (WIN32)

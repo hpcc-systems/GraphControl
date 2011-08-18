@@ -8,33 +8,33 @@
 project( cgraph ) 
 
 set (	SRCS 
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/cgraph/agerror.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/cgraph/agxbuf.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/cgraph/apply.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/cgraph/attr.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/cgraph/cgraph.def
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/cgraph/edge.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/cgraph/flatten.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/cgraph/graph.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/cgraph/id.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/cgraph/imap.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/cgraph/io.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/cgraph/mem.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/cgraph/node.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/cgraph/obj.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/cgraph/pend.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/cgraph/rec.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/cgraph/refstr.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/cgraph/subg.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/cgraph/utils.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/cgraph/write.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph/agerror.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph/agxbuf.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph/apply.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph/attr.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph/cgraph.def
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph/edge.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph/flatten.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph/graph.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph/id.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph/imap.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph/io.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph/mem.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph/node.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph/obj.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph/pend.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph/rec.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph/refstr.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph/subg.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph/utils.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph/write.c
 	)
 
 include_directories ( 
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/cgraph
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/cdt
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/common
-	${EXTERNALS_DIRECTORY}/graphviz2
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/cdt
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/common
+	${GRAPHVIZ_INCLUDE_DIRS}
 	)
 
 if (WIN32)

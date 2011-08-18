@@ -58,7 +58,7 @@ size_t MyWriteFunction(GVJ_t *job, const char *s, size_t len)
 }
 
 static GVC_t *gvc;
-LIBAGRAPH_API bool DoLayout(const char * layout, const char* mem, const char* format, const char* scale, std::string & result)
+bool DoLayout(const char * layout, const char* mem, const char* format, const char* scale, std::string & result)
 {
 	bool retVal = true;
 	int  argc = 0;
@@ -146,7 +146,7 @@ LIBAGRAPH_API bool DoLayout(const char * layout, const char* mem, const char* fo
 	return retVal;
 }
 
-LIBAGRAPH_API int shortest_route(Ppoly_t **polys, int num_polys, Ppoint_t * src, Ppoint_t * dst, Ppolyline_t* path)
+int shortest_route(Ppoly_t **polys, int num_polys, Ppoint_t * src, Ppoint_t * dst, Ppolyline_t* path)
 {
 	vconfig_t* vc=Pobsopen(polys, num_polys);
 	if(vc!=0)

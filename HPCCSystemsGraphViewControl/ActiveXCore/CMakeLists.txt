@@ -9,32 +9,32 @@ project( ActiveXCore )
 
 set (	SRCS 
 	../gen/FireBreathWin.tlb.rule
-	${EXTERNALS_DIRECTORY}/firebreath/src/ActiveXCore/AXDOM/Document.cpp
-	${EXTERNALS_DIRECTORY}/firebreath/src/ActiveXCore/AXDOM/Element.cpp
-	${EXTERNALS_DIRECTORY}/firebreath/src/ActiveXCore/AXDOM/Node.cpp
-	${EXTERNALS_DIRECTORY}/firebreath/src/ActiveXCore/AXDOM/Window.cpp
+	${FIREBREATH_INCLUDE_DIRS}/src/ActiveXCore/AXDOM/Document.cpp
+	${FIREBREATH_INCLUDE_DIRS}/src/ActiveXCore/AXDOM/Element.cpp
+	${FIREBREATH_INCLUDE_DIRS}/src/ActiveXCore/AXDOM/Node.cpp
+	${FIREBREATH_INCLUDE_DIRS}/src/ActiveXCore/AXDOM/Window.cpp
 
-	${EXTERNALS_DIRECTORY}/firebreath/src/ActiveXCore/ActiveXBrowserHost.cpp
-	${EXTERNALS_DIRECTORY}/firebreath/src/ActiveXCore/IDispatchAPI.cpp
+	${FIREBREATH_INCLUDE_DIRS}/src/ActiveXCore/ActiveXBrowserHost.cpp
+	${FIREBREATH_INCLUDE_DIRS}/src/ActiveXCore/IDispatchAPI.cpp
 
-	${EXTERNALS_DIRECTORY}/firebreath/src/ActiveXCore/axstream.cpp
-	${EXTERNALS_DIRECTORY}/firebreath/src/ActiveXCore/axstream_impl.cpp
-	${EXTERNALS_DIRECTORY}/firebreath/src/ActiveXCore/axutil.cpp
-	${EXTERNALS_DIRECTORY}/firebreath/src/ActiveXCore/FBControl.cpp
+	${FIREBREATH_INCLUDE_DIRS}/src/ActiveXCore/axstream.cpp
+	${FIREBREATH_INCLUDE_DIRS}/src/ActiveXCore/axstream_impl.cpp
+	${FIREBREATH_INCLUDE_DIRS}/src/ActiveXCore/axutil.cpp
+	${FIREBREATH_INCLUDE_DIRS}/src/ActiveXCore/FBControl.cpp
 	#../gen/FireBreathWin_i.c
 	#../gen/FireBreathWin.tlb
-	#${EXTERNALS_DIRECTORY}/firebreath/src/ActiveXCore/FBControl.bmp
+	#${FIREBREATH_INCLUDE_DIRS}/src/ActiveXCore/FBControl.bmp
 	)
 
 include_directories ( 
 	..
 	../gen
-	${EXTERNALS_DIRECTORY}/firebreath/src/3rdParty/gecko-sdk/includes
-	${EXTERNALS_DIRECTORY}/firebreath/src/ActiveXCore
-	${EXTERNALS_DIRECTORY}/firebreath/src/NpapiCore
-	${EXTERNALS_DIRECTORY}/firebreath/src/ScriptingCore
-	${EXTERNALS_DIRECTORY}/firebreath/src/PluginCore
-	${EXTERNALS_DIRECTORY}/firebreath/src/PluginCommon
+	${FIREBREATH_INCLUDE_DIRS}/src/3rdParty/gecko-sdk/includes
+	${FIREBREATH_INCLUDE_DIRS}/src/ActiveXCore
+	${FIREBREATH_INCLUDE_DIRS}/src/NpapiCore
+	${FIREBREATH_INCLUDE_DIRS}/src/ScriptingCore
+	${FIREBREATH_INCLUDE_DIRS}/src/PluginCore
+	${FIREBREATH_INCLUDE_DIRS}/src/PluginCommon
 	)
 
 if (Boost_FOUND)

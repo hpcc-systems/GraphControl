@@ -8,40 +8,40 @@
 project( sfdpgen )
 
 set (	SRCS
-	#${EXTERNALS_DIRECTORY}/graphviz2/lib/sfdpgen/layout_similarity.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/sfdpgen/LinkedList.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/sfdpgen/LinkedList.h
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/sfdpgen/Multilevel.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/sfdpgen/Multilevel.h
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/sfdpgen/post_process.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/sfdpgen/post_process.h
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/sfdpgen/PriorityQueue.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/sfdpgen/PriorityQueue.h
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/sfdpgen/QuadTree.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/sfdpgen/QuadTree.h
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/sfdpgen/sfdp.h
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/sfdpgen/sfdpinit.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/sfdpgen/sfdpinternal.h
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/sfdpgen/sparse_solve.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/sfdpgen/sparse_solve.h
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/sfdpgen/spring_electrical.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/sfdpgen/spring_electrical.h
+	#${GRAPHVIZ_INCLUDE_DIRS}/lib/sfdpgen/layout_similarity.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/sfdpgen/LinkedList.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/sfdpgen/LinkedList.h
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/sfdpgen/Multilevel.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/sfdpgen/Multilevel.h
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/sfdpgen/post_process.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/sfdpgen/post_process.h
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/sfdpgen/PriorityQueue.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/sfdpgen/PriorityQueue.h
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/sfdpgen/QuadTree.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/sfdpgen/QuadTree.h
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/sfdpgen/sfdp.h
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/sfdpgen/sfdpinit.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/sfdpgen/sfdpinternal.h
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/sfdpgen/sparse_solve.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/sfdpgen/sparse_solve.h
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/sfdpgen/spring_electrical.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/sfdpgen/spring_electrical.h
 	)
 
 include_directories (
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/sfdpgen
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/common
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/cgraph
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/neatogen
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gd
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/cdt
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/graph
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/pathplan
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/pack
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gvc
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/parse
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/ingraphs
-	${EXTERNALS_DIRECTORY}/graphviz2
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/sfdpgen
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/common
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/neatogen
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gd
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/cdt
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/graph
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/pathplan
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/pack
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gvc
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/parse
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/ingraphs
+	${GRAPHVIZ_INCLUDE_DIRS}
 	)
 
 if (WIN32)

@@ -8,20 +8,20 @@
 project( pack )
 
 set (	SRCS
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/pack/ccomps.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/pack/pack.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/pack/ccomps.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/pack/pack.c
 	)
 
 include_directories (
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/pack
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/common
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/cgraph
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/pathplan
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/graph
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/cdt
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/neatogen
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gvc
-	${EXTERNALS_DIRECTORY}/graphviz2
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/pack
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/common
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/pathplan
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/graph
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/cdt
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/neatogen
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gvc
+	${GRAPHVIZ_INCLUDE_DIRS}
 	)
 
 if (WIN32)

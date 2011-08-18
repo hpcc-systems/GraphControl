@@ -10,7 +10,7 @@ cmake_minimum_required ( VERSION 2.8 )
 
 if (WIN32)
 set (	DEFS 
-	${EXTERNALS_DIRECTORY}/expat/lib/libexpatw.def
+	${EXPAT_INCLUDE_DIRS}/lib/libexpatw.def
 	)
 else (WIN32)
 set (	DEFS 
@@ -18,32 +18,32 @@ set (	DEFS
 endif (WIN32)
 
 set (	SRCS 
-	${EXTERNALS_DIRECTORY}/expat/lib/xmlparse.c
-	${EXTERNALS_DIRECTORY}/expat/lib/xmlrole.c
-	${EXTERNALS_DIRECTORY}/expat/lib/xmltok.c
-	${EXTERNALS_DIRECTORY}/expat/lib/xmltok_impl.c
-	${EXTERNALS_DIRECTORY}/expat/lib/xmltok_ns.c
+	${EXPAT_INCLUDE_DIRS}/lib/xmlparse.c
+	${EXPAT_INCLUDE_DIRS}/lib/xmlrole.c
+	${EXPAT_INCLUDE_DIRS}/lib/xmltok.c
+	${EXPAT_INCLUDE_DIRS}/lib/xmltok_impl.c
+	${EXPAT_INCLUDE_DIRS}/lib/xmltok_ns.c
 
-	${EXTERNALS_DIRECTORY}/expat/lib/amigaconfig.h
-	${EXTERNALS_DIRECTORY}/expat/lib/ascii.h
-	${EXTERNALS_DIRECTORY}/expat/lib/asciitab.h
-	${EXTERNALS_DIRECTORY}/expat/lib/expat.h
-	${EXTERNALS_DIRECTORY}/expat/lib/expat_external.h
-	${EXTERNALS_DIRECTORY}/expat/lib/iasciitab.h
-	${EXTERNALS_DIRECTORY}/expat/lib/internal.h
-	${EXTERNALS_DIRECTORY}/expat/lib/latin1tab.h
-	${EXTERNALS_DIRECTORY}/expat/lib/macconfig.h
-	${EXTERNALS_DIRECTORY}/expat/lib/nametab.h
-	${EXTERNALS_DIRECTORY}/expat/lib/utf8tab.h
-	${EXTERNALS_DIRECTORY}/expat/lib/watcomconfig.h
-	${EXTERNALS_DIRECTORY}/expat/lib/winconfig.h
-	${EXTERNALS_DIRECTORY}/expat/lib/xmlrole.h
-	${EXTERNALS_DIRECTORY}/expat/lib/xmltok.h
-	${EXTERNALS_DIRECTORY}/expat/lib/xmltok_impl.h	
+	${EXPAT_INCLUDE_DIRS}/lib/amigaconfig.h
+	${EXPAT_INCLUDE_DIRS}/lib/ascii.h
+	${EXPAT_INCLUDE_DIRS}/lib/asciitab.h
+	${EXPAT_INCLUDE_DIRS}/lib/expat.h
+	${EXPAT_INCLUDE_DIRS}/lib/expat_external.h
+	${EXPAT_INCLUDE_DIRS}/lib/iasciitab.h
+	${EXPAT_INCLUDE_DIRS}/lib/internal.h
+	${EXPAT_INCLUDE_DIRS}/lib/latin1tab.h
+	${EXPAT_INCLUDE_DIRS}/lib/macconfig.h
+	${EXPAT_INCLUDE_DIRS}/lib/nametab.h
+	${EXPAT_INCLUDE_DIRS}/lib/utf8tab.h
+	${EXPAT_INCLUDE_DIRS}/lib/watcomconfig.h
+	${EXPAT_INCLUDE_DIRS}/lib/winconfig.h
+	${EXPAT_INCLUDE_DIRS}/lib/xmlrole.h
+	${EXPAT_INCLUDE_DIRS}/lib/xmltok.h
+	${EXPAT_INCLUDE_DIRS}/lib/xmltok_impl.h	
 	)
 
 	include_directories ( 
-	${EXTERNALS_DIRECTORY}/expat/lib
+	${EXPAT_INCLUDE_DIRS}/lib
 	)
 
 add_library ( expat SHARED 

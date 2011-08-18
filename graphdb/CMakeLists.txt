@@ -42,7 +42,7 @@ set (	SRCS
 
 	include_directories ( 
 	../graphlayout
-	${EXTERNALS_DIRECTORY}/expat/lib
+	${EXPAT_INCLUDE_DIRS}/lib
 	)
 
 if (Boost_FOUND)

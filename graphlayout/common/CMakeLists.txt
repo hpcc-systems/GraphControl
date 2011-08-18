@@ -8,44 +8,44 @@
 project( common )
 
 set (	SRCS
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/common/args.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/common/arrows.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/common/colxlate.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/common/emit.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/common/fontmetrics.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/common/geom.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/common/globals.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/common/htmllex.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/common/htmlparse.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/common/htmltable.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/common/input.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/common/labels.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/common/memory.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/common/ns.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/common/output.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/common/pointset.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/common/postproc.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/common/psusershape.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/common/routespl.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/common/shapes.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/common/splines.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/common/strcasecmp.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/common/strncasecmp.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/common/timing.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/common/utils.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/args.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/arrows.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/colxlate.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/emit.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/fontmetrics.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/geom.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/globals.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/htmllex.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/htmlparse.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/htmltable.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/input.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/labels.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/memory.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/ns.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/output.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/pointset.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/postproc.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/psusershape.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/routespl.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/shapes.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/splines.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/strcasecmp.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/strncasecmp.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/timing.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/utils.c
 	)
 
 include_directories (
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/common
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/cdt
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/cgraph
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/fdpgen
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/pathplan
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gd
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/graph
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gvc
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/xdot
-	${EXTERNALS_DIRECTORY}/graphviz2
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/common
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/cdt
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/fdpgen
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/pathplan
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gd
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/graph
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gvc
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/xdot
+	${GRAPHVIZ_INCLUDE_DIRS}
 	)
 
 if (WIN32)

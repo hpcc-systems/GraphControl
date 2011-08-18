@@ -12,21 +12,21 @@ set (	SRCS
 
 if (WIN32)
 set (	OS_SRCS 
-	${EXTERNALS_DIRECTORY}/firebreath/src/PluginWindow/Win/KeyCodesWin.cpp
-	${EXTERNALS_DIRECTORY}/firebreath/src/PluginWindow/Win/PluginWindowWin.cpp
+	${FIREBREATH_INCLUDE_DIRS}/src/PluginWindow/Win/KeyCodesWin.cpp
+	${FIREBREATH_INCLUDE_DIRS}/src/PluginWindow/Win/PluginWindowWin.cpp
 	)
 else (WIN32)
 set (	OS_SRCS 
-	${EXTERNALS_DIRECTORY}/firebreath/src/PluginWindow/X11/PluginWindowX11.cpp
+	${FIREBREATH_INCLUDE_DIRS}/src/PluginWindow/X11/PluginWindowX11.cpp
 	)
 endif (WIN32)
 
 include_directories ( 
 	..
 	#../gen
-	#${EXTERNALS_DIRECTORY}/firebreath/src/PluginWindow
-	#${EXTERNALS_DIRECTORY}/firebreath/src/PluginWindow/PluginEvents
-	#${EXTERNALS_DIRECTORY}/firebreath/src/ScriptingCore
+	#${FIREBREATH_INCLUDE_DIRS}/src/PluginWindow
+	#${FIREBREATH_INCLUDE_DIRS}/src/PluginWindow/PluginEvents
+	#${FIREBREATH_INCLUDE_DIRS}/src/ScriptingCore
 	)
 
 if (Boost_FOUND)

@@ -1,49 +1,36 @@
 project ( GraphControl )
 cmake_minimum_required (VERSION 2.6)
 
+set ( CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules/" ${CMAKE_MODULE_PATH})
+
 IF ( WIN32 )
-    SET ( EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/../bin/${CMAKE_BUILD_TYPE}" )
-    SET ( LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/../bin/${CMAKE_BUILD_TYPE}" )
+    SET ( EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/../bin" CACHE PATH "Location of BIN files" )
+    SET ( LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/../bin" CACHE PATH "Location of LIB files" )
 ELSE ( WIN32 )
     SET ( EXECUTABLE_OUTPUT_PATH "/usr/lib/mozilla/plugins" )
     SET ( LIBRARY_OUTPUT_PATH "/usr/lib/mozilla/plugins" )
 ENDIF ( WIN32 )
 
+MACRO(ADD_MSVC_PRECOMPILED_HEADER PrecompiledHeader PrecompiledSource SourcesVar)
+  IF(MSVC)
+    GET_FILENAME_COMPONENT(PrecompiledBasename ${PrecompiledHeader} NAME_WE)
+    SET(PrecompiledBinary "$(IntDir)/${PrecompiledBasename}.pch")
+    SET(Sources ${${SourcesVar}})
 
-if ("${EXTERNALS_DIRECTORY}" STREQUAL "")
-	set (EXTERNALS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../../HPCC/dev/Third_party")
-endif()
+    SET_SOURCE_FILES_PROPERTIES(${PrecompiledSource}
+    				PROPERTIES COMPILE_FLAGS "/Yc\"${PrecompiledHeader}\" /Fp\"${PrecompiledBinary}\""
+    					OBJECT_OUTPUTS "${PrecompiledBinary}")
+    SET_SOURCE_FILES_PROPERTIES(${Sources}
+    				PROPERTIES COMPILE_FLAGS "/Yu\"${PrecompiledHeader}\" /FI\"${PrecompiledHeader}\" /Fp\"${PrecompiledBinary}\""
+    					OBJECT_DEPENDS "${PrecompiledBinary}") 
+    # Add precompiled header to SourcesVar
+    LIST(APPEND ${SourcesVar} ${PrecompiledSource})
+    LIST(APPEND ${SourcesVar} ${PrecompiledHeader})
+  ENDIF(MSVC)
+ENDMACRO(ADD_MSVC_PRECOMPILED_HEADER)
 
-SET( BOOST_ROOT "${EXTERNALS_DIRECTORY}/boost" )
-SET( Boost_ADDITIONAL_VERSIONS "1.44" "1.43" "1.43.0" "1.42" "1.42.0" )
-SET( Boost_USE_STATIC_LIBS ON )
-#FIND_PACKAGE( Boost 1.44 COMPONENTS thread date_time )
-FIND_PACKAGE( Boost 1.44 )
-IF( Boost_FOUND )
-ELSE( Boost_FOUND )
-    MESSAGE( "BOOST libraries were not found:  " ${BOOST_ROOT})
-ENDIF( Boost_FOUND )
+include ( "${CMAKE_SOURCE_DIR}/cmake/Modules/Externals.cmake" )
 
-if (WIN32)
-    SET ( FREETYPE_INCLUDE_DIR_freetype2 ${EXTERNALS_DIRECTORY}/freetype2/include )
-    SET ( FREETYPE_INCLUDE_DIR_ft2build ${EXTERNALS_DIRECTORY}/freetype2/include )
-    SET ( FREETYPE_LIBRARY ${EXTERNALS_DIRECTORY}/freetype2/objs/win32/vc2008/freetype239MT.lib )
-else (WIN32)
-endif (WIN32)
-FIND_PACKAGE( Freetype )
-IF( FREETYPE_FOUND )
-ELSE( FREETYPE_FOUND )
-    MESSAGE( "Freetype library was not found" )
-ENDIF( FREETYPE_FOUND )
-
-IF (WIN32)
-ELSE (WIN32)
-    FIND_PACKAGE( Threads )
-    IF( THREADS_FOUND )
-    ELSE( THREADS_FOUND )
-        MESSAGE( "Threads library was not found" )
-    ENDIF( THREADS_FOUND )
-ENDIF (WIN32)
 
 if (WIN32)
 	ADD_DEFINITIONS(-D_CRT_SECURE_NO_WARNINGS -FR -DFB_WIN=1 -DXP_WIN=1)
@@ -73,6 +60,7 @@ add_subdirectory (agg)
 set_property(TARGET agg PROPERTY FOLDER "3rdParty")
 add_subdirectory (expat)
 set_property(TARGET expat PROPERTY FOLDER "3rdParty")
+
 add_subdirectory (graphlayout)
 add_subdirectory (graphdb)
 add_subdirectory (graphrender)

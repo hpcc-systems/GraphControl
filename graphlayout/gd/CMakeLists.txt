@@ -8,41 +8,41 @@
 project( gd ) 
 
 set (	SRCS 
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gd/gd.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gd/gd_gd.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gd/gd_gd2.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gd/gd_gif_in.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gd/gd_gif_out.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gd/gd_io.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gd/gd_io_dp.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gd/gd_io_file.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gd/gd_ss.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gd/gd_jpeg.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gd/gd_png.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gd/gd_security.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gd/gd_ss.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gd/gd_topal.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gd/gd_wbmp.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gd/gdcache.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gd/gdfontg.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gd/gdfontl.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gd/gdfontmb.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gd/gdfonts.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gd/gdfontt.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gd/gdft.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gd/gdfx.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gd/gdhelpers.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gd/gdkanji.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gd/gdtables.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gd/gdxpm.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gd/wbmp.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gd/gd.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gd/gd_gd.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gd/gd_gd2.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gd/gd_gif_in.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gd/gd_gif_out.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gd/gd_io.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gd/gd_io_dp.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gd/gd_io_file.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gd/gd_ss.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gd/gd_jpeg.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gd/gd_png.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gd/gd_security.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gd/gd_ss.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gd/gd_topal.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gd/gd_wbmp.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gd/gdcache.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gd/gdfontg.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gd/gdfontl.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gd/gdfontmb.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gd/gdfonts.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gd/gdfontt.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gd/gdft.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gd/gdfx.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gd/gdhelpers.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gd/gdkanji.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gd/gdtables.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gd/gdxpm.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gd/wbmp.c
 	)
 
 include_directories ( 
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gd
-	${EXTERNALS_DIRECTORY}/graphviz2/third-party/include
-	${EXTERNALS_DIRECTORY}/graphviz2/third-party/include/freetype2
-	${EXTERNALS_DIRECTORY}/graphviz2
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gd
+	${GRAPHVIZ_INCLUDE_DIRS}/third-party/include
+	${GRAPHVIZ_INCLUDE_DIRS}/third-party/include/freetype2
+	${GRAPHVIZ_INCLUDE_DIRS}
 	)
 
 # ADD_DEFINITIONS( -DHAVE_CONFIG_H -DHAVE_SETMODE -DMSWIN32 -DNONDLL)

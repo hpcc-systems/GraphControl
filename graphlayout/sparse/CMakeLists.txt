@@ -8,12 +8,12 @@
 project( sparse )
 
 set (	SRCS
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/sparse/SparseMatrix.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/sparse/SparseMatrix.c
 	)
 
 include_directories (
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/sparse
-	${EXTERNALS_DIRECTORY}/graphviz2
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/sparse
+	${GRAPHVIZ_INCLUDE_DIRS}
 	)
 
 if (WIN32)

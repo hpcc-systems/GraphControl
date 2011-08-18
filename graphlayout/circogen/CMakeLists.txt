@@ -8,32 +8,32 @@
 project( circogen )
 
 set (	SRCS
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/circogen/block.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/circogen/blockpath.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/circogen/blocktree.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/circogen/circpos.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/circogen/circular.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/circogen/circularinit.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/circogen/deglist.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/circogen/edgelist.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/circogen/nodelist.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/circogen/nodeset.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/circogen/stack.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/circogen/block.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/circogen/blockpath.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/circogen/blocktree.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/circogen/circpos.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/circogen/circular.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/circogen/circularinit.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/circogen/deglist.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/circogen/edgelist.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/circogen/nodelist.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/circogen/nodeset.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/circogen/stack.c
 	)
 
 include_directories (
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/circogen
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/common
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/cgraph
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/neatogen
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gvc
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/pack
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gd
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/cdt
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/graph
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/pathplan
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/sparse
-	${EXTERNALS_DIRECTORY}/graphviz2
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/circogen
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/common
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/neatogen
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gvc
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/pack
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gd
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/cdt
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/graph
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/pathplan
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/sparse
+	${GRAPHVIZ_INCLUDE_DIRS}
 	)
 
 if (WIN32)

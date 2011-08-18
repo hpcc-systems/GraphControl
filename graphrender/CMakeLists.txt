@@ -31,9 +31,9 @@ endif (WIN32)
 include_directories (
 	gen
 	../graphdb
-	${EXTERNALS_DIRECTORY}/agg/include
-	${EXTERNALS_DIRECTORY}/agg/agg2d
-	${EXTERNALS_DIRECTORY}/agg/font_freetype
+	${AGG_INCLUDE_DIRS}/include
+	${AGG_INCLUDE_DIRS}/agg2d
+	${AGG_INCLUDE_DIRS}/font_freetype
 	)
 
 if (WIN32)

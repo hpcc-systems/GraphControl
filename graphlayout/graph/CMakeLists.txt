@@ -8,22 +8,22 @@
 project( graph )
 
 set (	SRCS
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/graph/agxbuf.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/graph/attribs.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/graph/edge.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/graph/graph.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/graph/graphio.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/graph/lexer.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/graph/node.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/graph/parser.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/graph/refstr.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/graph/trie.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/graph/agxbuf.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/graph/attribs.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/graph/edge.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/graph/graph.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/graph/graphio.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/graph/lexer.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/graph/node.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/graph/parser.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/graph/refstr.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/graph/trie.c
 	)
 
 include_directories (
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/graph
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/cdt
-	${EXTERNALS_DIRECTORY}/graphviz2
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/graph
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/cdt
+	${GRAPHVIZ_INCLUDE_DIRS}
 	)
 
 #ADD_DEFINITIONS( -DHAVE_CONFIG_H -DHAVE_SETMODE -DMSWIN32 -DNONDLL)

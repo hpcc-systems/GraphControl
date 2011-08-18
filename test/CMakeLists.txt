@@ -14,7 +14,7 @@ set (	SRCS
 include_directories ( 
 	../graphdb
 	../graphrender
-	${EXTERNALS_DIRECTORY}/agg/include
+	${AGG_INCLUDE_DIRES}/include
 	)
 
 if (WIN32)

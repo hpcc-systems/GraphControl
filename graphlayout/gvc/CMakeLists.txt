@@ -8,30 +8,30 @@
 project( gvc )
 
 set (	SRCS
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gvc/gvc.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gvc/gvconfig.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gvc/gvcontext.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gvc/gvdevice.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gvc/gvevent.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gvc/gvjobs.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gvc/gvlayout.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gvc/gvloadimage.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gvc/gvplugin.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gvc/gvrender.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gvc/gvtextlayout.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gvc/gvusershape.c
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gvc/no_demand_loading.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gvc/gvc.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gvc/gvconfig.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gvc/gvcontext.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gvc/gvdevice.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gvc/gvevent.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gvc/gvjobs.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gvc/gvlayout.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gvc/gvloadimage.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gvc/gvplugin.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gvc/gvrender.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gvc/gvtextlayout.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gvc/gvusershape.c
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gvc/no_demand_loading.c
 	)
 
 include_directories (
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/gvc
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/cdt
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/cgraph
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/pathplan
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/common
-	${EXTERNALS_DIRECTORY}/graphviz2/lib/graph
-	${EXTERNALS_DIRECTORY}/graphviz2/third-party/include
-	${EXTERNALS_DIRECTORY}/graphviz2
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/gvc
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/cdt
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/pathplan
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/common
+	${GRAPHVIZ_INCLUDE_DIRS}/lib/graph
+	${GRAPHVIZ_INCLUDE_DIRS}/third-party/include
+	${GRAPHVIZ_INCLUDE_DIRS}
 	)
 
 #ADD_DEFINITIONS( -DHAVE_CONFIG_H -DHAVE_SETMODE -DMSWIN32 -DNONDLL)
