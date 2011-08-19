@@ -31,7 +31,6 @@ ENDMACRO(ADD_MSVC_PRECOMPILED_HEADER)
 
 include ( "${CMAKE_SOURCE_DIR}/cmake/Modules/Externals.cmake" )
 
-
 if (WIN32)
 	ADD_DEFINITIONS(-D_CRT_SECURE_NO_WARNINGS -FR -DFB_WIN=1 -DXP_WIN=1)
 ELSE (WIN32)
@@ -62,7 +61,7 @@ add_subdirectory (expat)
 set_property(TARGET expat PROPERTY FOLDER "3rdParty")
 
 add_subdirectory (graphlayout)
-add_subdirectory (graphdb)
-add_subdirectory (graphrender)
-add_subdirectory (HPCCSystemsGraphViewControl)
+#add_subdirectory (graphdb)
+#add_subdirectory (graphrender)
+#add_subdirectory (HPCCSystemsGraphViewControl)
 #add_subdirectory (test)

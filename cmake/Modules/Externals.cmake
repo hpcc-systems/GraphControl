@@ -1,13 +1,7 @@
-IF ("${EXTERNALS_DIRECTORY}" STREQUAL "")
-    SET (EXTERNALS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../../HPCC/dev/Third_party")
+IF ( "${EXTERNALS_DIRECTORY}" STREQUAL "" )
+    SET ( EXTERNALS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../../svn_HPCC/dev/Third_party"
+          CACHE PATH "SVN Third Party Folders" )
 ENDIF ()
-
-set ( WTL_ROOT "${EXTERNALS_DIRECTORY}/wtl" )
-find_package( WTL )
-if ( WTL_FOUND )
-else ( )
-    MESSAGE( "WTL libraries were not found:  " ${WTL_ROOT})
-endif ( )
 
 set ( AGG_ROOT "${EXTERNALS_DIRECTORY}/agg" )
 find_package( AGG )
@@ -37,6 +31,13 @@ else ( )
     MESSAGE( "GRAPHVIZ not found:  " ${GRAPHVIZ_ROOT})
 endif ( )
 
+
+set ( WTL_ROOT "${EXTERNALS_DIRECTORY}/wtl" )
+find_package( WTL )
+if ( WTL_FOUND )
+else ( )
+    MESSAGE( "WTL libraries were not found:  " ${WTL_ROOT})
+endif ( )
 
 SET( BOOST_ROOT "${EXTERNALS_DIRECTORY}/boost" )
 SET( Boost_ADDITIONAL_VERSIONS "1.44" "1.43" "1.43.0" "1.42" "1.42.0" )

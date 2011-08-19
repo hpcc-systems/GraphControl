@@ -113,4 +113,5 @@ target_link_libraries ( graphlayout
 	xdot
 	)
 
+install ( TARGETS graphlayout RUNTIME DESTINATION bin )
 
