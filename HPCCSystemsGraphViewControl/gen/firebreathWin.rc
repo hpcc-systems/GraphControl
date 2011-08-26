@@ -34,8 +34,8 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 6, 0, 1, 2
- PRODUCTVERSION 6, 0, 1, 2
+ FILEVERSION 6, 0, 1, 3
+ PRODUCTVERSION 6, 0, 1, 3
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -52,12 +52,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", FBSTRING_CompanyName
             VALUE "FileDescription", FBSTRING_FileDescription
-            VALUE "FileVersion", "6, 0, 1, 2\0"
+            VALUE "FileVersion", "6, 0, 1, 3\0"
             VALUE "LegalCopyright", FBSTRING_LegalCopyright
             VALUE "InternalName", FBSTRING_PluginFileName
             VALUE "OriginalFilename", FBSTRING_PluginFileName
             VALUE "ProductName", FBSTRING_ProductName
-            VALUE "ProductVersion", "6, 0, 1, 2\0"
+            VALUE "ProductVersion", "6, 0, 1, 3\0"
             VALUE "FileExtents", FBSTRING_FileExtents
             VALUE "FileOpenName", FBSTRING_PluginName
             VALUE "MIMEType", FBSTRING_MIMETypeList
@@ -108,6 +108,7 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
+
 
 
 
