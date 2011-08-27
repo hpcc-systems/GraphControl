@@ -4,8 +4,8 @@ cmake_minimum_required (VERSION 2.6)
 set ( CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules/" ${CMAKE_MODULE_PATH})
 
 IF ( WIN32 )
-    SET ( EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/../bin" CACHE PATH "Location of BIN files" )
-    SET ( LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/../bin" CACHE PATH "Location of LIB files" )
+    SET ( EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin" CACHE PATH "Location of BIN files" )
+    SET ( LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin" CACHE PATH "Location of LIB files" )
 ELSE ( WIN32 )
     SET ( EXECUTABLE_OUTPUT_PATH "/usr/lib/mozilla/plugins" )
     SET ( LIBRARY_OUTPUT_PATH "/usr/lib/mozilla/plugins" )
@@ -30,7 +30,6 @@ MACRO(ADD_MSVC_PRECOMPILED_HEADER PrecompiledHeader PrecompiledSource SourcesVar
 ENDMACRO(ADD_MSVC_PRECOMPILED_HEADER)
 
 include ( "${CMAKE_SOURCE_DIR}/cmake/Modules/Externals.cmake" )
-
 
 if (WIN32)
 	ADD_DEFINITIONS(-D_CRT_SECURE_NO_WARNINGS -FR -DFB_WIN=1 -DXP_WIN=1)
