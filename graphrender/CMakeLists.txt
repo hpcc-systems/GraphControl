@@ -69,3 +69,5 @@ target_link_libraries ( graphrender
 	agg
 	)
 
+install (TARGETS graphrender DESTINATION bin)
+

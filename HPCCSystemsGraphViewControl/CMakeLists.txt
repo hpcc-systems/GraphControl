@@ -156,3 +156,6 @@ target_link_libraries( HPCCSystemsGraphViewControl
 	${GTK_LIBRARIES}
 	)
 endif (WIN32)
+
+install (TARGETS HPCCSystemsGraphViewControl DESTINATION bin)
+

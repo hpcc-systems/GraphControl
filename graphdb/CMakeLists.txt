@@ -69,3 +69,6 @@ target_link_libraries ( graphdb
 	expat 
 	${Boost_LIBRARIES}	
 	)
+	
+install ( TARGETS graphdb RUNTIME DESTINATION bin )
+
