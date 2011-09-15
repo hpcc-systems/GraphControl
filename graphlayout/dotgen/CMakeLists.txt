@@ -8,34 +8,34 @@
 project( dotgen )
 
 set (	SRCS
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/dotgen/acyclic.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/dotgen/aspect.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/dotgen/class1.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/dotgen/class2.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/dotgen/cluster.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/dotgen/compound.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/dotgen/conc.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/dotgen/decomp.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/dotgen/dotinit.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/dotgen/dotsplines.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/dotgen/fastgr.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/dotgen/flat.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/dotgen/mincross.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/dotgen/position.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/dotgen/rank.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/dotgen/sameport.c
+	${GRAPHVIZSRC_DIRS}/lib/dotgen/acyclic.c
+	${GRAPHVIZSRC_DIRS}/lib/dotgen/aspect.c
+	${GRAPHVIZSRC_DIRS}/lib/dotgen/class1.c
+	${GRAPHVIZSRC_DIRS}/lib/dotgen/class2.c
+	${GRAPHVIZSRC_DIRS}/lib/dotgen/cluster.c
+	${GRAPHVIZSRC_DIRS}/lib/dotgen/compound.c
+	${GRAPHVIZSRC_DIRS}/lib/dotgen/conc.c
+	${GRAPHVIZSRC_DIRS}/lib/dotgen/decomp.c
+	${GRAPHVIZSRC_DIRS}/lib/dotgen/dotinit.c
+	${GRAPHVIZSRC_DIRS}/lib/dotgen/dotsplines.c
+	${GRAPHVIZSRC_DIRS}/lib/dotgen/fastgr.c
+	${GRAPHVIZSRC_DIRS}/lib/dotgen/flat.c
+	${GRAPHVIZSRC_DIRS}/lib/dotgen/mincross.c
+	${GRAPHVIZSRC_DIRS}/lib/dotgen/position.c
+	${GRAPHVIZSRC_DIRS}/lib/dotgen/rank.c
+	${GRAPHVIZSRC_DIRS}/lib/dotgen/sameport.c
 	)
 
 include_directories (
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/dotgen
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/common
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/gd
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cdt
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/graph
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/pathplan
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/gvc
-	${GRAPHVIZ_INCLUDE_DIRS}
+	${GRAPHVIZSRC_DIRS}/lib/dotgen
+	${GRAPHVIZSRC_DIRS}/lib/common
+	${GRAPHVIZSRC_DIRS}/lib/cgraph
+	${GRAPHVIZSRC_DIRS}/lib/gd
+	${GRAPHVIZSRC_DIRS}/lib/cdt
+	${GRAPHVIZSRC_DIRS}/lib/graph
+	${GRAPHVIZSRC_DIRS}/lib/pathplan
+	${GRAPHVIZSRC_DIRS}/lib/gvc
+	${GRAPHVIZSRC_DIRS}
 	)
 
 if (WIN32)

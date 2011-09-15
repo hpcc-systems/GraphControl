@@ -8,37 +8,37 @@
 project( gvplugin_core )
 
 set (	SRCS
-	${GRAPHVIZ_INCLUDE_DIRS}/plugin/core/gvloadimage_core.c
-	${GRAPHVIZ_INCLUDE_DIRS}/plugin/core/gvplugin_core.c
-	${GRAPHVIZ_INCLUDE_DIRS}/plugin/core/gvplugin_core.def
-	${GRAPHVIZ_INCLUDE_DIRS}/plugin/core/gvrender_core_dot.c
-	${GRAPHVIZ_INCLUDE_DIRS}/plugin/core/gvrender_core_fig.c
-	${GRAPHVIZ_INCLUDE_DIRS}/plugin/core/gvrender_core_map.c
-	${GRAPHVIZ_INCLUDE_DIRS}/plugin/core/gvrender_core_ps.c
-	${GRAPHVIZ_INCLUDE_DIRS}/plugin/core/gvrender_core_svg.c
-	${GRAPHVIZ_INCLUDE_DIRS}/plugin/core/gvrender_core_tk.c
-	${GRAPHVIZ_INCLUDE_DIRS}/plugin/core/gvrender_core_vml.c
+	${GRAPHVIZSRC_DIRS}/plugin/core/gvloadimage_core.c
+	${GRAPHVIZSRC_DIRS}/plugin/core/gvplugin_core.c
+	${GRAPHVIZSRC_DIRS}/plugin/core/gvplugin_core.def
+	${GRAPHVIZSRC_DIRS}/plugin/core/gvrender_core_dot.c
+	${GRAPHVIZSRC_DIRS}/plugin/core/gvrender_core_fig.c
+	${GRAPHVIZSRC_DIRS}/plugin/core/gvrender_core_map.c
+	${GRAPHVIZSRC_DIRS}/plugin/core/gvrender_core_ps.c
+	${GRAPHVIZSRC_DIRS}/plugin/core/gvrender_core_svg.c
+	${GRAPHVIZSRC_DIRS}/plugin/core/gvrender_core_tk.c
+	${GRAPHVIZSRC_DIRS}/plugin/core/gvrender_core_vml.c
 	)
 
 include_directories (
-	${GRAPHVIZ_INCLUDE_DIRS}/plugin/core
-	${GRAPHVIZ_INCLUDE_DIRS}/plugin/libltdl
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/agutil
-	${GRAPHVIZ_INCLUDE_DIRS}/windows/lib/cdt
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/graph
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/vpsc
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/vmalloc
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/twopigen
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/sparse
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/sfio
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/sfdpgen
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/rbtree
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/pathplan
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/common
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/gvc
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cdt
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph
-	${GRAPHVIZ_INCLUDE_DIRS}
+	${GRAPHVIZSRC_DIRS}/plugin/core
+	${GRAPHVIZSRC_DIRS}/plugin/libltdl
+	${GRAPHVIZSRC_DIRS}/lib/agutil
+	${GRAPHVIZSRC_DIRS}/windows/lib/cdt
+	${GRAPHVIZSRC_DIRS}/lib/graph
+	${GRAPHVIZSRC_DIRS}/lib/vpsc
+	${GRAPHVIZSRC_DIRS}/lib/vmalloc
+	${GRAPHVIZSRC_DIRS}/lib/twopigen
+	${GRAPHVIZSRC_DIRS}/lib/sparse
+	${GRAPHVIZSRC_DIRS}/lib/sfio
+	${GRAPHVIZSRC_DIRS}/lib/sfdpgen
+	${GRAPHVIZSRC_DIRS}/lib/rbtree
+	${GRAPHVIZSRC_DIRS}/lib/pathplan
+	${GRAPHVIZSRC_DIRS}/lib/common
+	${GRAPHVIZSRC_DIRS}/lib/gvc
+	${GRAPHVIZSRC_DIRS}/lib/cdt
+	${GRAPHVIZSRC_DIRS}/lib/cgraph
+	${GRAPHVIZSRC_DIRS}
 	)
 
 #ADD_DEFINITIONS( -DHAVE_CONFIG_H -DHAVE_SETMODE -DMSWIN32 -DNONDLL)

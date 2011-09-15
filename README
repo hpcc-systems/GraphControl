@@ -1,0 +1,10 @@
+Ubuntu 11.04 Build:
+libboost-dev
+freetype-dev
+expat-dev
+
+Third Party Sources:
+https://github.com/firebreath/FireBreath.git
+http://www.graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.26.3.tar.gz
+svn co https://agg.svn.sourceforge.net/svnroot/agg agg svn co https://agg.svn.sourceforge.net/svnroot/agg agg
+

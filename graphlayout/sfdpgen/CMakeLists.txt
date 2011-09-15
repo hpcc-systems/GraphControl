@@ -8,40 +8,40 @@
 project( sfdpgen )
 
 set (	SRCS
-	#${GRAPHVIZ_INCLUDE_DIRS}/lib/sfdpgen/layout_similarity.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/sfdpgen/LinkedList.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/sfdpgen/LinkedList.h
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/sfdpgen/Multilevel.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/sfdpgen/Multilevel.h
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/sfdpgen/post_process.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/sfdpgen/post_process.h
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/sfdpgen/PriorityQueue.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/sfdpgen/PriorityQueue.h
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/sfdpgen/QuadTree.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/sfdpgen/QuadTree.h
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/sfdpgen/sfdp.h
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/sfdpgen/sfdpinit.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/sfdpgen/sfdpinternal.h
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/sfdpgen/sparse_solve.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/sfdpgen/sparse_solve.h
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/sfdpgen/spring_electrical.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/sfdpgen/spring_electrical.h
+	#${GRAPHVIZSRC_DIRS}/lib/sfdpgen/layout_similarity.c
+	${GRAPHVIZSRC_DIRS}/lib/sfdpgen/LinkedList.c
+	${GRAPHVIZSRC_DIRS}/lib/sfdpgen/LinkedList.h
+	${GRAPHVIZSRC_DIRS}/lib/sfdpgen/Multilevel.c
+	${GRAPHVIZSRC_DIRS}/lib/sfdpgen/Multilevel.h
+	${GRAPHVIZSRC_DIRS}/lib/sfdpgen/post_process.c
+	${GRAPHVIZSRC_DIRS}/lib/sfdpgen/post_process.h
+	${GRAPHVIZSRC_DIRS}/lib/sfdpgen/PriorityQueue.c
+	${GRAPHVIZSRC_DIRS}/lib/sfdpgen/PriorityQueue.h
+	${GRAPHVIZSRC_DIRS}/lib/sfdpgen/QuadTree.c
+	${GRAPHVIZSRC_DIRS}/lib/sfdpgen/QuadTree.h
+	${GRAPHVIZSRC_DIRS}/lib/sfdpgen/sfdp.h
+	${GRAPHVIZSRC_DIRS}/lib/sfdpgen/sfdpinit.c
+	${GRAPHVIZSRC_DIRS}/lib/sfdpgen/sfdpinternal.h
+	${GRAPHVIZSRC_DIRS}/lib/sfdpgen/sparse_solve.c
+	${GRAPHVIZSRC_DIRS}/lib/sfdpgen/sparse_solve.h
+	${GRAPHVIZSRC_DIRS}/lib/sfdpgen/spring_electrical.c
+	${GRAPHVIZSRC_DIRS}/lib/sfdpgen/spring_electrical.h
 	)
 
 include_directories (
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/sfdpgen
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/common
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/neatogen
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/gd
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cdt
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/graph
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/pathplan
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/pack
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/gvc
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/parse
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/ingraphs
-	${GRAPHVIZ_INCLUDE_DIRS}
+	${GRAPHVIZSRC_DIRS}/lib/sfdpgen
+	${GRAPHVIZSRC_DIRS}/lib/common
+	${GRAPHVIZSRC_DIRS}/lib/cgraph
+	${GRAPHVIZSRC_DIRS}/lib/neatogen
+	${GRAPHVIZSRC_DIRS}/lib/gd
+	${GRAPHVIZSRC_DIRS}/lib/cdt
+	${GRAPHVIZSRC_DIRS}/lib/graph
+	${GRAPHVIZSRC_DIRS}/lib/pathplan
+	${GRAPHVIZSRC_DIRS}/lib/pack
+	${GRAPHVIZSRC_DIRS}/lib/gvc
+	${GRAPHVIZSRC_DIRS}/lib/sparse
+	${GRAPHVIZSRC_DIRS}/lib/ingraphs
+	${GRAPHVIZSRC_DIRS}
 	)
 
 if (WIN32)

@@ -1,7 +1,7 @@
 # - Try to find FIREBREATH
 # Once done this will define
 #  FIREBREATHSRC_FOUND - System has FIREBREATH
-#  FIREBREATHSRC_DIRS - The FIREBREATH include directories
+#  FIREBREATHSRC_DIRS - The FIREBREATH Source directories
 
 find_path(FIREBREATHSRC_DIR src/plugincore/plugincore.h
           HINTS ${FIREBREATHSRC_ROOT} )

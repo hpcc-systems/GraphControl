@@ -8,30 +8,30 @@
 project( gvc )
 
 set (	SRCS
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/gvc/gvc.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/gvc/gvconfig.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/gvc/gvcontext.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/gvc/gvdevice.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/gvc/gvevent.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/gvc/gvjobs.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/gvc/gvlayout.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/gvc/gvloadimage.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/gvc/gvplugin.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/gvc/gvrender.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/gvc/gvtextlayout.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/gvc/gvusershape.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/gvc/no_demand_loading.c
+	${GRAPHVIZSRC_DIRS}/lib/gvc/gvc.c
+	${GRAPHVIZSRC_DIRS}/lib/gvc/gvconfig.c
+	${GRAPHVIZSRC_DIRS}/lib/gvc/gvcontext.c
+	${GRAPHVIZSRC_DIRS}/lib/gvc/gvdevice.c
+	${GRAPHVIZSRC_DIRS}/lib/gvc/gvevent.c
+	${GRAPHVIZSRC_DIRS}/lib/gvc/gvjobs.c
+	${GRAPHVIZSRC_DIRS}/lib/gvc/gvlayout.c
+	${GRAPHVIZSRC_DIRS}/lib/gvc/gvloadimage.c
+	${GRAPHVIZSRC_DIRS}/lib/gvc/gvplugin.c
+	${GRAPHVIZSRC_DIRS}/lib/gvc/gvrender.c
+	${GRAPHVIZSRC_DIRS}/lib/gvc/gvtextlayout.c
+	${GRAPHVIZSRC_DIRS}/lib/gvc/gvusershape.c
+	#${GRAPHVIZSRC_DIRS}/lib/gvc/no_demand_loading.c
 	)
 
 include_directories (
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/gvc
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cdt
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/pathplan
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/common
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/graph
-	${GRAPHVIZ_INCLUDE_DIRS}/third-party/include
-	${GRAPHVIZ_INCLUDE_DIRS}
+	${GRAPHVIZSRC_DIRS}/lib/gvc
+	${GRAPHVIZSRC_DIRS}/lib/cdt
+	${GRAPHVIZSRC_DIRS}/lib/cgraph
+	${GRAPHVIZSRC_DIRS}/lib/pathplan
+	${GRAPHVIZSRC_DIRS}/lib/common
+	${GRAPHVIZSRC_DIRS}/lib/graph
+	${GRAPHVIZSRC_DIRS}/third-party/include
+	${GRAPHVIZSRC_DIRS}
 	)
 
 #ADD_DEFINITIONS( -DHAVE_CONFIG_H -DHAVE_SETMODE -DMSWIN32 -DNONDLL)

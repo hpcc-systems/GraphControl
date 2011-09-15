@@ -70,5 +70,5 @@ target_link_libraries ( graphdb
 	${Boost_LIBRARIES}	
 	)
 	
-install ( TARGETS graphdb RUNTIME DESTINATION bin )
+#install ( TARGETS graphdb RUNTIME DESTINATION bin )
 

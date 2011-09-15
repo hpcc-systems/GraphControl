@@ -8,29 +8,29 @@
 project( cdt )
 
 set (	SRCS
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cdt/dttree.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cdt/dtclose.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cdt/dtdisc.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cdt/dtextract.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cdt/dtflatten.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cdt/dthash.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cdt/dtlist.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cdt/dtmethod.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cdt/dtopen.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cdt/dtrenew.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cdt/dtrestore.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cdt/dtsize.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cdt/dtstat.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cdt/dtstrhash.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cdt/dtview.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cdt/dtwalk.c
+	${GRAPHVIZSRC_DIRS}/lib/cdt/dttree.c
+	${GRAPHVIZSRC_DIRS}/lib/cdt/dtclose.c
+	${GRAPHVIZSRC_DIRS}/lib/cdt/dtdisc.c
+	${GRAPHVIZSRC_DIRS}/lib/cdt/dtextract.c
+	${GRAPHVIZSRC_DIRS}/lib/cdt/dtflatten.c
+	${GRAPHVIZSRC_DIRS}/lib/cdt/dthash.c
+	${GRAPHVIZSRC_DIRS}/lib/cdt/dtlist.c
+	${GRAPHVIZSRC_DIRS}/lib/cdt/dtmethod.c
+	${GRAPHVIZSRC_DIRS}/lib/cdt/dtopen.c
+	${GRAPHVIZSRC_DIRS}/lib/cdt/dtrenew.c
+	${GRAPHVIZSRC_DIRS}/lib/cdt/dtrestore.c
+	${GRAPHVIZSRC_DIRS}/lib/cdt/dtsize.c
+	${GRAPHVIZSRC_DIRS}/lib/cdt/dtstat.c
+	${GRAPHVIZSRC_DIRS}/lib/cdt/dtstrhash.c
+	${GRAPHVIZSRC_DIRS}/lib/cdt/dtview.c
+	${GRAPHVIZSRC_DIRS}/lib/cdt/dtwalk.c
 
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cdt/cdt.def
+	${GRAPHVIZSRC_DIRS}/lib/cdt/cdt.def
 	)
 
 include_directories (
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cdt
-	${GRAPHVIZ_INCLUDE_DIRS}
+	${GRAPHVIZSRC_DIRS}/lib/cdt
+	${GRAPHVIZSRC_DIRS}
 	)
 
 if (WIN32)
