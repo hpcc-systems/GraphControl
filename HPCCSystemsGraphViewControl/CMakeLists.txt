@@ -30,8 +30,8 @@ set (	SRCS_OS
 	gen/FireBreathWin_i.c
 	gen/firebreathWin.idl
 
-	${FIREBREATH_INCLUDE_DIRS}/src/PluginAuto/win/dllmain.cpp
-	${FIREBREATH_INCLUDE_DIRS}/src/PluginAuto/win/np_winmain.cpp
+	${FIREBREATHSRC_DIRS}/src/PluginAuto/win/dllmain.cpp
+	${FIREBREATHSRC_DIRS}/src/PluginAuto/win/np_winmain.cpp
 
 	DotViewWin.cpp
 	DotViewWin.h
@@ -40,9 +40,9 @@ else (WIN32)
 set (	SRCS_OS
 	x11_pixel_map.cpp
 
-	${FIREBREATH_INCLUDE_DIRS}/src/PluginAuto/X11/np_x11main.cpp
-	${FIREBREATH_INCLUDE_DIRS}/src/PluginAuto/X11/NpapiPluginX11.cpp
-	${FIREBREATH_INCLUDE_DIRS}/src/PluginAuto/X11/PluginWindowX11.cpp
+	${FIREBREATHSRC_DIRS}/src/PluginAuto/X11/np_x11main.cpp
+	${FIREBREATHSRC_DIRS}/src/PluginAuto/X11/NpapiPluginX11.cpp
+	${FIREBREATHSRC_DIRS}/src/PluginAuto/X11/PluginWindowX11.cpp
 
 	DotViewX11.cpp
 	DotViewX11.h
@@ -54,17 +54,17 @@ include_directories (
 	../graphdb
 	../graphrender
 
-	${FIREBREATH_INCLUDE_DIRS}/src/3rdParty/gecko-sdk/includes
-	${FIREBREATH_INCLUDE_DIRS}/src/ActiveXCore
-	${FIREBREATH_INCLUDE_DIRS}/src/NpapiCore
-	${FIREBREATH_INCLUDE_DIRS}/src/ScriptingCore
-	${FIREBREATH_INCLUDE_DIRS}/src/PluginCore
-	${FIREBREATH_INCLUDE_DIRS}/src/PluginAuto
-	${FIREBREATH_INCLUDE_DIRS}/src/config
+	${FIREBREATHSRC_DIRS}/src/3rdParty/gecko-sdk/includes
+	${FIREBREATHSRC_DIRS}/src/ActiveXCore
+	${FIREBREATHSRC_DIRS}/src/NpapiCore
+	${FIREBREATHSRC_DIRS}/src/ScriptingCore
+	${FIREBREATHSRC_DIRS}/src/PluginCore
+	${FIREBREATHSRC_DIRS}/src/PluginAuto
+	${FIREBREATHSRC_DIRS}/src/config
 	
 	${WTL_INCLUDE_DIR}/include
 	
-	${AGG_INCLUDE_DIR}/include
+	${AGGSRC_DIRS}/agg-2.4/include
 	)
 
 if (WIN32)

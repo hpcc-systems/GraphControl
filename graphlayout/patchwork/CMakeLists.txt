@@ -8,23 +8,24 @@
 project( patchwork )
 
 set (	SRCS
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/patchwork/patchwork.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/patchwork/patchworkinit.c
+	${GRAPHVIZSRC_DIRS}/lib/patchwork/patchwork.c
+	${GRAPHVIZSRC_DIRS}/lib/patchwork/patchworkinit.c
 	)
 
 include_directories (
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/patchwork
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/common
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/neatogen
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/pack
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/gvc
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/gd
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cdt
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/graph
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/pathplan
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/sparse
-	${GRAPHVIZ_INCLUDE_DIRS}
+	${GRAPHVIZSRC_DIRS}/lib/patchwork
+	${GRAPHVIZSRC_DIRS}/lib/common
+	${GRAPHVIZSRC_DIRS}/lib/cgraph
+	${GRAPHVIZSRC_DIRS}/lib/neatogen
+	${GRAPHVIZSRC_DIRS}/lib/pack
+	${GRAPHVIZSRC_DIRS}/lib/gvc
+	${GRAPHVIZSRC_DIRS}/lib/gd
+	${GRAPHVIZSRC_DIRS}/lib/cdt
+	${GRAPHVIZSRC_DIRS}/lib/graph
+	${GRAPHVIZSRC_DIRS}/lib/pathplan
+	${GRAPHVIZSRC_DIRS}/lib/sparse
+	${GRAPHVIZSRC_DIRS}/lib/fdpgen
+	${GRAPHVIZSRC_DIRS}
 	)
 
 if (WIN32)

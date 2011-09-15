@@ -8,37 +8,37 @@
 project( PluginCore ) 
 
 set (	SRCS 
-	#${FIREBREATH_INCLUDE_DIRS}/src/PluginCore/Mac/PluginWindowMacQuickDraw.cpp
+	#${FIREBREATHSRC_DIRS}/src/PluginCore/Mac/PluginWindowMacQuickDraw.cpp
 
-	${FIREBREATH_INCLUDE_DIRS}/src/PluginCore/BrowserPlugin.cpp
-	${FIREBREATH_INCLUDE_DIRS}/src/PluginCore/BrowserStream.cpp
-	${FIREBREATH_INCLUDE_DIRS}/src/PluginCore/BrowserStreamManager.cpp
-	${FIREBREATH_INCLUDE_DIRS}/src/PluginCore/DefaultBrowserStreamHandler.cpp
-	${FIREBREATH_INCLUDE_DIRS}/src/PluginCore/FactoryBase.cpp
-	${FIREBREATH_INCLUDE_DIRS}/src/PluginCore/PluginCore.cpp
-	${FIREBREATH_INCLUDE_DIRS}/src/PluginCore/PluginEvent.cpp
-	${FIREBREATH_INCLUDE_DIRS}/src/PluginCore/PluginEventSource.cpp
-	${FIREBREATH_INCLUDE_DIRS}/src/PluginCore/PluginWindow.cpp
-	${FIREBREATH_INCLUDE_DIRS}/src/PluginCore/SimpleStreamHelper.cpp
+	${FIREBREATHSRC_DIRS}/src/PluginCore/BrowserPlugin.cpp
+	${FIREBREATHSRC_DIRS}/src/PluginCore/BrowserStream.cpp
+	${FIREBREATHSRC_DIRS}/src/PluginCore/BrowserStreamManager.cpp
+	${FIREBREATHSRC_DIRS}/src/PluginCore/DefaultBrowserStreamHandler.cpp
+	${FIREBREATHSRC_DIRS}/src/PluginCore/FactoryBase.cpp
+	${FIREBREATHSRC_DIRS}/src/PluginCore/PluginCore.cpp
+	#${FIREBREATHSRC_DIRS}/src/PluginCore/PluginEvent.cpp
+	${FIREBREATHSRC_DIRS}/src/PluginCore/PluginEventSource.cpp
+	#${FIREBREATHSRC_DIRS}/src/PluginCore/PluginWindow.cpp
+	${FIREBREATHSRC_DIRS}/src/PluginCore/SimpleStreamHelper.cpp
 	)
 
 if (WIN32)
 set (	OS_SRCS 
-	${FIREBREATH_INCLUDE_DIRS}/src/PluginCore/win/KeyCodesWin.cpp
-	${FIREBREATH_INCLUDE_DIRS}/src/PluginCore/win/WinMessageWindow.cpp
+	${FIREBREATHSRC_DIRS}/src/PluginCore/win/KeyCodesWin.cpp
+	${FIREBREATHSRC_DIRS}/src/PluginCore/win/WinMessageWindow.cpp
 	)
 else (WIN32)
 set (	OS_SRCS 
-	#${FIREBREATH_INCLUDE_DIRS}/src/PluginCore/X11/PluginWindowX11.cpp
+	#${FIREBREATHSRC_DIRS}/src/PluginCore/X11/PluginWindowX11.cpp
 	)
 endif (WIN32)
 
 include_directories ( 
 	..
 	../gen
-	${FIREBREATH_INCLUDE_DIRS}/src/PluginCore
-	${FIREBREATH_INCLUDE_DIRS}/src/PluginCore/PluginEvents
-	${FIREBREATH_INCLUDE_DIRS}/src/ScriptingCore
+	${FIREBREATHSRC_DIRS}/src/PluginCore
+	${FIREBREATHSRC_DIRS}/src/PluginCore/PluginEvents
+	${FIREBREATHSRC_DIRS}/src/ScriptingCore
 	)
 
 if (Boost_FOUND)

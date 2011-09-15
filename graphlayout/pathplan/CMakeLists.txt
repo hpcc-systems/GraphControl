@@ -8,21 +8,21 @@
 project( pathplan )
 
 set (	SRCS
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/pathplan/cvt.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/pathplan/inpoly.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/pathplan/route.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/pathplan/shortest.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/pathplan/shortestpth.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/pathplan/solvers.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/pathplan/triang.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/pathplan/util.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/pathplan/visibility.c
+	${GRAPHVIZSRC_DIRS}/lib/pathplan/cvt.c
+	${GRAPHVIZSRC_DIRS}/lib/pathplan/inpoly.c
+	${GRAPHVIZSRC_DIRS}/lib/pathplan/route.c
+	${GRAPHVIZSRC_DIRS}/lib/pathplan/shortest.c
+	${GRAPHVIZSRC_DIRS}/lib/pathplan/shortestpth.c
+	${GRAPHVIZSRC_DIRS}/lib/pathplan/solvers.c
+	${GRAPHVIZSRC_DIRS}/lib/pathplan/triang.c
+	${GRAPHVIZSRC_DIRS}/lib/pathplan/util.c
+	${GRAPHVIZSRC_DIRS}/lib/pathplan/visibility.c
 	)
 
 include_directories (
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/pathplan
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph
-	${GRAPHVIZ_INCLUDE_DIRS}
+	${GRAPHVIZSRC_DIRS}/lib/pathplan
+	${GRAPHVIZSRC_DIRS}/lib/cgraph
+	${GRAPHVIZSRC_DIRS}
 	)
 
 if (WIN32)

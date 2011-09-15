@@ -17,57 +17,56 @@ set (	DEFS
 endif (WIN32)
 
 set (	SRCS 
-	${AGG_INCLUDE_DIRS}/src/agg_arc.cpp
-	${AGG_INCLUDE_DIRS}/src/agg_arrowhead.cpp
-	${AGG_INCLUDE_DIRS}/src/agg_bezier_arc.cpp
-	${AGG_INCLUDE_DIRS}/src/agg_bspline.cpp
-	#${AGG_INCLUDE_DIRS}/src/agg_color_rgba.cpp
-	${AGG_INCLUDE_DIRS}/src/agg_curves.cpp
-	${AGG_INCLUDE_DIRS}/src/agg_embedded_raster_fonts.cpp
-	${AGG_INCLUDE_DIRS}/src/agg_gsv_text.cpp
-	${AGG_INCLUDE_DIRS}/src/agg_image_filters.cpp
-	${AGG_INCLUDE_DIRS}/src/agg_line_aa_basics.cpp
-	${AGG_INCLUDE_DIRS}/src/agg_line_profile_aa.cpp
-	${AGG_INCLUDE_DIRS}/src/agg_rounded_rect.cpp
-	${AGG_INCLUDE_DIRS}/src/agg_sqrt_tables.cpp
-	${AGG_INCLUDE_DIRS}/src/agg_trans_affine.cpp
-	${AGG_INCLUDE_DIRS}/src/agg_trans_double_path.cpp
-	${AGG_INCLUDE_DIRS}/src/agg_trans_single_path.cpp
-	${AGG_INCLUDE_DIRS}/src/agg_trans_warp_magnifier.cpp
-	${AGG_INCLUDE_DIRS}/src/agg_vcgen_bspline.cpp
-	${AGG_INCLUDE_DIRS}/src/agg_vcgen_contour.cpp
-	${AGG_INCLUDE_DIRS}/src/agg_vcgen_dash.cpp
-	${AGG_INCLUDE_DIRS}/src/agg_vcgen_markers_term.cpp
-	${AGG_INCLUDE_DIRS}/src/agg_vcgen_smooth_poly1.cpp
-	${AGG_INCLUDE_DIRS}/src/agg_vcgen_stroke.cpp
-	${AGG_INCLUDE_DIRS}/src/agg_vpgen_clip_polygon.cpp
-	#${AGG_INCLUDE_DIRS}/src/agg_vpgen_clip_polyline.cpp
-	${AGG_INCLUDE_DIRS}/src/agg_vpgen_segmentator.cpp
+	${AGGSRC_DIRS}/agg-2.4/src/agg_arc.cpp
+	${AGGSRC_DIRS}/agg-2.4/src/agg_arrowhead.cpp
+	${AGGSRC_DIRS}/agg-2.4/src/agg_bezier_arc.cpp
+	${AGGSRC_DIRS}/agg-2.4/src/agg_bspline.cpp
+	#${AGGSRC_DIRS}/agg-2.4/src/agg_color_rgba.cpp
+	${AGGSRC_DIRS}/agg-2.4/src/agg_curves.cpp
+	${AGGSRC_DIRS}/agg-2.4/src/agg_embedded_raster_fonts.cpp
+	${AGGSRC_DIRS}/agg-2.4/src/agg_gsv_text.cpp
+	${AGGSRC_DIRS}/agg-2.4/src/agg_image_filters.cpp
+	${AGGSRC_DIRS}/agg-2.4/src/agg_line_aa_basics.cpp
+	${AGGSRC_DIRS}/agg-2.4/src/agg_line_profile_aa.cpp
+	${AGGSRC_DIRS}/agg-2.4/src/agg_rounded_rect.cpp
+	${AGGSRC_DIRS}/agg-2.4/src/agg_sqrt_tables.cpp
+	${AGGSRC_DIRS}/agg-2.4/src/agg_trans_affine.cpp
+	${AGGSRC_DIRS}/agg-2.4/src/agg_trans_double_path.cpp
+	${AGGSRC_DIRS}/agg-2.4/src/agg_trans_single_path.cpp
+	${AGGSRC_DIRS}/agg-2.4/src/agg_trans_warp_magnifier.cpp
+	${AGGSRC_DIRS}/agg-2.4/src/agg_vcgen_bspline.cpp
+	${AGGSRC_DIRS}/agg-2.4/src/agg_vcgen_contour.cpp
+	${AGGSRC_DIRS}/agg-2.4/src/agg_vcgen_dash.cpp
+	${AGGSRC_DIRS}/agg-2.4/src/agg_vcgen_markers_term.cpp
+	${AGGSRC_DIRS}/agg-2.4/src/agg_vcgen_smooth_poly1.cpp
+	${AGGSRC_DIRS}/agg-2.4/src/agg_vcgen_stroke.cpp
+	${AGGSRC_DIRS}/agg-2.4/src/agg_vpgen_clip_polygon.cpp
+	#${AGGSRC_DIRS}/agg-2.4/src/agg_vpgen_clip_polyline.cpp
+	${AGGSRC_DIRS}/agg-2.4/src/agg_vpgen_segmentator.cpp
 
-	${AGG_INCLUDE_DIRS}/font_freetype/agg_font_freetype.cpp
-	#${AGG_INCLUDE_DIRS}/font_freetype/agg_font_freetype2.cpp
+	${AGGSRC_DIRS}/agg-2.4/font_freetype/agg_font_freetype.cpp
+	#${AGGSRC_DIRS}/font_freetype/agg_font_freetype2.cpp
 
-	${AGG_INCLUDE_DIRS}/agg2d/agg2d.cpp
+	agg2d.cpp
 	)
 
 	include_directories ( 
-	${AGG_INCLUDE_DIRS}/include
-	${AGG_INCLUDE_DIRS}/font_freetype
-	${AGG_INCLUDE_DIRS}/agg2d
+	${AGGSRC_DIRS}/agg-2.4/include
+	${AGGSRC_DIRS}/agg-2.4/font_freetype
 
 	${FREETYPE_INCLUDE_DIR_freetype2}
 	${FREETYPE_INCLUDE_DIR_freetype2}/freetype
 	)
 
 set (	SRCS_OS
-	#${AGG_INCLUDE_DIRS}/src/platform/win32/agg_platform_support.cpp
-	${AGG_INCLUDE_DIRS}/src/platform/win32/agg_win32_bmp.cpp
+	#${AGGSRC_DIRS}/agg-2.4/src/platform/win32/agg_platform_support.cpp
+	${AGGSRC_DIRS}/agg-2.4/src/platform/win32/agg_win32_bmp.cpp
 	)
 
 if (WIN32)
 set (	SRCS_OS
-	#${AGG_INCLUDE_DIRS}/src/platform/win32/agg_platform_support.cpp
-	${AGG_INCLUDE_DIRS}/src/platform/win32/agg_win32_bmp.cpp
+	#${AGGSRC_DIRS}/agg-2.4/src/platform/win32/agg_platform_support.cpp
+	${AGGSRC_DIRS}/agg-2.4/src/platform/win32/agg_win32_bmp.cpp
 	)
 else (WIN32)
 set (	SRCS_OS
