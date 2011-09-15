@@ -4,10 +4,10 @@ IF ( "${EXTERNALS_DIRECTORY}" STREQUAL "" )
 ENDIF ()
 
 set ( AGG_ROOT "${EXTERNALS_DIRECTORY}/agg" )
-find_package( AGG )
-if ( AGG_FOUND )
+find_package( AGGSRC )
+if ( AGGSRC_FOUND )
 else ( )
-    MESSAGE( "AGG not found:  " ${AGG_ROOT})
+    MESSAGE( "AGG Sources not found:  " ${AGG_ROOT})
 endif ( )
 
 set ( EXPAT_ROOT "${EXTERNALS_DIRECTORY}/expat" )
