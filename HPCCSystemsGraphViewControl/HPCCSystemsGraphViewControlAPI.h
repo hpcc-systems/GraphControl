@@ -74,7 +74,7 @@ public:
 	std::string getGlobalID(int item);
 	FB::VariantList getVertices();
 
-	BOOL onMouseWheel(UINT nFlags, short zDelta, int x, int y);
+	bool onMouseWheel(UINT nFlags, short zDelta, int x, int y);
 
 	bool setMessage(const std::string& msg);
 

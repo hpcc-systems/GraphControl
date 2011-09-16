@@ -283,7 +283,7 @@ FB::VariantList HPCCSystemsGraphViewControlAPI::getVertices()
 	return items;
 }
 
-BOOL HPCCSystemsGraphViewControlAPI::onMouseWheel(UINT nFlags, short zDelta, int x, int y)
+bool HPCCSystemsGraphViewControlAPI::onMouseWheel(UINT nFlags, short zDelta, int x, int y)
 {
 	return m_callback->DoMouseWheel(nFlags, zDelta, CPoint(x, y));
 }
