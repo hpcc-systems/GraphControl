@@ -7,7 +7,7 @@
 #include "HPCCSystemsGraphViewControlAPI.h"
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string.hpp>
-#include <xgmmlParser.h>
+#include <XgmmlParser.h>
 
 #define CURRENT_VERSION 20110705
 
@@ -285,7 +285,11 @@ FB::VariantList HPCCSystemsGraphViewControlAPI::getVertices()
 
 bool HPCCSystemsGraphViewControlAPI::onMouseWheel(unsigned int nFlags, short zDelta, int x, int y)
 {
+#ifdef _WIN
+	//  Hack for windows mouse wheel notifications  ---
 	return m_callback->DoMouseWheel(nFlags, zDelta, CPoint(x, y));
+#endif
+	return false;
 }
 
 void HPCCSystemsGraphViewControlAPI::loadTestData()

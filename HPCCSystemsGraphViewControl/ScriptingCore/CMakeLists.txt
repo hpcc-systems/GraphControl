@@ -37,7 +37,7 @@ set (	SRCS_OS
 	)
 else (WIN32)
 set (	SRCS_OS
-	#${FIREBREATHSRC_DIRS}/src/ScriptingCore/utf8.c
+	${FIREBREATHSRC_DIRS}/src/ScriptingCore/utf8.c
 	)
 endif (WIN32)
 

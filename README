@@ -1,5 +1,6 @@
 Ubuntu 11.04 Build:
 libboost-dev
+libboost-thread-dev
 freetype-dev
 expat-dev
 

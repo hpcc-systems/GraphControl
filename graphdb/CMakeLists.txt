@@ -67,7 +67,6 @@ add_dependencies ( graphdb
 target_link_libraries ( graphdb 
 	graphlayout 
 	expat 
-	${Boost_LIBRARIES}	
 	)
 	
 #install ( TARGETS graphdb RUNTIME DESTINATION bin )
