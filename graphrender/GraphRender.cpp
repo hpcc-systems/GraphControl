@@ -108,6 +108,8 @@ protected:
 	Colour m_hotFill;
 	Colour m_hotFillText;
 
+	Colour m_badColour;
+
 public:
 	BEGIN_CUNKNOWN
 	END_CUNKNOWN
@@ -133,6 +135,8 @@ public:
 		m_colours[StateT(RENDER_TYPE_EDGE, XGMML_STATE_UNKNOWN)]	=	ColourT(Colour::Gray,			Colour::Gray,			Colour::Gray);
 		m_colours[StateT(RENDER_TYPE_EDGE, XGMML_STATE_RUNNING)]	=	ColourT(Colour::ForestGreen,	Colour::ForestGreen,	Colour::DarkGreen);
 		m_colours[StateT(RENDER_TYPE_EDGE, XGMML_STATE_COMPLETED)] =	ColourT(Colour::Black,			Colour::Black,			Colour::Black);
+		
+		m_badColour = Colour::Red;
 	}
 
 	void SetMessage(const std::string & msg)
@@ -322,7 +326,7 @@ public:
 #if defined WIN32
 		m_agg2d.font("c:/windows/fonts/verdana.ttf", 11.0f);
 #else
-		m_agg2d.font("/usr/share/fonts/truetype/msttcorefonts/verdana.ttf", 11.0f);
+		m_agg2d.font("/usr/share/fonts/truetype/freefont/FreeSans.ttf", 11.0f);
 #endif
 
 		IGraphItem * retVal = NULL;
@@ -601,8 +605,7 @@ public:
 		else
 		{
 			StateColourMap::const_iterator found = m_colours.find(StateT(m_inType, m_inState));
-			assert(found != m_colours.end());
-			const Colour * text = &found->second.m_text;
+			const Colour * text = (found != m_colours.end()) ? &found->second.m_text : &m_badColour;
 			agg2d.fillColor(text->GetR(), text->GetG(), text->GetB(), text->GetA());
 		}
 		//else if (m_inState == XGMML_STATE_RUNNING)
@@ -765,7 +768,7 @@ public:
 #if defined WIN32
 			m_agg2d.font("c:/windows/fonts/verdana.ttf", 11.0f);
 #else
-			m_agg2d.font("/usr/share/fonts/truetype/msttcorefonts/verdana.ttf", 11.0f);
+			m_agg2d.font("/usr/share/fonts/truetype/freefont/FreeSans.ttf", 11.0f);
 #endif
 
 			if (!m_message.empty())

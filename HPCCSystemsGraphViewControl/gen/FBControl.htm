@@ -41,12 +41,13 @@
 
     function onLoad() {
         addEvent(pluginLHS(), 'LayoutFinished', layoutFinished);
-        addEvent(pluginRHS(), 'LayoutFinished', layoutFinishedRHS);
         addEvent(pluginLHS(), 'Scaled', scaled);
         addEvent(pluginLHS(), 'MouseDoubleClick', mouseDoubleClick);
         addEvent(pluginLHS(), 'SelectionChanged', selectionChanged);
-        addEvent(pluginRHS(), 'SelectionChanged', selectionChangedRHS);
         var version = pluginLHS().version;
+		
+        addEvent(pluginRHS(), 'LayoutFinished', layoutFinishedRHS);
+        addEvent(pluginRHS(), 'SelectionChanged', selectionChangedRHS);
     }
 
     function layoutFinished() {
