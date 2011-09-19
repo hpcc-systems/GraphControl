@@ -69,5 +69,8 @@ target_link_libraries ( graphdb
 	expat 
 	)
 	
-#install ( TARGETS graphdb RUNTIME DESTINATION bin )
+if ( WIN32 )	
+else ( WIN32 )	
+install ( TARGETS graphdb DESTINATION lib/mozilla/plugins )
+endif ( WIN32 )	
 

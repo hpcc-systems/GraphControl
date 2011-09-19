@@ -158,5 +158,7 @@ target_link_libraries( HPCCSystemsGraphViewControl
 	)
 endif (WIN32)
 
-install (TARGETS HPCCSystemsGraphViewControl DESTINATION bin)
-
+if ( WIN32 )	
+else ( WIN32 )	
+install ( TARGETS HPCCSystemsGraphViewControl DESTINATION lib/mozilla/plugins )
+endif ( WIN32 )	

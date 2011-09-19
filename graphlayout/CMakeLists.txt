@@ -113,5 +113,7 @@ target_link_libraries ( graphlayout
 	xdot
 	)
 
-#install ( TARGETS graphlayout RUNTIME DESTINATION bin )
-
+if ( WIN32 )	
+else ( WIN32 )	
+install ( TARGETS graphlayout DESTINATION lib/mozilla/plugins )
+endif ( WIN32 )	

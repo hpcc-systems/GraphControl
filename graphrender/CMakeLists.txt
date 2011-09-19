@@ -69,5 +69,7 @@ target_link_libraries ( graphrender
 	agg
 	)
 
-install (TARGETS graphrender DESTINATION bin)
-
+if ( WIN32 )	
+else ( WIN32 )	
+install ( TARGETS graphrender DESTINATION lib/mozilla/plugins )
+endif ( WIN32 )	
