@@ -74,12 +74,7 @@ class Agg2D
         Dash( double d_, double g_ ) : dash_len(d_), gap_len(g_) {}
     };
 	
-#ifdef WIN32
     typedef agg::order_bgra ComponentOrder; // Platform dependent!
-#else
-    typedef agg::order_abgr ComponentOrder; // Platform dependent!
-#endif
-
     typedef agg::rgba8                                               ColorType;
     typedef agg::blender_rgba<ColorType, ComponentOrder>             Blender;
     typedef agg::comp_op_adaptor_rgba<ColorType, ComponentOrder>     BlenderComp;
@@ -88,7 +83,11 @@ class Agg2D
 
 	// JME
     //typedef agg::pixel_formats_rgba<Blender, agg::pixel32_type>    PixFormat;
+#ifdef WIN32
     typedef agg::pixfmt_bgra32									PixFormat;
+#else
+    typedef agg::pixfmt_rgba32									PixFormat;
+#endif
     // JME
     //typedef agg::pixfmt_custom_blend_rgba<BlenderComp,>             PixFormatComp;
     typedef agg::pixfmt_custom_blend_rgba<BlenderComp,agg::rendering_buffer>             PixFormatComp;
