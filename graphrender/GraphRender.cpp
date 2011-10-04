@@ -764,8 +764,15 @@ public:
 			if (clear)
 				m_agg2d.clearAll(0x7f, 0x7f, 0x7f);
 			m_agg2d.lineColor(0x00, 0x00, 0x00);
+
+#ifdef _DEBUG
+			m_agg2d.fillColor(0xaf, 0xaf, 0xaf);
+			RectD rb = GetBoundingRect(true);
+			m_agg2d.rectangle(rb.GetLeft(), rb.GetTop(), rb.GetRight(), rb.GetBottom());
+#endif
+
 			m_agg2d.fillColor(0xff, 0xff, 0xff);
-#if defined WIN32
+#ifdef WIN32
 			m_agg2d.font("c:/windows/fonts/verdana.ttf", 11.0f);
 #else
 			m_agg2d.font("/usr/share/fonts/truetype/freefont/FreeSans.ttf", 11.0f);
