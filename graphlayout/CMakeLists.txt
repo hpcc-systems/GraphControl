@@ -15,25 +15,25 @@ set (	SRCS
 	)
 
 include_directories (
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/graph
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/pathplan
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/common
-#	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/pathplan
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/gvc
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/dotgen
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/neatogen
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/fdpgen
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/sfdpgen
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/graph
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cdt
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/twopigen
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/circogen
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/sparse
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/xdot
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/gd
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/sparse
-	${GRAPHVIZ_INCLUDE_DIRS}
+	${GRAPHVIZSRC_DIRS}/lib/graph
+	${GRAPHVIZSRC_DIRS}/lib/pathplan
+	${GRAPHVIZSRC_DIRS}/lib/common
+#	${GRAPHVIZSRC_DIRS}/lib/cgraph
+	${GRAPHVIZSRC_DIRS}/lib/pathplan
+	${GRAPHVIZSRC_DIRS}/lib/gvc
+	${GRAPHVIZSRC_DIRS}/lib/dotgen
+	${GRAPHVIZSRC_DIRS}/lib/neatogen
+	${GRAPHVIZSRC_DIRS}/lib/fdpgen
+	${GRAPHVIZSRC_DIRS}/lib/sfdpgen
+	${GRAPHVIZSRC_DIRS}/lib/graph
+	${GRAPHVIZSRC_DIRS}/lib/cdt
+	${GRAPHVIZSRC_DIRS}/lib/twopigen
+	${GRAPHVIZSRC_DIRS}/lib/circogen
+	${GRAPHVIZSRC_DIRS}/lib/sparse
+	${GRAPHVIZSRC_DIRS}/lib/xdot
+	${GRAPHVIZSRC_DIRS}/lib/gd
+	${GRAPHVIZSRC_DIRS}/lib/sparse
+	${GRAPHVIZSRC_DIRS}
 	)
 
 if (WIN32)
@@ -113,5 +113,7 @@ target_link_libraries ( graphlayout
 	xdot
 	)
 
-install ( TARGETS graphlayout RUNTIME DESTINATION bin )
-
+if ( WIN32 )	
+else ( WIN32 )	
+install ( TARGETS graphlayout DESTINATION lib/mozilla/plugins )
+endif ( WIN32 )	

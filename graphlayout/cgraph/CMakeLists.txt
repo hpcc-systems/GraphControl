@@ -14,27 +14,27 @@ set (	SRCS
 	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph/attr.c
 	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph/cgraph.def
 	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph/edge.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph/flatten.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph/graph.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph/id.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph/imap.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph/io.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph/mem.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph/node.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph/obj.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph/pend.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph/rec.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph/refstr.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph/subg.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph/utils.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph/write.c
+	${GRAPHVIZSRC_DIRS}/lib/cgraph/flatten.c
+	${GRAPHVIZSRC_DIRS}/lib/cgraph/graph.c
+	${GRAPHVIZSRC_DIRS}/lib/cgraph/id.c
+	${GRAPHVIZSRC_DIRS}/lib/cgraph/imap.c
+	${GRAPHVIZSRC_DIRS}/lib/cgraph/io.c
+	${GRAPHVIZSRC_DIRS}/lib/cgraph/mem.c
+	${GRAPHVIZSRC_DIRS}/lib/cgraph/node.c
+	${GRAPHVIZSRC_DIRS}/lib/cgraph/obj.c
+	${GRAPHVIZSRC_DIRS}/lib/cgraph/pend.c
+	${GRAPHVIZSRC_DIRS}/lib/cgraph/rec.c
+	${GRAPHVIZSRC_DIRS}/lib/cgraph/refstr.c
+	${GRAPHVIZSRC_DIRS}/lib/cgraph/subg.c
+	${GRAPHVIZSRC_DIRS}/lib/cgraph/utils.c
+	${GRAPHVIZSRC_DIRS}/lib/cgraph/write.c
 	)
 
 include_directories ( 
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cdt
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/common
-	${GRAPHVIZ_INCLUDE_DIRS}
+	${GRAPHVIZSRC_DIRS}/lib/cgraph
+	${GRAPHVIZSRC_DIRS}/lib/cdt
+	${GRAPHVIZSRC_DIRS}/lib/common
+	${GRAPHVIZSRC_DIRS}
 	)
 
 if (WIN32)

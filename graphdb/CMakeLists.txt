@@ -67,8 +67,10 @@ add_dependencies ( graphdb
 target_link_libraries ( graphdb 
 	graphlayout 
 	expat 
-	${Boost_LIBRARIES}	
 	)
 	
-install ( TARGETS graphdb RUNTIME DESTINATION bin )
+if ( WIN32 )	
+else ( WIN32 )	
+install ( TARGETS graphdb DESTINATION lib/mozilla/plugins )
+endif ( WIN32 )	
 

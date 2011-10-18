@@ -75,8 +75,8 @@ bool CDotView::GetClientRectangle(ln::RectD & rect)
 	gint height;
 	gdk_window_get_size(m_canvas->window, &width, &height);
 
-	rect.x = GetScrollOffsetX();
-	rect.y = GetScrollOffsetY();
+	rect.x = -GetScrollOffsetX();
+	rect.y = -GetScrollOffsetY();
 	rect.Width = width;
 	rect.Height = height;
 
@@ -85,28 +85,28 @@ bool CDotView::GetClientRectangle(ln::RectD & rect)
 
 void CDotView::DoPaint(GdkEvent *evt)
 {
-    std::cout << "GDK_EXPOSE:  Start" << "\n";
-    GdkEventExpose * event = reinterpret_cast<GdkEventExpose *>(evt);
-    std::cout << "GDK_EXPOSE:  Start 2" << "\n";
-        //GtkAdjustment * hadj = gtk_scrolled_window_get_hadjustment(GTK_SCROLLED_WINDOW(win->m_scrolled_window));
-        //GtkAdjustment * vadj = gtk_scrolled_window_get_vadjustment(GTK_SCROLLED_WINDOW(win->m_scrolled_window));
+//	std::cout << "GDK_EXPOSE:  Start" << "\n";
+	GdkEventExpose * event = reinterpret_cast<GdkEventExpose *>(evt);
+//	std::cout << "GDK_EXPOSE:  Start 2" << "\n";
+	//GtkAdjustment * hadj = gtk_scrolled_window_get_hadjustment(GTK_SCROLLED_WINDOW(win->m_scrolled_window));
+	//GtkAdjustment * vadj = gtk_scrolled_window_get_vadjustment(GTK_SCROLLED_WINDOW(win->m_scrolled_window));
 
-        //ln::RectI rect(hadj->value, vadj->value, hadj->value + hadj->page_size, vadj->value + vadj->page_size);
-        m_buffer->Resize(event->area.width, event->area.height);
-        ln::RectI rect(event->area.x, event->area.y, event->area.x + event->area.width, event->area.y + event->area.height);
-        rect.Offset(m_ptOffset.x, m_ptOffset.y);
-    std::cout << "GDK_EXPOSE:  Start 3" << "\n";
-        m_gr->DoRender(rect, true);
-    std::cout << "GDK_EXPOSE:  Start 4" << "\n";
+	//ln::RectI rect(hadj->value, vadj->value, hadj->value + hadj->page_size, vadj->value + vadj->page_size);
+	m_buffer->Resize(event->area.width, event->area.height);
+	ln::RectI rect(event->area.x, event->area.y, event->area.x + event->area.width, event->area.y + event->area.height);
+	rect.Offset(m_ptOffset.x, m_ptOffset.y);
+//	std::cout << "GDK_EXPOSE:  Start 3" << "\n";
+	m_gr->DoRender(rect, true);
+//	std::cout << "GDK_EXPOSE:  Start 4" << "\n";
+//
+//	std::cout << "x2:  " << event->area.x << "\t";
+//	std::cout << "y2:  " << event->area.y << "\t";
+//	std::cout << "w2:  " << event->area.width << "\t";
+//	std::cout << "h2:  " << event->area.height << "\t";
+//	std::cout << "Count:  " << event->count << "\n";
+	m_buffer->Draw(m_canvas, event->area.x, event->area.y);
 
-        std::cout << "x2:  " << event->area.x << "\t";
-        std::cout << "y2:  " << event->area.y << "\t";
-        std::cout << "w2:  " << event->area.width << "\t";
-        std::cout << "h2:  " << event->area.height << "\t";
-        std::cout << "Count:  " << event->count << "\n";
-        m_buffer->Draw(m_canvas, event->area.x, event->area.y);
-
-    std::cout << "GDK_EXPOSE:  End" << "\n";
+//	std::cout << "GDK_EXPOSE:  End" << "\n";
 }
 
 void CDotView::OnLButtonDown(ln::PointD point)
@@ -179,6 +179,7 @@ int CDotView::OnLayoutComplete(void * wParam, void * lParam)
 		MergeSVG(m_g, *svg);
 		CalcScrollbars();
 		CenterOnGraphItem(NULL);
+		Invalidate();
 		m_api->fireLayoutFinished();
 	}
 	delete dot;
@@ -189,25 +190,25 @@ int CDotView::OnLayoutComplete(void * wParam, void * lParam)
 void CDotView::InvalidateSelection()
 {
 	gdk_window_invalidate_rect(m_canvas->window, NULL, true);
-/*	ln::RectD invalidateRect;
+	/*	ln::RectD invalidateRect;
 	if (m_selection->GetInvalidateRect(invalidateRect))
 		InvalidateWorldRect(invalidateRect);
 	if (m_selection->GetPrevInvalidateRect(invalidateRect))
 		InvalidateWorldRect(invalidateRect);
-*/
+	 */
 }
 
 void CDotView::InvalidateScreenRect(const ln::RectD & screenRect)
 {
 	gdk_window_invalidate_rect(m_canvas->window, NULL, true);
-/*
+	/*
 	GdkRectangle r;
 	r.x = screenRect.GetLeft() - GetScrollOffsetX();
 	r.y = screenRect.GetTop() - GetScrollOffsetY();
 	r.width = screenRect.Width + 2;
 	r.height = screenRect.Height + 2;
 	gdk_window_invalidate_rect(m_canvas->window, &r, true);
-*/
+	 */
 }
 
 void CDotView::InvalidateWorldRect(const ln::RectD & worldRect)

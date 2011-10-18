@@ -222,15 +222,10 @@ void CDotViewCommon::LoadXML2(const std::string & xml)
 void CDotViewCommon::LoadXGMML(const std::string & xgmml)
 {
 	std::string layout = m_g->GetPropertyString(ln::PROP_LAYOUT);
-	std::cout << "Load XGMML 1\n";
 	m_hotItem->Set(NULL);
-	std::cout << "Load XGMML 2\n";
 	m_selection->Clear();
-	std::cout << "Load XGMML 3\n";
 	m_g->Clear();
-	std::cout << "Load XGMML 4\n";
 	ln::LoadXGMML(m_g, xgmml);
-	std::cout << "Load XGMML 5\n";
 }
 
 void CDotViewCommon::MergeXGMML(const std::string & xgmml)

@@ -102,8 +102,6 @@ BOOL CDotView::OnEraseBkgnd(CDCHandle dc)
 void CDotView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	m_mouseDown = MOUSEDOWN_NORMAL;
-	ATLTRACE("mm_d:  %i\t", point.x);
-	ATLTRACE("mm_d:  %i\n", point.y);
 	m_mouseDownPosX = point.x;
 	m_mouseDownPosY = point.y;
 	m_scrollDownPosX = GetScrollPos(SB_HORZ);
@@ -120,9 +118,6 @@ void CDotView::OnLButtonUp(UINT nFlags, CPoint point)
 		return;
 	}
 	m_mouseDown = MOUSEDOWN_UNKNOWN;
-	ATLTRACE("mu_d:  %i\t", point.x);
-	ATLTRACE("mu_d:  %i\n", point.y);
-
 	point.Offset(m_ptOffset);
 	ln::IGraphItem * selectedItem = m_gr->GetItemAt(point.x, point.y);
 	if (ln::IGraph * graph = dynamic_cast<ln::IGraph *>(selectedItem))
@@ -154,8 +149,6 @@ void CDotView::OnLButtonUp(UINT nFlags, CPoint point)
 
 void CDotView::OnLButtonDblClk(UINT nFlags, CPoint point)
 {
-	ATLTRACE("mdc_x:  %i\t", point.x);
-	ATLTRACE("mdc_y:  %i\n", point.y);
 	m_mouseDown = MOUSEDOWN_DBLCLK;
 	point.Offset(m_ptOffset);
 	ln::PointD worldDblClk(point.x, point.y);

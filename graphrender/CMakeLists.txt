@@ -31,9 +31,9 @@ endif (WIN32)
 include_directories (
 	gen
 	../graphdb
-	${AGG_INCLUDE_DIRS}/include
-	${AGG_INCLUDE_DIRS}/agg2d
-	${AGG_INCLUDE_DIRS}/font_freetype
+	../agg
+	${AGGSRC_DIRS}/agg-2.4/include
+	${AGGSRC_DIRS}/agg-2.4/font_freetype
 	)
 
 if (WIN32)
@@ -69,5 +69,7 @@ target_link_libraries ( graphrender
 	agg
 	)
 
-install (TARGETS graphrender DESTINATION bin)
-
+if ( WIN32 )	
+else ( WIN32 )	
+install ( TARGETS graphrender DESTINATION lib/mozilla/plugins )
+endif ( WIN32 )	

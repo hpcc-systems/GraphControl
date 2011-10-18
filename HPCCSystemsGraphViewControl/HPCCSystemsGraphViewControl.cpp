@@ -113,7 +113,7 @@ bool HPCCSystemsGraphViewControl::onMouseDown(FB::MouseDownEvent *evt, FB::Plugi
 {
 #if defined(XP_UNIX)
 	std::cout << "md_x:  " << evt->m_x << "\t";
-	std::cout << "md_Y:  " << evt->m_y << "\n";
+	std::cout << "md_Y:  " << evt->m_y << std::endl;
     m_wnd->OnLButtonDown(ln::PointD(evt->m_x, evt->m_y));
 #endif
     return true;
@@ -122,6 +122,8 @@ bool HPCCSystemsGraphViewControl::onMouseDown(FB::MouseDownEvent *evt, FB::Plugi
 bool HPCCSystemsGraphViewControl::onMouseDoubleClick(FB::MouseDoubleClickEvent *evt, FB::PluginWindow *)
 {
 #if defined(XP_UNIX)
+	std::cout << "mdc_x:  " << evt->m_x << "\t";
+	std::cout << "mdc_y:  " << evt->m_y << std::endl;
     m_wnd->OnLButtonDblClk(ln::PointD(evt->m_x, evt->m_y));
 #endif
 	return true;
@@ -130,6 +132,8 @@ bool HPCCSystemsGraphViewControl::onMouseDoubleClick(FB::MouseDoubleClickEvent *
 bool HPCCSystemsGraphViewControl::onMouseUp(FB::MouseUpEvent *evt, FB::PluginWindow *)
 {
 #if defined(XP_UNIX)
+	std::cout << "mu_x:  " << evt->m_x << "\t";
+	std::cout << "mu_y:  " << evt->m_y << std::endl;
     m_wnd->OnLButtonUp(ln::PointD(evt->m_x, evt->m_y), evt->m_state);
 #endif
     return true;
@@ -194,7 +198,6 @@ bool HPCCSystemsGraphViewControl::onX11(FB::X11Event *evt, FB::PluginWindow *)
 
 	case GDK_CONFIGURE:
 		{
-			std::cout << "GDK_CONFIGURE:  Start" << "\n";
 			GdkEventConfigure * event = reinterpret_cast<GdkEventConfigure *>(evt->m_event);
 			if (CDotView * win = GetWindow()->get_as<CDotView>())
 			{
@@ -203,16 +206,15 @@ bool HPCCSystemsGraphViewControl::onX11(FB::X11Event *evt, FB::PluginWindow *)
 				area.y = event->y;
 				area.width = event->width;
 				area.height = event->height;
-				std::cout << "x:  " << area.x << "\t";
-				std::cout << "y:  " << area.y << "\t";
-				std::cout << "w:  " << area.width << "\t";
-				std::cout << "h:  " << area.height << "\n";
+				//std::cout << "x:  " << area.x << "\t";
+				//std::cout << "y:  " << area.y << "\t";
+				//std::cout << "w:  " << area.width << "\t";
+				//std::cout << "h:  " << area.height << std::endl;
 
 				//win->DoRender(area);
 				//gtk_widget_set_size_request (win->m_scrolled_window, area.width, area.height);
 				//gtk_widget_set_size_request (win->m_canvas, 150, 100);
 			}
-			std::cout << "GDK_CONFIGURE:  End" << "\n";
 			//evt->m_result = TRUE;
 			return true;
 		}

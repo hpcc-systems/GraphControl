@@ -8,35 +8,35 @@
 project( NpapiCore ) 
 
 set (	SRCS 
-	${FIREBREATH_INCLUDE_DIRS}/src/NpapiCore/NpapiBrowserHost.cpp
-	${FIREBREATH_INCLUDE_DIRS}/src/NpapiCore/NpapiPlugin.cpp
-	${FIREBREATH_INCLUDE_DIRS}/src/NpapiCore/NpapiPluginModule.cpp
-	${FIREBREATH_INCLUDE_DIRS}/src/NpapiCore/NpapiPluginModule_NPP.cpp
-	${FIREBREATH_INCLUDE_DIRS}/src/NpapiCore/NpapiStream.cpp
-	${FIREBREATH_INCLUDE_DIRS}/src/NpapiCore/NpapiTypes.cpp
+	${FIREBREATHSRC_DIRS}/src/NpapiCore/NpapiBrowserHost.cpp
+	${FIREBREATHSRC_DIRS}/src/NpapiCore/NpapiPlugin.cpp
+	${FIREBREATHSRC_DIRS}/src/NpapiCore/NpapiPluginModule.cpp
+	${FIREBREATHSRC_DIRS}/src/NpapiCore/NpapiPluginModule_NPP.cpp
+	${FIREBREATHSRC_DIRS}/src/NpapiCore/NpapiStream.cpp
+	${FIREBREATHSRC_DIRS}/src/NpapiCore/NpapiTypes.cpp
 
-	${FIREBREATH_INCLUDE_DIRS}/src/NpapiCore/NPJavascriptObject.cpp
-	${FIREBREATH_INCLUDE_DIRS}/src/NpapiCore/NPObjectAPI.cpp
+	${FIREBREATHSRC_DIRS}/src/NpapiCore/NPJavascriptObject.cpp
+	${FIREBREATHSRC_DIRS}/src/NpapiCore/NPObjectAPI.cpp
 	)
 
 if (WIN32)
 set (	OS_SRCS 
-	${FIREBREATH_INCLUDE_DIRS}/src/NpapiCore/Win/NpapiBrowserHostAsyncWin.cpp
+	${FIREBREATHSRC_DIRS}/src/NpapiCore/Win/NpapiBrowserHostAsyncWin.cpp
 	)
 else (WIN32)
 set (	OS_SRCS 
-	#${FIREBREATH_INCLUDE_DIRS}/src/NpapiCore/X11/NpapiCoreX11.cpp
+	#${FIREBREATHSRC_DIRS}/src/NpapiCore/X11/NpapiCoreX11.cpp
 	)
 endif (WIN32)
 
 include_directories ( 
 	..
 	../gen
-	${FIREBREATH_INCLUDE_DIRS}/src/3rdParty/gecko-sdk/includes
-	${FIREBREATH_INCLUDE_DIRS}/src/ActiveXPlugin
-	${FIREBREATH_INCLUDE_DIRS}/src/NpapiCore
-	${FIREBREATH_INCLUDE_DIRS}/src/ScriptingCore
-	${FIREBREATH_INCLUDE_DIRS}/src/PluginCore
+	${FIREBREATHSRC_DIRS}/src/3rdParty/gecko-sdk/includes
+	${FIREBREATHSRC_DIRS}/src/ActiveXPlugin
+	${FIREBREATHSRC_DIRS}/src/NpapiCore
+	${FIREBREATHSRC_DIRS}/src/ScriptingCore
+	${FIREBREATHSRC_DIRS}/src/PluginCore
 	)
 
 if (Boost_FOUND)
