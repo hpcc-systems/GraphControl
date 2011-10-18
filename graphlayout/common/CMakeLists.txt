@@ -8,44 +8,50 @@
 project( common )
 
 set (	SRCS
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/args.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/arrows.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/colxlate.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/emit.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/fontmetrics.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/geom.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/globals.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/htmllex.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/htmlparse.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/htmltable.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/input.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/labels.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/memory.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/ns.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/output.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/pointset.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/postproc.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/psusershape.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/routespl.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/shapes.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/splines.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/strcasecmp.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/strncasecmp.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/timing.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/common/utils.c
+	${GRAPHVIZSRC_DIRS}/lib/common/args.c
+	${GRAPHVIZSRC_DIRS}/lib/common/arrows.c
+	${GRAPHVIZSRC_DIRS}/lib/common/colxlate.c
+	${GRAPHVIZSRC_DIRS}/lib/common/emit.c
+	${GRAPHVIZSRC_DIRS}/lib/common/fontmetrics.c
+	${GRAPHVIZSRC_DIRS}/lib/common/geom.c
+	${GRAPHVIZSRC_DIRS}/lib/common/globals.c
+	${GRAPHVIZSRC_DIRS}/lib/common/htmllex.c
+	${GRAPHVIZSRC_DIRS}/lib/common/htmlparse.c
+	${GRAPHVIZSRC_DIRS}/lib/common/htmltable.c
+	${GRAPHVIZSRC_DIRS}/lib/common/input.c
+	${GRAPHVIZSRC_DIRS}/lib/common/labels.c
+	${GRAPHVIZSRC_DIRS}/lib/common/memory.c
+	${GRAPHVIZSRC_DIRS}/lib/common/ns.c
+	${GRAPHVIZSRC_DIRS}/lib/common/output.c
+	${GRAPHVIZSRC_DIRS}/lib/common/pointset.c
+	${GRAPHVIZSRC_DIRS}/lib/common/postproc.c
+	${GRAPHVIZSRC_DIRS}/lib/common/psusershape.c
+	${GRAPHVIZSRC_DIRS}/lib/common/routespl.c
+	${GRAPHVIZSRC_DIRS}/lib/common/shapes.c
+	${GRAPHVIZSRC_DIRS}/lib/common/splines.c
+	${GRAPHVIZSRC_DIRS}/lib/common/timing.c
+	${GRAPHVIZSRC_DIRS}/lib/common/utils.c
 	)
+	
+if ( WIN32 )	
+set (	SRCS_WIN32
+	${GRAPHVIZSRC_DIRS}/lib/common/strcasecmp.c
+	${GRAPHVIZSRC_DIRS}/lib/common/strncasecmp.c
+	)
+endif ( WIN32 )
+	
 
 include_directories (
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/common
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cdt
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/fdpgen
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/pathplan
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/gd
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/graph
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/gvc
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/xdot
-	${GRAPHVIZ_INCLUDE_DIRS}
+	${GRAPHVIZSRC_DIRS}/lib/common
+	${GRAPHVIZSRC_DIRS}/lib/cdt
+	${GRAPHVIZSRC_DIRS}/lib/cgraph
+	${GRAPHVIZSRC_DIRS}/lib/fdpgen
+	${GRAPHVIZSRC_DIRS}/lib/pathplan
+	${GRAPHVIZSRC_DIRS}/lib/gd
+	${GRAPHVIZSRC_DIRS}/lib/graph
+	${GRAPHVIZSRC_DIRS}/lib/gvc
+	${GRAPHVIZSRC_DIRS}/lib/xdot
+	${GRAPHVIZSRC_DIRS}
 	)
 
 if (WIN32)
@@ -56,6 +62,7 @@ endif ()
 
 add_library ( common STATIC
 			${SRCS}
+			${SRCS_WIN32}
 			)
 target_link_libraries ( common
 						gvc

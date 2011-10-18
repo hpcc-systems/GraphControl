@@ -8,20 +8,20 @@
 project( NpapiHost ) 
 
 set (	SRCS 
-	${FIREBREATH_INCLUDE_DIRS}/src/NpapiHost/NpapiHost.cpp
-	${FIREBREATH_INCLUDE_DIRS}/src/NpapiHost/NpBrowserHostFuncs.cpp
-	${FIREBREATH_INCLUDE_DIRS}/src/NpapiHost/NpResourceHostFuncs.cpp
-	${FIREBREATH_INCLUDE_DIRS}/src/NpapiHost/NpRuntimeHostFuncs.cpp
+	${FIREBREATHSRC_DIRS}/src/NpapiHost/NpapiHost.cpp
+	${FIREBREATHSRC_DIRS}/src/NpapiHost/NpBrowserHostFuncs.cpp
+	${FIREBREATHSRC_DIRS}/src/NpapiHost/NpResourceHostFuncs.cpp
+	${FIREBREATHSRC_DIRS}/src/NpapiHost/NpRuntimeHostFuncs.cpp
 	)
 
 include_directories ( 
 	..
 	../gen
-	${FIREBREATH_INCLUDE_DIRS}/src/3rdParty/gecko-sdk/includes
-	${FIREBREATH_INCLUDE_DIRS}/src/NpapiHost
-	${FIREBREATH_INCLUDE_DIRS}/src/NpapiCore
-	${FIREBREATH_INCLUDE_DIRS}/src/ScriptingCore
-	${FIREBREATH_INCLUDE_DIRS}/src/PluginCore
+	${FIREBREATHSRC_DIRS}/src/3rdParty/gecko-sdk/includes
+	${FIREBREATHSRC_DIRS}/src/NpapiHost
+	${FIREBREATHSRC_DIRS}/src/NpapiCore
+	${FIREBREATHSRC_DIRS}/src/ScriptingCore
+	${FIREBREATHSRC_DIRS}/src/PluginCore
 	)
 
 if (Boost_FOUND)

@@ -1,0 +1,16 @@
+Required packages (Ubuntu 11.04):
+libboost-dev
+libboost-thread-dev
+freetype-dev
+expat-dev
+
+Third Party Sources:
+https://GordonSmith@github.com/GordonSmith/FireBreath-1.git (Branch firebreath-1.5)
+http://www.graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.26.3.tar.gz (You may need to run ./Configure)
+svn co https://agg.svn.sourceforge.net/svnroot/agg agg svn co https://agg.svn.sourceforge.net/svnroot/agg agg
+
+cmake variables that need to be set (for source locations above):
+FIREBREATHSRC_DIR
+AGGSRC_DIR
+GRAPHVIZSRC_DIR
+

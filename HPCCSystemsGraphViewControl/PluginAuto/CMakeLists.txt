@@ -8,26 +8,26 @@
 project( PluginAuto ) 
 
 set (	SRCS 
-	${FIREBREATH_INCLUDE_DIRS}/src/PluginAuto/null/NullLogger.cpp
-	${FIREBREATH_INCLUDE_DIRS}/src/PluginAuto/PluginInfo.cpp
+	${FIREBREATHSRC_DIRS}/src/PluginAuto/null/NullLogger.cpp
+	${FIREBREATHSRC_DIRS}/src/PluginAuto/PluginInfo.cpp
 	)
 
 if (WIN32)
 set (	OS_SRCS 
-	${FIREBREATH_INCLUDE_DIRS}/src/PluginAuto/win/np_winmain.cpp
-	${FIREBREATH_INCLUDE_DIRS}/src/PluginAuto/win/NpapiPluginWin.cpp
-	${FIREBREATH_INCLUDE_DIRS}/src/PluginAuto/win/PluginWindowlessWin.cpp
-	${FIREBREATH_INCLUDE_DIRS}/src/PluginAuto/win/PluginWindowWin.cpp
+	${FIREBREATHSRC_DIRS}/src/PluginAuto/win/np_winmain.cpp
+	${FIREBREATHSRC_DIRS}/src/PluginAuto/win/NpapiPluginWin.cpp
+	${FIREBREATHSRC_DIRS}/src/PluginAuto/win/PluginWindowlessWin.cpp
+	${FIREBREATHSRC_DIRS}/src/PluginAuto/win/PluginWindowWin.cpp
 
-	${FIREBREATH_INCLUDE_DIRS}/src/PluginAuto/win/axmain.cpp
-	${FIREBREATH_INCLUDE_DIRS}/src/PluginAuto/win/axPluginObjects.cpp
-	${FIREBREATH_INCLUDE_DIRS}/src/PluginAuto/win/FireBreathWin.cpp
+	${FIREBREATHSRC_DIRS}/src/PluginAuto/win/axmain.cpp
+	${FIREBREATHSRC_DIRS}/src/PluginAuto/win/axPluginObjects.cpp
+	${FIREBREATHSRC_DIRS}/src/PluginAuto/win/FireBreathWin.cpp
 	)
 else (WIN32)
 set (	OS_SRCS 
-	${FIREBREATH_INCLUDE_DIRS}/src/PluginAuto/X11/np_x11main.cpp
-	${FIREBREATH_INCLUDE_DIRS}/src/PluginAuto/X11/NpapiPluginX11.cpp
-	${FIREBREATH_INCLUDE_DIRS}/src/PluginAuto/X11/PluginWindowX11.cpp
+	${FIREBREATHSRC_DIRS}/src/PluginAuto/X11/np_x11main.cpp
+	${FIREBREATHSRC_DIRS}/src/PluginAuto/X11/NpapiPluginX11.cpp
+	${FIREBREATHSRC_DIRS}/src/PluginAuto/X11/PluginWindowX11.cpp
 	)
 endif (WIN32)
 

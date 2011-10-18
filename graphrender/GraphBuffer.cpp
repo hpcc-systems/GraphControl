@@ -27,13 +27,10 @@ public:
 
 	virtual void Resize(unsigned int Width, unsigned int Height)
 	{
-	    std::cout << "Resize 1\n";
 		if (!m_pixelmap.buf() || m_pixelmap.width() != Width || m_pixelmap.height() != Height)
 		{
-            std::cout << "Resize 2\n";
 			m_pixelmap.create(Width, Height, agg::org_color32);
 		}
-	    std::cout << "Resize 3\n";
 	}
 
 	unsigned int Width() const
