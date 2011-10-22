@@ -35,7 +35,7 @@ mkdir GraphControl
 cd GraphControl
 
 # Generate make files.
-cmake -D GRAPHVIZSRC_DIR=../../graphviz-2.26.3/ -D AGGSRC_DIR=../../agg/ -D FIREBREATHSRC_DIR=../../FireBreath-1/  ../../GraphControl/
+cmake -DGRAPHVIZSRC_DIR=../../graphviz-2.26.3/ -DAGGSRC_DIR=../../agg/ -DFIREBREATHSRC_DIR=../../FireBreath-1/  ../../GraphControl/
 
 # make graphcontrol directly into /usr/lib/mozilla/plugins
 sudo make
