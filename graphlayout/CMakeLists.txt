@@ -8,6 +8,7 @@
 project( graphlayout )
 
 set (	SRCS
+	GraphLayout.rc
 	libagraph.cpp
 	libagraph.h
 	libagraphsp.h

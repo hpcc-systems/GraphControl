@@ -9,6 +9,7 @@
 project( graphrender )
 
 set (	SRCS
+	GraphRender.rc
 	GraphRender.cpp
 	GraphRender.h
 	GraphBuffer.cpp

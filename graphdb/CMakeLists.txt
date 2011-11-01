@@ -10,6 +10,7 @@ project( graphdb )
 set (	SRCS 
 	GraphCluster.cpp
 	GraphCluster.h
+	GraphDB.rc
 	GraphDB.cpp
 	GraphDB.h
 	GraphEdge.cpp
