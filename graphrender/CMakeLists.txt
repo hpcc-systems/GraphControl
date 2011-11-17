@@ -9,7 +9,6 @@
 project( graphrender )
 
 set (	SRCS
-	GraphRender.rc
 	GraphRender.cpp
 	GraphRender.h
 	GraphBuffer.cpp
@@ -22,12 +21,11 @@ set (	SRCS
 	)
 
 if (WIN32)
-set (	SRCS_OS
+set (	SRCS 
+	${SRCS}
+	GraphRender.rc
 	)
-else (WIN32)
-set (	SRCS_OS
-	)
-endif (WIN32)
+endif ()
 
 include_directories (
 	gen

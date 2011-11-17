@@ -8,12 +8,18 @@
 project( graphlayout )
 
 set (	SRCS
-	GraphLayout.rc
 	libagraph.cpp
 	libagraph.h
 	libagraphsp.h
 	platform.h
 	)
+
+if (WIN32)
+set (	SRCS 
+	${SRCS}
+	GraphLayout.rc
+	)
+endif ()
 
 include_directories (
 	${GRAPHVIZSRC_DIRS}/lib/graph

@@ -10,7 +10,6 @@ project( graphdb )
 set (	SRCS 
 	GraphCluster.cpp
 	GraphCluster.h
-	GraphDB.rc
 	GraphDB.cpp
 	GraphDB.h
 	GraphEdge.cpp
@@ -45,6 +44,13 @@ set (	SRCS
 	../graphlayout
 	${EXPAT_INCLUDE_DIRS}/lib
 	)
+
+if (WIN32)
+set (	SRCS 
+	${SRCS}
+	GraphDB.rc 
+	)
+endif ()
 
 if (Boost_FOUND)
 	include_directories ( ${Boost_INCLUDE_DIRS}	)
