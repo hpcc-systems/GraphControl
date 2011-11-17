@@ -8,6 +8,12 @@ sudo apt-get install cmake git git-svn
 mkdir ~/hpcc_git
 cd ~/hpcc_git
 
+# Get Sources
+git clone https://GordonSmith@github.com/GordonSmith/GraphControl.git
+cd GraphControl
+git checkout GraphControl
+cd ..
+
 # Get Firebreath library
 git clone https://GordonSmith@github.com/GordonSmith/FireBreath-1.git
 cd FireBreath-1
@@ -22,7 +28,7 @@ wget http://www.graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.26.3.tar.gz
 tar xf graphviz-2.26.3.tar.gz
 cd graphviz-2.26.3
 ./configure
-# edit config.h and comment out the following line (or set to 0):
+# edit config.h and comment out the following line:
 #define ENABLE_LTDL 1
 cd ..
 
