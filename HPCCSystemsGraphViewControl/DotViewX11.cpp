@@ -75,8 +75,8 @@ bool CDotView::GetClientRectangle(ln::RectD & rect)
 	gint height;
 	gdk_window_get_size(m_canvas->window, &width, &height);
 
-	rect.x = -GetScrollOffsetX();
-	rect.y = -GetScrollOffsetY();
+	rect.x = 0;
+	rect.y = 0;
 	rect.Width = width;
 	rect.Height = height;
 
@@ -232,14 +232,16 @@ void CDotView::OnMouseMove(ln::PointD point)
 			int deltaY = point.y - m_mouseDownPosY;
 
 			SetScrollOffset(m_scrollDownPosX - deltaX, m_scrollDownPosY - deltaY);
-/*			g_object_freeze_notify(G_OBJECT(m_scrolled_window));
+/*			
+			g_object_freeze_notify(G_OBJECT(m_scrolled_window));
 			gtk_adjustment_set_value(gtk_scrolled_window_get_hadjustment(GTK_SCROLLED_WINDOW(m_scrolled_window)), m_scrollDownPosX - deltaX);
 			gtk_adjustment_set_value(gtk_scrolled_window_get_vadjustment(GTK_SCROLLED_WINDOW(m_scrolled_window)), m_scrollDownPosY - deltaY);
 			gdk_window_invalidate_rect(m_scrolled_window->window, NULL, true);
 			g_object_thaw_notify(G_OBJECT(m_scrolled_window));
 
 			m_scrollDownPosX -= deltaX;
-			m_scrollDownPosY -= deltaY;*/
+			m_scrollDownPosY -= deltaY;
+*/
 		}
 		break;
 	default:

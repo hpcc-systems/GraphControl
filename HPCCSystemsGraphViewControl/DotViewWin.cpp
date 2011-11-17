@@ -66,7 +66,7 @@ void CDotView::SetScrollSize(int w, int h, bool redraw)
 bool CDotView::GetClientRectangle(ln::RectD & rect)
 {
 	CRect clientRect;
-	HRESULT hResult = __super::GetClientRect(clientRect);
+	HRESULT hResult = base::GetClientRect(clientRect);
 	if (SUCCEEDED(hResult))
 	{
 		rect.x = clientRect.left;
