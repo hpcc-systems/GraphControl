@@ -14,6 +14,13 @@ set (	SRCS
 	platform.h
 	)
 
+if (WIN32)
+set (	SRCS 
+	${SRCS}
+	GraphLayout.rc
+	)
+endif ()
+
 include_directories (
 	${GRAPHVIZSRC_DIRS}/lib/graph
 	${GRAPHVIZSRC_DIRS}/lib/pathplan

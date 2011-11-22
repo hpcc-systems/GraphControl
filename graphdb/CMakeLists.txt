@@ -45,6 +45,13 @@ set (	SRCS
 	${EXPAT_INCLUDE_DIRS}/lib
 	)
 
+if (WIN32)
+set (	SRCS 
+	${SRCS}
+	GraphDB.rc 
+	)
+endif ()
+
 if (Boost_FOUND)
 	include_directories ( ${Boost_INCLUDE_DIRS}	)
 	link_directories ( ${Boost_LIBRARY_DIRS} )
