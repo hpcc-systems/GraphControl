@@ -19,18 +19,8 @@ namespace boost
 #endif
 }
 
-CDotView::CDotView()
+CDotView::CDotView() : CDotViewCommon()
 {
-	m_api = NULL;
-	m_g = ln::CreateGraph();
-	m_buffer = ln::CreateGraphBuffer(0, 0);
-	m_hotItem = ln::CreateGraphHotItem();
-	m_selection = ln::CreateGraphSelectionBag();
-
-	m_gr = ln::CreateGraphRender(m_g, m_buffer, m_hotItem, m_selection);
-	//m_gro = ln::CreateGraphRender(m_g, m_buffer, m_hotItem, m_selection, 0.05);
-
-	m_mouseDown = MOUSEDOWN_UNKNOWN;
 }
 
 void CDotView::Invalidate()

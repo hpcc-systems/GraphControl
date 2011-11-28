@@ -202,7 +202,7 @@ public:
 		return !(operator == (other));
 	}
 };
-typedef RectT<int> RectI;
+typedef RectT<unsigned int> RectI;
 
 class RectD 
 {

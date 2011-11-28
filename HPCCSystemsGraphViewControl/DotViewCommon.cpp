@@ -13,6 +13,20 @@ namespace boost
 }
 #include "HPCCSystemsGraphViewControlAPI.h"
 
+CDotViewCommon::CDotViewCommon()
+{
+	m_api = NULL;
+	m_g = ln::CreateGraph();
+	m_buffer = ln::CreateGraphBuffer(0, 0);
+	m_hotItem = ln::CreateGraphHotItem();
+	m_selection = ln::CreateGraphSelectionBag();
+
+	m_gr = ln::CreateGraphRender(m_g, m_buffer, m_hotItem, m_selection);
+	//m_gro = ln::CreateGraphRender(m_g, m_buffer, m_hotItem, m_selection, 0.05);
+
+	m_mouseDown = MOUSEDOWN_UNKNOWN;
+}
+
 void CDotViewCommon::StartLayout(const std::string & layout)
 {
 	m_g->SetProperty(ln::PROP_LAYOUT, layout.c_str());
@@ -263,8 +277,8 @@ void CDotViewCommon::CalcScrollbars(bool redraw)
 	ln::RectD clientRect;
 	GetClientRectangle(clientRect);
 
-	unsigned int scrollWidth = (int)graphRect.Width + clientRect.Width;
-	unsigned int scrollHeight = (int)graphRect.Height + clientRect.Height;
+	unsigned int scrollWidth = (unsigned int)(graphRect.Width + clientRect.Width);
+	unsigned int scrollHeight = (unsigned int)(graphRect.Height + clientRect.Height);
 
 	ln::PointD offset;
 	offset.x = clientRect.Width / 2.0f;

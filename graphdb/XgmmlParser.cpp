@@ -308,14 +308,13 @@ public:
 	{
 		if (CUnknown * tmpProp = item->GetPropertyCUnknown(SVG_PROP_ELEMENTG))
 		{
-
 			boost::algorithm::replace_all(label, "\\n", "\n");
 
 			typedef std::vector<std::string> split_vector_type;
 			split_vector_type SplitVec; // #2: Search for tokens
 			boost::algorithm::split(SplitVec, label, boost::algorithm::is_any_of("\n"), boost::algorithm::token_compress_on);
 			ElementGPtr elemG = reinterpret_cast<ln::ElementG * >(tmpProp);
-			int i = 0;
+			unsigned int i = 0;
 			for (split_vector_type::iterator itr = SplitVec.begin(); itr != SplitVec.end(); ++itr)
 			{
 				//assert(elemG->m_lines.size() > i);

@@ -36,6 +36,8 @@ public:
 	std::string m_dot;
 	std::string m_svg;
 
+	CDotViewCommon();
+
 	virtual void Invalidate() = 0;
 	virtual int GetScrollOffsetX() = 0;
 	virtual int GetScrollOffsetY() = 0;
