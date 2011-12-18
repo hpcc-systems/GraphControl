@@ -130,6 +130,13 @@
         pluginLHS().startLayout(document.getElementById('SelectLayout').value);
     }
 
+    function loadDOT() {
+        pluginLHS().setMessage("Loading Data...");
+        pluginLHS().loadDOT(document.getElementById('TextXGMML').value);
+        pluginLHS().setMessage("Performing Layout...");
+        //pluginLHS().startLayout(document.getElementById('SelectLayout').value);
+    }
+
     function mergeXGMML() {
         pluginLHS().setMessage("Merging Data...");
         pluginLHS().mergeXGMML(document.getElementById('TextXGMML').value);
@@ -172,6 +179,7 @@
     <input id="Clear" type="button" value="Clear" onclick="javascript:clearXGMML()" />&nbsp;
     <input id="LoadXGMML" type="button" value="Load XGMML" onclick="javascript:loadXGMML()" />&nbsp;
     <input id="MergeXGMML" type="button" value="Merge XGMML" onclick="javascript:mergeXGMML()" />&nbsp;
+    <input id="LoadDOT" type="button" value="Load DOT" onclick="javascript:loadDOT()" />&nbsp;
     Scale:&nbsp;
     <input id="TextScale" type="text" value="75" />
     <input id="ButtonSetScale" type="button" onclick="javascript:setScale()" value="Set" />

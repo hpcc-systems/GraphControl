@@ -33,6 +33,7 @@ include_directories (
 	../agg
 	${AGGSRC_DIRS}/agg-2.4/include
 	${AGGSRC_DIRS}/agg-2.4/font_freetype
+	${Boost_INCLUDE_DIRS}
 	)
 
 if (WIN32)
@@ -43,11 +44,6 @@ include_directories (
 	${GTK_INCLUDE_DIRS}
 	)
 endif (WIN32)
-
-if (Boost_FOUND)
-	include_directories ( ${Boost_INCLUDE_DIRS}	)
-	link_directories ( ${Boost_LIBRARY_DIRS} )
-endif (Boost_FOUND)
 
 add_library ( graphrender SHARED ${SRCS} )
 
@@ -66,6 +62,7 @@ add_dependencies ( graphrender
 target_link_libraries ( graphrender 
 	graphdb 
 	agg
+	${Boost_LIBRARIES}
 	)
 
 if ( WIN32 )	

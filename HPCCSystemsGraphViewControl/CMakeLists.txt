@@ -12,6 +12,7 @@ set (	SRCS
 	Factory.cpp
 	#GraphViewCtlView.cpp
 	HPCCSystemsGraphViewControl.cpp
+	HPCCSystemsGraphViewControl.h
 	HPCCSystemsGraphViewControlAPI.cpp
 
 	DotViewCommon.cpp
@@ -39,6 +40,7 @@ set (	SRCS_OS
 else (WIN32)
 set (	SRCS_OS
 	x11_pixel_map.cpp
+	x11_pixel_map.h
 
 	${FIREBREATHSRC_DIRS}/src/PluginAuto/X11/np_x11main.cpp
 	${FIREBREATHSRC_DIRS}/src/PluginAuto/X11/NpapiPluginX11.cpp
