@@ -154,6 +154,7 @@ else (WIN32)
 target_link_libraries( HPCCSystemsGraphViewControl
 	${GTK_LIBRARIES}
 	${Boost_THREAD_LIBRARY}
+	${Boost_GRAPH_LIBRARY}
 	)
 endif (WIN32)
 

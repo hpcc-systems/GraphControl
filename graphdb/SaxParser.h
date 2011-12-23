@@ -21,6 +21,8 @@
  ******************************************************************************/
 #pragma once
 
+#include <assert.h>
+
 #include "Unknown.h"
 
 #include "expat.h"
@@ -497,6 +499,7 @@ public:
 };
 typedef CUnknownPtr<CElement> CElementPtr;
 typedef std::stack<CElementPtr> CElementStack;
+typedef std::set<CElementPtr> ElementSet;
 
 class CStackParser : public CExpatImpl <CStackParser>
 {

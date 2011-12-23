@@ -24,6 +24,7 @@
 #include "GraphGraph.h"
 #include "util.h"
 #include "XgmmlParser.h"
+#include "DotParser.h"
 
 #include <boost/algorithm/string.hpp>
 #include <boost/format.hpp> 
@@ -109,76 +110,109 @@ public:
 	}
 };
 
-void WalkClusters(const ICluster * cluster, std::string & dot)
+void WalkClusters(const ICluster * cluster, std::string & dot, int depth)
 {
 	std::string content;
 	for(IClusterSet::const_iterator itr = cluster->GetClusters().begin(); itr != cluster->GetClusters().end(); ++itr)
 	{
 		std::string cluster;
-		WalkClusters(itr->get(), cluster);
+		WalkClusters(itr->get(), cluster, depth + 1);
 		content += cluster;
 	}
 
 	for(IVertexSet::const_iterator itr = cluster->GetVertices().begin(); itr != cluster->GetVertices().end(); ++itr)
 	{
-		std::string props;
-		if (itr->get()->HasPropertyString(DOT_VERTEX_SHAPE))
-			props += (boost::format(PropTpl) % "shape" % itr->get()->GetPropertyString(DOT_VERTEX_SHAPE)).str();
-		if (itr->get()->HasPropertyString(DOT_VERTEX_COLOR))
-			props += (boost::format(PropTpl) % "color" % itr->get()->GetPropertyString(DOT_VERTEX_COLOR)).str();
-		if (itr->get()->HasPropertyString(DOT_VERTEX_FILLCOLOR))
-			props += (boost::format(PropTpl) % "fillcolor" % itr->get()->GetPropertyString(DOT_VERTEX_FILLCOLOR)).str();
-		if (itr->get()->HasPropertyString(DOT_VERTEX_STYLE))
-			props += (boost::format(PropTpl) % "style" % itr->get()->GetPropertyString(DOT_VERTEX_STYLE)).str();
+		IVertex * v = itr->get();
+		if (v->GetPropertyCUnknown(DOT_PROP_CDOTITEM))
+		{
+			CDotItem * dotItem = (CDotItem *)v->GetPropertyCUnknown(DOT_PROP_CDOTITEM);
+			content += dotItem->ToDot(v->GetIDString(), "");
+		}
+		else 
+		{
+			std::string props;
+			if (v->HasPropertyString(DOT_VERTEX_SHAPE))
+				props += (boost::format(PropTpl) % "shape" % v->GetPropertyString(DOT_VERTEX_SHAPE)).str();
+			if (v->HasPropertyString(DOT_VERTEX_COLOR))
+				props += (boost::format(PropTpl) % "color" % v->GetPropertyString(DOT_VERTEX_COLOR)).str();
+			if (v->HasPropertyString(DOT_VERTEX_FILLCOLOR))
+				props += (boost::format(PropTpl) % "fillcolor" % v->GetPropertyString(DOT_VERTEX_FILLCOLOR)).str();
+			if (v->HasPropertyString(DOT_VERTEX_STYLE))
+				props += (boost::format(PropTpl) % "style" % v->GetPropertyString(DOT_VERTEX_STYLE)).str();
 
-		content += (boost::format(VertexTpl) % itr->get()->GetIDString() % itr->get()->GetPropertyString(DOT_LABEL) % props.c_str()).str();
+			content += (boost::format(VertexTpl) % v->GetIDString() % v->GetPropertyString(DOT_LABEL) % props.c_str()).str();
+		}
 	}
 
-	std::string label = cluster->GetPropertyString(DOT_LABEL);
-	if (label.empty())
-		label = cluster->GetPropertyString(DOT_ID);
-	dot += (boost::format(ClusterTpl) % cluster->GetIDString() % label % content % "").str();
+	if (depth > 0)
+	{
+		if (cluster->GetPropertyCUnknown(DOT_PROP_CDOTITEM))
+		{
+			CDotItem * dotItem = (CDotItem *)cluster->GetPropertyCUnknown(DOT_PROP_CDOTITEM);
+			dot += dotItem->ToDot(cluster->GetIDString(), content);
+		}
+		else
+		{
+			std::string label = cluster->GetPropertyString(DOT_LABEL);
+			if (label.empty())
+				label = cluster->GetPropertyString(DOT_ID);
+			dot += (boost::format(ClusterTpl) % cluster->GetIDString() % label % content % "").str();
+		}
+	}
+	else
+	{
+		dot = content;
+	}
 }
 
 const char * WriteDOT(const IGraph * graph, std::string & dot)
 {
 	dot.clear();
 	std::string content;
-	WalkClusters(graph, content);
+	WalkClusters(graph, content, 0);
 
 	for(IEdgeSet::const_iterator itr = graph->GetAllEdges().begin(); itr != graph->GetAllEdges().end(); ++itr)
 	{
-		IVertex * from = itr->get()->GetFromVertex();
-		IVertex * to = itr->get()->GetToVertex();
-		if (from->GetPropertyInt(XGMML_GLOBAL_USAGE_COUNT) > 0)
-			continue;
-
-		//if (from->GetPropertyBool(XGMML_IS_SPILL) && (from->GetParent() != to->GetParent()) && from->GetOutEdgeCount() > 1)
-		//	continue;
-
-		std::string props;
-		if (itr->get()->HasPropertyString(DOT_EDGE_WEIGHT))
-			props += (boost::format(PropTpl) % "weight" % itr->get()->GetPropertyString(DOT_EDGE_WEIGHT)).str();
-
-		if (itr->get()->HasPropertyString(DOT_EDGE_PENWIDTH))
-			props += (boost::format(PropTpl) % "penwidth" % itr->get()->GetPropertyString(DOT_EDGE_PENWIDTH)).str();
-
-		if (itr->get()->HasPropertyString(DOT_EDGE_ARROWHEAD))
-			props += (boost::format(PropTpl) % "arrowhead" % itr->get()->GetPropertyString(DOT_EDGE_ARROWHEAD)).str();
-
-		if (itr->get()->HasPropertyString(DOT_EDGE_ARROWTAIL))
+		IEdge * e = itr->get();
+		if (e->GetPropertyCUnknown(DOT_PROP_CDOTITEM))
 		{
-			props += (boost::format(PropTpl) % "arrowtail" % itr->get()->GetPropertyString(DOT_EDGE_ARROWTAIL)).str();
-			props += (boost::format(PropTpl) % "dir" % (itr->get()->HasPropertyString(DOT_EDGE_ARROWHEAD) ? "both" : "back")).str();
+			CDotItem * dotItem = (CDotItem *)e->GetPropertyCUnknown(DOT_PROP_CDOTITEM);
+			content += dotItem->ToDot(e->GetIDString(), "");
 		}
+		else
+		{
+			IVertex * from = e->GetFromVertex();
+			IVertex * to = e->GetToVertex();
+			if (from->GetPropertyInt(XGMML_GLOBAL_USAGE_COUNT) > 0)
+				continue;
 
-		if (itr->get()->HasPropertyString(DOT_EDGE_COLOR))
-			props += (boost::format(PropTpl) % "color" % itr->get()->GetPropertyString(DOT_EDGE_COLOR)).str();
+			//if (from->GetPropertyBool(XGMML_IS_SPILL) && (from->GetParent() != to->GetParent()) && from->GetOutEdgeCount() > 1)
+			//	continue;
 
-		if (itr->get()->HasPropertyString(DOT_EDGE_STYLE))
-			props += (boost::format(PropTpl) % "style" % itr->get()->GetPropertyString(DOT_EDGE_STYLE)).str();
+			std::string props;
+			if (e->HasPropertyString(DOT_EDGE_WEIGHT))
+				props += (boost::format(PropTpl) % "weight" % e->GetPropertyString(DOT_EDGE_WEIGHT)).str();
 
-		content += (boost::format(EdgeTpl) % from->GetIDString() % to->GetIDString() % itr->get()->GetIDString() % itr->get()->GetPropertyString(DOT_LABEL) % props.c_str()).str();
+			if (e->HasPropertyString(DOT_EDGE_PENWIDTH))
+				props += (boost::format(PropTpl) % "penwidth" % e->GetPropertyString(DOT_EDGE_PENWIDTH)).str();
+
+			if (e->HasPropertyString(DOT_EDGE_ARROWHEAD))
+				props += (boost::format(PropTpl) % "arrowhead" % e->GetPropertyString(DOT_EDGE_ARROWHEAD)).str();
+
+			if (e->HasPropertyString(DOT_EDGE_ARROWTAIL))
+			{
+				props += (boost::format(PropTpl) % "arrowtail" % e->GetPropertyString(DOT_EDGE_ARROWTAIL)).str();
+				props += (boost::format(PropTpl) % "dir" % (e->HasPropertyString(DOT_EDGE_ARROWHEAD) ? "both" : "back")).str();
+			}
+
+			if (e->HasPropertyString(DOT_EDGE_COLOR))
+				props += (boost::format(PropTpl) % "color" % e->GetPropertyString(DOT_EDGE_COLOR)).str();
+
+			if (e->HasPropertyString(DOT_EDGE_STYLE))
+				props += (boost::format(PropTpl) % "style" % e->GetPropertyString(DOT_EDGE_STYLE)).str();
+
+			content += (boost::format(EdgeTpl) % from->GetIDString() % to->GetIDString() % e->GetIDString() % e->GetPropertyString(DOT_LABEL) % props.c_str()).str();
+		}
 	}
 
 	std::string layout = graph->GetPropertyString(PROP_LAYOUT);
@@ -190,7 +224,15 @@ const char * WriteDOT(const IGraph * graph, std::string & dot)
 	else if (boost::algorithm::equals(layout, "circo"))
 		props += (boost::format(PropTpl) % "overlap" % "compress").str();
 
-	dot += (boost::format(GraphTpl) % graph->GetIDString() % props.c_str() % content).str();
+	if (graph->GetPropertyCUnknown(DOT_PROP_CDOTITEM))  
+	{
+		CDotItem * dotItem = (CDotItem *)graph->GetPropertyCUnknown(DOT_PROP_CDOTITEM);
+		dot = dotItem->ToDot(graph->GetIDString(), content);
+	}
+	else
+	{
+		dot = (boost::format(GraphTpl) % graph->GetIDString() % props.c_str() % content).str();
+	}
 	return dot.c_str();
 }
 

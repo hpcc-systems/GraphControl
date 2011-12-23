@@ -78,6 +78,7 @@ public:
 	void MergeXGMML(const std::string & xgmml);
 	void LoadDOT(const std::string & dot);
 	const std::string GetSVG();
+	const std::string GetDOT();
 	const char * GetLocalisedXGMML(int item, std::string & xgmml);
 	double SetScale(double scale);
 	double GetScale();

@@ -78,7 +78,7 @@ struct Shapes
 	}
 } g_shapes;
 //  ===========================================================================
-ICluster * GetCluster(IGraph* graph, ICluster* cluster, const std::string & id, bool merge, bool appendMissing = true)
+ICluster * GetCluster(IGraph* graph, ICluster* cluster, const std::string & id, bool merge, bool appendMissing)
 {
 	ICluster * retVal = NULL;
 	if (merge)
@@ -93,7 +93,7 @@ ICluster * GetCluster(IGraph* graph, ICluster* cluster, const std::string & id, 
 	return retVal;
 }
 
-IVertex * GetVertex(IGraph* graph, ICluster* cluster, const std::string & id, bool merge, bool appendMissing = true)
+IVertex * GetVertex(IGraph* graph, ICluster* cluster, const std::string & id, bool merge, bool appendMissing)
 {
 	IVertex * retVal = NULL;
 	if (merge)
@@ -108,7 +108,7 @@ IVertex * GetVertex(IGraph* graph, ICluster* cluster, const std::string & id, bo
 	return retVal;
 }
 
-IEdge * GetEdge(IGraph* graph, const std::string & id, IVertex* from, IVertex* to, bool merge, bool appendMissing = true)
+IEdge * GetEdge(IGraph* graph, const std::string & id, IVertex* from, IVertex* to, bool merge, bool appendMissing)
 {
 	IEdge * retVal = NULL;
 	if (merge)
@@ -138,7 +138,6 @@ struct XGMMLStackItem
 
 typedef std::pair<std::string, IGraphItemPtr> StringGraphItemPair;
 typedef std::deque<XGMMLStackItem> GraphItemStack;
-typedef std::set<CElementPtr> ElementSet;
 class CXgmmlParser : public CStackParser
 {
 protected:

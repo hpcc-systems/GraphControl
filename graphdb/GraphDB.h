@@ -64,7 +64,6 @@ enum GRAPH_TYPE
 	GRAPH_TYPE_EDGE,
 	GRAPH_TYPE_LAST
 };
-
 //  ===========================================================================
 
 interface GRAPHDB_API IClusterVisitor

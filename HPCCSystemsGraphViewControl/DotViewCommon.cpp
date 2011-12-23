@@ -292,6 +292,11 @@ const std::string CDotViewCommon::GetSVG()
 	return m_svg;
 }
 
+const std::string CDotViewCommon::GetDOT()
+{
+	return m_dot;
+}
+
 void CDotViewCommon::Clear()
 {
 	std::string layout = m_g->GetPropertyString(ln::PROP_LAYOUT);

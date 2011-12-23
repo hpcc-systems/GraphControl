@@ -36,6 +36,8 @@ set (	SRCS
 	DotParser.h
 	SvgShapes.cpp
 	SvgShapes.h
+	DotShapes.cpp
+	DotShapes.h
 	Platform.h
 	targetver.h
 	Unknown.cpp

@@ -78,6 +78,7 @@ HPCCSystemsGraphViewControlAPI::HPCCSystemsGraphViewControlAPI(const HPCCSystems
 	registerMethod("loadXML", make_method(this, &HPCCSystemsGraphViewControlAPI::loadXML));
 	registerMethod("loadXML2", make_method(this, &HPCCSystemsGraphViewControlAPI::loadXML2));
 	registerMethod("getSVG", make_method(this, &HPCCSystemsGraphViewControlAPI::getSVG));
+	registerMethod("getDOT", make_method(this, &HPCCSystemsGraphViewControlAPI::getDOT));
 	registerMethod("getLocalisedXGMML", make_method(this, &HPCCSystemsGraphViewControlAPI::getLocalisedXGMML));
 
     registerMethod("testEvent", make_method(this, &HPCCSystemsGraphViewControlAPI::testEvent));
@@ -349,6 +350,12 @@ const std::string HPCCSystemsGraphViewControlAPI::getSVG()
 	boost::iterator_range<std::string::iterator> result = boost::algorithm::find_first(svg, "<svg");
 	std::string retVal(result.begin(), svg.end());
 	return retVal;
+}
+
+const std::string HPCCSystemsGraphViewControlAPI::getDOT()
+{
+	std::string dot = m_callback->GetDOT();
+	return dot;
 }
 
 const std::string HPCCSystemsGraphViewControlAPI::getLocalisedXGMML(const std::vector<int> & items)

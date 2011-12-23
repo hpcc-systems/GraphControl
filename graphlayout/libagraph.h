@@ -39,3 +39,21 @@
 
 LIBAGRAPH_API bool DoLayout(const char * layout, const char* mem, const char* format, const char* scale, std::string & result);
 
+typedef std::map<std::string, std::string> AttrMap;
+__interface IGraphvizVisitor
+{
+	void OnStartGraph(int kind, const std::string & id, const AttrMap & attrs);
+	void OnEndGraph(int kind, const std::string & id);
+
+	void OnStartCluster(const std::string & id, const AttrMap & attrs);
+	void OnEndCluster(const std::string & id);
+
+	void OnStartVertex(const std::string & id, const AttrMap & attrs);
+	void OnEndVertex(const std::string & id);
+
+	void OnStartEdge(int kind, const std::string & id, const std::string & source, const std::string & target, const AttrMap & attrs);
+	void OnEndEdge(int kind, const std::string & id);
+};
+
+
+LIBAGRAPH_API bool DoParse(const char* mem, IGraphvizVisitor * visitor);

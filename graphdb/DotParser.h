@@ -21,11 +21,11 @@
  ******************************************************************************/
 #pragma once
 
-#include "XmlParser.h"
+#include "GraphDB.h"
+#include "DotShapes.h"
 
 namespace ln
 {
-ICluster * GetCluster(IGraph* graph, ICluster* cluster, unsigned int id, const std::string & label, bool merge, bool appendMissing);
 GRAPHDB_API bool LoadDOT(IGraph * graph, const std::string & dot);
 GRAPHDB_API bool MergeDOT(IGraph * graph, const std::string & dot);
 }

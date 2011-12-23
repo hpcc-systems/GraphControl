@@ -44,6 +44,10 @@ enum XGMML_STATE_ENUM
 };
 
 ICluster * GetCluster(IGraph* graph, ICluster* cluster, unsigned int id, const std::string & label, bool merge, bool appendMissing);
+ICluster * GetCluster(IGraph* graph, ICluster* cluster, const std::string & id, bool merge, bool appendMissing = true);
+IVertex * GetVertex(IGraph* graph, ICluster* cluster, const std::string & id, bool merge, bool appendMissing = true);
+IEdge * GetEdge(IGraph* graph, const std::string & id, IVertex* from, IVertex* to, bool merge, bool appendMissing = true);
+
 GRAPHDB_API bool LoadXGMML(IGraph * graph, const std::string & xgmml);
 GRAPHDB_API bool MergeXGMML(IGraph * graph, const std::string & xgmml);
 }

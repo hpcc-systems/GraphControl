@@ -63,6 +63,7 @@ public:
 	bool loadXML(const std::string& verticesXML, const std::string& edgesXML);
 	bool loadXML2(const std::string& xml);
 	const std::string getSVG();
+	const std::string getDOT();
 	const std::string getLocalisedXGMML(const std::vector<int> & items);
 
 	bool clear();

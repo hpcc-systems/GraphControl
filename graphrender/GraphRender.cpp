@@ -435,11 +435,11 @@ public:
 			}
 			else
 			{
-				Colour * stroke = &(m_colours[StateT(m_inType, m_inState)].m_stroke);
-				agg2d.lineColor(stroke->GetR(), stroke->GetG(), stroke->GetB(), stroke->GetA());
+				const Colour * strokeXXX = &stroke;//(m_colours[StateT(m_inType, m_inState)].m_stroke);
+				agg2d.lineColor(strokeXXX->GetR(), strokeXXX->GetG(), strokeXXX->GetB(), strokeXXX->GetA());
 
-				Colour * fill = &(m_colours[StateT(m_inType, m_inState)].m_fill);
-				agg2d.fillColor(fill->GetR(), fill->GetG(), fill->GetB(), fill->GetA()  / m_transparency);
+				const Colour * fillXXX = &fill;//(m_colours[StateT(m_inType, m_inState)].m_fill);
+				agg2d.fillColor(fillXXX->GetR(), fillXXX->GetG(), fillXXX->GetB(), fillXXX->GetA()  / m_transparency);
 			}
 			if (m_inHotItem)
 			{
