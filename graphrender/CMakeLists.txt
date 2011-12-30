@@ -9,6 +9,8 @@
 project( graphrender )
 
 set (	SRCS
+	precompiled_headers.h
+
 	GraphRender.cpp
 	GraphRender.h
 	GraphBuffer.cpp
@@ -45,6 +47,7 @@ include_directories (
 	)
 endif (WIN32)
 
+ADD_MSVC_PRECOMPILED_HEADER("precompiled_headers.h" "precompiled_headers.cpp" SRCS)
 if (WITH_DYNAMIC_MSVC_RUNTIME)
 	add_library ( graphrender SHARED ${SRCS} )
 else (WITH_DYNAMIC_MSVC_RUNTIME)

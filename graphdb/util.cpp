@@ -19,11 +19,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  ******************************************************************************/
-#include "Platform.h"
+#include "precompiled_headers.h"
 
 #include "util.h"
-
-#include <boost/lexical_cast.hpp>
 
 std::wstring StringToWString(const std::string& s)
 {

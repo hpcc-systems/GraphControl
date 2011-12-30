@@ -19,15 +19,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  ******************************************************************************/
-#include "Platform.h"
+#include "precompiled_headers.h"
 
 #include "JSObject.h"
 #include "variant_list.h"
 #include "DOM/Document.h"
 
 #include "HPCCSystemsGraphViewControlAPI.h"
-#include <boost/lexical_cast.hpp>
-#include <boost/algorithm/string.hpp>
 #include <XgmmlParser.h>
 
 #define CURRENT_VERSION 20110705

@@ -48,20 +48,12 @@
 #include <string.h>
 #endif
 
-#include <string>
-#include <map>
 #include <set>
-#include <stack>
+#include <map>
 #include <vector>
-#include <iostream>
-namespace std
-{
-#ifdef _UNICODE
-	#define	_tstring wstring
-#else
-	#define	_tstring string
-#endif
-}
+
+#include <boost/assert.hpp>
+#include <boost/smart_ptr/detail/atomic_count.hpp>
 
 #if defined(_DEBUGXXX)
 # include <stdlib.h>
@@ -69,6 +61,4 @@ namespace std
 # define GJS_DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
 # define new GJS_DEBUG_NEW
 #endif
-
-
 

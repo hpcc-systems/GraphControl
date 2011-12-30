@@ -8,6 +8,7 @@
 project( graphdb ) 
 
 set (	SRCS 
+	precompiled_headers.h
 	GraphCluster.cpp
 	GraphCluster.h
 	GraphDB.cpp
@@ -57,6 +58,7 @@ set (	SRCS
 	)
 endif ()
 
+ADD_MSVC_PRECOMPILED_HEADER("precompiled_headers.h" "precompiled_headers.cpp" SRCS)
 if (WITH_DYNAMIC_MSVC_RUNTIME)
 	add_library ( graphdb SHARED ${SRCS} )
 else (WITH_DYNAMIC_MSVC_RUNTIME)

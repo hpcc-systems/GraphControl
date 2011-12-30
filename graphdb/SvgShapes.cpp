@@ -19,17 +19,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  ******************************************************************************/
-#include "Platform.h"
-
-#include <exception>
-#include <boost/assert.hpp>
+#include "precompiled_headers.h"
 
 #include "SaxParser.h"
 #include "SvgShapes.h"
-
-#include <boost/lexical_cast.hpp>
-#include <boost/tokenizer.hpp>
-#include <boost/algorithm/string.hpp>
 
 namespace agg
 {

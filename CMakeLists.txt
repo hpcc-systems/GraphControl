@@ -15,35 +15,22 @@ ELSE ( WIN32 )
     SET ( LIBRARY_OUTPUT_PATH "/usr/lib/mozilla/plugins" )
 ENDIF ( WIN32 )
 
-MACRO(ADD_PRECOMPILED_HEADER PROJECT_NAME PrecompiledHeader PrecompiledSource SourcesVar)
-    IF(MSVC)
-        GET_FILENAME_COMPONENT(PrecompiledBasename ${PrecompiledHeader} NAME_WE)
-        SET(__PrecompiledBinary "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${PrecompiledBasename}.pch")
-
-        SET_SOURCE_FILES_PROPERTIES(${PrecompiledSource}
-            PROPERTIES COMPILE_FLAGS "/Yc\"${PrecompiledBasename}.h\" /Fp\"${__PrecompiledBinary}\" -Zm160"
-            OBJECT_OUTPUTS "${__PrecompiledBinary}")
-        foreach(CURFILE ${${SourcesVar}})
-
-            GET_FILENAME_COMPONENT(CURFILE_EXT ${CURFILE} EXT)
-            GET_FILENAME_COMPONENT(CURFILE_NAME ${CURFILE} NAME)
-            if (CURFILE_EXT STREQUAL ".cpp" AND NOT CURFILE_NAME STREQUAL PrecompiledBasename)
-                SET_SOURCE_FILES_PROPERTIES(${CURFILE}
-                    PROPERTIES COMPILE_FLAGS "/Yu\"${__PrecompiledBinary}\" /FI\"${__PrecompiledBinary}\" /Fp\"${__PrecompiledBinary}\" -Zm160"
-                    OBJECT_DEPENDS "${__PrecompiledBinary}")  
-            endif()
-
-        endforeach()
-        # Add precompiled header to SourcesVar
-        LIST(APPEND ${SourcesVar} ${PrecompiledSource})
-        LIST(APPEND ${SourcesVar} ${PrecompiledHeader})
-    elseif (APPLE)
-        # My tests aren't showing any advantage to turning this on for mac
-        #message("Setting precompiled header ${PrecompiledHeader} on ${PROJECT_NAME}")
-        #SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES XCODE_ATTRIBUTE_GCC_PRECOMPILE_PREFIX_HEADER YES)
-        #SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES XCODE_ATTRIBUTE_GCC_PREFIX_HEADER "${PrecompiledHeader}")
-    endif()
-ENDMACRO(ADD_PRECOMPILED_HEADER)
+MACRO(ADD_MSVC_PRECOMPILED_HEADER PrecompiledHeader PrecompiledSource SourcesVar) 
+  IF(MSVC) 
+    GET_FILENAME_COMPONENT(PrecompiledBasename ${PrecompiledHeader} NAME_WE) 
+    SET(PrecompiledBinary "${CMAKE_CURRENT_BINARY_DIR}/${PrecompiledBasename}.pch") 
+    SET(Sources ${${SourcesVar}}) 
+ 
+    SET_SOURCE_FILES_PROPERTIES(${PrecompiledSource} 
+                                PROPERTIES COMPILE_FLAGS "/Yc\"${PrecompiledHeader}\" /Fp\"${PrecompiledBinary}\"" 
+                                           OBJECT_OUTPUTS "${PrecompiledBinary}") 
+    SET_SOURCE_FILES_PROPERTIES(${Sources} 
+                                PROPERTIES COMPILE_FLAGS "/Yu\"${PrecompiledBinary}\" /FI\"${PrecompiledBinary}\" /Fp\"${PrecompiledBinary}\"" 
+                                           OBJECT_DEPENDS "${PrecompiledBinary}")   
+    # Add precompiled header to SourcesVar 
+    LIST(APPEND ${SourcesVar} ${PrecompiledSource}) 
+  ENDIF(MSVC) 
+ENDMACRO(ADD_MSVC_PRECOMPILED_HEADER) 
 
 include ( "${CMAKE_SOURCE_DIR}/cmake/Modules/Externals.cmake" )
 

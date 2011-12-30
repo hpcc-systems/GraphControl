@@ -19,12 +19,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  ******************************************************************************/
-#include "Platform.h"
+#include "precompiled_headers.h"
 
 #include "GraphHotItem.h"
 #include "SvgParser.h"
-
-#include <assert.h>
 
 namespace ln
 {

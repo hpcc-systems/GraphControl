@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  ******************************************************************************/
-#include "Platform.h"
+#include "precompiled_headers.h"
 
 #include "GraphRender.h"
 #include "SvgParser.h"
@@ -27,7 +27,6 @@
 
 #include <agg_math_stroke.h>
 #include <agg2d.h>
-#include <assert.h>
 
 namespace ln
 {

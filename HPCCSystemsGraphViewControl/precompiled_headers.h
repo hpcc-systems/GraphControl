@@ -48,12 +48,18 @@
 #include <string.h>
 #endif
 
+#include <iostream>
+#include <set>
+
+#include <boost/assert.hpp>
+#include <boost/smart_ptr/detail/atomic_count.hpp>
+#include <boost/signals2.hpp>
+#include <boost/algorithm/string.hpp>
+/*
 #include <string>
 #include <map>
-#include <set>
 #include <stack>
 #include <vector>
-#include <iostream>
 #include <sstream>
 namespace std
 {
@@ -66,12 +72,28 @@ namespace std
 #endif
 }
 
+#include <exception>
+
+#include <boost/lexical_cast.hpp>
+#include <boost/tokenizer.hpp>
+#include <boost/thread.hpp>
+#include <boost/format.hpp> 
+namespace boost
+{
+#ifdef _UNICODE
+	#define _tformat wformat
+#else
+	#define _tformat format
+#endif
+}
+
+#include <string.h>
+*/
+
 #if defined(_DEBUGXXX)
 # include <stdlib.h>
 # include <crtdbg.h>
 # define GJS_DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
 # define new GJS_DEBUG_NEW
 #endif
-
-
 

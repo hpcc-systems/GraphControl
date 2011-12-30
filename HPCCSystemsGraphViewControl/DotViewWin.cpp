@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  ******************************************************************************/
-#include "Platform.h"
+#include "precompiled_headers.h"
 
 #include <SvgShapes.h>
 #include <SvgParser.h>
@@ -28,17 +28,6 @@
 #include "HPCCSystemsGraphViewControlAPI.h"
 #include <util.h>
 #include <XgmmlParser.h>
-
-#include <boost/algorithm/string.hpp> 
-#include <boost/format.hpp> 
-namespace boost
-{
-#ifdef _UNICODE
-	#define _tformat wformat
-#else
-	#define _tformat format
-#endif
-}
 
 CDotView::CDotView() : CDotViewCommon()
 {

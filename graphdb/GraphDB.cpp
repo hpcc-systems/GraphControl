@@ -19,23 +19,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  ******************************************************************************/
-#include "Platform.h"
+#include "precompiled_headers.h"
 
 #include "GraphGraph.h"
 #include "util.h"
 #include "XgmmlParser.h"
 #include "DotParser.h"
-
-#include <boost/algorithm/string.hpp>
-#include <boost/format.hpp> 
-namespace boost
-{
-#ifdef _UNICODE
-	#define _tformat wformat
-#else
-	#define _tformat format
-#endif
-}
 
 namespace ln
 {
