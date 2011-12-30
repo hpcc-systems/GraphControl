@@ -8,10 +8,11 @@
 project( graphlayout )
 
 set (	SRCS
+	precompiled_headers.h
+
 	libagraph.cpp
 	libagraph.h
 	libagraphsp.h
-	platform.h
 	)
 
 if (WIN32)
@@ -89,6 +90,7 @@ set_property(TARGET sparse PROPERTY FOLDER "3rdParty/Graphviz")
 add_subdirectory (xdot)
 set_property(TARGET xdot PROPERTY FOLDER "3rdParty/Graphviz")
 
+ADD_MSVC_PRECOMPILED_HEADER("precompiled_headers.h" "precompiled_headers.cpp" SRCS)
 if (WITH_DYNAMIC_MSVC_RUNTIME)
 	add_library ( graphlayout SHARED ${SRCS} )
 else (WITH_DYNAMIC_MSVC_RUNTIME)

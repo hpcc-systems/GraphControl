@@ -9,6 +9,8 @@
 project( HPCCSystemsGraphViewControl )
 
 set (	SRCS
+	precompiled_headers.h
+
 	Factory.cpp
 	#GraphViewCtlView.cpp
 	HPCCSystemsGraphViewControl.cpp
@@ -28,7 +30,6 @@ set (	SRCS_OS
 	gen/firebreathWin.rc
 	gen/firebreathWin.rgs
 
-	gen/FireBreathWin_i.c
 	gen/firebreathWin.idl
 
 	${FIREBREATH_SOURCE_DIR}/PluginAuto/win/dllmain.cpp
@@ -36,6 +37,9 @@ set (	SRCS_OS
 
 	DotViewWin.cpp
 	DotViewWin.h
+	)
+set (	SRCS_NO_PRECOMPILED_HEADERS
+	gen/FireBreathWin_i.c
 	)
 else (WIN32)
 set (	SRCS_OS
@@ -99,10 +103,10 @@ IF( FREETYPE_FOUND )
     LINK_LIBRARIES(${FREETYPE_LIBRARIES})
 ENDIF ()
 
-add_library ( HPCCSystemsGraphViewControl SHARED
-	${SRCS}
-	${SRCS_OS}
-	)
+
+set ( SOURCES ${SRCS} ${SRCS_OS} )
+ADD_MSVC_PRECOMPILED_HEADER("precompiled_headers.h" "precompiled_headers.cpp" SOURCES)
+add_library ( HPCCSystemsGraphViewControl SHARED ${SOURCES} ${SRCS_NO_PRECOMPILED_HEADERS})
 
 if (UNIX)
 set(NPAPI_LINK_FLAGS "-Wl,--discard-all -Wl,-Bsymbolic -Wl,-z,defs -Wl")

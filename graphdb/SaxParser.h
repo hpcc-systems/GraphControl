@@ -21,8 +21,6 @@
  ******************************************************************************/
 #pragma once
 
-#include <assert.h>
-
 #include "Unknown.h"
 
 #include "expat.h"

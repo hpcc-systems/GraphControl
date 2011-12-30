@@ -19,14 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  ******************************************************************************/
-#include "Platform.h"
-
-#include <string.h>
-
-#include <boost/assert.hpp>
-#include <boost/lexical_cast.hpp>
-#include <boost/tokenizer.hpp>
-#include <boost/algorithm/string.hpp>
+#include "precompiled_headers.h"
 
 #include "SaxParser.h"
 #include "GraphDB.h"

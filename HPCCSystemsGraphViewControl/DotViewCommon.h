@@ -21,7 +21,6 @@
  ******************************************************************************/
 #pragma once
 
-#include "Platform.h"
 #include "GraphDB.h"
 #include "GraphvizLayout.h"
 #include "GraphRender.h"

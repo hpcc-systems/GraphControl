@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  ******************************************************************************/
-#include "platform.h"
+#include "precompiled_headers.h"
 
 #include <neato.h>
 #include <gvc.h>

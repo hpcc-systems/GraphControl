@@ -23,8 +23,6 @@
 
 #include "GraphDB.h"
 
-#include <boost/signals2.hpp>
-
 namespace ln
 {
 typedef boost::signals2::signal<void(const std::string & dot, const std::string & svg)> LayoutFinishedSignal;

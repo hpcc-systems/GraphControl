@@ -45,8 +45,6 @@
 #define interface    struct
 #endif
 
-#include <boost/smart_ptr/detail/atomic_count.hpp>
-
 namespace ln
 {
 interface GRAPHDB_API IUnknown

@@ -19,10 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  ******************************************************************************/
-#include "Platform.h"
-
-#include <boost/signals2.hpp>
-#include <boost/thread.hpp>
+#include "precompiled_headers.h"
 
 #include "GraphvizLayout.h"
 #include "SvgParser.h"

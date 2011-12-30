@@ -2,11 +2,9 @@ project( PluginAuto )
 
 set( FIREBREATH_CURRENT_SOURCE_DIR ${FIREBREATH_SOURCE_DIR}/PluginAuto ) 
 set (	SRCS 
+	${FIREBREATH_CURRENT_SOURCE_DIR}/precompiled_headers.h
 	${FIREBREATH_CURRENT_SOURCE_DIR}/null/NullLogger.cpp
 	${FIREBREATH_CURRENT_SOURCE_DIR}/PluginInfo.cpp
-
-	${FIREBREATH_CURRENT_SOURCE_DIR}/precompiled_headers.cpp
-	${FIREBREATH_CURRENT_SOURCE_DIR}/precompiled_headers.h
 	)
 
 if (WIN32)
@@ -35,11 +33,13 @@ include_directories (
 	include_directories ( ${Boost_INCLUDE_DIRS}	)
 	)
 
-ADD_PRECOMPILED_HEADER(PluginAuto "${FIREBREATH_CURRENT_SOURCE_DIR}/precompiled_headers.h" "${FIREBREATH_CURRENT_SOURCE_DIR}/precompiled_headers.cpp" SOURCES)
-add_library ( PluginAuto STATIC
+set (SOURCES
 	${SRCS} 
 	${OS_SRCS} 
 	)
+
+ADD_MSVC_PRECOMPILED_HEADER("precompiled_headers.h" "${FIREBREATH_CURRENT_SOURCE_DIR}/precompiled_headers.cpp" SOURCES)
+add_library ( PluginAuto STATIC ${SOURCES} )
 
 if (WIN32)
     # psapi is needed to get the process info and check if WiX is calling

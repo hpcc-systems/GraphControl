@@ -19,9 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  ******************************************************************************/
-#include "Platform.h"
-
-#include <boost/assert.hpp>
+#include "precompiled_headers.h"
 
 #include "GraphGraph.h"
 #include "GraphVertex.h"
