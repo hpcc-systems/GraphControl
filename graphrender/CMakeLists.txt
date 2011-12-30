@@ -45,12 +45,16 @@ include_directories (
 	)
 endif (WIN32)
 
-add_library ( graphrender SHARED ${SRCS} )
+if (WITH_DYNAMIC_MSVC_RUNTIME)
+	add_library ( graphrender SHARED ${SRCS} )
+else (WITH_DYNAMIC_MSVC_RUNTIME)
+	add_library ( graphrender STATIC ${SRCS} )
+endif (WITH_DYNAMIC_MSVC_RUNTIME)
 
 ADD_DEFINITIONS( -D_UNICODE -DAGG_USE_FREETYPE -DAGG_USE_AGG2D -DAGG2D_USE_FREETYPE )
 
 if (WIN32)
-ADD_DEFINITIONS( -D_USRDLL -DGRAPHRENDER_EXPORTS )
+ADD_DEFINITIONS( -DGRAPHRENDER_EXPORTS )
 else ()
 endif ()
 
@@ -62,7 +66,7 @@ add_dependencies ( graphrender
 target_link_libraries ( graphrender 
 	graphdb 
 	agg
-	${Boost_LIBRARIES}
+	#${Boost_LIBRARIES}
 	)
 
 if ( WIN32 )	

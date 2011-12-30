@@ -39,6 +39,7 @@
 #include "DotViewX11.h"
 #endif
 
+FB_FORWARD_PTR(HPCCSystemsGraphViewControl)
 class HPCCSystemsGraphViewControl : public FB::PluginCore
 {
 protected:
@@ -56,6 +57,10 @@ public:
     void onPluginReady();
     void shutdown();
     virtual FB::JSAPIPtr createJSAPI();
+    // If you want your plugin to always be windowless, set this to true
+    // If you want your plugin to be optionally windowless based on the
+    // value of the "windowless" param tag, remove this method or return
+    // FB::PluginCore::isWindowless()
     virtual bool isWindowless() { return false; }
 
     BEGIN_PLUGIN_EVENT_MAP()
@@ -94,8 +99,6 @@ public:
 	virtual bool onWindowDetached(FB::DetachedEvent *evt, FB::PluginWindow *);
 	/** END EVENTDEF -- DON'T CHANGE THIS LINE **/
 };
-typedef boost::shared_ptr<HPCCSystemsGraphViewControl> HPCCSystemsGraphViewControlPtr;
-typedef boost::weak_ptr<HPCCSystemsGraphViewControl> HPCCSystemsGraphViewControlWeakPtr;
 
 
 #endif

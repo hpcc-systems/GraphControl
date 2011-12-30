@@ -57,18 +57,22 @@ set (	SRCS
 	)
 endif ()
 
-add_library ( graphdb SHARED ${SRCS} )
+if (WITH_DYNAMIC_MSVC_RUNTIME)
+	add_library ( graphdb SHARED ${SRCS} )
+else (WITH_DYNAMIC_MSVC_RUNTIME)
+	add_library ( graphdb STATIC ${SRCS} )
+endif (WITH_DYNAMIC_MSVC_RUNTIME)
 
 ADD_DEFINITIONS( -D_UNICODE -DXML_UNICODEXXX )
 
 if (WIN32)
-ADD_DEFINITIONS( -D_USRDLL -DGRAPHDB_EXPORTS )
+ADD_DEFINITIONS( -DGRAPHDB_EXPORTS )
 else ()
 endif ()
 
 add_dependencies ( graphdb 
 	graphlayout 
-	expat 
+	#expat 
 	)
 
 target_link_libraries ( graphdb 

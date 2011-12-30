@@ -31,8 +31,6 @@
 #include <GraphvizLayout.h>
 #include <agg_basics.h>
 #include <iostream>
-//#include <util/agg_color_conv_rgb8.h>
-//#include <platform/agg_platform_support.h>
 
 //  ===========================================================================
 ///////////////////////////////////////////////////////////////////////////////

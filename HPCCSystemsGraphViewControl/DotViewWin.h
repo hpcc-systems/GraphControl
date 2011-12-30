@@ -23,9 +23,6 @@
 
 #include "DotViewCommon.h"
 
-#include <platform/win32/agg_win32_bmp.h>
-//#include "HPCCSystemsGraphViewControlAPI.h"
-
 #include <atlbase.h>
 #include <atltypes.h>
 

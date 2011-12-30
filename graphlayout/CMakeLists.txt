@@ -42,7 +42,7 @@ include_directories (
 	)
 
 if (WIN32)
-	ADD_DEFINITIONS( -D_USRDLL -DLIBAGRAPH_EXPORTS -DHAVE_CONFIG_H -DHAVE_SETMODE -DMSWIN32)
+	ADD_DEFINITIONS( -DLIBAGRAPH_EXPORTS -DHAVE_CONFIG_H -DHAVE_SETMODE -DMSWIN32)
 #	ADD_DEFINITIONS( -DHAVE_CONFIG_H -DHAVE_SETMODE -DMSWIN32)
 else ()
 	ADD_DEFINITIONS( -DHAVE_CONFIG_H -DHAVE_SETMODE )
@@ -89,7 +89,11 @@ set_property(TARGET sparse PROPERTY FOLDER "3rdParty/Graphviz")
 add_subdirectory (xdot)
 set_property(TARGET xdot PROPERTY FOLDER "3rdParty/Graphviz")
 
-add_library ( graphlayout SHARED ${SRCS} )
+if (WITH_DYNAMIC_MSVC_RUNTIME)
+	add_library ( graphlayout SHARED ${SRCS} )
+else (WITH_DYNAMIC_MSVC_RUNTIME)
+	add_library ( graphlayout STATIC ${SRCS} )
+endif (WITH_DYNAMIC_MSVC_RUNTIME)
 
 if (WIN32)
 else (WIN32)
