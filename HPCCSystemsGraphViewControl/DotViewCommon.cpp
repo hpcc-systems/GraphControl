@@ -1,6 +1,28 @@
+/*******************************************************************************
+ * Copyright (C) 2011 HPCC Systems.
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ ******************************************************************************/
 #include "DotViewCommon.h"
 
 #include <XgmmlParser.h>
+#include <DotParser.h>
 #include <boost/algorithm/string.hpp> 
 #include <boost/format.hpp> 
 namespace boost
@@ -12,6 +34,20 @@ namespace boost
 #endif
 }
 #include "HPCCSystemsGraphViewControlAPI.h"
+
+CDotViewCommon::CDotViewCommon()
+{
+	m_api = NULL;
+	m_g = ln::CreateGraph();
+	m_buffer = ln::CreateGraphBuffer(0, 0);
+	m_hotItem = ln::CreateGraphHotItem();
+	m_selection = ln::CreateGraphSelectionBag();
+
+	m_gr = ln::CreateGraphRender(m_g, m_buffer, m_hotItem, m_selection);
+	//m_gro = ln::CreateGraphRender(m_g, m_buffer, m_hotItem, m_selection, 0.05);
+
+	m_mouseDown = MOUSEDOWN_UNKNOWN;
+}
 
 void CDotViewCommon::StartLayout(const std::string & layout)
 {
@@ -235,6 +271,15 @@ void CDotViewCommon::MergeXGMML(const std::string & xgmml)
 	Invalidate();
 }
 
+void CDotViewCommon::LoadDOT(const std::string & dot)
+{
+	std::string layout = m_g->GetPropertyString(ln::PROP_LAYOUT);
+	m_hotItem->Set(NULL);
+	m_selection->Clear();
+	m_g->Clear();
+	ln::LoadDOT(m_g, dot);
+}
+
 const char * CDotViewCommon::GetLocalisedXGMML(int _item, std::string & xgmml)
 {
 	ln::IGraphItemPtr item = m_g->GetGraphItem(_item);
@@ -245,6 +290,11 @@ const char * CDotViewCommon::GetLocalisedXGMML(int _item, std::string & xgmml)
 const std::string CDotViewCommon::GetSVG()
 {
 	return m_svg;
+}
+
+const std::string CDotViewCommon::GetDOT()
+{
+	return m_dot;
 }
 
 void CDotViewCommon::Clear()
@@ -263,8 +313,8 @@ void CDotViewCommon::CalcScrollbars(bool redraw)
 	ln::RectD clientRect;
 	GetClientRectangle(clientRect);
 
-	unsigned int scrollWidth = (int)graphRect.Width + clientRect.Width;
-	unsigned int scrollHeight = (int)graphRect.Height + clientRect.Height;
+	unsigned int scrollWidth = (unsigned int)(graphRect.Width + clientRect.Width);
+	unsigned int scrollHeight = (unsigned int)(graphRect.Height + clientRect.Height);
 
 	ln::PointD offset;
 	offset.x = clientRect.Width / 2.0f;

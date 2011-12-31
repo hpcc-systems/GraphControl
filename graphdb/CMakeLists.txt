@@ -32,17 +32,22 @@ set (	SRCS
 	XgmmlParser.h
 	XmlParser.cpp
 	XmlParser.h
+	DotParser.cpp
+	DotParser.h
 	SvgShapes.cpp
 	SvgShapes.h
+	DotShapes.cpp
+	DotShapes.h
 	Platform.h
 	targetver.h
 	Unknown.cpp
 	Unknown.h
 	)
 
-	include_directories ( 
+include_directories ( 
 	../graphlayout
 	${EXPAT_INCLUDE_DIRS}/lib
+	${Boost_INCLUDE_DIRS}
 	)
 
 if (WIN32)
@@ -51,11 +56,6 @@ set (	SRCS
 	GraphDB.rc 
 	)
 endif ()
-
-if (Boost_FOUND)
-	include_directories ( ${Boost_INCLUDE_DIRS}	)
-	link_directories ( ${Boost_LIBRARY_DIRS} )
-endif (Boost_FOUND)
 
 add_library ( graphdb SHARED ${SRCS} )
 
@@ -74,6 +74,7 @@ add_dependencies ( graphdb
 target_link_libraries ( graphdb 
 	graphlayout 
 	expat 
+	${Boost_LIBRARIES}
 	)
 	
 if ( WIN32 )	

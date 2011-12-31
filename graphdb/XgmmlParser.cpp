@@ -1,3 +1,24 @@
+/*******************************************************************************
+ * Copyright (C) 2011 HPCC Systems.
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ ******************************************************************************/
 #include "Platform.h"
 
 #include <string.h>
@@ -57,7 +78,7 @@ struct Shapes
 	}
 } g_shapes;
 //  ===========================================================================
-ICluster * GetCluster(IGraph* graph, ICluster* cluster, const std::string & id, bool merge, bool appendMissing = true)
+ICluster * GetCluster(IGraph* graph, ICluster* cluster, const std::string & id, bool merge, bool appendMissing)
 {
 	ICluster * retVal = NULL;
 	if (merge)
@@ -72,7 +93,7 @@ ICluster * GetCluster(IGraph* graph, ICluster* cluster, const std::string & id, 
 	return retVal;
 }
 
-IVertex * GetVertex(IGraph* graph, ICluster* cluster, const std::string & id, bool merge, bool appendMissing = true)
+IVertex * GetVertex(IGraph* graph, ICluster* cluster, const std::string & id, bool merge, bool appendMissing)
 {
 	IVertex * retVal = NULL;
 	if (merge)
@@ -87,7 +108,7 @@ IVertex * GetVertex(IGraph* graph, ICluster* cluster, const std::string & id, bo
 	return retVal;
 }
 
-IEdge * GetEdge(IGraph* graph, const std::string & id, IVertex* from, IVertex* to, bool merge, bool appendMissing = true)
+IEdge * GetEdge(IGraph* graph, const std::string & id, IVertex* from, IVertex* to, bool merge, bool appendMissing)
 {
 	IEdge * retVal = NULL;
 	if (merge)
@@ -117,7 +138,6 @@ struct XGMMLStackItem
 
 typedef std::pair<std::string, IGraphItemPtr> StringGraphItemPair;
 typedef std::deque<XGMMLStackItem> GraphItemStack;
-typedef std::set<CElementPtr> ElementSet;
 class CXgmmlParser : public CStackParser
 {
 protected:
@@ -308,14 +328,13 @@ public:
 	{
 		if (CUnknown * tmpProp = item->GetPropertyCUnknown(SVG_PROP_ELEMENTG))
 		{
-
 			boost::algorithm::replace_all(label, "\\n", "\n");
 
 			typedef std::vector<std::string> split_vector_type;
 			split_vector_type SplitVec; // #2: Search for tokens
 			boost::algorithm::split(SplitVec, label, boost::algorithm::is_any_of("\n"), boost::algorithm::token_compress_on);
 			ElementGPtr elemG = reinterpret_cast<ln::ElementG * >(tmpProp);
-			int i = 0;
+			unsigned int i = 0;
 			for (split_vector_type::iterator itr = SplitVec.begin(); itr != SplitVec.end(); ++itr)
 			{
 				//assert(elemG->m_lines.size() > i);

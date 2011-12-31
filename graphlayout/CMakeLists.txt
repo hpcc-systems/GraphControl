@@ -25,21 +25,19 @@ include_directories (
 	${GRAPHVIZSRC_DIRS}/lib/graph
 	${GRAPHVIZSRC_DIRS}/lib/pathplan
 	${GRAPHVIZSRC_DIRS}/lib/common
+	${GRAPHVIZSRC_DIRS}/lib/agraph
 #	${GRAPHVIZSRC_DIRS}/lib/cgraph
-	${GRAPHVIZSRC_DIRS}/lib/pathplan
 	${GRAPHVIZSRC_DIRS}/lib/gvc
 	${GRAPHVIZSRC_DIRS}/lib/dotgen
 	${GRAPHVIZSRC_DIRS}/lib/neatogen
 	${GRAPHVIZSRC_DIRS}/lib/fdpgen
 	${GRAPHVIZSRC_DIRS}/lib/sfdpgen
-	${GRAPHVIZSRC_DIRS}/lib/graph
 	${GRAPHVIZSRC_DIRS}/lib/cdt
 	${GRAPHVIZSRC_DIRS}/lib/twopigen
 	${GRAPHVIZSRC_DIRS}/lib/circogen
 	${GRAPHVIZSRC_DIRS}/lib/sparse
 	${GRAPHVIZSRC_DIRS}/lib/xdot
 	${GRAPHVIZSRC_DIRS}/lib/gd
-	${GRAPHVIZSRC_DIRS}/lib/sparse
 	${GRAPHVIZSRC_DIRS}
 	)
 

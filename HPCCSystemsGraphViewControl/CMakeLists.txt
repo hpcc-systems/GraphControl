@@ -12,6 +12,7 @@ set (	SRCS
 	Factory.cpp
 	#GraphViewCtlView.cpp
 	HPCCSystemsGraphViewControl.cpp
+	HPCCSystemsGraphViewControl.h
 	HPCCSystemsGraphViewControlAPI.cpp
 
 	DotViewCommon.cpp
@@ -39,6 +40,7 @@ set (	SRCS_OS
 else (WIN32)
 set (	SRCS_OS
 	x11_pixel_map.cpp
+	x11_pixel_map.h
 
 	${FIREBREATHSRC_DIRS}/src/PluginAuto/X11/np_x11main.cpp
 	${FIREBREATHSRC_DIRS}/src/PluginAuto/X11/NpapiPluginX11.cpp
@@ -65,6 +67,7 @@ include_directories (
 	${WTL_INCLUDE_DIR}/include
 	
 	${AGGSRC_DIRS}/agg-2.4/include
+	 ${Boost_INCLUDE_DIRS}
 	)
 
 if (WIN32)
@@ -96,11 +99,6 @@ add_subdirectory ( PluginAuto )
 set_property(TARGET PluginAuto  PROPERTY FOLDER "3rdParty/Firebreath Core")
 add_subdirectory ( ScriptingCore )
 set_property(TARGET ScriptingCore  PROPERTY FOLDER "3rdParty/Firebreath Core")
-
-if (Boost_FOUND)
-	include_directories ( ${Boost_INCLUDE_DIRS}	)
-	link_directories ( ${Boost_LIBRARY_DIRS} )
-endif ()
 
 IF( FREETYPE_FOUND )
     INCLUDE_DIRECTORIES(${FREETYPE_INCLUDE_DIRS})
@@ -150,11 +148,13 @@ target_link_libraries( HPCCSystemsGraphViewControl
 if (WIN32)
 target_link_libraries( HPCCSystemsGraphViewControl
 	ActiveXCore
+	${Boost_LIBRARIES}
 	)
 else (WIN32)
 target_link_libraries( HPCCSystemsGraphViewControl
 	${GTK_LIBRARIES}
 	${Boost_THREAD_LIBRARY}
+	${Boost_GRAPH_LIBRARY}
 	)
 endif (WIN32)
 
