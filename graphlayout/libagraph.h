@@ -37,10 +37,20 @@
 #	endif
 #endif
 
+#ifdef _MSC_VER
+#ifndef interface
+#define interface    struct __declspec(novtable)
+#endif
+#else
+#ifndef interface
+#define interface    struct
+#endif
+#endif
+
 LIBAGRAPH_API bool DoLayout(const char * layout, const char* mem, const char* format, const char* scale, std::string & result);
 
 typedef std::map<std::string, std::string> AttrMap;
-__interface IGraphvizVisitor
+interface IGraphvizVisitor
 {
 	void OnStartGraph(int kind, const std::string & id, const AttrMap & attrs);
 	void OnEndGraph(int kind, const std::string & id);
