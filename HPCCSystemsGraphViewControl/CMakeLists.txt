@@ -12,10 +12,11 @@ set (	SRCS
 	precompiled_headers.h
 
 	Factory.cpp
-	#GraphViewCtlView.cpp
+
 	HPCCSystemsGraphViewControl.cpp
 	HPCCSystemsGraphViewControl.h
 	HPCCSystemsGraphViewControlAPI.cpp
+	HPCCSystemsGraphViewControlAPI.h
 
 	DotViewCommon.cpp
 	DotViewCommon.h
@@ -29,7 +30,6 @@ set (	SRCS_OS
 	gen/FireBreathWin.def
 	gen/firebreathWin.rc
 	gen/firebreathWin.rgs
-
 	gen/firebreathWin.idl
 
 	${FIREBREATH_SOURCE_DIR}/PluginAuto/win/dllmain.cpp
@@ -47,8 +47,6 @@ set (	SRCS_OS
 	x11_pixel_map.h
 
 	${FIREBREATH_SOURCE_DIR}/PluginAuto/X11/np_x11main.cpp
-	${FIREBREATH_SOURCE_DIR}/PluginAuto/X11/NpapiPluginX11.cpp
-	${FIREBREATH_SOURCE_DIR}/PluginAuto/X11/PluginWindowX11.cpp
 
 	DotViewX11.cpp
 	DotViewX11.h
