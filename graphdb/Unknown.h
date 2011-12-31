@@ -42,7 +42,9 @@
 #define interface    struct __declspec(novtable)
 #endif
 #else
+#ifndef interface
 #define interface    struct
+#endif
 #endif
 
 namespace ln

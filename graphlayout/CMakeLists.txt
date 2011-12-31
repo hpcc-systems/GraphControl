@@ -40,6 +40,7 @@ include_directories (
 	${GRAPHVIZSRC_DIRS}/lib/xdot
 	${GRAPHVIZSRC_DIRS}/lib/gd
 	${GRAPHVIZSRC_DIRS}
+	${Boost_INCLUDE_DIRS}
 	)
 
 if (WIN32)

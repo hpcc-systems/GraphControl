@@ -30,6 +30,8 @@
 #include <string>
 #include <map>
 #include <iostream>
+
+#include <boost/lexical_cast.hpp>
 /*
 #include <set>
 #include <stack>
@@ -50,7 +52,6 @@ namespace std
 
 #include <boost/assert.hpp>
 #include <boost/smart_ptr/detail/atomic_count.hpp>
-#include <boost/lexical_cast.hpp>
 #include <boost/tokenizer.hpp>
 #include <boost/thread.hpp>
 #include <boost/algorithm/string.hpp>
