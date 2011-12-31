@@ -52,17 +52,17 @@ LIBAGRAPH_API bool DoLayout(const char * layout, const char* mem, const char* fo
 typedef std::map<std::string, std::string> AttrMap;
 interface IGraphvizVisitor
 {
-	void OnStartGraph(int kind, const std::string & id, const AttrMap & attrs);
-	void OnEndGraph(int kind, const std::string & id);
+	virtual void OnStartGraph(int kind, const std::string & id, const AttrMap & attrs) = 0;
+	virtual void OnEndGraph(int kind, const std::string & id) = 0;
 
-	void OnStartCluster(const std::string & id, const AttrMap & attrs);
-	void OnEndCluster(const std::string & id);
+	virtual void OnStartCluster(const std::string & id, const AttrMap & attrs) = 0;
+	virtual void OnEndCluster(const std::string & id) = 0;
 
-	void OnStartVertex(const std::string & id, const AttrMap & attrs);
-	void OnEndVertex(const std::string & id);
+	virtual void OnStartVertex(const std::string & id, const AttrMap & attrs) = 0;
+	virtual void OnEndVertex(const std::string & id) = 0;
 
-	void OnStartEdge(int kind, const std::string & id, const std::string & source, const std::string & target, const AttrMap & attrs);
-	void OnEndEdge(int kind, const std::string & id);
+	virtual void OnStartEdge(int kind, const std::string & id, const std::string & source, const std::string & target, const AttrMap & attrs) = 0;
+	virtual void OnEndEdge(int kind, const std::string & id) = 0;
 };
 
 
