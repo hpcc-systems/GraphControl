@@ -13,7 +13,6 @@ set (	SRCS
 	libagraph.cpp
 	libagraph.h
 	libagraphsp.h
-	platform.h
 	)
 
 if (WIN32)

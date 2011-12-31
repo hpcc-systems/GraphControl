@@ -40,7 +40,6 @@
 #endif
 
 #ifdef WIN32
-#include <Platform.h>
 #else
 #include <X11/Xlib.h>
 #include <gtk/gtk.h>

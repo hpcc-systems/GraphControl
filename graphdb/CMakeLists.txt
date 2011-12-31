@@ -39,7 +39,6 @@ set (	SRCS
 	SvgShapes.h
 	DotShapes.cpp
 	DotShapes.h
-	Platform.h
 	targetver.h
 	Unknown.cpp
 	Unknown.h

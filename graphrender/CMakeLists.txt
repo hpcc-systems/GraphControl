@@ -19,7 +19,6 @@ set (	SRCS
 	GraphHotItem.h
 
 	x11_pixel_map.h
-	platform.h
 	)
 
 if (WIN32)
