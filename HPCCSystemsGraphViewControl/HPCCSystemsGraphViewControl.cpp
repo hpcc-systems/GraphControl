@@ -19,6 +19,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  ******************************************************************************/
+#include "precompiled_headers.h"
+
 #include "NpapiTypes.h"
 #include "HPCCSystemsGraphViewControlAPI.h"
 

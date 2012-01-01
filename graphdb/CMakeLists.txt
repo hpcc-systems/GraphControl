@@ -53,16 +53,15 @@ include_directories (
 if (WIN32)
 set (	SRCS 
 	${SRCS}
-	GraphDB.rc 
 	)
 endif ()
 
 ADD_MSVC_PRECOMPILED_HEADER("precompiled_headers.h" "precompiled_headers.cpp" SRCS)
-if (WITH_DYNAMIC_MSVC_RUNTIME)
-	add_library ( graphdb SHARED ${SRCS} )
-else (WITH_DYNAMIC_MSVC_RUNTIME)
+if (WIN32)
 	add_library ( graphdb STATIC ${SRCS} )
-endif (WITH_DYNAMIC_MSVC_RUNTIME)
+else (WIN32)
+	add_library ( graphdb SHARED ${SRCS} )
+endif (WIN32)
 
 ADD_DEFINITIONS( -D_UNICODE -DXML_UNICODEXXX )
 
