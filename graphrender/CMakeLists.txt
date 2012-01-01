@@ -24,7 +24,6 @@ set (	SRCS
 if (WIN32)
 set (	SRCS 
 	${SRCS}
-	GraphRender.rc
 	)
 endif ()
 
@@ -47,11 +46,11 @@ include_directories (
 endif (WIN32)
 
 ADD_MSVC_PRECOMPILED_HEADER("precompiled_headers.h" "precompiled_headers.cpp" SRCS)
-if (WITH_DYNAMIC_MSVC_RUNTIME)
-	add_library ( graphrender SHARED ${SRCS} )
-else (WITH_DYNAMIC_MSVC_RUNTIME)
+if (WIN32)
 	add_library ( graphrender STATIC ${SRCS} )
-endif (WITH_DYNAMIC_MSVC_RUNTIME)
+else (WIN32)
+	add_library ( graphrender SHARED ${SRCS} )
+endif (WIN32)
 
 ADD_DEFINITIONS( -D_UNICODE -DAGG_USE_FREETYPE -DAGG_USE_AGG2D -DAGG2D_USE_FREETYPE )
 

@@ -18,7 +18,6 @@ set (	SRCS
 if (WIN32)
 set (	SRCS 
 	${SRCS}
-	GraphLayout.rc
 	)
 endif ()
 
@@ -92,11 +91,11 @@ add_subdirectory (xdot)
 set_property(TARGET xdot PROPERTY FOLDER "3rdParty/Graphviz")
 
 ADD_MSVC_PRECOMPILED_HEADER("precompiled_headers.h" "precompiled_headers.cpp" SRCS)
-if (WITH_DYNAMIC_MSVC_RUNTIME)
-	add_library ( graphlayout SHARED ${SRCS} )
-else (WITH_DYNAMIC_MSVC_RUNTIME)
+if (WIN32)
 	add_library ( graphlayout STATIC ${SRCS} )
-endif (WITH_DYNAMIC_MSVC_RUNTIME)
+else (WIN32)
+	add_library ( graphlayout SHARED ${SRCS} )
+endif (WIN32)
 
 if (WIN32)
 else (WIN32)

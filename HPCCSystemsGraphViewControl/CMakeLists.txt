@@ -32,9 +32,6 @@ set (	SRCS_OS
 	gen/firebreathWin.rgs
 	gen/firebreathWin.idl
 
-	${FIREBREATH_SOURCE_DIR}/PluginAuto/win/dllmain.cpp
-	${FIREBREATH_SOURCE_DIR}/PluginAuto/win/np_winmain.cpp
-
 	DotViewWin.cpp
 	DotViewWin.h
 	)
@@ -45,8 +42,6 @@ else (WIN32)
 set (	SRCS_OS
 	x11_pixel_map.cpp
 	x11_pixel_map.h
-
-	${FIREBREATH_SOURCE_DIR}/PluginAuto/X11/np_x11main.cpp
 
 	DotViewX11.cpp
 	DotViewX11.h
@@ -71,9 +66,6 @@ else (WIN32)
 include_directories (
 	${GTK_INCLUDE_DIRS}
 	)
-
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -lpthread")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lpthread")
 endif (WIN32)
 
 ADD_DEFINITIONS( -DUNICODE -D_UNICODE )
@@ -126,22 +118,24 @@ add_dependencies (HPCCSystemsGraphViewControl
 target_link_libraries( HPCCSystemsGraphViewControl
 	graphdb
 	graphrender
+	${FIREBREATH_LIBRARIES}
 	PluginAuto
+	${FIREBREATH_LIBRARIES}
+	PluginAuto
+	${Boost_LIBRARIES}
 	)
 
 if (WIN32)
-target_link_libraries( HPCCSystemsGraphViewControl
-	${Boost_LIBRARIES}
-	${FIREBREATH_LIBRARIES}
-	wininet
-	)
+	target_link_libraries( HPCCSystemsGraphViewControl
+		wininet
+		)
 else (WIN32)
-target_link_libraries( HPCCSystemsGraphViewControl
-	${GTK_LIBRARIES}
-	${Boost_THREAD_LIBRARY}
-	${Boost_GRAPH_LIBRARY}
-	${FIREBREATH_LIBRARIES}
-	)
+    set(LIBDL_LIBRARIES dl)
+	target_link_libraries( HPCCSystemsGraphViewControl
+		${GTK_LIBRARIES}
+		${LIBDL_LIBRARIES}
+		${CMAKE_THREAD_LIBS_INIT}
+		)
 endif (WIN32)
 
 if ( WIN32 )	
