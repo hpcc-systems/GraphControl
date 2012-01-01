@@ -18,7 +18,6 @@ set (	SRCS
 if (WIN32)
 set (	SRCS 
 	${SRCS}
-	GraphLayout.rc
 	)
 endif ()
 

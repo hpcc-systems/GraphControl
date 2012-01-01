@@ -6,6 +6,9 @@ set (	SRCS
 	${FIREBREATH_CURRENT_SOURCE_DIR}/null/NullLogger.cpp
 	${FIREBREATH_CURRENT_SOURCE_DIR}/PluginInfo.cpp
 	)
+set (	SRCS_NO_PRECOMPILED_HEADERS
+	../gen/FireBreathWin_i.c
+	)
 
 if (WIN32)
 set (	OS_SRCS 
@@ -24,6 +27,7 @@ set (	OS_SRCS
 	${FIREBREATH_CURRENT_SOURCE_DIR}/X11/np_x11main.cpp
 	${FIREBREATH_CURRENT_SOURCE_DIR}/X11/NpapiPluginX11.cpp
 	${FIREBREATH_CURRENT_SOURCE_DIR}/X11/PluginWindowX11.cpp
+	${FIREBREATH_CURRENT_SOURCE_DIR}/X11/KeyCodesX11.cpp
 	)
 endif (WIN32)
 
@@ -39,7 +43,7 @@ set (SOURCES
 	)
 
 ADD_MSVC_PRECOMPILED_HEADER("precompiled_headers.h" "${FIREBREATH_CURRENT_SOURCE_DIR}/precompiled_headers.cpp" SOURCES)
-add_library ( PluginAuto STATIC ${SOURCES} )
+add_library ( PluginAuto STATIC ${SOURCES} ${SRCS_NO_PRECOMPILED_HEADERS} )
 
 if (WIN32)
     # psapi is needed to get the process info and check if WiX is calling
