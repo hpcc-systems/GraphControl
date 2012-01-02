@@ -3,6 +3,8 @@ cmake_minimum_required (VERSION 2.6)
 
 set ( CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules/" ${CMAKE_MODULE_PATH})
 
+option(WITH_DYNAMIC_MSVC_RUNTIME "Build with dynamic MSVC runtime (/MD)" OFF)
+
 IF ( WIN32 )
     SET ( EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin" CACHE PATH "Location of BIN files" )
     SET ( LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin" CACHE PATH "Location of LIB files" )
@@ -13,28 +15,50 @@ ELSE ( WIN32 )
     SET ( LIBRARY_OUTPUT_PATH "/usr/lib/mozilla/plugins" )
 ENDIF ( WIN32 )
 
-MACRO(ADD_MSVC_PRECOMPILED_HEADER PrecompiledHeader PrecompiledSource SourcesVar)
-  IF(MSVC)
-    GET_FILENAME_COMPONENT(PrecompiledBasename ${PrecompiledHeader} NAME_WE)
-    SET(PrecompiledBinary "$(IntDir)/${PrecompiledBasename}.pch")
-    SET(Sources ${${SourcesVar}})
-
-    SET_SOURCE_FILES_PROPERTIES(${PrecompiledSource}
-    				PROPERTIES COMPILE_FLAGS "/Yc\"${PrecompiledHeader}\" /Fp\"${PrecompiledBinary}\""
-    					OBJECT_OUTPUTS "${PrecompiledBinary}")
-    SET_SOURCE_FILES_PROPERTIES(${Sources}
-    				PROPERTIES COMPILE_FLAGS "/Yu\"${PrecompiledHeader}\" /FI\"${PrecompiledHeader}\" /Fp\"${PrecompiledBinary}\""
-    					OBJECT_DEPENDS "${PrecompiledBinary}") 
-    # Add precompiled header to SourcesVar
-    LIST(APPEND ${SourcesVar} ${PrecompiledSource})
-    LIST(APPEND ${SourcesVar} ${PrecompiledHeader})
-  ENDIF(MSVC)
-ENDMACRO(ADD_MSVC_PRECOMPILED_HEADER)
+MACRO(ADD_MSVC_PRECOMPILED_HEADER PrecompiledHeader PrecompiledSource SourcesVar) 
+  IF(MSVC) 
+    GET_FILENAME_COMPONENT(PrecompiledBasename ${PrecompiledHeader} NAME_WE) 
+    SET(PrecompiledBinary "${CMAKE_CURRENT_BINARY_DIR}/${PrecompiledBasename}.pch") 
+    SET(Sources ${${SourcesVar}}) 
+ 
+    SET_SOURCE_FILES_PROPERTIES(${PrecompiledSource} 
+                                PROPERTIES COMPILE_FLAGS "/Yc\"${PrecompiledHeader}\" /Fp\"${PrecompiledBinary}\"" 
+                                           OBJECT_OUTPUTS "${PrecompiledBinary}") 
+    SET_SOURCE_FILES_PROPERTIES(${Sources} 
+                                PROPERTIES COMPILE_FLAGS "/Yu\"${PrecompiledBinary}\" /FI\"${PrecompiledBinary}\" /Fp\"${PrecompiledBinary}\"" 
+                                           OBJECT_DEPENDS "${PrecompiledBinary}")   
+    # Add precompiled header to SourcesVar 
+    LIST(APPEND ${SourcesVar} ${PrecompiledSource}) 
+  ENDIF(MSVC) 
+ENDMACRO(ADD_MSVC_PRECOMPILED_HEADER) 
 
 include ( "${CMAKE_SOURCE_DIR}/cmake/Modules/Externals.cmake" )
 
 if (WIN32)
-	ADD_DEFINITIONS(-D_CRT_SECURE_NO_WARNINGS -FR -DFB_WIN=1 -DXP_WIN=1)
+	ADD_DEFINITIONS(-DFB_WIN=1 -DXP_WIN=1)
+    if (WITH_DYNAMIC_MSVC_RUNTIME)
+        message(STATUS "Building with dynamic MSVC runtime")
+	else (WITH_DYNAMIC_MSVC_RUNTIME)
+        message(STATUS "Building with static MSVC runtime")
+		ADD_DEFINITIONS( -DSTATIC_LIB )
+	endif (WITH_DYNAMIC_MSVC_RUNTIME)
+    foreach(flag_var
+            CMAKE_CXX_FLAGS CMAKE_CXX_FLAGS_DEBUG CMAKE_CXX_FLAGS_RELEASE
+            CMAKE_CXX_FLAGS_MINSIZEREL CMAKE_CXX_FLAGS_RELWITHDEBINFO
+            CMAKE_C_FLAGS CMAKE_C_FLAGS_DEBUG CMAKE_C_FLAGS_RELEASE
+            CMAKE_C_FLAGS_MINSIZEREL CMAKE_C_FLAGS_RELWITHDEBINFO)
+	    if (WITH_DYNAMIC_MSVC_RUNTIME)
+		    if(${flag_var} MATCHES "/MT")
+			    string(REGEX REPLACE "/MT" "/MD" ${flag_var} "${${flag_var}}")
+			endif()
+		else()
+		    if(${flag_var} MATCHES "/MD")
+			    string(REGEX REPLACE "/MD" "/MT" ${flag_var} "${${flag_var}}")
+			endif()
+		endif()
+    endforeach(flag_var)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /D BOOST_ALL_NO_LIB=1")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /D BOOST_ALL_NO_LIB=1")
 ELSE (WIN32)
 	ADD_DEFINITIONS( -DFB_X11=1 -DXP_UNIX=1)
 	find_package(PkgConfig)
@@ -60,8 +84,9 @@ SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
 add_subdirectory (agg)
 set_property(TARGET agg PROPERTY FOLDER "3rdParty")
 if ( WIN32 )
-add_subdirectory (expat)
-set_property(TARGET expat PROPERTY FOLDER "3rdParty")
+	ADD_DEFINITIONS( -DXML_STATIC )
+	add_subdirectory (expat)
+	set_property(TARGET expat PROPERTY FOLDER "3rdParty")
 endif ( WIN32 )
 
 add_subdirectory (graphlayout)

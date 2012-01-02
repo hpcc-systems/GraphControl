@@ -1,11 +1,24 @@
-/**********************************************************\
-
-  Auto-generated HPCCSystemsGraphViewControl.cpp
-
-  This file contains the auto-generated main plugin object
-  implementation for the HPCCSystemsGraphViewControl project
-
-\**********************************************************/
+/*******************************************************************************
+ * Copyright (C) 2011 HPCC Systems.
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ ******************************************************************************/
 #ifndef H_HPCCSystemsGraphViewControlPLUGIN
 #define H_HPCCSystemsGraphViewControlPLUGIN
 
@@ -26,6 +39,7 @@
 #include "DotViewX11.h"
 #endif
 
+FB_FORWARD_PTR(HPCCSystemsGraphViewControl)
 class HPCCSystemsGraphViewControl : public FB::PluginCore
 {
 protected:
@@ -43,6 +57,10 @@ public:
     void onPluginReady();
     void shutdown();
     virtual FB::JSAPIPtr createJSAPI();
+    // If you want your plugin to always be windowless, set this to true
+    // If you want your plugin to be optionally windowless based on the
+    // value of the "windowless" param tag, remove this method or return
+    // FB::PluginCore::isWindowless()
     virtual bool isWindowless() { return false; }
 
     BEGIN_PLUGIN_EVENT_MAP()
@@ -81,8 +99,6 @@ public:
 	virtual bool onWindowDetached(FB::DetachedEvent *evt, FB::PluginWindow *);
 	/** END EVENTDEF -- DON'T CHANGE THIS LINE **/
 };
-typedef boost::shared_ptr<HPCCSystemsGraphViewControl> HPCCSystemsGraphViewControlPtr;
-typedef boost::weak_ptr<HPCCSystemsGraphViewControl> HPCCSystemsGraphViewControlWeakPtr;
 
 
 #endif

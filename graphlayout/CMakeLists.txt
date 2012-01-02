@@ -8,16 +8,16 @@
 project( graphlayout )
 
 set (	SRCS
+	precompiled_headers.h
+
 	libagraph.cpp
 	libagraph.h
 	libagraphsp.h
-	platform.h
 	)
 
 if (WIN32)
 set (	SRCS 
 	${SRCS}
-	GraphLayout.rc
 	)
 endif ()
 
@@ -25,26 +25,25 @@ include_directories (
 	${GRAPHVIZSRC_DIRS}/lib/graph
 	${GRAPHVIZSRC_DIRS}/lib/pathplan
 	${GRAPHVIZSRC_DIRS}/lib/common
+	${GRAPHVIZSRC_DIRS}/lib/agraph
 #	${GRAPHVIZSRC_DIRS}/lib/cgraph
-	${GRAPHVIZSRC_DIRS}/lib/pathplan
 	${GRAPHVIZSRC_DIRS}/lib/gvc
 	${GRAPHVIZSRC_DIRS}/lib/dotgen
 	${GRAPHVIZSRC_DIRS}/lib/neatogen
 	${GRAPHVIZSRC_DIRS}/lib/fdpgen
 	${GRAPHVIZSRC_DIRS}/lib/sfdpgen
-	${GRAPHVIZSRC_DIRS}/lib/graph
 	${GRAPHVIZSRC_DIRS}/lib/cdt
 	${GRAPHVIZSRC_DIRS}/lib/twopigen
 	${GRAPHVIZSRC_DIRS}/lib/circogen
 	${GRAPHVIZSRC_DIRS}/lib/sparse
 	${GRAPHVIZSRC_DIRS}/lib/xdot
 	${GRAPHVIZSRC_DIRS}/lib/gd
-	${GRAPHVIZSRC_DIRS}/lib/sparse
 	${GRAPHVIZSRC_DIRS}
+	${Boost_INCLUDE_DIRS}
 	)
 
 if (WIN32)
-	ADD_DEFINITIONS( -D_USRDLL -DLIBAGRAPH_EXPORTS -DHAVE_CONFIG_H -DHAVE_SETMODE -DMSWIN32)
+	ADD_DEFINITIONS( -DLIBAGRAPH_EXPORTS -DHAVE_CONFIG_H -DHAVE_SETMODE -DMSWIN32)
 #	ADD_DEFINITIONS( -DHAVE_CONFIG_H -DHAVE_SETMODE -DMSWIN32)
 else ()
 	ADD_DEFINITIONS( -DHAVE_CONFIG_H -DHAVE_SETMODE )
@@ -91,7 +90,12 @@ set_property(TARGET sparse PROPERTY FOLDER "3rdParty/Graphviz")
 add_subdirectory (xdot)
 set_property(TARGET xdot PROPERTY FOLDER "3rdParty/Graphviz")
 
-add_library ( graphlayout SHARED ${SRCS} )
+ADD_MSVC_PRECOMPILED_HEADER("precompiled_headers.h" "precompiled_headers.cpp" SRCS)
+if (WIN32)
+	add_library ( graphlayout STATIC ${SRCS} )
+else (WIN32)
+	add_library ( graphlayout SHARED ${SRCS} )
+endif (WIN32)
 
 if (WIN32)
 else (WIN32)

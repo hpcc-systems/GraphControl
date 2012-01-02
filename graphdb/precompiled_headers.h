@@ -19,78 +19,78 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  ******************************************************************************/
-#include "precompiled_headers.h"
+#pragma once
 
-#include "GraphBuffer.h"
+#pragma warning(disable:4251)
+//#pragma warning(disable:4275)
+#pragma warning(disable:4503)
+//#pragma warning(disable:4127)
+
+//  Leak Checking ---
+#if defined(_DEBUG)
+#define _CRTDBG_MAP_ALLOC
+#endif
 
 #ifdef WIN32
-#include <platform/win32/agg_win32_bmp.h>
-#else
-#include "x11_pixel_map.h"
+#include "targetver.h"
 #endif
 
-namespace ln
-{
-class CGraphBuffer : public IGraphBuffer, public CUnknown
-{
-protected:
-	agg::pixel_map m_pixelmap;
-
-public:
-	BEGIN_CUNKNOWN
-	END_CUNKNOWN
-
-	CGraphBuffer()
-	{
-	}
-
-	virtual void Resize(unsigned int Width, unsigned int Height)
-	{
-		if (!m_pixelmap.buf() || m_pixelmap.width() != Width || m_pixelmap.height() != Height)
-		{
-			m_pixelmap.create(Width, Height, agg::org_color32);
-		}
-	}
-
-	unsigned int Width() const
-	{
-		return m_pixelmap.width();
-	}
-
-	unsigned int Height() const
-	{
-		return m_pixelmap.height();
-	}
-
-    unsigned char* GetBuffer()
-	{
-		return m_pixelmap.buf();
-	}
-
-	virtual int Stride() const
-	{
-#if defined WIN32
-		return -m_pixelmap.stride();
-#else
-		return m_pixelmap.stride();
-#endif
-	}
-
+#include <stdio.h>
 #ifdef WIN32
-	void Draw(HDC h_dc, const RECT* device_rect=0, const RECT* bmp_rect=0) const
-	{
-		m_pixelmap.draw(h_dc, device_rect, bmp_rect);
-	}
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#undef WIN32_LEAN_AND_MEAN
+#include <tchar.h>
 #else
-    void Draw(GtkWidget * widget, int dest_x, int dest_y) const
-    {
-        m_pixelmap.draw(widget, dest_x, dest_y);
-    }
+#define TCHAR wchar_t
+#define _T(x) L ## x
+#include <inttypes.h>
+#include <string.h>
 #endif
-};
 
-GRAPHRENDER_API IGraphBuffer * CreateGraphBuffer(int width, int height)
+#include <string>
+#include <map>
+#include <set>
+#include <stack>
+#include <vector>
+#include <iostream>
+#include <sstream>
+namespace std
 {
-	return new CGraphBuffer();
+#ifdef _UNICODE
+	#define	_tstring wstring
+	#define	_tstringstream wstringstream
+#else
+	#define	_tstring string
+	#define	_tstringstream stringstream
+#endif
 }
+
+#include <exception>
+
+#include <boost/assert.hpp>
+#include <boost/smart_ptr/detail/atomic_count.hpp>
+#include <boost/lexical_cast.hpp>
+#include <boost/tokenizer.hpp>
+#include <boost/thread.hpp>
+#include <boost/algorithm/string.hpp>
+#include <boost/signals2.hpp>
+#include <boost/format.hpp> 
+namespace boost
+{
+#ifdef _UNICODE
+	#define _tformat wformat
+#else
+	#define _tformat format
+#endif
 }
+
+#include <string.h>
+
+#if defined(_DEBUGXXX)
+# include <stdlib.h>
+# include <crtdbg.h>
+# define GJS_DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
+# define new GJS_DEBUG_NEW
+#endif
+

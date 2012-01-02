@@ -1,5 +1,5 @@
 # Get required libraries
-sudo apt-get install libboost-dev libboost-thread-dev libfreetype6-dev libexpat1-dev libgtk2.0-dev
+sudo apt-get install libboost-dev libboost-system-dev libboost-thread-dev libboost-graph-dev libfreetype6-dev libexpat1-dev libgtk2.0-dev
 
 # Get git + svn support if needed
 sudo apt-get install cmake git git-svn 
@@ -11,13 +11,13 @@ cd ~/hpcc_git
 # Get Sources
 git clone https://GordonSmith@github.com/GordonSmith/GraphControl.git
 cd GraphControl
-git checkout GraphControl
+git checkout FB_1-6
 cd ..
 
 # Get Firebreath library
-git clone https://GordonSmith@github.com/GordonSmith/FireBreath-1.git
-cd FireBreath-1
-git checkout firebreath-1.5
+git clone https://github.com/firebreath/FireBreath.git
+cd FireBreath
+git checkout firebreath-1.6
 cd ..
 
 # Get unrestricted (2.4) agg libraries
@@ -26,6 +26,7 @@ git svn clone https://agg.svn.sourceforge.net/svnroot/agg
 # Get AT&T Graphviz libraries
 wget http://www.graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.26.3.tar.gz
 tar xf graphviz-2.26.3.tar.gz
+rm graphviz-2.26.3.tar.gz
 cd graphviz-2.26.3
 ./configure
 # edit config.h and comment out the following line:
@@ -36,13 +37,19 @@ cd ..
 mkdir build
 cd build
 
+# Create build folder for FireBreath.
+mkdir FireBreath
+cd FireBreath
+
+# Generate FireBreath make files and build.
+cmake -DWITH_SYSTEM_BOOST=1 -DFB_RELEASE=1  ../../FireBreath
+make
+
 # Create build folder for GraphControl.
 mkdir GraphControl
 cd GraphControl
 
-# Generate make files.
-cmake -DGRAPHVIZSRC_DIR=../../graphviz-2.26.3/ -DAGGSRC_DIR=../../agg/ -DFIREBREATHSRC_DIR=../../FireBreath-1/  ../../GraphControl/
-
-# make graphcontrol directly into /usr/lib/mozilla/plugins
+# Generate GraphControl make files and build directly into mozilla plugins folder (for development).
+cmake -DGRAPHVIZSRC_DIR=../../graphviz-2.26.3/ -DAGGSRC_DIR=../../agg/ -DFIREBREATH_DIR=../../FireBreath/ -DFIREBREATH_BUILD_DIR=../FireBreath/ ../../GraphControl/
 sudo make
 

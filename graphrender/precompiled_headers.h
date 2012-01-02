@@ -19,44 +19,46 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  ******************************************************************************/
-#include "precompiled_headers.h"
+#pragma once
 
-#include "Unknown.h"
+#pragma warning(disable:4251)
+//#pragma warning(disable:4275)
+#pragma warning(disable:4503)
+//#pragma warning(disable:4127)
 
-#define DESTRUCTOR_REFCOUNT 1042
+//  Leak Checking ---
+#if defined(_DEBUG)
+#define _CRTDBG_MAP_ALLOC
+#endif
 
-namespace ln
-{
-CUnknown::CUnknown() : m_refCount(0)
-{
-}
+#ifdef WIN32
+#include "targetver.h"
+#endif
 
-CUnknown::CUnknown(const CUnknown & other) : m_refCount(0)
-{
-}
+#include <stdio.h>
+#ifdef WIN32
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#undef WIN32_LEAN_AND_MEAN
+#include <tchar.h>
+#else
+#define TCHAR wchar_t
+#define _T(x) L ## x
+#include <inttypes.h>
+#include <string.h>
+#endif
 
-CUnknown & CUnknown::operator=(const CUnknown & other)
-{
-    return *this;
-}
+#include <set>
+#include <map>
+#include <vector>
 
-CUnknown::~CUnknown()
-{
-}
+#include <boost/assert.hpp>
+#include <boost/smart_ptr/detail/atomic_count.hpp>
 
-unsigned long CUnknown::AddRef() throw()
-{
-	return ++m_refCount;
-}
+#if defined(_DEBUGXXX)
+# include <stdlib.h>
+# include <crtdbg.h>
+# define GJS_DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
+# define new GJS_DEBUG_NEW
+#endif
 
-unsigned long CUnknown::Release() throw()
-{
-	if (!--m_refCount)
-	{
-		delete this;
-		return 0;
-	}
-	assert(m_refCount > 0);
-	return m_refCount;
-}
-}

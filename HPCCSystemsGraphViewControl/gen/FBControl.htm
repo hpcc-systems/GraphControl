@@ -7,7 +7,22 @@
     <style type="text/css">
         #TextXGMML
         {
-            width: 100%;
+            width: 45%;
+            height: 257px;
+        }
+        #TextDotBefore
+        {
+            width: 45%;
+            height: 257px;
+        }
+        #TextDotAfter
+        {
+            width: 45%;
+            height: 257px;
+        }
+        #TextSvgAfter
+        {
+            width: 45%;
             height: 257px;
         }
         #svg
@@ -45,7 +60,7 @@
         addEvent(pluginLHS(), 'MouseDoubleClick', mouseDoubleClick);
         addEvent(pluginLHS(), 'SelectionChanged', selectionChanged);
         var version = pluginLHS().version;
-		
+
         addEvent(pluginRHS(), 'LayoutFinished', layoutFinishedRHS);
         addEvent(pluginRHS(), 'SelectionChanged', selectionChangedRHS);
     }
@@ -53,6 +68,8 @@
     function layoutFinished() {
         pluginLHS().setMessage('');
         pluginLHS().centerOnItem(0, true);
+        document.getElementById('TextDotAfter').value = pluginLHS().getDOT();
+        document.getElementById('TextSvgAfter').value = pluginLHS().getSVG();
     }
 
     function layoutFinishedRHS() {
@@ -87,7 +104,8 @@
 
     function DisplaySelectedProperties(items) {
         pluginRHS().setMessage("Loading Data...");
-        pluginRHS().loadXGMML(pluginLHS().getLocalisedXGMML(items));
+        //pluginRHS().loadXGMML(pluginLHS().getLocalisedXGMML(items));
+        //document.getElementById('TextDotAfter').value = pluginLHS().getLocalisedXGMML(items);
         pluginRHS().setMessage("Performing Layout...");
         var selection = pluginLHS().getSelectionAsGlobalID();
         pluginRHS().setSelectedAsGlobalID(selection);
@@ -130,6 +148,13 @@
         pluginLHS().startLayout(document.getElementById('SelectLayout').value);
     }
 
+    function loadDOT() {
+        pluginLHS().setMessage("Loading Data...");
+        pluginLHS().loadDOT(document.getElementById('TextDotBefore').value);
+        pluginLHS().setMessage("Performing Layout...");
+        pluginLHS().startLayout(document.getElementById('SelectLayout').value);
+    }
+
     function mergeXGMML() {
         pluginLHS().setMessage("Merging Data...");
         pluginLHS().mergeXGMML(document.getElementById('TextXGMML').value);
@@ -158,13 +183,16 @@
     <table height="80%" width="100%" border="0" cellspacing="5">
         <tr>
             <td width="80%" valign="top">
-                <object id="pluginLHS" type="application/x-hpccsystemsgraphviewcontrol" standby="Loading HPCC Systems GraphView Control..." width="100%" height="100%">
+                <object id="pluginLHS" type="application/x-hpccsystemsgraphviewcontrol" standby="Loading HPCC Systems GraphView Control..."
+                    width="100%" height="100%">
                 </object>
             </td>
             <td width="20%" valign="top">
-                <object id="pluginRHS" type="application/x-hpccsystemsgraphviewcontrol" standby="Loading HPCC Systems  GraphView Control..." width="100%" height="50%">
+                <object id="pluginRHS" type="application/x-hpccsystemsgraphviewcontrol" standby="Loading HPCC Systems  GraphView Control..."
+                    width="100%" height="50%">
                 </object>
-                <p id="props">Props</p>
+                <p id="props">
+                    Props</p>
             </td>
         </tr>
     </table>
@@ -172,21 +200,22 @@
     <input id="Clear" type="button" value="Clear" onclick="javascript:clearXGMML()" />&nbsp;
     <input id="LoadXGMML" type="button" value="Load XGMML" onclick="javascript:loadXGMML()" />&nbsp;
     <input id="MergeXGMML" type="button" value="Merge XGMML" onclick="javascript:mergeXGMML()" />&nbsp;
+    <input id="LoadDOT" type="button" value="Load DOT" onclick="javascript:loadDOT()" />&nbsp;
     Scale:&nbsp;
     <input id="TextScale" type="text" value="75" />
     <input id="ButtonSetScale" type="button" onclick="javascript:setScale()" value="Set" />
     <select id="SelectLayout" onchange="return SelectLayout_onclick()">
-        <option>dot</option>
-        <option>neato</option>
-        <option>twopi</option>
-        <option>fdp</option>
-        <option>sfdp</option>
-        <option>circo</option>
-        <option>patchwork</option>
-        <option>osage</option>
-        <option>nop</option>
-        <option>nop1</option>
-        <option>nop2</option>
+        <option value="dot">dot</option>
+        <option value="neato">neato</option>
+        <option value="twopi">twopi</option>
+        <option value="fdp">fdp</option>
+        <option value="sfdp">sfdp</option>
+        <option value="circo">circo</option>
+        <option value="patchwork">patchwork</option>
+        <option value="osage">osage</option>
+        <option value="nop">nop</option>
+        <option value="nop1">nop1</option>
+        <option value="nop2">nop2</option>
     </select>&nbsp;
     <input id="TextFind" type="text" value="write" />
     <input id="ButtonFind" type="button" onclick="javascript:find()" value="Find" />
@@ -211,5 +240,28 @@
     integer88888 pos;&amp;#10; END);&amp;#10;&quot;/&gt; &lt;att name=&quot;helper&quot;
     value=&quot;f94D&quot;/&gt; &lt;/node&gt; &lt;/node&gt; &lt;edge id=&quot;3&quot;
     source=&quot;23449&quot; target=&quot;13450&quot;/&gt; &lt;/graph&gt; &lt;/xgmml&gt;
+    </textarea>
+    <textarea id="TextDotBefore" name="dotBefore">
+digraph foo {
+edge [weight="10"];
+
+0 -&gt; 1 [weight="3.14159"];
+1 -&gt; foo [weight="2.71828"];
+foo -&gt; bar;
+bar -&gt; 1;
+
+subgraph cluster1 {
+node [style=filled color=white];
+b0 -&gt; b1 -&gt; b2 -&gt; b3;
+label = "process #2";
+bgcolor = lightgrey
+}
+}
+    </textarea>
+    <textarea id="TextSvgAfter" name="svgAfter">
+    </textarea>
+    <textarea id="TextDotAfter" name="dotAfter">
+    </textarea>
+    <br />
 </body>
 </html>
