@@ -9,6 +9,8 @@
 project( graphrender )
 
 set (	SRCS
+	precompiled_headers.h
+
 	GraphRender.cpp
 	GraphRender.h
 	GraphBuffer.cpp
@@ -17,13 +19,11 @@ set (	SRCS
 	GraphHotItem.h
 
 	x11_pixel_map.h
-	platform.h
 	)
 
 if (WIN32)
 set (	SRCS 
 	${SRCS}
-	GraphRender.rc
 	)
 endif ()
 
@@ -33,6 +33,7 @@ include_directories (
 	../agg
 	${AGGSRC_DIRS}/agg-2.4/include
 	${AGGSRC_DIRS}/agg-2.4/font_freetype
+	${Boost_INCLUDE_DIRS}
 	)
 
 if (WIN32)
@@ -44,17 +45,17 @@ include_directories (
 	)
 endif (WIN32)
 
-if (Boost_FOUND)
-	include_directories ( ${Boost_INCLUDE_DIRS}	)
-	link_directories ( ${Boost_LIBRARY_DIRS} )
-endif (Boost_FOUND)
-
-add_library ( graphrender SHARED ${SRCS} )
+ADD_MSVC_PRECOMPILED_HEADER("precompiled_headers.h" "precompiled_headers.cpp" SRCS)
+if (WIN32)
+	add_library ( graphrender STATIC ${SRCS} )
+else (WIN32)
+	add_library ( graphrender SHARED ${SRCS} )
+endif (WIN32)
 
 ADD_DEFINITIONS( -D_UNICODE -DAGG_USE_FREETYPE -DAGG_USE_AGG2D -DAGG2D_USE_FREETYPE )
 
 if (WIN32)
-ADD_DEFINITIONS( -D_USRDLL -DGRAPHRENDER_EXPORTS )
+ADD_DEFINITIONS( -DGRAPHRENDER_EXPORTS )
 else ()
 endif ()
 
@@ -66,6 +67,7 @@ add_dependencies ( graphrender
 target_link_libraries ( graphrender 
 	graphdb 
 	agg
+	#${Boost_LIBRARIES}
 	)
 
 if ( WIN32 )	

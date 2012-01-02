@@ -8,6 +8,7 @@
 project( graphdb ) 
 
 set (	SRCS 
+	precompiled_headers.h
 	GraphCluster.cpp
 	GraphCluster.h
 	GraphDB.cpp
@@ -32,48 +33,52 @@ set (	SRCS
 	XgmmlParser.h
 	XmlParser.cpp
 	XmlParser.h
+	DotParser.cpp
+	DotParser.h
 	SvgShapes.cpp
 	SvgShapes.h
-	Platform.h
+	DotShapes.cpp
+	DotShapes.h
 	targetver.h
 	Unknown.cpp
 	Unknown.h
 	)
 
-	include_directories ( 
+include_directories ( 
 	../graphlayout
 	${EXPAT_INCLUDE_DIRS}/lib
+	${Boost_INCLUDE_DIRS}
 	)
 
 if (WIN32)
 set (	SRCS 
 	${SRCS}
-	GraphDB.rc 
 	)
 endif ()
 
-if (Boost_FOUND)
-	include_directories ( ${Boost_INCLUDE_DIRS}	)
-	link_directories ( ${Boost_LIBRARY_DIRS} )
-endif (Boost_FOUND)
-
-add_library ( graphdb SHARED ${SRCS} )
+ADD_MSVC_PRECOMPILED_HEADER("precompiled_headers.h" "precompiled_headers.cpp" SRCS)
+if (WIN32)
+	add_library ( graphdb STATIC ${SRCS} )
+else (WIN32)
+	add_library ( graphdb SHARED ${SRCS} )
+endif (WIN32)
 
 ADD_DEFINITIONS( -D_UNICODE -DXML_UNICODEXXX )
 
 if (WIN32)
-ADD_DEFINITIONS( -D_USRDLL -DGRAPHDB_EXPORTS )
+ADD_DEFINITIONS( -DGRAPHDB_EXPORTS )
 else ()
 endif ()
 
 add_dependencies ( graphdb 
 	graphlayout 
-	expat 
+	#expat 
 	)
 
 target_link_libraries ( graphdb 
 	graphlayout 
 	expat 
+	${Boost_LIBRARIES}
 	)
 	
 if ( WIN32 )	

@@ -1,12 +1,31 @@
-#include "Platform.h"
+/*******************************************************************************
+ * Copyright (C) 2011 HPCC Systems.
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ ******************************************************************************/
+#include "precompiled_headers.h"
 
 #include "JSObject.h"
 #include "variant_list.h"
 #include "DOM/Document.h"
 
 #include "HPCCSystemsGraphViewControlAPI.h"
-#include <boost/lexical_cast.hpp>
-#include <boost/algorithm/string.hpp>
 #include <XgmmlParser.h>
 
 #define CURRENT_VERSION 20110705
@@ -33,6 +52,7 @@ HPCCSystemsGraphViewControlAPI::HPCCSystemsGraphViewControlAPI(const HPCCSystems
 	registerMethod("clear", make_method(this, &HPCCSystemsGraphViewControlAPI::clear));
 	registerMethod("loadXGMML", make_method(this, &HPCCSystemsGraphViewControlAPI::loadXGMML));
 	registerMethod("mergeXGMML", make_method(this, &HPCCSystemsGraphViewControlAPI::mergeXGMML));
+	registerMethod("loadDOT", make_method(this, &HPCCSystemsGraphViewControlAPI::loadDOT));
 	registerMethod("startLayout", make_method(this, &HPCCSystemsGraphViewControlAPI::startLayout));
 	registerMethod("setScale", make_method(this, &HPCCSystemsGraphViewControlAPI::setScale));
 	registerMethod("getScale", make_method(this, &HPCCSystemsGraphViewControlAPI::getScale));
@@ -56,6 +76,7 @@ HPCCSystemsGraphViewControlAPI::HPCCSystemsGraphViewControlAPI(const HPCCSystems
 	registerMethod("loadXML", make_method(this, &HPCCSystemsGraphViewControlAPI::loadXML));
 	registerMethod("loadXML2", make_method(this, &HPCCSystemsGraphViewControlAPI::loadXML2));
 	registerMethod("getSVG", make_method(this, &HPCCSystemsGraphViewControlAPI::getSVG));
+	registerMethod("getDOT", make_method(this, &HPCCSystemsGraphViewControlAPI::getDOT));
 	registerMethod("getLocalisedXGMML", make_method(this, &HPCCSystemsGraphViewControlAPI::getLocalisedXGMML));
 
     registerMethod("testEvent", make_method(this, &HPCCSystemsGraphViewControlAPI::testEvent));
@@ -142,6 +163,18 @@ bool HPCCSystemsGraphViewControlAPI::loadXGMML(const std::string& xgmml)
 bool HPCCSystemsGraphViewControlAPI::mergeXGMML(const std::string& xgmml)
 {
 	m_callback->MergeXGMML(xgmml);
+	return true;
+}
+
+bool HPCCSystemsGraphViewControlAPI::loadDOT(const std::string& dot)
+{
+    assert(m_callback != NULL);
+	if (dot.empty())
+	{
+		m_callback->Clear();
+		return true;
+	}
+	m_callback->LoadDOT(dot);
 	return true;
 }
 
@@ -315,6 +348,12 @@ const std::string HPCCSystemsGraphViewControlAPI::getSVG()
 	boost::iterator_range<std::string::iterator> result = boost::algorithm::find_first(svg, "<svg");
 	std::string retVal(result.begin(), svg.end());
 	return retVal;
+}
+
+const std::string HPCCSystemsGraphViewControlAPI::getDOT()
+{
+	std::string dot = m_callback->GetDOT();
+	return dot;
 }
 
 const std::string HPCCSystemsGraphViewControlAPI::getLocalisedXGMML(const std::vector<int> & items)
