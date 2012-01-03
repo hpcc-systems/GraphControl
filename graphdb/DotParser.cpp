@@ -86,7 +86,7 @@ bgcolor = lightgrey
 }
 
 */
-namespace ln
+namespace hpcc
 {
 typedef std::map<std::string, CDotEdgePtr> EdgeStructSet;
 typedef std::map<std::string, CDotVertexPtr> VertexStructSet;

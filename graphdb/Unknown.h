@@ -38,18 +38,18 @@
 #endif
 
 #ifdef _MSC_VER
-#ifndef interface
-#define interface    struct __declspec(novtable)
+#ifndef hpcc_interface
+#define hpcc_interface    struct __declspec(novtable)
 #endif
 #else
-#ifndef interface
-#define interface    struct
+#ifndef hpcc_interface
+#define hpcc_interface    struct
 #endif
 #endif
 
-namespace ln
+namespace hpcc
 {
-interface GRAPHDB_API IUnknown
+hpcc_interface GRAPHDB_API IUnknown
 {
 	virtual unsigned long AddRef() = 0;
 	virtual unsigned long Release() = 0;
@@ -91,22 +91,22 @@ public:
 	}
 	CUnknownPtr(T * c)
 	{
-		ln::Link(c);
+		hpcc::Link(c);
 		m_T = c;
 	}
 	CUnknownPtr(const CUnknownPtr<T>& c)
 	{
-		ln::Link(&*c);
+		hpcc::Link(&*c);
 		m_T = &*c;
 	}
 	~CUnknownPtr()
 	{
-		ln::Release(m_T);
+		hpcc::Release(m_T);
 	}
 	inline CUnknownPtr<T>& operator = (const CUnknownPtr<T>& c)
 	{
-		ln::Link(&*c);
-		ln::Release(m_T);
+		hpcc::Link(&*c);
+		hpcc::Release(m_T);
 		m_T = &*c;
 		return *this;
 	}
@@ -121,7 +121,7 @@ public:
 	{
 		if ( m_T != &*c )
 		{
-			ln::Release(m_T);
+			hpcc::Release(m_T);
 			m_T = &*c;
 		}
 	}

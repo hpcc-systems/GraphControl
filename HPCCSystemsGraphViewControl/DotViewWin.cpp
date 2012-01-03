@@ -63,7 +63,7 @@ void CDotView::SetScrollSize(int w, int h, bool redraw)
 	base::SetScrollSize(w, h, redraw);
 }
 
-bool CDotView::GetClientRectangle(ln::RectD & rect)
+bool CDotView::GetClientRectangle(hpcc::RectD & rect)
 {
 	CRect clientRect;
 	HRESULT hResult = base::GetClientRect(clientRect);
@@ -82,12 +82,12 @@ void CDotView::DoPaint(CDCHandle dc)
 {
 	CRect drc;
 	dc.GetClipBox(drc);
-	ln::RectI drcd(drc.left, drc.top, drc.right, drc.bottom);
+	hpcc::RectI drcd(drc.left, drc.top, drc.right, drc.bottom);
 
 	m_buffer->Resize(drc.Width(), drc.Height());
 	m_gr->DoRender(drcd, true);
 
-	ln::RectD winRect(drc.left, drc.top, drc.Width(), drc.Height());
+	hpcc::RectD winRect(drc.left, drc.top, drc.Width(), drc.Height());
 	winRect = m_gr->ScreenToWorld(winRect);
 
 	m_buffer->Draw(dc, drc);
@@ -119,8 +119,8 @@ void CDotView::OnLButtonUp(UINT nFlags, CPoint point)
 	}
 	m_mouseDown = MOUSEDOWN_UNKNOWN;
 	point.Offset(m_ptOffset);
-	ln::IGraphItem * selectedItem = m_gr->GetItemAt(point.x, point.y);
-	if (ln::IGraph * graph = dynamic_cast<ln::IGraph *>(selectedItem))
+	hpcc::IGraphItem * selectedItem = m_gr->GetItemAt(point.x, point.y);
+	if (hpcc::IGraph * graph = dynamic_cast<hpcc::IGraph *>(selectedItem))
 		return;
 
 	bool selChanged = false;
@@ -151,10 +151,10 @@ void CDotView::OnLButtonDblClk(UINT nFlags, CPoint point)
 {
 	m_mouseDown = MOUSEDOWN_DBLCLK;
 	point.Offset(m_ptOffset);
-	ln::PointD worldDblClk(point.x, point.y);
+	hpcc::PointD worldDblClk(point.x, point.y);
 	worldDblClk = m_gr->ScreenToWorld(worldDblClk);
 
-	ln::IGraphItem * item = m_gr->GetItemAt(worldDblClk.x, worldDblClk.y, true);
+	hpcc::IGraphItem * item = m_gr->GetItemAt(worldDblClk.x, worldDblClk.y, true);
 	m_api->fireMouseDoubleClicked(item ? item->GetID() : 0);
 }
 
@@ -165,7 +165,7 @@ bool CDotView::DoMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 		ScreenToClient(&pt);
 		CPoint point = pt;
 		point.Offset(m_ptOffset);
-		ln::PointD worldDblClk(point.x, point.y);
+		hpcc::PointD worldDblClk(point.x, point.y);
 		worldDblClk = m_gr->ScreenToWorld(worldDblClk);
 
 		double scale = m_gr->GetScale();
@@ -213,14 +213,14 @@ LRESULT CDotView::OnLayoutComplete(UINT /*uMsg*/, WPARAM wParam, LPARAM lParam)
 
 void CDotView::InvalidateSelection()
 {
-	ln::RectD invalidateRect;
+	hpcc::RectD invalidateRect;
 	if (m_selection->GetInvalidateRect(invalidateRect))
 		InvalidateWorldRect(invalidateRect);
 	if (m_selection->GetPrevInvalidateRect(invalidateRect))
 		InvalidateWorldRect(invalidateRect);
 }
 
-void CDotView::InvalidateScreenRect(const ln::RectD & screenRect)
+void CDotView::InvalidateScreenRect(const hpcc::RectD & screenRect)
 {
 	CRect r;
 	r.left = (LONG)screenRect.GetLeft() - GetScrollOffsetX();
@@ -230,7 +230,7 @@ void CDotView::InvalidateScreenRect(const ln::RectD & screenRect)
 	InvalidateRect(r);
 }
 
-void CDotView::InvalidateWorldRect(const ln::RectD & worldRect)
+void CDotView::InvalidateWorldRect(const hpcc::RectD & worldRect)
 {
 	InvalidateScreenRect(m_gr->WorldToScreen(worldRect));
 }
@@ -254,12 +254,12 @@ void CDotView::OnMouseMove(UINT nFlags, CPoint point)
 	default:
 		{
 			point.Offset(m_ptOffset);
-			ln::IGraphItem * hotItem = NULL;//m_gro->GetItemAt(point.x, point.y);
+			hpcc::IGraphItem * hotItem = NULL;//m_gro->GetItemAt(point.x, point.y);
 			if (!hotItem)
 				hotItem = m_gr->GetItemAt(point.x, point.y);
 			if (m_hotItem->Set(hotItem))
 			{
-				ln::RectD invalidateRect;
+				hpcc::RectD invalidateRect;
 				if (m_hotItem->GetInvalidateRect(invalidateRect))
 					InvalidateWorldRect(invalidateRect);
 				if (m_hotItem->GetPrevInvalidateRect(invalidateRect))

@@ -16,16 +16,19 @@ include_directories (
 	../agg
 	${AGGSRC_DIRS}/agg-2.4/include
 	${AGGSRC_DIRS}/agg-2.4/font_freetype
+	${FREETYPE_INCLUDE_DIRS}
 	${Boost_INCLUDE_DIRS}
 	)
 
 if(WIN32)
-    include_directories(${FREETYPE_INCLUDE_DIRS})
 elseif(APPLE)
+	include_directories (
+		/Developer/Headers/FlatCarbon
+		)
 elseif(UNIX)
-include_directories (
-	${GTK_INCLUDE_DIRS}
-	)
+	include_directories (
+		${GTK_INCLUDE_DIRS}
+		)
 endif()
 
 # SRC *****************************************************************

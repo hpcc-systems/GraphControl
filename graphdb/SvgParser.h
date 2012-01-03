@@ -24,7 +24,7 @@
 #include "GraphDB.h"
 #include "SvgShapes.h"
 
-namespace ln
+namespace hpcc
 {
 enum SVG_PROP
 {

@@ -23,26 +23,26 @@
 
 #include "Unknown.h"
 
-namespace ln
+namespace hpcc
 {
 //  ===  Forward Declarations  ===
-interface IGraphItem;
+hpcc_interface IGraphItem;
 typedef CUnknownPtr<IGraphItem> IGraphItemPtr;
 typedef std::set<IGraphItemPtr> IGraphItemSet;
 
-interface IGraph;
+hpcc_interface IGraph;
 typedef CUnknownPtr<IGraph> IGraphPtr;
 typedef std::set<IGraphPtr> IGraphSet;
 
-interface ICluster;
+hpcc_interface ICluster;
 typedef CUnknownPtr<ICluster> IClusterPtr;
 typedef std::set<IClusterPtr> IClusterSet;
 
-interface IVertex;
+hpcc_interface IVertex;
 typedef CUnknownPtr<IVertex> IVertexPtr;
 typedef std::set<IVertexPtr> IVertexSet;
 
-interface IEdge;
+hpcc_interface IEdge;
 typedef CUnknownPtr<IEdge> IEdgePtr;
 typedef std::set<IEdgePtr> IEdgeSet;
 
@@ -66,22 +66,22 @@ enum GRAPH_TYPE
 };
 //  ===========================================================================
 
-interface GRAPHDB_API IClusterVisitor
+hpcc_interface GRAPHDB_API IClusterVisitor
 {
 	virtual void ItemVisited(ICluster * cluster) = 0;
 };
 
-interface GRAPHDB_API IVertexVisitor
+hpcc_interface GRAPHDB_API IVertexVisitor
 {
 	virtual void ItemVisited(IVertex * vertex) = 0;
 };
 
-interface GRAPHDB_API IEdgeVisitor
+hpcc_interface GRAPHDB_API IEdgeVisitor
 {
 	virtual void ItemVisited(IEdge * edge) = 0;
 };
 
-interface GRAPHDB_API IGraphItem : public IUnknown
+hpcc_interface GRAPHDB_API IGraphItem : public IUnknown
 {
 	virtual IGraph * GetGraph() const = 0;
 	virtual unsigned int GetID() const = 0;
@@ -106,7 +106,7 @@ interface GRAPHDB_API IGraphItem : public IUnknown
 	virtual int GetProperties(StringStringMap & results) const = 0;
 };
 
-interface GRAPHDB_API ICluster : public IGraphItem
+hpcc_interface GRAPHDB_API ICluster : public IGraphItem
 {
 	virtual ICluster * GetParent() const = 0;
 	virtual const IClusterSet & GetClusters() const = 0;
@@ -122,7 +122,7 @@ interface GRAPHDB_API ICluster : public IGraphItem
 	virtual void Delete() = 0;
 };
 
-interface GRAPHDB_API IVertex : public IGraphItem
+hpcc_interface GRAPHDB_API IVertex : public IGraphItem
 {
 	virtual ICluster * GetParent() const = 0;
 	virtual unsigned int GetInEdgeCount() const = 0;
@@ -134,13 +134,13 @@ interface GRAPHDB_API IVertex : public IGraphItem
 	virtual void AppendOutEdge(IEdge * edge) = 0;
 };
 
-interface GRAPHDB_API IEdge : public IGraphItem
+hpcc_interface GRAPHDB_API IEdge : public IGraphItem
 {
 	virtual IVertex * GetFromVertex() const = 0;
 	virtual IVertex * GetToVertex() const = 0;
 };
 
-interface GRAPHDB_API IGraph : public ICluster
+hpcc_interface GRAPHDB_API IGraph : public ICluster
 {
 	virtual void Clear() = 0;
 

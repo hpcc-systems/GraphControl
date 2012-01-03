@@ -25,9 +25,9 @@
 #include "GraphDB.h"
 #include "SvgShapes.h"
 
-namespace ln
+namespace hpcc
 {
-interface GRAPHRENDER_API IGraphHotItem : public IUnknown
+hpcc_interface GRAPHRENDER_API IGraphHotItem : public IUnknown
 {
 	virtual bool Set(IGraphItem * item) = 0;
 	virtual bool IsHot(IGraphItem * item) const = 0;
@@ -36,7 +36,7 @@ interface GRAPHRENDER_API IGraphHotItem : public IUnknown
 };
 typedef CUnknownPtr<IGraphHotItem> IGraphHotItemPtr;
 
-interface GRAPHRENDER_API IGraphSelectionBag : public IUnknown
+hpcc_interface GRAPHRENDER_API IGraphSelectionBag : public IUnknown
 {
 	virtual bool Clear() = 0;
 	virtual bool Select(IGraphItem * item, bool clearPrevious = true) = 0;

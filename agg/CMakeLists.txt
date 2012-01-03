@@ -6,15 +6,27 @@
 #####################################################
 
 project( agg ) 
-cmake_minimum_required ( VERSION 2.8 )
 
-if (WIN32)
-set (	DEFS 
+# *********************************************************************
+
+include_directories ( 
+	${AGGSRC_DIRS}/agg-2.4/include
+	${AGGSRC_DIRS}/agg-2.4/font_freetype
+
+	${FREETYPE_INCLUDE_DIRS}
 	)
-else (WIN32)
-set (	DEFS 
-	)
-endif (WIN32)
+
+if(WIN32)
+elseif(APPLE)
+	include_directories (
+		${CARBON_INCLUDE_DIR}
+		${QT_INCLUDE_DIR}
+		)
+elseif(UNIX)
+endif()
+
+
+# *********************************************************************
 
 set (	SRCS 
 	${AGGSRC_DIRS}/agg-2.4/src/agg_arc.cpp
@@ -50,45 +62,74 @@ set (	SRCS
 	agg2d.cpp
 	)
 
-	include_directories ( 
-	${AGGSRC_DIRS}/agg-2.4/include
-	${AGGSRC_DIRS}/agg-2.4/font_freetype
+# Win *****************************************************************
 
-	${FREETYPE_INCLUDE_DIR_freetype2}
-	${FREETYPE_INCLUDE_DIR_freetype2}/freetype
-	)
-
-set (	SRCS_OS
-	#${AGGSRC_DIRS}/agg-2.4/src/platform/win32/agg_platform_support.cpp
+set (	SRCS_WIN
 	${AGGSRC_DIRS}/agg-2.4/src/platform/win32/agg_win32_bmp.cpp
 	)
 
-if (WIN32)
-set (	SRCS_OS
-	#${AGGSRC_DIRS}/agg-2.4/src/platform/win32/agg_platform_support.cpp
-	${AGGSRC_DIRS}/agg-2.4/src/platform/win32/agg_win32_bmp.cpp
-	)
-else (WIN32)
-set (	SRCS_OS
-	)
-endif (WIN32)
+SOURCE_GROUP(Win FILES ${SRCS_WIN})
 
-add_library ( agg STATIC
-	${DEFS} 
-	${SRCS} 
-	${SRCS_OS} 
+# OSX *****************************************************************
+
+set (	SRCS_APPLE
+	${AGGSRC_DIRS}/agg-2.4/src/platform/mac/agg_mac_pmap.cpp
+	#${AGGSRC_DIRS}/agg-2.4/src/platform/mac/agg_platform_support.cpp
 	)
 
-ADD_DEFINITIONS( -D_UNICODE -DAGG_USE_FREETYPE;-DAGG_USE_AGG2D;-DAGG2D_USE_FREETYPE )
+SOURCE_GROUP(OSX FILES ${SRCS_APPLE})
 
-if (WIN32)
-ADD_DEFINITIONS( -DAGG_EXPORTS -DCOMPILED_FROM_DSP )
-else ()
-ADD_DEFINITIONS( -DHAVE_BCOPY )
-endif ()
+# X11 *****************************************************************
 
-if (WIN32)
+set (	SRCS_UNIX
+	)
+
+SOURCE_GROUP(X11 FILES ${SRCS_UNIX})
+
+# *********************************************************************
+
+if(WIN32)
+    set_source_files_properties(${SRCS_APPLE} PROPERTIES HEADER_FILE_ONLY 1)
+    set_source_files_properties(${SRCS_UNIX} PROPERTIES HEADER_FILE_ONLY 1)
+elseif(APPLE)
+    set_source_files_properties(${SRCS_WIN} PROPERTIES HEADER_FILE_ONLY 1)
+    set_source_files_properties(${SRCS_WIN_NO_PRECOMPILED_HEADERS} PROPERTIES HEADER_FILE_ONLY 1)
+    set_source_files_properties(${SRCS_UNIX} PROPERTIES HEADER_FILE_ONLY 1)
+elseif(UNIX)
+    set_source_files_properties(${SRCS_WIN} PROPERTIES HEADER_FILE_ONLY 1)
+    set_source_files_properties(${SRCS_WIN_NO_PRECOMPILED_HEADERS} PROPERTIES HEADER_FILE_ONLY 1)
+    set_source_files_properties(${SRCS_APPLE} PROPERTIES HEADER_FILE_ONLY 1)
+endif()
+
+# *********************************************************************
+
+add_definitions(-D_UNICODE -DAGG_USE_FREETYPE -DAGG_USE_AGG2D -DAGG2D_USE_FREETYPE)
+
+if(WIN32)
+	add_definitions(-DAGG_EXPORTS -DCOMPILED_FROM_DSP)
+elseif(APPLE)
+elseif(UNIX)
+	add_definitions(-DHAVE_BCOPY)
+endif()
+
+# *********************************************************************
+
+set(SOURCES ${SRCS} ${SRCS_WIN} ${SRCS_APPLE} ${SRCS_UNIX})
+add_library(agg SHARED ${SOURCES})
+
+# *********************************************************************
+
 target_link_libraries ( agg 
 	${FREETYPE_LIBRARY}
-)
-endif (WIN32)
+	)
+
+if(WIN32)
+elseif(APPLE)
+target_link_libraries ( agg 
+	${CARBON_FRAMEWORK}
+	)
+elseif(UNIX)
+endif()
+
+
+# *********************************************************************

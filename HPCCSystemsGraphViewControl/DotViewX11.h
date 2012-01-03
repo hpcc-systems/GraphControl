@@ -33,7 +33,7 @@ class CDotView : public FB::PluginWindowX11, public CDotViewCommon, public boost
 {
 	typedef FB::PluginWindowX11 base;
 protected:
-    ln::PointD m_ptOffset;
+    hpcc::PointD m_ptOffset;
 
 public:
 	CDotView(const FB::WindowContextX11 & ctx);
@@ -43,22 +43,22 @@ public:
 	virtual int GetScrollOffsetY();
 	virtual void SetScrollOffset(int x, int y);
 	virtual void SetScrollSize(int w, int h, bool redraw);
-	virtual bool GetClientRectangle(ln::RectD & rect);
+	virtual bool GetClientRectangle(hpcc::RectD & rect);
 	virtual void UpdateWindow();
 	virtual void InvalidateSelection();
 	virtual void operator()(const std::string & dot, const std::string & svg);
 
 	//  --- IAPICallback ---
 	//  --- IAPICallback ---
-	void RenderCluster(ln::ICluster * cluster);
-	void InvalidateScreenRect(const ln::RectD & screenRect);
-	void InvalidateWorldRect(const ln::RectD & worldRect);
+	void RenderCluster(hpcc::ICluster * cluster);
+	void InvalidateScreenRect(const hpcc::RectD & screenRect);
+	void InvalidateWorldRect(const hpcc::RectD & worldRect);
 	//  Linux  ---
 	void DoPaint(GdkEvent * evt);
-	void OnLButtonDown(ln::PointD point);
-	void OnLButtonUp(ln::PointD point, guint modifierState);
-	void OnMouseMove(ln::PointD point);
-	void OnLButtonDblClk(ln::PointD point);
+	void OnLButtonDown(hpcc::PointD point);
+	void OnLButtonUp(hpcc::PointD point, guint modifierState);
+	void OnMouseMove(hpcc::PointD point);
+	void OnLButtonDblClk(hpcc::PointD point);
 
 	int OnLayoutComplete(void * wParam, void * lParam);
 

@@ -23,7 +23,7 @@
 
 #include "GraphDB.h"
 
-namespace ln
+namespace hpcc
 {
 typedef boost::signals2::signal<void(const std::string & dot, const std::string & svg)> LayoutFinishedSignal;
 typedef LayoutFinishedSignal::slot_type LayoutFinishedSlot;
