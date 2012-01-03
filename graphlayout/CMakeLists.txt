@@ -1,25 +1,13 @@
-# Component: libagraph
+# Component: graphlayout
 #####################################################
 # Description:
 # ------------
-#	 Cmake Input File for libagraph
+#	 Cmake Input File for graphlayout
 #####################################################
 
-project( graphlayout )
+project(graphlayout)
 
-set (	SRCS
-	precompiled_headers.h
-
-	libagraph.cpp
-	libagraph.h
-	libagraphsp.h
-	)
-
-if (WIN32)
-set (	SRCS 
-	${SRCS}
-	)
-endif ()
+# *********************************************************************
 
 include_directories (
 	${GRAPHVIZSRC_DIRS}/lib/graph
@@ -42,12 +30,35 @@ include_directories (
 	${Boost_INCLUDE_DIRS}
 	)
 
-if (WIN32)
-	ADD_DEFINITIONS( -DLIBAGRAPH_EXPORTS -DHAVE_CONFIG_H -DHAVE_SETMODE -DMSWIN32)
-#	ADD_DEFINITIONS( -DHAVE_CONFIG_H -DHAVE_SETMODE -DMSWIN32)
-else ()
-	ADD_DEFINITIONS( -DHAVE_CONFIG_H -DHAVE_SETMODE )
-endif ()
+# *********************************************************************
+
+set (	SRCS
+	precompiled_headers.h
+
+	libagraph.cpp
+	libagraph.h
+	libagraphsp.h
+	)
+
+# *********************************************************************
+
+add_definitions(-DHAVE_CONFIG_H -DHAVE_SETMODE)
+if(WIN32)
+	add_definitions(-DLIBAGRAPH_EXPORTS -DMSWIN32)
+elseif(APPLE)
+elseif(UNIX)
+endif()
+
+ADD_MSVC_PRECOMPILED_HEADER("precompiled_headers.h" "precompiled_headers.cpp" SRCS)
+if(WIN32)
+	add_library ( graphlayout STATIC ${SRCS} )
+elseif(APPLE)
+	add_library ( graphlayout SHARED ${SRCS} )
+elseif(UNIX)
+	add_library ( graphlayout SHARED ${SRCS} )
+endif()
+
+# *********************************************************************
 
 add_subdirectory (gvc)
 set_property(TARGET gvc PROPERTY FOLDER "3rdParty/Graphviz")
@@ -90,17 +101,6 @@ set_property(TARGET sparse PROPERTY FOLDER "3rdParty/Graphviz")
 add_subdirectory (xdot)
 set_property(TARGET xdot PROPERTY FOLDER "3rdParty/Graphviz")
 
-ADD_MSVC_PRECOMPILED_HEADER("precompiled_headers.h" "precompiled_headers.cpp" SRCS)
-if (WIN32)
-	add_library ( graphlayout STATIC ${SRCS} )
-else (WIN32)
-	add_library ( graphlayout SHARED ${SRCS} )
-endif (WIN32)
-
-if (WIN32)
-else (WIN32)
-endif (WIN32)
-
 target_link_libraries ( graphlayout
 	cdt
 #	cgraph
@@ -124,7 +124,4 @@ target_link_libraries ( graphlayout
 	xdot
 	)
 
-if ( WIN32 )	
-else ( WIN32 )	
-install ( TARGETS graphlayout DESTINATION lib/mozilla/plugins )
-endif ( WIN32 )	
+# *********************************************************************

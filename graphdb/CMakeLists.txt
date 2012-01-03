@@ -7,6 +7,16 @@
 
 project( graphdb ) 
 
+# *********************************************************************
+
+include_directories ( 
+	../graphlayout
+	${EXPAT_INCLUDE_DIRS}/lib
+	${Boost_INCLUDE_DIRS}
+	)
+
+# *********************************************************************
+
 set (	SRCS 
 	precompiled_headers.h
 	GraphCluster.cpp
@@ -44,45 +54,31 @@ set (	SRCS
 	Unknown.h
 	)
 
-include_directories ( 
-	../graphlayout
-	${EXPAT_INCLUDE_DIRS}/lib
-	${Boost_INCLUDE_DIRS}
-	)
+# *********************************************************************
 
-if (WIN32)
-set (	SRCS 
-	${SRCS}
-	)
-endif ()
+add_definitions(-D_UNICODE)
+
+if(WIN32)
+	add_definitions(-DGRAPHDB_EXPORTS)
+elseif(APPLE)
+elseif(UNIX)
+endif()
 
 ADD_MSVC_PRECOMPILED_HEADER("precompiled_headers.h" "precompiled_headers.cpp" SRCS)
-if (WIN32)
+if(WIN32)
 	add_library ( graphdb STATIC ${SRCS} )
-else (WIN32)
+elseif(APPLE)
 	add_library ( graphdb SHARED ${SRCS} )
-endif (WIN32)
+elseif(UNIX)
+	add_library ( graphdb SHARED ${SRCS} )
+endif()
 
-ADD_DEFINITIONS( -D_UNICODE -DXML_UNICODEXXX )
-
-if (WIN32)
-ADD_DEFINITIONS( -DGRAPHDB_EXPORTS )
-else ()
-endif ()
-
-add_dependencies ( graphdb 
-	graphlayout 
-	#expat 
-	)
+# *********************************************************************
 
 target_link_libraries ( graphdb 
 	graphlayout 
 	expat 
 	${Boost_LIBRARIES}
 	)
-	
-if ( WIN32 )	
-else ( WIN32 )	
-install ( TARGETS graphdb DESTINATION lib/mozilla/plugins )
-endif ( WIN32 )	
 
+# *********************************************************************
