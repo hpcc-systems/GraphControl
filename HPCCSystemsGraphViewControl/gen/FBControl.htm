@@ -15,12 +15,12 @@
             width: 45%;
             height: 257px;
         }
-        #TextDotAfter
+        #TextDOTAfter
         {
             width: 45%;
             height: 257px;
         }
-        #TextSvgAfter
+        #TextSVGAfter
         {
             width: 45%;
             height: 257px;
@@ -63,13 +63,17 @@
 
         addEvent(pluginRHS(), 'LayoutFinished', layoutFinishedRHS);
         addEvent(pluginRHS(), 'SelectionChanged', selectionChangedRHS);
+
+        //loadXGMML();
+        //doLayout();
+        //mergeSVG();
     }
 
     function layoutFinished() {
         pluginLHS().setMessage('');
         pluginLHS().centerOnItem(0, true);
-        document.getElementById('TextDotAfter').value = pluginLHS().getDOT();
-        document.getElementById('TextSvgAfter').value = pluginLHS().getSVG();
+        document.getElementById('TextDOTAfter').value = pluginLHS().getDOT();
+        document.getElementById('TextSVGAfter').value = pluginLHS().getSVG();
     }
 
     function layoutFinishedRHS() {
@@ -103,10 +107,6 @@
     }
 
     function DisplaySelectedProperties(items) {
-        pluginRHS().setMessage("Loading Data...");
-        //pluginRHS().loadXGMML(pluginLHS().getLocalisedXGMML(items));
-        //document.getElementById('TextDotAfter').value = pluginLHS().getLocalisedXGMML(items);
-        pluginRHS().setMessage("Performing Layout...");
         var selection = pluginLHS().getSelectionAsGlobalID();
         pluginRHS().setSelectedAsGlobalID(selection);
         pluginRHS().startLayout(document.getElementById('SelectLayout').value);
@@ -125,6 +125,11 @@
             propsText += '</table>';
         }
         document.getElementById('props').innerHTML = propsText;
+
+        pluginRHS().setMessage("Loading Data...");
+        pluginRHS().loadXGMML(pluginLHS().getLocalisedXGMML(items));
+        document.getElementById('TextDOTAfter').value = pluginLHS().getLocalisedXGMML(items);
+        doLayoutRHS();
     }
 
     function loadTestData() {
@@ -144,23 +149,28 @@
     function loadXGMML() {
         pluginLHS().setMessage("Loading Data...");
         pluginLHS().loadXGMML(document.getElementById('TextXGMML').value);
-        pluginLHS().setMessage("Performing Layout...");
-        pluginLHS().startLayout(document.getElementById('SelectLayout').value);
+        pluginLHS().setMessage("");
+        doLayout();
+    }
+
+    function mergeXGMML() {
+        pluginLHS().setMessage("Merging XGMML...");
+        pluginLHS().mergeXGMML(document.getElementById('TextXGMML').value);
+        pluginLHS().setMessage("");
+        //pluginLHS().doLayout();
+    }
+
+    function mergeSVG() {
+        pluginLHS().setMessage("Merging SVG...");
+        pluginLHS().mergeSVG(document.getElementById('TextSVGAfter').value);
+        pluginLHS().setMessage("");
     }
 
     function loadDOT() {
         pluginLHS().setMessage("Loading Data...");
         pluginLHS().loadDOT(document.getElementById('TextDotBefore').value);
-        pluginLHS().setMessage("Performing Layout...");
-        pluginLHS().startLayout(document.getElementById('SelectLayout').value);
-    }
-
-    function mergeXGMML() {
-        pluginLHS().setMessage("Merging Data...");
-        pluginLHS().mergeXGMML(document.getElementById('TextXGMML').value);
         pluginLHS().setMessage("");
-        //pluginLHS().setMessage("Performing Layout...");
-        //pluginLHS().startLayout(document.getElementById('SelectLayout').value);
+        doLayout();
     }
 
     function setScale() {
@@ -173,9 +183,14 @@
         pluginLHS().setSelected(found);
     }
 
-    function SelectLayout_onclick() {
+    function doLayout() {
         pluginLHS().setMessage("Performing Layout...");
         pluginLHS().startLayout(document.getElementById('SelectLayout').value);
+    }
+
+    function doLayoutRHS() {
+        pluginRHS().setMessage("Performing Layout...");
+        pluginRHS().startLayout(document.getElementById('SelectLayout').value);
     }
 
 </script>
@@ -200,11 +215,12 @@
     <input id="Clear" type="button" value="Clear" onclick="javascript:clearXGMML()" />&nbsp;
     <input id="LoadXGMML" type="button" value="Load XGMML" onclick="javascript:loadXGMML()" />&nbsp;
     <input id="MergeXGMML" type="button" value="Merge XGMML" onclick="javascript:mergeXGMML()" />&nbsp;
+    <input id="MergeSVG" type="button" value="Merge SVG" onclick="javascript:mergeSVG()" />&nbsp;
     <input id="LoadDOT" type="button" value="Load DOT" onclick="javascript:loadDOT()" />&nbsp;
     Scale:&nbsp;
     <input id="TextScale" type="text" value="75" />
     <input id="ButtonSetScale" type="button" onclick="javascript:setScale()" value="Set" />
-    <select id="SelectLayout" onchange="return SelectLayout_onclick()">
+    <select id="SelectLayout" onchange="return doLayout()">
         <option value="dot">dot</option>
         <option value="neato">neato</option>
         <option value="twopi">twopi</option>
@@ -217,6 +233,7 @@
         <option value="nop1">nop1</option>
         <option value="nop2">nop2</option>
     </select>&nbsp;
+    <input id="DoLayout" type="button" value="Layout" onclick="javascript:doLayout()" />&nbsp;
     <input id="TextFind" type="text" value="write" />
     <input id="ButtonFind" type="button" onclick="javascript:find()" value="Find" />
     <br />
@@ -258,9 +275,9 @@ bgcolor = lightgrey
 }
 }
     </textarea>
-    <textarea id="TextSvgAfter" name="svgAfter">
+    <textarea id="TextSVGAfter" name="svgAfter">
     </textarea>
-    <textarea id="TextDotAfter" name="dotAfter">
+    <textarea id="TextDOTAfter" name="dotAfter">
     </textarea>
     <br />
 </body>
