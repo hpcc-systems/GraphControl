@@ -229,7 +229,12 @@ public:
 	int GetSelection(const IGraph * g, std::vector<std::string> & selection) const
 	{
 		for (CGraphHotItemMap::const_iterator itr = m_selected.begin(); itr != m_selected.end(); ++itr)
-			selection.push_back(g->GetExternalID(itr->first));
+		{
+			const char * id = g->GetExternalID(itr->first);
+			assert(id != NULL);
+			if (id != NULL)
+				selection.push_back(id);
+		}
 		return selection.size();
 	}
 
