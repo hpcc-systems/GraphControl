@@ -24,7 +24,7 @@
 #include "SaxParser.h"
 #include "XgmmlParser.h"
 
-namespace ln
+namespace hpcc
 {
 //  ===========================================================================
 struct Shapes
@@ -191,7 +191,7 @@ public:
 		assert(from != m_itemLookup.end());
 		assert(to != m_itemLookup.end());
 				//top->item = m_graph->CreateEdge(dynamic_cast<IVertex *>(from->second.get()), dynamic_cast<IVertex *>(to->second.get()));
-		retVal = ln::GetEdge(m_graph, id, dynamic_cast<IVertex *>(from->second.get()), dynamic_cast<IVertex *>(to->second.get()), m_merge);
+		retVal = hpcc::GetEdge(m_graph, id, dynamic_cast<IVertex *>(from->second.get()), dynamic_cast<IVertex *>(to->second.get()), m_merge);
 		m_itemLookup[id] = retVal;
 		return retVal;
 	}
@@ -325,7 +325,7 @@ public:
 			typedef std::vector<std::string> split_vector_type;
 			split_vector_type SplitVec; // #2: Search for tokens
 			boost::algorithm::split(SplitVec, label, boost::algorithm::is_any_of("\n"), boost::algorithm::token_compress_on);
-			ElementGPtr elemG = reinterpret_cast<ln::ElementG * >(tmpProp);
+			ElementGPtr elemG = reinterpret_cast<hpcc::ElementG * >(tmpProp);
 			unsigned int i = 0;
 			for (split_vector_type::iterator itr = SplitVec.begin(); itr != SplitVec.end(); ++itr)
 			{
@@ -354,6 +354,8 @@ public:
 #ifdef _DEBUG
 			if (top->item->GetProperty("_kind"))
 			{			
+				if (e->m_attr["label"].empty())
+					e->m_attr["label"] = e->m_attr["id"];
 				e->m_attr["label"] += "\\n";
 				e->m_attr["label"] += top->item->GetProperty("_kind");
 			}
@@ -402,6 +404,17 @@ GRAPHDB_API bool LoadXGMML(IGraph * graph, const std::string & xgmml)
 	IClusterSet clusters = graph->GetAllClusters();
 	for(IClusterSet::const_iterator itr = clusters.begin(); itr != clusters.end(); ++itr)
 	{
+#ifdef TEST_XGMMLCLEANUP
+		if (!itr->get()->GetClusters().empty() && !itr->get()->GetVertices().empty())
+		{
+			IClusterPtr cluster = graph->CreateCluster(itr->get());
+			for (IVertexSet::iterator v_itr = itr->get()->GetVertices().begin(); v_itr != itr->get()->GetVertices().end(); ++v_itr)
+			{
+				cluster->AppendVertex(v_itr->get());
+			}
+		}
+#endif
+
 		if (itr->get()->OnlyConatinsOneCluster())
 			itr->get()->Delete();
 	}

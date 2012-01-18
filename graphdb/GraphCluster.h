@@ -23,7 +23,7 @@
 
 #include "GraphItem.h"
 
-namespace ln
+namespace hpcc
 {
 class CCluster : public ICluster, public CGraphItem
 {

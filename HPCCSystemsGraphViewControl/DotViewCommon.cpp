@@ -40,27 +40,27 @@ namespace boost
 CDotViewCommon::CDotViewCommon()
 {
 	m_api = NULL;
-	m_g = ln::CreateGraph();
-	m_buffer = ln::CreateGraphBuffer(0, 0);
-	m_hotItem = ln::CreateGraphHotItem();
-	m_selection = ln::CreateGraphSelectionBag();
+	m_g = hpcc::CreateGraph();
+	m_buffer = hpcc::CreateGraphBuffer(0, 0);
+	m_hotItem = hpcc::CreateGraphHotItem();
+	m_selection = hpcc::CreateGraphSelectionBag();
 
-	m_gr = ln::CreateGraphRender(m_g, m_buffer, m_hotItem, m_selection);
-	//m_gro = ln::CreateGraphRender(m_g, m_buffer, m_hotItem, m_selection, 0.05);
+	m_gr = hpcc::CreateGraphRender(m_g, m_buffer, m_hotItem, m_selection);
+	//m_gro = hpcc::CreateGraphRender(m_g, m_buffer, m_hotItem, m_selection, 0.05);
 
 	m_mouseDown = MOUSEDOWN_UNKNOWN;
 }
 
 void CDotViewCommon::StartLayout(const std::string & layout)
 {
-	m_g->SetProperty(ln::PROP_LAYOUT, layout.c_str());
-	ln::DoGraphvizLayout(m_g, m_dot, boost::ref(*this));
+	m_g->SetProperty(hpcc::PROP_LAYOUT, layout.c_str());
+	hpcc::DoGraphvizLayout(m_g, m_dot, boost::ref(*this));
 }
 
 double CDotViewCommon::SetScale(double scale)
 {
 	//  Keep center of screen in the middle
-	ln::PointD worldDblClk = GetCenterAsWorldPoint();
+	hpcc::PointD worldDblClk = GetCenterAsWorldPoint();
 
 	double oldScale = m_gr->SetScale(scale);
 	if (oldScale != scale)
@@ -77,21 +77,21 @@ double CDotViewCommon::GetScale()
 	return m_gr->GetScale();
 }
 
-void CDotViewCommon::CenterOnGraphItem(ln::IGraphItem * item)
+void CDotViewCommon::CenterOnGraphItem(hpcc::IGraphItem * item)
 {
-	ln::RectD itemRect = m_gr->GetBoundingRect(item, true);
-	ln::PointD itemCP;
+	hpcc::RectD itemRect = m_gr->GetBoundingRect(item, true);
+	hpcc::PointD itemCP;
 	itemRect.GetCenter(&itemCP);
 	CenterOn(itemCP);
 }
 
 void CDotViewCommon::CenterOnItem(int _item, bool sizeToFit, bool widthOnly)
 {
-	ln::IGraphItemPtr item = m_g->GetGraphItem(_item);
+	hpcc::IGraphItemPtr item = m_g->GetGraphItem(_item);
 	bool scaleChanged = false;
 	if (sizeToFit)
 	{
-		ln::RectD rc;
+		hpcc::RectD rc;
 		GetClientRectangle(rc);
 
 		double oldScale = m_gr->ScaleToFit(item, rc, widthOnly);
@@ -121,10 +121,10 @@ void CDotViewCommon::SetMessage(const std::string & msg)
 
 int CDotViewCommon::Find(const std::string & text, bool includeProperties, std::vector<int> & results)
 {
-	const ln::IVertexSet & vs = m_g->GetAllVertices();
-	for(ln::IVertexSet::const_iterator itr = vs.begin(); itr != vs.end(); ++itr)
+	const hpcc::IVertexSet & vs = m_g->GetAllVertices();
+	for(hpcc::IVertexSet::const_iterator itr = vs.begin(); itr != vs.end(); ++itr)
 	{
-		if (boost::algorithm::icontains(itr->get()->GetPropertyString(ln::DOT_LABEL), text))
+		if (boost::algorithm::icontains(itr->get()->GetPropertyString(hpcc::DOT_LABEL), text))
 			results.push_back(itr->get()->GetID());
 	}
 	return results.size();
@@ -147,10 +147,10 @@ int CDotViewCommon::GetSelection(std::vector<std::string> & results)
 
 bool CDotViewCommon::SetSelected(const std::vector<int> & _items, bool clearPrevious)
 {
-	ln::IGraphItemSet items;
+	hpcc::IGraphItemSet items;
 	for(std::vector<int>::const_iterator itr = _items.begin(); itr != _items.end(); ++itr)
 	{
-		ln::IGraphItemPtr item = m_g->GetGraphItem(*itr);
+		hpcc::IGraphItemPtr item = m_g->GetGraphItem(*itr);
 		if (item)
 			items.insert(item);
 	}
@@ -162,10 +162,10 @@ bool CDotViewCommon::SetSelected(const std::vector<int> & _items, bool clearPrev
 
 bool CDotViewCommon::SetSelected(const std::vector<std::string> & _items, bool clearPrevious)
 {
-	ln::IGraphItemSet items;
+	hpcc::IGraphItemSet items;
 	for(std::vector<std::string>::const_iterator itr = _items.begin(); itr != _items.end(); ++itr)
 	{
-		ln::IGraphItemPtr item = m_g->GetGraphItem(GetItem(*itr));
+		hpcc::IGraphItemPtr item = m_g->GetGraphItem(GetItem(*itr));
 		if (item)
 			items.insert(item);
 	}
@@ -175,14 +175,14 @@ bool CDotViewCommon::SetSelected(const std::vector<std::string> & _items, bool c
 	return changed;
 }
 
-const ln::IClusterSet & CDotViewCommon::GetClusters()
+const hpcc::IClusterSet & CDotViewCommon::GetClusters()
 {
 	return m_g->GetClusters();
 }
 
-int CDotViewCommon::GetProperties(int _item, ln::StringStringMap & results)
+int CDotViewCommon::GetProperties(int _item, hpcc::StringStringMap & results)
 {
-	ln::IGraphItemPtr item = m_g->GetGraphItem(_item);
+	hpcc::IGraphItemPtr item = m_g->GetGraphItem(_item);
 	if (item)
 		item->GetProperties(results);
 	return results.size();
@@ -190,11 +190,11 @@ int CDotViewCommon::GetProperties(int _item, ln::StringStringMap & results)
 
 unsigned int CDotViewCommon::GetItem(const std::string &externalID)
 {
-	if (ln::IGraphItem * item = m_g->GetVertex(externalID, true))
+	if (hpcc::IGraphItem * item = m_g->GetVertex(externalID, true))
 		return item->GetID();
-	if (ln::IGraphItem * item = m_g->GetEdge(externalID, true))
+	if (hpcc::IGraphItem * item = m_g->GetEdge(externalID, true))
 		return item->GetID();
-	if (ln::IGraphItem * item = m_g->GetCluster(externalID, true))
+	if (hpcc::IGraphItem * item = m_g->GetCluster(externalID, true))
 		return item->GetID();
 	return 0;
 }
@@ -206,86 +206,93 @@ const char * CDotViewCommon::GetGlobalID(int item)
 
 int CDotViewCommon::GetVertices(std::vector<int> & results)
 {
-	const ln::IVertexSet & vertices = m_g->GetAllVertices();
-	for(ln::IVertexSet::const_iterator itr = vertices.begin(); itr != vertices.end(); ++itr)
+	const hpcc::IVertexSet & vertices = m_g->GetAllVertices();
+	for(hpcc::IVertexSet::const_iterator itr = vertices.begin(); itr != vertices.end(); ++itr)
 		results.push_back(itr->get()->GetID());
 	return results.size();
 }
 
-void LoadTestData(ln::IGraph * g, ln::ICluster * c, ln::IVertex * v, int depth = 0)
+void LoadTestData(hpcc::IGraph * g, hpcc::ICluster * c, hpcc::IVertex * v, int depth = 0)
 {
 	if (++depth > 14)
 		return;
 
-	ln::IClusterPtr c2 = (depth % 5 == 0) ? c : g->CreateCluster(c);
-	c2->SetProperty(ln::DOT_LABEL, (boost::format("Cluster Depth %1%") % depth).str().c_str());
+	hpcc::IClusterPtr c2 = (depth % 5 == 0) ? c : g->CreateCluster(c);
+	c2->SetProperty(hpcc::DOT_LABEL, (boost::format("Cluster Depth %1%") % depth).str().c_str());
 	int tot = (depth % 9 == 0) ? 5 : 1;
 	for (int i = 0; i < tot; ++i)
 	{
-		ln::IVertexPtr v2 = g->CreateVertex(c2);
-		v2->SetProperty(ln::DOT_LABEL, (boost::format("Depth %1%\\nVertex %2%") % depth % v2->GetIDString()).str().c_str());
+		hpcc::IVertexPtr v2 = g->CreateVertex(c2);
+		v2->SetProperty(hpcc::DOT_LABEL, (boost::format("Depth %1%\\nVertex %2%") % depth % v2->GetIDString()).str().c_str());
 		LoadTestData(g, c2, v2, depth);
 		if (v)
 		{
-			ln::IEdgePtr e = g->CreateEdge(v, v2);
-			e->SetProperty(ln::DOT_LABEL, (boost::format("Edge %1%") % e->GetIDString()).str().c_str());
+			hpcc::IEdgePtr e = g->CreateEdge(v, v2);
+			e->SetProperty(hpcc::DOT_LABEL, (boost::format("Edge %1%") % e->GetIDString()).str().c_str());
 		}
 	}
 }
 
 void CDotViewCommon::LoadTestData()
 {
-	m_g->SetProperty(ln::DOT_LABEL, "Graph 1");
+	m_g->SetProperty(hpcc::DOT_LABEL, "Graph 1");
 	::LoadTestData(m_g, NULL, NULL, 0);
 }
 
 void CDotViewCommon::LoadXML(const std::string & verticesXML, const std::string & edgesXML)
 {
-	std::string layout = m_g->GetPropertyString(ln::PROP_LAYOUT);
+	std::string layout = m_g->GetPropertyString(hpcc::PROP_LAYOUT);
 	m_hotItem->Set(NULL);
 	m_selection->Clear();
 	m_g->Clear();
-	ln::LoadXML(m_g, verticesXML, edgesXML);
+	hpcc::LoadXML(m_g, verticesXML, edgesXML);
 }
 
 void CDotViewCommon::LoadXML2(const std::string & xml)
 {
-	std::string layout = m_g->GetPropertyString(ln::PROP_LAYOUT);
+	std::string layout = m_g->GetPropertyString(hpcc::PROP_LAYOUT);
 	m_hotItem->Set(NULL);
 	m_selection->Clear();
 	m_g->Clear();
-	ln::LoadXML2(m_g, xml);
+	hpcc::LoadXML2(m_g, xml);
 }
 
 void CDotViewCommon::LoadXGMML(const std::string & xgmml)
 {
-	std::string layout = m_g->GetPropertyString(ln::PROP_LAYOUT);
+	std::string layout = m_g->GetPropertyString(hpcc::PROP_LAYOUT);
 	m_hotItem->Set(NULL);
 	m_selection->Clear();
 	m_g->Clear();
-	ln::LoadXGMML(m_g, xgmml);
+	hpcc::LoadXGMML(m_g, xgmml);
 }
 
 void CDotViewCommon::MergeXGMML(const std::string & xgmml)
 {
-	std::string layout = m_g->GetPropertyString(ln::PROP_LAYOUT);
-	ln::MergeXGMML(m_g, xgmml);
+	std::string layout = m_g->GetPropertyString(hpcc::PROP_LAYOUT);
+	hpcc::MergeXGMML(m_g, xgmml);
+	Invalidate();
+}
+
+void CDotViewCommon::MergeSVG(const std::string & svg)
+{
+	std::string layout = m_g->GetPropertyString(hpcc::PROP_LAYOUT);
+	hpcc::MergeSVG(m_g, svg);
 	Invalidate();
 }
 
 void CDotViewCommon::LoadDOT(const std::string & dot)
 {
-	std::string layout = m_g->GetPropertyString(ln::PROP_LAYOUT);
+	std::string layout = m_g->GetPropertyString(hpcc::PROP_LAYOUT);
 	m_hotItem->Set(NULL);
 	m_selection->Clear();
 	m_g->Clear();
-	ln::LoadDOT(m_g, dot);
+	hpcc::LoadDOT(m_g, dot);
 }
 
 const char * CDotViewCommon::GetLocalisedXGMML(int _item, std::string & xgmml)
 {
-	ln::IGraphItemPtr item = m_g->GetGraphItem(_item);
-	ln::WriteLocalisedXGMML(m_g, item, xgmml);
+	hpcc::IGraphItemPtr item = m_g->GetGraphItem(_item);
+	hpcc::WriteLocalisedXGMML(m_g, item, xgmml);
 	return xgmml.c_str();
 }
 
@@ -301,7 +308,7 @@ const std::string CDotViewCommon::GetDOT()
 
 void CDotViewCommon::Clear()
 {
-	std::string layout = m_g->GetPropertyString(ln::PROP_LAYOUT);
+	std::string layout = m_g->GetPropertyString(hpcc::PROP_LAYOUT);
 	m_hotItem->Set(NULL);
 	m_selection->Clear();
 	m_g->Clear();
@@ -310,15 +317,15 @@ void CDotViewCommon::Clear()
 
 void CDotViewCommon::CalcScrollbars(bool redraw)
 {
-	ln::RectD graphRect = m_gr->GetBoundingRect();
+	hpcc::RectD graphRect = m_gr->GetBoundingRect();
 
-	ln::RectD clientRect;
+	hpcc::RectD clientRect;
 	GetClientRectangle(clientRect);
 
 	unsigned int scrollWidth = (unsigned int)(graphRect.Width + clientRect.Width);
 	unsigned int scrollHeight = (unsigned int)(graphRect.Height + clientRect.Height);
 
-	ln::PointD offset;
+	hpcc::PointD offset;
 	offset.x = clientRect.Width / 2.0f;
 	offset.y = clientRect.Height / 2.0f;
 
@@ -327,32 +334,32 @@ void CDotViewCommon::CalcScrollbars(bool redraw)
 	SetScrollSize(scrollWidth, scrollHeight, redraw);
 }
 
-void CDotViewCommon::CenterOn(const ln::PointD & worldPoint)
+void CDotViewCommon::CenterOn(const hpcc::PointD & worldPoint)
 {
-	ln::PointD newCenter = m_gr->WorldToScreen(worldPoint);
+	hpcc::PointD newCenter = m_gr->WorldToScreen(worldPoint);
 
-	ln::RectD clientRect;
+	hpcc::RectD clientRect;
 	GetClientRectangle(clientRect);
 
 	SetScrollOffset((int)(newCenter.x - clientRect.Width / 2.0f), (int)(newCenter.y - clientRect.Height / 2.0f));
 }
 
-ln::PointD CDotViewCommon::GetCenterAsWorldPoint()
+hpcc::PointD CDotViewCommon::GetCenterAsWorldPoint()
 {
-	ln::RectD rc;
+	hpcc::RectD rc;
 	GetClientRectangle(rc);
-	ln::PointD point;
+	hpcc::PointD point;
 	rc.GetCenter(&point);
 	point.x += GetScrollOffsetX();
 	point.y += GetScrollOffsetY();
 
-	ln::PointD worldDblClk(point.x, point.y);
+	hpcc::PointD worldDblClk(point.x, point.y);
 	return m_gr->ScreenToWorld(worldDblClk);
 }
 
-void CDotViewCommon::MoveTo(const ln::PointD & worldPoint, int x, int y)
+void CDotViewCommon::MoveTo(const hpcc::PointD & worldPoint, int x, int y)
 {
-	ln::PointD newCenter = m_gr->WorldToScreen(worldPoint);
+	hpcc::PointD newCenter = m_gr->WorldToScreen(worldPoint);
 
 	SetScrollOffset((int)(newCenter.x - x), (int)(newCenter.y - y));
 }

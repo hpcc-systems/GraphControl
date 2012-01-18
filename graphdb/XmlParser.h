@@ -24,7 +24,7 @@
 #include "GraphDB.h"
 #include "SvgParser.h"
 
-namespace ln
+namespace hpcc
 {
 enum DOT_PROP
 {

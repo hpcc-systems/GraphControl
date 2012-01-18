@@ -26,7 +26,7 @@
 #include "SvgShapes.h"
 #include "SvgParser.h"
 
-namespace ln
+namespace hpcc
 {
 //  ===========================================================================
 class CSvgParser : public CStackParser
@@ -60,15 +60,15 @@ public:
 			m_graph->SetProperty(SVG_PROP_VIEWBOX_Y, viewBox.y);
 			m_graph->SetProperty(SVG_PROP_VIEWBOX_W, viewBox.Width);
 			m_graph->SetProperty(SVG_PROP_VIEWBOX_H, viewBox.Height);
-			for(ln::IClusterSet::const_iterator itr = m_graph->GetAllClusters().begin(); itr != m_graph->GetAllClusters().end(); ++itr)
+			for(hpcc::IClusterSet::const_iterator itr = m_graph->GetAllClusters().begin(); itr != m_graph->GetAllClusters().end(); ++itr)
 			{
 				itr->get()->SetProperty(SVG_PROP_ELEMENTG, (CUnknown *)NULL);
 			}
-			for(ln::IVertexSet::const_iterator itr = m_graph->GetAllVertices().begin(); itr != m_graph->GetAllVertices().end(); ++itr)
+			for(hpcc::IVertexSet::const_iterator itr = m_graph->GetAllVertices().begin(); itr != m_graph->GetAllVertices().end(); ++itr)
 			{
 				itr->get()->SetProperty(SVG_PROP_ELEMENTG, (CUnknown *)NULL);
 			}
-			for(ln::IEdgeSet::const_iterator itr = m_graph->GetAllEdges().begin(); itr != m_graph->GetAllEdges().end(); ++itr)
+			for(hpcc::IEdgeSet::const_iterator itr = m_graph->GetAllEdges().begin(); itr != m_graph->GetAllEdges().end(); ++itr)
 			{
 				itr->get()->SetProperty(SVG_PROP_ELEMENTG, (CUnknown *)NULL);
 			}
@@ -158,21 +158,85 @@ public:
 
 };
 
+RectD GetBoundingRect(IGraphItem * item) 
+{
+	if (item)
+	{
+		if (ElementG * eg = GetElementG(item))
+			return eg->GetBoundingBox();
+	}
+	return RectD();
+}
+
+void FixSubgraphSizes(ICluster * cluster, RectD  & parentRect)
+{
+	RectD childRect;
+	for(IClusterSet::const_iterator itr = cluster->GetClusters().begin(); itr != cluster->GetClusters().end(); ++itr)
+	{
+		std::string cluster;
+		FixSubgraphSizes(itr->get(), childRect);
+	}
+
+	for(IVertexSet::const_iterator itr = cluster->GetVertices().begin(); itr != cluster->GetVertices().end(); ++itr)
+	{
+		if (childRect.IsEmptyArea())
+			childRect = GetBoundingRect(itr->get());
+		else
+			childRect.Union(GetBoundingRect(itr->get()));
+	}
+
+	//if (!GetBoundingRect(cluster).Contains(childRect))
+	{
+		if (childRect.IsEmptyArea())
+			childRect = GetBoundingRect(cluster);
+		else
+			childRect.Union(GetBoundingRect(cluster));
+
+
+		if (ElementG * eg = GetElementG(cluster))
+		{
+			assert(eg->m_polygons.size() == 1);
+			if (eg->m_polygons.size() == 1)
+			{
+				eg->m_polygons[0]->m_points.clear();
+				eg->m_polygons[0]->SetBoundingBox(RectD());
+				eg->m_polygons[0]->m_points.push_back(PointD(childRect.GetLeft(), childRect.GetBottom()));
+				eg->m_polygons[0]->m_points.push_back(PointD(childRect.GetLeft(), childRect.GetTop()));
+				eg->m_polygons[0]->m_points.push_back(PointD(childRect.GetRight(), childRect.GetTop()));
+				eg->m_polygons[0]->m_points.push_back(PointD(childRect.GetRight(), childRect.GetBottom()));
+				eg->m_polygons[0]->m_points.push_back(PointD(childRect.GetLeft(), childRect.GetBottom()));
+			}
+			//eg->SetBoundingBox(childRect);
+			eg->CalcBoundingBox();
+		}
+
+		//childRect.Union(GetBoundingRect(cluster));
+		//ElementGPtr elementG = new ElementG(childRect);
+		//cluster->SetProperty(SVG_PROP_ELEMENTG, elementG);
+	}
+	if (parentRect.IsEmptyArea())
+		parentRect = childRect;
+	else
+		parentRect.Union(childRect);
+}
+
 GRAPHDB_API void MergeSVG(IGraph * graph, const std::string & svg)
 {
 	CSvgParser parser(graph);
 	parser.Create();
 	parser.Parse(svg.c_str(), svg.length());
+	RectD childRect;
+	FixSubgraphSizes(graph, childRect);
 }
 
 GRAPHDB_API ElementG * GetElementG(IGraphItem * item)
 {
-	CUnknown * tmpProp = item->GetPropertyCUnknown(ln::SVG_PROP_ELEMENTG);
+	CUnknown * tmpProp = item->GetPropertyCUnknown(hpcc::SVG_PROP_ELEMENTG);
 	if (tmpProp)
-		return reinterpret_cast<ln::ElementG * >(tmpProp);
+		return reinterpret_cast<hpcc::ElementG * >(tmpProp);
 	
 	RectD boundingBox;
-	if (ICluster * cluster = dynamic_cast<ICluster *>(item))	//  Not all layouts support clusters!
+	if (const ICluster * cluster = dynamic_cast<const ICluster *>(item))	//  Not all layouts support clusters!
 	{
 		bool first = true;
 		for(IClusterSet::const_iterator itr = cluster->GetClusters().begin(); itr != cluster->GetClusters().end(); ++itr)

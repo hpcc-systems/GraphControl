@@ -23,7 +23,7 @@
 
 #include "GraphGraph.h"
 
-namespace ln
+namespace hpcc
 {
 class CEdge : public IEdge, public CGraphItem
 {

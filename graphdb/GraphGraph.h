@@ -24,7 +24,7 @@
 #include "GraphCluster.h"
 #include "util.h"
 
-namespace ln
+namespace hpcc
 {
 class CVertex;
 class CEdge;

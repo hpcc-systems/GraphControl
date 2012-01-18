@@ -69,7 +69,7 @@ void CDotView::SetScrollSize(int w, int h, bool redraw)
     //gtk_widget_set_size_request(m_canvas, w, h);
 }
 
-bool CDotView::GetClientRectangle(ln::RectD & rect)
+bool CDotView::GetClientRectangle(hpcc::RectD & rect)
 {
 	gint width;
 	gint height;
@@ -91,9 +91,9 @@ void CDotView::DoPaint(GdkEvent *evt)
 	//GtkAdjustment * hadj = gtk_scrolled_window_get_hadjustment(GTK_SCROLLED_WINDOW(win->m_scrolled_window));
 	//GtkAdjustment * vadj = gtk_scrolled_window_get_vadjustment(GTK_SCROLLED_WINDOW(win->m_scrolled_window));
 
-	//ln::RectI rect(hadj->value, vadj->value, hadj->value + hadj->page_size, vadj->value + vadj->page_size);
+	//hpcc::RectI rect(hadj->value, vadj->value, hadj->value + hadj->page_size, vadj->value + vadj->page_size);
 	m_buffer->Resize(event->area.width, event->area.height);
-	ln::RectI rect(event->area.x, event->area.y, event->area.x + event->area.width, event->area.y + event->area.height);
+	hpcc::RectI rect(event->area.x, event->area.y, event->area.x + event->area.width, event->area.y + event->area.height);
 	rect.Offset(m_ptOffset.x, m_ptOffset.y);
 //	std::cout << "GDK_EXPOSE:  Start 3" << "\n";
 	m_gr->DoRender(rect, true);
@@ -109,7 +109,7 @@ void CDotView::DoPaint(GdkEvent *evt)
 //	std::cout << "GDK_EXPOSE:  End" << "\n";
 }
 
-void CDotView::OnLButtonDown(ln::PointD point)
+void CDotView::OnLButtonDown(hpcc::PointD point)
 {
 	m_mouseDown = MOUSEDOWN_NORMAL;
 	m_mouseDownPosX = point.x;
@@ -119,7 +119,7 @@ void CDotView::OnLButtonDown(ln::PointD point)
 	//SetCapture();
 }
 
-void CDotView::OnLButtonUp(ln::PointD point, guint modifierState)
+void CDotView::OnLButtonUp(hpcc::PointD point, guint modifierState)
 {
 	//ReleaseCapture();
 	if (m_mouseDown == MOUSEDOWN_DBLCLK)
@@ -129,8 +129,8 @@ void CDotView::OnLButtonUp(ln::PointD point, guint modifierState)
 	}
 	m_mouseDown = MOUSEDOWN_UNKNOWN;
 	point.Offset(m_ptOffset);
-	ln::IGraphItem * selectedItem = m_gr->GetItemAt(point.x, point.y);
-	if (ln::IGraph * graph = dynamic_cast<ln::IGraph *>(selectedItem))
+	hpcc::IGraphItem * selectedItem = m_gr->GetItemAt(point.x, point.y);
+	if (hpcc::IGraph * graph = dynamic_cast<hpcc::IGraph *>(selectedItem))
 		return;
 
 	bool selChanged = false;
@@ -157,14 +157,14 @@ void CDotView::OnLButtonUp(ln::PointD point, guint modifierState)
 	}
 }
 
-void CDotView::OnLButtonDblClk(ln::PointD point)
+void CDotView::OnLButtonDblClk(hpcc::PointD point)
 {
 	m_mouseDown = MOUSEDOWN_DBLCLK;
 	point.Offset(m_ptOffset);
-	ln::PointD worldDblClk(point.x, point.y);
+	hpcc::PointD worldDblClk(point.x, point.y);
 	worldDblClk = m_gr->ScreenToWorld(worldDblClk);
 
-	ln::IGraphItem * item = m_gr->GetItemAt(worldDblClk.x, worldDblClk.y, true);
+	hpcc::IGraphItem * item = m_gr->GetItemAt(worldDblClk.x, worldDblClk.y, true);
 	m_api->fireMouseDoubleClicked(item ? item->GetID() : 0);
 }
 
@@ -190,7 +190,7 @@ int CDotView::OnLayoutComplete(void * wParam, void * lParam)
 void CDotView::InvalidateSelection()
 {
 	gdk_window_invalidate_rect(m_canvas->window, NULL, true);
-	/*	ln::RectD invalidateRect;
+	/*	hpcc::RectD invalidateRect;
 	if (m_selection->GetInvalidateRect(invalidateRect))
 		InvalidateWorldRect(invalidateRect);
 	if (m_selection->GetPrevInvalidateRect(invalidateRect))
@@ -198,7 +198,7 @@ void CDotView::InvalidateSelection()
 	 */
 }
 
-void CDotView::InvalidateScreenRect(const ln::RectD & screenRect)
+void CDotView::InvalidateScreenRect(const hpcc::RectD & screenRect)
 {
 	gdk_window_invalidate_rect(m_canvas->window, NULL, true);
 	/*
@@ -211,7 +211,7 @@ void CDotView::InvalidateScreenRect(const ln::RectD & screenRect)
 	 */
 }
 
-void CDotView::InvalidateWorldRect(const ln::RectD & worldRect)
+void CDotView::InvalidateWorldRect(const hpcc::RectD & worldRect)
 {
 	gdk_window_invalidate_rect(m_canvas->window, NULL, true);
 	/*
@@ -219,11 +219,12 @@ void CDotView::InvalidateWorldRect(const ln::RectD & worldRect)
 	*/
 }
 
-void CDotView::OnMouseMove(ln::PointD point)
+void CDotView::OnMouseMove(hpcc::PointD point)
 {
 	switch (m_mouseDown)
 	{
 	case MOUSEDOWN_NORMAL:
+	case MOUSEDOWN_MOVED:
 		{
 			std::cout << "mm_x:  " << point.x << "\t";
 			std::cout << "mm_y:  " << point.y << "\n";
@@ -232,6 +233,8 @@ void CDotView::OnMouseMove(ln::PointD point)
 			int deltaY = point.y - m_mouseDownPosY;
 
 			SetScrollOffset(m_scrollDownPosX - deltaX, m_scrollDownPosY - deltaY);
+			if (deltaX || deltaY)
+				m_mouseDown = MOUSEDOWN_MOVED;
 /*			
 			g_object_freeze_notify(G_OBJECT(m_scrolled_window));
 			gtk_adjustment_set_value(gtk_scrolled_window_get_hadjustment(GTK_SCROLLED_WINDOW(m_scrolled_window)), m_scrollDownPosX - deltaX);
@@ -247,12 +250,12 @@ void CDotView::OnMouseMove(ln::PointD point)
 	default:
 		{
 			point.Offset(m_ptOffset);
-			ln::IGraphItem * hotItem = NULL;//m_gro->GetItemAt(point.x, point.y);
+			hpcc::IGraphItem * hotItem = NULL;//m_gro->GetItemAt(point.x, point.y);
 			if (!hotItem)
 				hotItem = m_gr->GetItemAt(point.x, point.y);
 			if (m_hotItem->Set(hotItem))
 			{
-				ln::RectD invalidateRect;
+				hpcc::RectD invalidateRect;
 				if (m_hotItem->GetInvalidateRect(invalidateRect))
 					InvalidateWorldRect(invalidateRect);
 				if (m_hotItem->GetPrevInvalidateRect(invalidateRect))

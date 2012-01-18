@@ -27,7 +27,7 @@
 
 #include "SvgParser.h"
 
-namespace ln
+namespace hpcc
 {
 CGraph::CGraph() : CCluster()  //- 'this' should not be used in base member initializer list.
 {

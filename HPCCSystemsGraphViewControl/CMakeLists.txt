@@ -8,6 +8,28 @@
 
 project( HPCCSystemsGraphViewControl )
 
+# *********************************************************************
+
+include_directories (
+	gen
+	../graphdb
+	../graphrender
+	${WTL_INCLUDE_DIR}/include
+	${Boost_INCLUDE_DIRS}
+	${AGGSRC_DIRS}/agg-2.4/include
+	${FIREBREATH_INCLUDE_DIRS}
+	)
+
+if(WIN32)
+elseif(APPLE)
+elseif(UNIX)
+include_directories (
+	${GTK_INCLUDE_DIRS}
+	)
+endif()
+
+# SRC *****************************************************************
+
 set (	SRCS
 	precompiled_headers.h
 
@@ -24,8 +46,9 @@ set (	SRCS
 	gen/FBControl.htm
 	)
 
-if (WIN32)
-set (	SRCS_OS
+# Win *****************************************************************
+
+set (	SRCS_WIN
 	gen/FBControl.rgs
 	gen/FireBreathWin.def
 	gen/firebreathWin.rc
@@ -35,73 +58,78 @@ set (	SRCS_OS
 	DotViewWin.cpp
 	DotViewWin.h
 	)
-set (	SRCS_NO_PRECOMPILED_HEADERS
+set (	SRCS_WIN_NO_PRECOMPILED_HEADERS
 	gen/FireBreathWin_i.c
 	)
-else (WIN32)
-set (	SRCS_OS
-	x11_pixel_map.cpp
-	x11_pixel_map.h
 
+SOURCE_GROUP(Win FILES ${SRCS_WIN} ${SRCS_WIN_NO_PRECOMPILED_HEADERS})
+
+# OSX *****************************************************************
+
+set (	SRCS_APPLE
+	)
+
+SOURCE_GROUP(OSX FILES ${SRCS_APPLE})
+
+# X11 *****************************************************************
+
+set (	SRCS_UNIX
 	DotViewX11.cpp
 	DotViewX11.h
 	)
-endif (WIN32)
 
-include_directories (
-	gen
-	../graphdb
-	../graphrender
+SOURCE_GROUP(X11 FILES ${SRCS_UNIX})
 
-	${FIREBREATH_INCLUDE_DIRS}
-	
-	${WTL_INCLUDE_DIR}/include
-	
-	${AGGSRC_DIRS}/agg-2.4/include
-	${Boost_INCLUDE_DIRS}
+# *********************************************************************
+
+set (	SRCS_CMAKE
+	../cmake/Modules/Externals.cmake
+	../cmake/Modules/Utils.cmake
+	../cmake/Modules/FindAGGSRC.cmake
+	../cmake/Modules/FindFIREBREATH.cmake
+	../cmake/Modules/FindGRAPHVIZSRC.cmake
+	../cmake/Modules/FindWTL.cmake
+	../README
 	)
 
-if (WIN32)
-else (WIN32)
-include_directories (
-	${GTK_INCLUDE_DIRS}
-	)
-endif (WIN32)
+SOURCE_GROUP(CMake FILES ${SRCS_CMAKE})
 
-ADD_DEFINITIONS( -DUNICODE -D_UNICODE )
+# *********************************************************************
 
-if (WIN32)
-	ADD_DEFINITIONS( -DHPCCSYSTEMSGRAPHVIEWCONTROL_EXPORTS)
-else ()
-endif ()
+if(WIN32)
+    set_source_files_properties(${SRCS_APPLE} PROPERTIES HEADER_FILE_ONLY 1)
+    set_source_files_properties(${SRCS_UNIX} PROPERTIES HEADER_FILE_ONLY 1)
+elseif(APPLE)
+    set_source_files_properties(${SRCS_WIN} PROPERTIES HEADER_FILE_ONLY 1)
+    set_source_files_properties(${SRCS_WIN_NO_PRECOMPILED_HEADERS} PROPERTIES HEADER_FILE_ONLY 1)
+    set_source_files_properties(${SRCS_UNIX} PROPERTIES HEADER_FILE_ONLY 1)
+elseif(UNIX)
+    set_source_files_properties(${SRCS_WIN} PROPERTIES HEADER_FILE_ONLY 1)
+    set_source_files_properties(${SRCS_WIN_NO_PRECOMPILED_HEADERS} PROPERTIES HEADER_FILE_ONLY 1)
+    set_source_files_properties(${SRCS_APPLE} PROPERTIES HEADER_FILE_ONLY 1)
+endif()
 
-#if (WIN32)
-#add_subdirectory ( ActiveXCore )
-#set_property(TARGET ActiveXCore  PROPERTY FOLDER "3rdParty/Firebreath Core")
-#endif (WIN32)
-#add_subdirectory ( NpapiCore )
-#set_property(TARGET NpapiCore  PROPERTY FOLDER "3rdParty/Firebreath Core")
-#add_subdirectory ( PluginCore )
-#set_property(TARGET PluginCore  PROPERTY FOLDER "3rdParty/Firebreath Core")
-add_subdirectory ( PluginAuto )
-set_property(TARGET PluginAuto  PROPERTY FOLDER "3rdParty/Firebreath Core")
-#add_subdirectory ( ScriptingCore )
-#set_property(TARGET ScriptingCore  PROPERTY FOLDER "3rdParty/Firebreath Core")
+# *********************************************************************
 
-IF( FREETYPE_FOUND )
-    INCLUDE_DIRECTORIES(${FREETYPE_INCLUDE_DIRS})
-    LINK_LIBRARIES(${FREETYPE_LIBRARIES})
-ENDIF ()
+add_definitions(-DUNICODE -D_UNICODE)
 
+if(WIN32)
+	add_definitions(-DHPCCSYSTEMSGRAPHVIEWCONTROL_EXPORTS)
+elseif(APPLE)
+elseif(UNIX)
+endif()
 
-set ( SOURCES ${SRCS} ${SRCS_OS} )
+set(SOURCES ${SRCS} ${SRCS_WIN} ${SRCS_APPLE} ${SRCS_UNIX} ${SRCS_CMAKE})
 ADD_MSVC_PRECOMPILED_HEADER("precompiled_headers.h" "precompiled_headers.cpp" SOURCES)
-add_library ( HPCCSystemsGraphViewControl SHARED ${SOURCES} ${SRCS_NO_PRECOMPILED_HEADERS})
+add_library(HPCCSystemsGraphViewControl SHARED ${SOURCES} ${SRCS_WIN_NO_PRECOMPILED_HEADERS})
 
-if (UNIX)
-set(NPAPI_LINK_FLAGS "-Wl,--discard-all -Wl,-Bsymbolic -Wl,-z,defs -Wl")
-else (UNIX)
-endif (UNIX)
+# *********************************************************************
+
+if(WIN32)
+elseif(APPLE)
+elseif(UNIX)
+	set(NPAPI_LINK_FLAGS "-Wl,--discard-all -Wl,-Bsymbolic -Wl,-z,defs -Wl")
+endif()
 set_target_properties ("HPCCSystemsGraphViewControl" PROPERTIES
        OUTPUT_NAME npHPCCSystemsGraphViewControl
        PROJECT_LABEL "HPCCSystemsGraphViewControl"
@@ -109,12 +137,10 @@ set_target_properties ("HPCCSystemsGraphViewControl" PROPERTIES
        PREFIX ""
 	)
 
-add_dependencies (HPCCSystemsGraphViewControl
-	graphdb
-	graphrender
-	PluginAuto
-	)
+add_subdirectory(PluginAuto)
+set_property(TARGET PluginAuto PROPERTY FOLDER "3rdParty/FireBreath Generated")
 
+#  Libraries added twice to resolve circular references on linux (when using static linking).
 target_link_libraries( HPCCSystemsGraphViewControl
 	graphdb
 	graphrender
@@ -125,20 +151,18 @@ target_link_libraries( HPCCSystemsGraphViewControl
 	${Boost_LIBRARIES}
 	)
 
-if (WIN32)
+if(WIN32)
 	target_link_libraries( HPCCSystemsGraphViewControl
 		wininet
 		)
-else (WIN32)
+elseif(APPLE)
+elseif(UNIX)
     set(LIBDL_LIBRARIES dl)
 	target_link_libraries( HPCCSystemsGraphViewControl
 		${GTK_LIBRARIES}
 		${LIBDL_LIBRARIES}
 		${CMAKE_THREAD_LIBS_INIT}
 		)
-endif (WIN32)
+endif()
 
-if ( WIN32 )	
-else ( WIN32 )	
-install ( TARGETS HPCCSystemsGraphViewControl DESTINATION lib/mozilla/plugins )
-endif ( WIN32 )	
+# *********************************************************************

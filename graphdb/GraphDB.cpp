@@ -26,7 +26,7 @@
 #include "XgmmlParser.h"
 #include "DotParser.h"
 
-namespace ln
+namespace hpcc
 {
 GRAPHDB_API IGraph * CreateGraph()
 {
@@ -44,9 +44,9 @@ const char * const GraphTpl =
 //"graph[pad=\"0.01, 0.01\"];\r\n"
 "graph[rankdir=\"TB\"%2%];\r\n"
 //"graph[sep=\"0.1\"];\r\n"
-"graph[overlap=\"scalexy\"];\r\n"
-"graph[smoothing=\"spring\"];\r\n"
-//"graph[splines=\"spline\"];\r\n"
+//"graph[overlap=\"scalexy\"];\r\n"
+//"graph[smoothing=\"spring\"];\r\n"
+//"graph[splines=\"line\"];\r\n"
 "\r\n"
 "node[fontname=\"Verdana\",fontsize=11,fontcolor=\"#000000\"];\r\n"
 "node[shape=\"box\"];\r\n"

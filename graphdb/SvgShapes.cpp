@@ -342,7 +342,7 @@ namespace svg
 } //namespace svg
 } //namespace agg
 
-namespace ln
+namespace hpcc
 {
 double MulDiv(double val, double nominator, double denominator)
 {
@@ -649,7 +649,7 @@ Text::Text(const std::string & text_anchor, const std::string & x, const std::st
 
 void Text::CalcBoundingBox()
 {
-	double textWidth = m_text.length() * m_font_size;
+	double textWidth = m_text.length() * (m_font_size / (1.75));
 	m_rect = RectD(m_pos.x - textWidth / 2.0, m_pos.y - m_font_size / 2.0, textWidth, m_font_size);
 }
 

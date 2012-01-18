@@ -30,7 +30,7 @@
 #include <fstream>
 #endif
 
-namespace ln
+namespace hpcc
 {
 boost::recursive_mutex g_mutex;
 
