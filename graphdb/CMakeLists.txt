@@ -65,13 +65,7 @@ elseif(UNIX)
 endif()
 
 ADD_MSVC_PRECOMPILED_HEADER("precompiled_headers.h" "precompiled_headers.cpp" SRCS)
-if(WIN32)
-	add_library ( graphdb STATIC ${SRCS} )
-elseif(APPLE)
-	add_library ( graphdb SHARED ${SRCS} )
-elseif(UNIX)
-	add_library ( graphdb SHARED ${SRCS} )
-endif()
+add_library ( graphdb SHARED ${SRCS} )
 
 # *********************************************************************
 

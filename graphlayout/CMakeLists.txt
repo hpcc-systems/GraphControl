@@ -44,19 +44,13 @@ set (	SRCS
 
 add_definitions(-DHAVE_CONFIG_H -DHAVE_SETMODE)
 if(WIN32)
-	add_definitions(-DLIBAGRAPH_EXPORTS -DMSWIN32)
+	add_definitions(-DLIBAGRAPH_EXPORTS -DMSWIN32 -D_UNICODE)
 elseif(APPLE)
 elseif(UNIX)
 endif()
 
 ADD_MSVC_PRECOMPILED_HEADER("precompiled_headers.h" "precompiled_headers.cpp" SRCS)
-if(WIN32)
-	add_library ( graphlayout STATIC ${SRCS} )
-elseif(APPLE)
-	add_library ( graphlayout SHARED ${SRCS} )
-elseif(UNIX)
-	add_library ( graphlayout SHARED ${SRCS} )
-endif()
+add_library ( graphlayout SHARED ${SRCS} )
 
 # *********************************************************************
 
@@ -100,6 +94,8 @@ add_subdirectory (sparse)
 set_property(TARGET sparse PROPERTY FOLDER "3rdParty/Graphviz")
 add_subdirectory (xdot)
 set_property(TARGET xdot PROPERTY FOLDER "3rdParty/Graphviz")
+add_subdirectory (vpsc)
+set_property(TARGET vpsc PROPERTY FOLDER "3rdParty/Graphviz")
 
 target_link_libraries ( graphlayout
 	cdt
@@ -122,6 +118,7 @@ target_link_libraries ( graphlayout
 	sparse
 	twopigen
 	xdot
+	vpsc
 	)
 
 # *********************************************************************

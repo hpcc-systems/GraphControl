@@ -23,7 +23,7 @@ include_directories (
 if(WIN32)
 elseif(APPLE)
 	include_directories (
-		/Developer/Headers/FlatCarbon
+		${GTK_INCLUDE_DIRS}
 		)
 elseif(UNIX)
 	include_directories (
@@ -42,9 +42,43 @@ set (	SRCS
 	GraphBuffer.h
 	GraphHotItem.cpp
 	GraphHotItem.h
+	)
 
+# Win *****************************************************************
+
+set (	SRCS_WIN
+	)
+
+SOURCE_GROUP(Win FILES ${SRCS_WIN})
+
+# OSX *****************************************************************
+
+set (	SRCS_APPLE
+	osx_pixel_map.h
+	)
+
+SOURCE_GROUP(OSX FILES ${SRCS_APPLE})
+
+# X11 *****************************************************************
+
+set (	SRCS_UNIX
 	x11_pixel_map.h
 	)
+
+SOURCE_GROUP(X11 FILES ${SRCS_UNIX})
+
+# *********************************************************************
+
+if(WIN32)
+    set_source_files_properties(${SRCS_APPLE} PROPERTIES HEADER_FILE_ONLY 1)
+    set_source_files_properties(${SRCS_UNIX} PROPERTIES HEADER_FILE_ONLY 1)
+elseif(APPLE)
+    set_source_files_properties(${SRCS_WIN} PROPERTIES HEADER_FILE_ONLY 1)
+    set_source_files_properties(${SRCS_UNIX} PROPERTIES HEADER_FILE_ONLY 1)
+elseif(UNIX)
+    set_source_files_properties(${SRCS_WIN} PROPERTIES HEADER_FILE_ONLY 1)
+    set_source_files_properties(${SRCS_APPLE} PROPERTIES HEADER_FILE_ONLY 1)
+endif()
 
 # *********************************************************************
 
@@ -56,14 +90,9 @@ elseif(APPLE)
 elseif(UNIX)
 endif()
 
-ADD_MSVC_PRECOMPILED_HEADER("precompiled_headers.h" "precompiled_headers.cpp" SRCS)
-if(WIN32)
-	add_library ( graphrender STATIC ${SRCS} )
-elseif(APPLE)
-	add_library ( graphrender SHARED ${SRCS} )
-elseif(UNIX)
-	add_library ( graphrender SHARED ${SRCS} )
-endif()
+set(SOURCES ${SRCS} ${SRCS_WIN} ${SRCS_APPLE} ${SRCS_UNIX})
+ADD_MSVC_PRECOMPILED_HEADER("precompiled_headers.h" "precompiled_headers.cpp" SOURCES)
+add_library ( graphrender SHARED ${SOURCES} )
 
 # *********************************************************************
 

@@ -73,7 +73,7 @@ SOURCE_GROUP(Win FILES ${SRCS_WIN})
 # OSX *****************************************************************
 
 set (	SRCS_APPLE
-	${AGGSRC_DIRS}/agg-2.4/src/platform/mac/agg_mac_pmap.cpp
+	#${AGGSRC_DIRS}/agg-2.4/src/platform/mac/agg_mac_pmap.cpp
 	#${AGGSRC_DIRS}/agg-2.4/src/platform/mac/agg_platform_support.cpp
 	)
 
@@ -115,7 +115,7 @@ endif()
 # *********************************************************************
 
 set(SOURCES ${SRCS} ${SRCS_WIN} ${SRCS_APPLE} ${SRCS_UNIX})
-add_library(agg SHARED ${SOURCES})
+add_library(agg STATIC ${SOURCES})
 
 # *********************************************************************
 

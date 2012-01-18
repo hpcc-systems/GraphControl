@@ -18,12 +18,11 @@ include ( "${CMAKE_SOURCE_DIR}/cmake/Modules/Utils.cmake" )
 include ( "${CMAKE_SOURCE_DIR}/cmake/Modules/Externals.cmake" )
 
 if (WIN32)
-	add_definitions(-DFB_WIN=1 -DXP_WIN=1)
+	add_definitions(-DFB_WIN=1 -DXP_WIN=1 -D_CRT_SECURE_NO_WARNINGS)
     if (WITH_DYNAMIC_MSVC_RUNTIME)
         message(STATUS "Building with dynamic MSVC runtime")
 	else (WITH_DYNAMIC_MSVC_RUNTIME)
         message(STATUS "Building with static MSVC runtime")
-		add_definitions( -DSTATIC_LIB )
 	endif (WITH_DYNAMIC_MSVC_RUNTIME)
     foreach(flag_var
             CMAKE_CXX_FLAGS CMAKE_CXX_FLAGS_DEBUG CMAKE_CXX_FLAGS_RELEASE

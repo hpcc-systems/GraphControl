@@ -35,6 +35,7 @@ include_directories (
 	${GRAPHVIZSRC_DIRS}/lib/graph
 	${GRAPHVIZSRC_DIRS}/lib/pathplan
 	${GRAPHVIZSRC_DIRS}/lib/gvc
+	${GRAPHVIZSRC_DIRS}/lib/ortho
 	${GRAPHVIZSRC_DIRS}
 	)
 

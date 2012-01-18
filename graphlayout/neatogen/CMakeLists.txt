@@ -16,6 +16,7 @@ set (	SRCS
 	${GRAPHVIZSRC_DIRS}/lib/neatogen/compute_hierarchy.c
 	${GRAPHVIZSRC_DIRS}/lib/neatogen/conjgrad.c
 	${GRAPHVIZSRC_DIRS}/lib/neatogen/constrained_majorization.c
+	${GRAPHVIZSRC_DIRS}/lib/neatogen/constrained_majorization_ipsep.c
 	${GRAPHVIZSRC_DIRS}/lib/neatogen/constraint.c
 	${GRAPHVIZSRC_DIRS}/lib/neatogen/delaunay.c
 	${GRAPHVIZSRC_DIRS}/lib/neatogen/dijkstra.c
@@ -48,6 +49,7 @@ set (	SRCS
 	${GRAPHVIZSRC_DIRS}/lib/neatogen/stress.c
 	${GRAPHVIZSRC_DIRS}/lib/neatogen/stuff.c
 	${GRAPHVIZSRC_DIRS}/lib/neatogen/voronoi.c
+	${GRAPHVIZSRC_DIRS}/lib/neatogen/quad_prog_vpsc.c
 	)
 
 include_directories (
@@ -61,6 +63,8 @@ include_directories (
 	${GRAPHVIZSRC_DIRS}/lib/graph
 	${GRAPHVIZSRC_DIRS}/lib/pathplan
 	${GRAPHVIZSRC_DIRS}/lib/sparse
+	${GRAPHVIZSRC_DIRS}/lib/vpsc
+	${GRAPHVIZSRC_DIRS}/lib/ortho
 	${GRAPHVIZSRC_DIRS}
 	)
 

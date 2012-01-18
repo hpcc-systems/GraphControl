@@ -66,14 +66,14 @@ SOURCE_GROUP(Win FILES ${SRCS_WIN} ${SRCS_WIN_NO_PRECOMPILED_HEADERS})
 
 # OSX *****************************************************************
 
+set (	SRCS_APPLE
+	)
+
 SOURCE_GROUP(OSX FILES ${SRCS_APPLE})
 
 # X11 *****************************************************************
 
 set (	SRCS_UNIX
-	x11_pixel_map.cpp
-	x11_pixel_map.h
-
 	DotViewX11.cpp
 	DotViewX11.h
 	)
