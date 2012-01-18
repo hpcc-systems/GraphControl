@@ -45,6 +45,7 @@ public:
 		MOUSEDOWN_DBLCLK,
 		MOUSEDOWN_OVERVIEW,
 		MOUSEDOWN_OVERVIEW_WIN,
+		MOUSEDOWN_MOVED,
 		MOUSEDOWN_LAST
 
 	} m_mouseDown;
@@ -75,6 +76,7 @@ public:
 	void LoadXML2(const std::string & xml);
 	void LoadXGMML(const std::string & xgmml);
 	void MergeXGMML(const std::string & xgmml);
+	void MergeSVG(const std::string & svg);
 	void LoadDOT(const std::string & dot);
 	const std::string GetSVG();
 	const std::string GetDOT();
