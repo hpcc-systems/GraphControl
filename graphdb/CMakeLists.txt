@@ -65,7 +65,11 @@ elseif(UNIX)
 endif()
 
 ADD_MSVC_PRECOMPILED_HEADER("precompiled_headers.h" "precompiled_headers.cpp" SRCS)
-add_library ( graphdb SHARED ${SRCS} )
+if (WITH_DYNAMIC_MSVC_RUNTIME)
+	add_library ( graphdb SHARED ${SRCS} )
+else (WITH_DYNAMIC_MSVC_RUNTIME)
+	add_library ( graphdb STATIC ${SRCS} )
+endif (WITH_DYNAMIC_MSVC_RUNTIME)
 
 # *********************************************************************
 

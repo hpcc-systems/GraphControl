@@ -23,6 +23,7 @@ if (WIN32)
         message(STATUS "Building with dynamic MSVC runtime")
 	else (WITH_DYNAMIC_MSVC_RUNTIME)
         message(STATUS "Building with static MSVC runtime")
+		add_definitions(-DSTATIC_LIB)
 	endif (WITH_DYNAMIC_MSVC_RUNTIME)
     foreach(flag_var
             CMAKE_CXX_FLAGS CMAKE_CXX_FLAGS_DEBUG CMAKE_CXX_FLAGS_RELEASE
