@@ -25,7 +25,7 @@
 
 #define DESTRUCTOR_REFCOUNT 1042
 
-namespace ln
+namespace hpcc
 {
 CUnknown::CUnknown() : m_refCount(0)
 {

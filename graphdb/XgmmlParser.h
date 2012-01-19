@@ -23,7 +23,7 @@
 
 #include "XmlParser.h"
 
-namespace ln
+namespace hpcc
 {
 enum XGMML_PROP
 {

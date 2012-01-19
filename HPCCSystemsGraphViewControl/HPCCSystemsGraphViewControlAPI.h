@@ -69,6 +69,7 @@ public:
 	bool clear();
 	bool loadXGMML(const std::string& xgmml);
 	bool mergeXGMML(const std::string& xgmml);
+	bool mergeSVG(const std::string& svg);
 	bool loadDOT(const std::string& dot);
 	bool startLayout(const std::string& layout);
 

@@ -23,7 +23,7 @@
 
 #include "Unknown.h"
 
-namespace ln
+namespace hpcc
 {
 #define REAL_MAX            FLT_MAX
 #define REAL_MIN            FLT_MIN
@@ -882,6 +882,11 @@ public:
 		if (m_rect.IsEmptyArea())
 			CalcBoundingBox();
 		return m_rect;
+	}
+
+	void SetBoundingBox(const RectD & boudningBox)
+	{
+		m_rect = boudningBox;
 	}
 
 	virtual void CalcBoundingBox() = 0;

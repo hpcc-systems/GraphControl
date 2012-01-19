@@ -26,9 +26,9 @@
 #include "GraphBuffer.h"
 #include "GraphHotItem.h"
 
-namespace ln
+namespace hpcc
 {
-interface GRAPHRENDER_API IGraphRender : public IUnknown
+hpcc_interface GRAPHRENDER_API IGraphRender : public IUnknown
 {
 	virtual void SetMessage(const std::string & msg) = 0;
 	virtual void SetOffset(const PointD & pt) = 0;

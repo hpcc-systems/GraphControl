@@ -23,7 +23,7 @@
 
 #include "GraphDB.h"
 
-namespace ln
+namespace hpcc
 {
 typedef std::map<unsigned int, bool> IntBoolMap;
 typedef std::map<unsigned int, int> IntIntMap;

@@ -25,7 +25,7 @@
 #include "XmlParser.h"
 #include "GraphGraph.h"
 
-namespace ln
+namespace hpcc
 {
 //  ===========================================================================
 typedef std::map<std::string, IVertexPtr> StringVertexMap;

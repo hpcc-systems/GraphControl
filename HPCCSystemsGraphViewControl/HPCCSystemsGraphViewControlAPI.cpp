@@ -52,6 +52,7 @@ HPCCSystemsGraphViewControlAPI::HPCCSystemsGraphViewControlAPI(const HPCCSystems
 	registerMethod("clear", make_method(this, &HPCCSystemsGraphViewControlAPI::clear));
 	registerMethod("loadXGMML", make_method(this, &HPCCSystemsGraphViewControlAPI::loadXGMML));
 	registerMethod("mergeXGMML", make_method(this, &HPCCSystemsGraphViewControlAPI::mergeXGMML));
+	registerMethod("mergeSVG", make_method(this, &HPCCSystemsGraphViewControlAPI::mergeSVG));
 	registerMethod("loadDOT", make_method(this, &HPCCSystemsGraphViewControlAPI::loadDOT));
 	registerMethod("startLayout", make_method(this, &HPCCSystemsGraphViewControlAPI::startLayout));
 	registerMethod("setScale", make_method(this, &HPCCSystemsGraphViewControlAPI::setScale));
@@ -166,6 +167,12 @@ bool HPCCSystemsGraphViewControlAPI::mergeXGMML(const std::string& xgmml)
 	return true;
 }
 
+bool HPCCSystemsGraphViewControlAPI::mergeSVG(const std::string& svg)
+{
+	m_callback->MergeSVG(svg);
+	return true;
+}
+
 bool HPCCSystemsGraphViewControlAPI::loadDOT(const std::string& dot)
 {
     assert(m_callback != NULL);
@@ -242,10 +249,10 @@ FB::VariantList HPCCSystemsGraphViewControlAPI::getSelection()
 
 int HPCCSystemsGraphViewControlAPI::getRunningSubgraph()
 {
-	ln::IClusterSet clusters = m_callback->GetClusters();
-	for(ln::IClusterSet::const_iterator itr = clusters.begin(); itr != clusters.end(); ++itr)
+	hpcc::IClusterSet clusters = m_callback->GetClusters();
+	for(hpcc::IClusterSet::const_iterator itr = clusters.begin(); itr != clusters.end(); ++itr)
 	{
-		if ((ln::XGMML_STATE_ENUM)itr->get()->GetPropertyInt(ln::XGMML_STATE) == ln::XGMML_STATE_RUNNING)
+		if ((hpcc::XGMML_STATE_ENUM)itr->get()->GetPropertyInt(hpcc::XGMML_STATE) == hpcc::XGMML_STATE_RUNNING)
 			return itr->get()->GetID();
 	}
 	return 0;
@@ -278,9 +285,9 @@ FB::VariantMap HPCCSystemsGraphViewControlAPI::getProperties(int item)
 	assert(m_callback);
 	FB::VariantMap retVal;
 
-	ln::StringStringMap properties;
+	hpcc::StringStringMap properties;
 	m_callback->GetProperties(item, properties);
-	for(ln::StringStringMap::const_iterator itr = properties.begin(); itr != properties.end(); ++itr)
+	for(hpcc::StringStringMap::const_iterator itr = properties.begin(); itr != properties.end(); ++itr)
 		retVal[itr->first] = itr->second;
 
 	return retVal;
@@ -288,7 +295,7 @@ FB::VariantMap HPCCSystemsGraphViewControlAPI::getProperties(int item)
 
 std::string HPCCSystemsGraphViewControlAPI::getProperty(int item, const std::string & key)
 {
-	ln::StringStringMap properties;
+	hpcc::StringStringMap properties;
 	m_callback->GetProperties(item, properties);
 	return properties[key];
 }

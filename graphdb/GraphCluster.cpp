@@ -23,7 +23,7 @@
 
 #include "GraphCluster.h"
 
-namespace ln
+namespace hpcc
 {
 CCluster::CCluster() : CGraphItem()
 {

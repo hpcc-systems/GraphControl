@@ -31,12 +31,12 @@ class CDotViewCommon
 {
 public:
 	HPCCSystemsGraphViewControlAPI * m_api;
-	ln::IGraphBufferPtr m_buffer;
-	ln::IGraphPtr m_g;
-	ln::IGraphRenderPtr m_gr;
-	//ln::IGraphRenderPtr m_gro;
-	ln::IGraphHotItemPtr m_hotItem;
-	ln::IGraphSelectionBagPtr m_selection;
+	hpcc::IGraphBufferPtr m_buffer;
+	hpcc::IGraphPtr m_g;
+	hpcc::IGraphRenderPtr m_gr;
+	//hpcc::IGraphRenderPtr m_gro;
+	hpcc::IGraphHotItemPtr m_hotItem;
+	hpcc::IGraphSelectionBagPtr m_selection;
 
 	enum MOUSEDOWN
 	{
@@ -45,6 +45,7 @@ public:
 		MOUSEDOWN_DBLCLK,
 		MOUSEDOWN_OVERVIEW,
 		MOUSEDOWN_OVERVIEW_WIN,
+		MOUSEDOWN_MOVED,
 		MOUSEDOWN_LAST
 
 	} m_mouseDown;
@@ -63,7 +64,7 @@ public:
 	virtual int GetScrollOffsetY() = 0;
 	virtual void SetScrollOffset(int x, int y) = 0;
 	virtual void SetScrollSize(int w, int h, bool redraw) = 0;
-	virtual bool GetClientRectangle(ln::RectD & rect) = 0;
+	virtual bool GetClientRectangle(hpcc::RectD & rect) = 0;
 	virtual void UpdateWindow() = 0;
 	virtual void InvalidateSelection() = 0;
 	virtual void operator()(const std::string & dot, const std::string & svg) = 0;
@@ -75,13 +76,14 @@ public:
 	void LoadXML2(const std::string & xml);
 	void LoadXGMML(const std::string & xgmml);
 	void MergeXGMML(const std::string & xgmml);
+	void MergeSVG(const std::string & svg);
 	void LoadDOT(const std::string & dot);
 	const std::string GetSVG();
 	const std::string GetDOT();
 	const char * GetLocalisedXGMML(int item, std::string & xgmml);
 	double SetScale(double scale);
 	double GetScale();
-	virtual void CenterOnGraphItem(ln::IGraphItem * item = NULL);
+	virtual void CenterOnGraphItem(hpcc::IGraphItem * item = NULL);
 	virtual void CenterOnItem(int item, bool sizeToFit, bool widthOnly);
 	void StartLayout(const std::string & layout);
 	void SetMessage(const std::string & msg);
@@ -91,16 +93,16 @@ public:
 	int GetSelection(std::vector<std::string> & results);
 	bool SetSelected(const std::vector<int> & items, bool clearPrevious);
 	bool SetSelected(const std::vector<std::string> & items, bool clearPrevious);
-	const ln::IClusterSet & GetClusters();
-	int GetProperties(int item, ln::StringStringMap & results);
+	const hpcc::IClusterSet & GetClusters();
+	int GetProperties(int item, hpcc::StringStringMap & results);
 	unsigned int GetItem(const std::string &externalID);
 	const char * GetGlobalID(int item);
 	int GetVertices(std::vector<int> & results);
 	//  --- IAPICallback ---
 
-	void CenterOn(const ln::PointD & worldPoint);
-	void MoveTo(const ln::PointD & worldPoint, int x, int y);
-	ln::PointD GetCenterAsWorldPoint();
+	void CenterOn(const hpcc::PointD & worldPoint);
+	void MoveTo(const hpcc::PointD & worldPoint, int x, int y);
+	hpcc::PointD GetCenterAsWorldPoint();
 	void CalcScrollbars(bool redraw = false);
 };
 
