@@ -158,11 +158,75 @@ public:
 
 };
 
+RectD GetBoundingRect(IGraphItem * item) 
+{
+	if (item)
+	{
+		if (ElementG * eg = GetElementG(item))
+			return eg->GetBoundingBox();
+	}
+	return RectD();
+}
+
+void FixSubgraphSizes(ICluster * cluster, RectD  & parentRect)
+{
+	RectD childRect;
+	for(IClusterSet::const_iterator itr = cluster->GetClusters().begin(); itr != cluster->GetClusters().end(); ++itr)
+	{
+		std::string cluster;
+		FixSubgraphSizes(itr->get(), childRect);
+	}
+
+	for(IVertexSet::const_iterator itr = cluster->GetVertices().begin(); itr != cluster->GetVertices().end(); ++itr)
+	{
+		if (childRect.IsEmptyArea())
+			childRect = GetBoundingRect(itr->get());
+		else
+			childRect.Union(GetBoundingRect(itr->get()));
+	}
+
+	//if (!GetBoundingRect(cluster).Contains(childRect))
+	{
+		if (childRect.IsEmptyArea())
+			childRect = GetBoundingRect(cluster);
+		else
+			childRect.Union(GetBoundingRect(cluster));
+
+
+		if (ElementG * eg = GetElementG(cluster))
+		{
+			assert(eg->m_polygons.size() == 1);
+			if (eg->m_polygons.size() == 1)
+			{
+				eg->m_polygons[0]->m_points.clear();
+				eg->m_polygons[0]->SetBoundingBox(RectD());
+				eg->m_polygons[0]->m_points.push_back(PointD(childRect.GetLeft(), childRect.GetBottom()));
+				eg->m_polygons[0]->m_points.push_back(PointD(childRect.GetLeft(), childRect.GetTop()));
+				eg->m_polygons[0]->m_points.push_back(PointD(childRect.GetRight(), childRect.GetTop()));
+				eg->m_polygons[0]->m_points.push_back(PointD(childRect.GetRight(), childRect.GetBottom()));
+				eg->m_polygons[0]->m_points.push_back(PointD(childRect.GetLeft(), childRect.GetBottom()));
+			}
+			//eg->SetBoundingBox(childRect);
+			eg->CalcBoundingBox();
+		}
+
+		//childRect.Union(GetBoundingRect(cluster));
+		//ElementGPtr elementG = new ElementG(childRect);
+		//cluster->SetProperty(SVG_PROP_ELEMENTG, elementG);
+	}
+	if (parentRect.IsEmptyArea())
+		parentRect = childRect;
+	else
+		parentRect.Union(childRect);
+}
+
 GRAPHDB_API void MergeSVG(IGraph * graph, const std::string & svg)
 {
 	CSvgParser parser(graph);
 	parser.Create();
 	parser.Parse(svg.c_str(), svg.length());
+	RectD childRect;
+	FixSubgraphSizes(graph, childRect);
 }
 
 GRAPHDB_API ElementG * GetElementG(IGraphItem * item)
@@ -172,7 +236,7 @@ GRAPHDB_API ElementG * GetElementG(IGraphItem * item)
 		return reinterpret_cast<hpcc::ElementG * >(tmpProp);
 	
 	RectD boundingBox;
-	if (ICluster * cluster = dynamic_cast<ICluster *>(item))	//  Not all layouts support clusters!
+	if (const ICluster * cluster = dynamic_cast<const ICluster *>(item))	//  Not all layouts support clusters!
 	{
 		bool first = true;
 		for(IClusterSet::const_iterator itr = cluster->GetClusters().begin(); itr != cluster->GetClusters().end(); ++itr)

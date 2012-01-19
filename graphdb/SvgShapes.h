@@ -884,6 +884,11 @@ public:
 		return m_rect;
 	}
 
+	void SetBoundingBox(const RectD & boudningBox)
+	{
+		m_rect = boudningBox;
+	}
+
 	virtual void CalcBoundingBox() = 0;
 };
 

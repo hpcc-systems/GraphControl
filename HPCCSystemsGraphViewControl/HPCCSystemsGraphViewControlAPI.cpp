@@ -52,6 +52,7 @@ HPCCSystemsGraphViewControlAPI::HPCCSystemsGraphViewControlAPI(const HPCCSystems
 	registerMethod("clear", make_method(this, &HPCCSystemsGraphViewControlAPI::clear));
 	registerMethod("loadXGMML", make_method(this, &HPCCSystemsGraphViewControlAPI::loadXGMML));
 	registerMethod("mergeXGMML", make_method(this, &HPCCSystemsGraphViewControlAPI::mergeXGMML));
+	registerMethod("mergeSVG", make_method(this, &HPCCSystemsGraphViewControlAPI::mergeSVG));
 	registerMethod("loadDOT", make_method(this, &HPCCSystemsGraphViewControlAPI::loadDOT));
 	registerMethod("startLayout", make_method(this, &HPCCSystemsGraphViewControlAPI::startLayout));
 	registerMethod("setScale", make_method(this, &HPCCSystemsGraphViewControlAPI::setScale));
@@ -163,6 +164,12 @@ bool HPCCSystemsGraphViewControlAPI::loadXGMML(const std::string& xgmml)
 bool HPCCSystemsGraphViewControlAPI::mergeXGMML(const std::string& xgmml)
 {
 	m_callback->MergeXGMML(xgmml);
+	return true;
+}
+
+bool HPCCSystemsGraphViewControlAPI::mergeSVG(const std::string& svg)
+{
+	m_callback->MergeSVG(svg);
 	return true;
 }
 
