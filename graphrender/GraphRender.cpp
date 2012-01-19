@@ -28,7 +28,7 @@
 #include <agg_math_stroke.h>
 #include <agg2d.h>
 
-namespace ln
+namespace hpcc
 {
 #define OVERVIEW_CUTOFF 0.25
 

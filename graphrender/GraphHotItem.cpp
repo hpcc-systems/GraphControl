@@ -24,7 +24,7 @@
 #include "GraphHotItem.h"
 #include "SvgParser.h"
 
-namespace ln
+namespace hpcc
 {
 //  ===========================================================================
 class CGraphHotItem : public IGraphHotItem, public CUnknown
@@ -90,26 +90,26 @@ public:
 
 		if (m_hotItem)
 		{
-			if (ln::ElementG * hotElementG = GetElementG(m_hotItem))
+			if (hpcc::ElementG * hotElementG = GetElementG(m_hotItem))
 			{
 				retVal = hotElementG->GetBoundingBox();
 				if (m_hotEdge)
 				{
-					if (ln::ElementG * hotElementG = GetElementG(m_hotEdge->GetFromVertex()))
+					if (hpcc::ElementG * hotElementG = GetElementG(m_hotEdge->GetFromVertex()))
 						retVal.Union(hotElementG->GetBoundingBox());
-					if (ln::ElementG * hotElementG = GetElementG(m_hotEdge->GetToVertex()))
+					if (hpcc::ElementG * hotElementG = GetElementG(m_hotEdge->GetToVertex()))
 						retVal.Union(hotElementG->GetBoundingBox());
 				}
 				else if(m_hotVertex)
 				{
 					for(IEdgeSet::const_iterator itr = m_hotVertex->GetInEdges().begin(); itr != m_hotVertex->GetInEdges().end(); ++itr)
 					{
-						if (ln::ElementG * hotElementG = GetElementG(itr->get()))
+						if (hpcc::ElementG * hotElementG = GetElementG(itr->get()))
 							retVal.Union(hotElementG->GetBoundingBox());
 					}
 					for(IEdgeSet::const_iterator itr = m_hotVertex->GetOutEdges().begin(); itr != m_hotVertex->GetOutEdges().end(); ++itr)
 					{
-						if (ln::ElementG * hotElementG = GetElementG(itr->get()))
+						if (hpcc::ElementG * hotElementG = GetElementG(itr->get()))
 							retVal.Union(hotElementG->GetBoundingBox());
 					}
 				}

@@ -24,7 +24,7 @@
 #include "SaxParser.h"
 #include "DotShapes.h"
 
-namespace ln
+namespace hpcc
 {
 CDotItem::CDotItem(const std::string & name, const AttrMap & attrs) : m_name(name), m_attrs(attrs)
 {

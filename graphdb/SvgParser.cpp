@@ -26,7 +26,7 @@
 #include "SvgShapes.h"
 #include "SvgParser.h"
 
-namespace ln
+namespace hpcc
 {
 //  ===========================================================================
 class CSvgParser : public CStackParser
@@ -60,15 +60,15 @@ public:
 			m_graph->SetProperty(SVG_PROP_VIEWBOX_Y, viewBox.y);
 			m_graph->SetProperty(SVG_PROP_VIEWBOX_W, viewBox.Width);
 			m_graph->SetProperty(SVG_PROP_VIEWBOX_H, viewBox.Height);
-			for(ln::IClusterSet::const_iterator itr = m_graph->GetAllClusters().begin(); itr != m_graph->GetAllClusters().end(); ++itr)
+			for(hpcc::IClusterSet::const_iterator itr = m_graph->GetAllClusters().begin(); itr != m_graph->GetAllClusters().end(); ++itr)
 			{
 				itr->get()->SetProperty(SVG_PROP_ELEMENTG, (CUnknown *)NULL);
 			}
-			for(ln::IVertexSet::const_iterator itr = m_graph->GetAllVertices().begin(); itr != m_graph->GetAllVertices().end(); ++itr)
+			for(hpcc::IVertexSet::const_iterator itr = m_graph->GetAllVertices().begin(); itr != m_graph->GetAllVertices().end(); ++itr)
 			{
 				itr->get()->SetProperty(SVG_PROP_ELEMENTG, (CUnknown *)NULL);
 			}
-			for(ln::IEdgeSet::const_iterator itr = m_graph->GetAllEdges().begin(); itr != m_graph->GetAllEdges().end(); ++itr)
+			for(hpcc::IEdgeSet::const_iterator itr = m_graph->GetAllEdges().begin(); itr != m_graph->GetAllEdges().end(); ++itr)
 			{
 				itr->get()->SetProperty(SVG_PROP_ELEMENTG, (CUnknown *)NULL);
 			}
@@ -167,9 +167,9 @@ GRAPHDB_API void MergeSVG(IGraph * graph, const std::string & svg)
 
 GRAPHDB_API ElementG * GetElementG(IGraphItem * item)
 {
-	CUnknown * tmpProp = item->GetPropertyCUnknown(ln::SVG_PROP_ELEMENTG);
+	CUnknown * tmpProp = item->GetPropertyCUnknown(hpcc::SVG_PROP_ELEMENTG);
 	if (tmpProp)
-		return reinterpret_cast<ln::ElementG * >(tmpProp);
+		return reinterpret_cast<hpcc::ElementG * >(tmpProp);
 	
 	RectD boundingBox;
 	if (ICluster * cluster = dynamic_cast<ICluster *>(item))	//  Not all layouts support clusters!

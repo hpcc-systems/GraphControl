@@ -26,7 +26,7 @@
 #include "expat.h"
 #include "util.h"
 
-namespace ln
+namespace hpcc
 {
 /* C++ Wrappers for the Expat XML Parser
 By Tim Smith

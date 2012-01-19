@@ -126,7 +126,7 @@ bool HPCCSystemsGraphViewControl::onMouseDown(FB::MouseDownEvent *evt, FB::Plugi
 #if defined(XP_UNIX)
 	std::cout << "md_x:  " << evt->m_x << "\t";
 	std::cout << "md_Y:  " << evt->m_y << std::endl;
-    m_wnd->OnLButtonDown(ln::PointD(evt->m_x, evt->m_y));
+    m_wnd->OnLButtonDown(hpcc::PointD(evt->m_x, evt->m_y));
 #endif
     return true;
 }
@@ -136,7 +136,7 @@ bool HPCCSystemsGraphViewControl::onMouseDoubleClick(FB::MouseDoubleClickEvent *
 #if defined(XP_UNIX)
 	std::cout << "mdc_x:  " << evt->m_x << "\t";
 	std::cout << "mdc_y:  " << evt->m_y << std::endl;
-    m_wnd->OnLButtonDblClk(ln::PointD(evt->m_x, evt->m_y));
+    m_wnd->OnLButtonDblClk(hpcc::PointD(evt->m_x, evt->m_y));
 #endif
 	return true;
 }
@@ -146,7 +146,7 @@ bool HPCCSystemsGraphViewControl::onMouseUp(FB::MouseUpEvent *evt, FB::PluginWin
 #if defined(XP_UNIX)
 	std::cout << "mu_x:  " << evt->m_x << "\t";
 	std::cout << "mu_y:  " << evt->m_y << std::endl;
-    m_wnd->OnLButtonUp(ln::PointD(evt->m_x, evt->m_y), evt->m_state);
+    m_wnd->OnLButtonUp(hpcc::PointD(evt->m_x, evt->m_y), evt->m_state);
 #endif
     return true;
 }
@@ -154,7 +154,7 @@ bool HPCCSystemsGraphViewControl::onMouseUp(FB::MouseUpEvent *evt, FB::PluginWin
 bool HPCCSystemsGraphViewControl::onMouseMove(FB::MouseMoveEvent *evt, FB::PluginWindow *)
 {
 #if defined(XP_UNIX)
-    m_wnd->OnMouseMove(ln::PointD(evt->m_x, evt->m_y));
+    m_wnd->OnMouseMove(hpcc::PointD(evt->m_x, evt->m_y));
 #endif
     return true;
 }

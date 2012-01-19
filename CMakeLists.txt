@@ -1,46 +1,29 @@
 project ( GraphControl )
 cmake_minimum_required (VERSION 2.6)
 
-set ( CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules/" ${CMAKE_MODULE_PATH})
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules/" ${CMAKE_MODULE_PATH})
 
 option(WITH_DYNAMIC_MSVC_RUNTIME "Build with dynamic MSVC runtime (/MD)" OFF)
 
-IF ( WIN32 )
-    SET ( EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin" CACHE PATH "Location of BIN files" )
-    SET ( LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin" CACHE PATH "Location of LIB files" )
-ELSE ( WIN32 )
-    #SET ( EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin" CACHE PATH "Location of BIN files" )
-    #SET ( LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin" CACHE PATH "Location of LIB files" )
-    SET ( EXECUTABLE_OUTPUT_PATH "/usr/lib/mozilla/plugins" )
-    SET ( LIBRARY_OUTPUT_PATH "/usr/lib/mozilla/plugins" )
-ENDIF ( WIN32 )
+if (WIN32)
+    set(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin" CACHE PATH "Location of BIN files")
+    set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin" CACHE PATH "Location of LIB files")
+elseif(APPLE)
+elseif(UNIX)
+    set(EXECUTABLE_OUTPUT_PATH "/usr/lib/mozilla/plugins")
+    set(LIBRARY_OUTPUT_PATH "/usr/lib/mozilla/plugins")
+endif()
 
-MACRO(ADD_MSVC_PRECOMPILED_HEADER PrecompiledHeader PrecompiledSource SourcesVar) 
-  IF(MSVC) 
-    GET_FILENAME_COMPONENT(PrecompiledBasename ${PrecompiledHeader} NAME_WE) 
-    SET(PrecompiledBinary "${CMAKE_CURRENT_BINARY_DIR}/${PrecompiledBasename}.pch") 
-    SET(Sources ${${SourcesVar}}) 
- 
-    SET_SOURCE_FILES_PROPERTIES(${PrecompiledSource} 
-                                PROPERTIES COMPILE_FLAGS "/Yc\"${PrecompiledHeader}\" /Fp\"${PrecompiledBinary}\"" 
-                                           OBJECT_OUTPUTS "${PrecompiledBinary}") 
-    SET_SOURCE_FILES_PROPERTIES(${Sources} 
-                                PROPERTIES COMPILE_FLAGS "/Yu\"${PrecompiledBinary}\" /FI\"${PrecompiledBinary}\" /Fp\"${PrecompiledBinary}\"" 
-                                           OBJECT_DEPENDS "${PrecompiledBinary}")   
-    # Add precompiled header to SourcesVar 
-    LIST(APPEND ${SourcesVar} ${PrecompiledSource}) 
-  ENDIF(MSVC) 
-ENDMACRO(ADD_MSVC_PRECOMPILED_HEADER) 
-
+include ( "${CMAKE_SOURCE_DIR}/cmake/Modules/Utils.cmake" )
 include ( "${CMAKE_SOURCE_DIR}/cmake/Modules/Externals.cmake" )
 
 if (WIN32)
-	ADD_DEFINITIONS(-DFB_WIN=1 -DXP_WIN=1)
+	add_definitions(-DFB_WIN=1 -DXP_WIN=1 -D_CRT_SECURE_NO_WARNINGS)
     if (WITH_DYNAMIC_MSVC_RUNTIME)
         message(STATUS "Building with dynamic MSVC runtime")
 	else (WITH_DYNAMIC_MSVC_RUNTIME)
         message(STATUS "Building with static MSVC runtime")
-		ADD_DEFINITIONS( -DSTATIC_LIB )
+		add_definitions(-DSTATIC_LIB)
 	endif (WITH_DYNAMIC_MSVC_RUNTIME)
     foreach(flag_var
             CMAKE_CXX_FLAGS CMAKE_CXX_FLAGS_DEBUG CMAKE_CXX_FLAGS_RELEASE
@@ -59,8 +42,10 @@ if (WIN32)
     endforeach(flag_var)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /D BOOST_ALL_NO_LIB=1")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /D BOOST_ALL_NO_LIB=1")
-ELSE (WIN32)
-	ADD_DEFINITIONS( -DFB_X11=1 -DXP_UNIX=1)
+elseif(APPLE)
+	add_definitions(-DFB_MACOSX=1)
+elseif(UNIX)
+	add_definitions(-DFB_X11=1 -DXP_UNIX=1)
 	find_package(PkgConfig)
 
 	# GTK is required for XEmbed to work
@@ -72,25 +57,31 @@ ELSE (WIN32)
 		set (GTK_LDFLAGS ${GTK_LDFLAGS} CACHE INTERNAL "GTK include dirs")
 	endif()
 
-	SET ( gecko_defs -DXP_UNIX )
-    SET ( fPIC_flag "-fPIC" )
+	set(gecko_defs -DXP_UNIX)
+    set(fPIC_flag "-fPIC")
 
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${gecko_defs} ${fPIC_flag}")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${gecko_defs} ${fPIC_flag}")
-ENDIF (WIN32)
+endif()
 
-SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-add_subdirectory (agg)
+add_subdirectory(agg)
 set_property(TARGET agg PROPERTY FOLDER "3rdParty")
-if ( WIN32 )
-	ADD_DEFINITIONS( -DXML_STATIC )
-	add_subdirectory (expat)
+if(WIN32)
+	add_definitions(-DXML_STATIC)
+	add_subdirectory(expat)
 	set_property(TARGET expat PROPERTY FOLDER "3rdParty")
-endif ( WIN32 )
+elseif(APPLE)
+elseif(UNIX)
+endif()
 
 add_subdirectory (graphlayout)
 add_subdirectory (graphdb)
 add_subdirectory (graphrender)
 add_subdirectory (HPCCSystemsGraphViewControl)
-#add_subdirectory (test)
+
+if(WIN32)
+elseif(APPLE)
+elseif(UNIX)
+endif()

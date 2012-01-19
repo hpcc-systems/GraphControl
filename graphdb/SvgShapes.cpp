@@ -342,7 +342,7 @@ namespace svg
 } //namespace svg
 } //namespace agg
 
-namespace ln
+namespace hpcc
 {
 double MulDiv(double val, double nominator, double denominator)
 {

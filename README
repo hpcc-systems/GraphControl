@@ -29,8 +29,10 @@ tar xf graphviz-2.26.3.tar.gz
 rm graphviz-2.26.3.tar.gz
 cd graphviz-2.26.3
 ./configure
-# edit config.h and comment out the following line:
+# edit config.h and comment out the following lines:
 #define ENABLE_LTDL 1
+#define HAVE_EXPAT
+#define HAVE_LIBZ
 cd ..
 
 # Create general build folder.
