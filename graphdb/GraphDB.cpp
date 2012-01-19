@@ -26,7 +26,7 @@
 #include "XgmmlParser.h"
 #include "DotParser.h"
 
-namespace ln
+namespace hpcc
 {
 GRAPHDB_API IGraph * CreateGraph()
 {

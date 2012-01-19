@@ -23,7 +23,7 @@
 
 #include "GraphVertex.h"
 
-namespace ln
+namespace hpcc
 {
 CVertex::CVertex(IGraph * graph, ICluster * parent) : CGraphItem(graph), m_parent(parent)
 {

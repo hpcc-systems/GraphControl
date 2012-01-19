@@ -23,7 +23,7 @@
 
 #include "GraphGraph.h"
 
-namespace ln
+namespace hpcc
 {
 class CVertex : public IVertex, public CGraphItem
 {

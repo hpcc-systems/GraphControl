@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  ******************************************************************************/
 
-namespace ln
+namespace hpcc
 {
 class CDotItem : public CUnknown
 {

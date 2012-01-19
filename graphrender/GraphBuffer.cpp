@@ -25,11 +25,13 @@
 
 #ifdef WIN32
 #include <platform/win32/agg_win32_bmp.h>
-#else
+#elif FB_MACOSX
+#include <platform/mac/agg_mac_pmap.h>
+#elif FB_X11
 #include "x11_pixel_map.h"
 #endif
 
-namespace ln
+namespace hpcc
 {
 class CGraphBuffer : public IGraphBuffer, public CUnknown
 {
@@ -71,7 +73,9 @@ public:
 	{
 #if defined WIN32
 		return -m_pixelmap.stride();
-#else
+#elif FB_MACOSX
+        return m_pixelmap.width() * m_pixelmap.bpp();
+#elif FB_X11
 		return m_pixelmap.stride();
 #endif
 	}
@@ -81,7 +85,8 @@ public:
 	{
 		m_pixelmap.draw(h_dc, device_rect, bmp_rect);
 	}
-#else
+#elif FB_MACOSX
+#elif FB_X11
     void Draw(GtkWidget * widget, int dest_x, int dest_y) const
     {
         m_pixelmap.draw(widget, dest_x, dest_y);

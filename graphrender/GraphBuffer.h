@@ -40,14 +40,15 @@
 #endif
 
 #ifdef WIN32
-#else
+#elif FB_MACOSX
+#elif FB_X11
 #include <X11/Xlib.h>
 #include <gtk/gtk.h>
 #endif
 
-namespace ln
+namespace hpcc
 {
-interface GRAPHRENDER_API IGraphBuffer : public IUnknown
+hpcc_interface GRAPHRENDER_API IGraphBuffer : public IUnknown
 {
 	virtual void Resize(unsigned int width, unsigned int Height) = 0;
 	virtual unsigned int Width() const = 0;
@@ -57,7 +58,8 @@ interface GRAPHRENDER_API IGraphBuffer : public IUnknown
 
 #ifdef WIN32
 	virtual void Draw(HDC h_dc, const RECT* device_rect=0, const RECT* bmp_rect=0) const = 0;
-#else
+#elif FB_MACOSX
+#elif FB_X11
     virtual void Draw(GtkWidget * widget, int dest_x, int dest_y) const = 0;
 #endif
 

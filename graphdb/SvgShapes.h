@@ -23,7 +23,7 @@
 
 #include "Unknown.h"
 
-namespace ln
+namespace hpcc
 {
 #define REAL_MAX            FLT_MAX
 #define REAL_MIN            FLT_MIN

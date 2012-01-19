@@ -24,7 +24,7 @@
 #include "GraphItem.h"
 #include "util.h"
 
-namespace ln
+namespace hpcc
 {
 static unsigned int g_id = 0;
 

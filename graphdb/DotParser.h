@@ -24,7 +24,7 @@
 #include "GraphDB.h"
 #include "DotShapes.h"
 
-namespace ln
+namespace hpcc
 {
 GRAPHDB_API bool LoadDOT(IGraph * graph, const std::string & dot);
 GRAPHDB_API bool MergeDOT(IGraph * graph, const std::string & dot);

@@ -52,16 +52,16 @@ public:
 	virtual int GetScrollOffsetY();
 	virtual void SetScrollOffset(int x, int y);
 	virtual void SetScrollSize(int w, int h, bool redraw);
-	virtual bool GetClientRectangle(ln::RectD & rect);
+	virtual bool GetClientRectangle(hpcc::RectD & rect);
 	virtual void UpdateWindow();
 	virtual void InvalidateSelection();
 	virtual void operator()(const std::string & dot, const std::string & svg);
 
 	//  --- IAPICallback ---
 	//  --- IAPICallback ---
-	void RenderCluster(ln::ICluster * cluster);
-	void InvalidateScreenRect(const ln::RectD & screenRect);
-	void InvalidateWorldRect(const ln::RectD & worldRect);
+	void RenderCluster(hpcc::ICluster * cluster);
+	void InvalidateScreenRect(const hpcc::RectD & screenRect);
+	void InvalidateWorldRect(const hpcc::RectD & worldRect);
 
 	//  Windows  ---
 	void DoPaint(CDCHandle dc);

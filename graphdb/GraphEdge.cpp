@@ -23,7 +23,7 @@
 
 #include "GraphEdge.h"
 
-namespace ln
+namespace hpcc
 {
 CEdge::CEdge(IGraph * graph, IVertex * from, IVertex * to) : CGraphItem(graph), m_from(from), m_to(to)
 {
