@@ -354,6 +354,8 @@ public:
 #ifdef _DEBUG
 			if (top->item->GetProperty("_kind"))
 			{			
+				if (e->m_attr["label"].empty())
+					e->m_attr["label"] = e->m_attr["id"];
 				e->m_attr["label"] += "\\n";
 				e->m_attr["label"] += top->item->GetProperty("_kind");
 			}
@@ -402,6 +404,17 @@ GRAPHDB_API bool LoadXGMML(IGraph * graph, const std::string & xgmml)
 	IClusterSet clusters = graph->GetAllClusters();
 	for(IClusterSet::const_iterator itr = clusters.begin(); itr != clusters.end(); ++itr)
 	{
+#ifdef TEST_XGMMLCLEANUP
+		if (!itr->get()->GetClusters().empty() && !itr->get()->GetVertices().empty())
+		{
+			IClusterPtr cluster = graph->CreateCluster(itr->get());
+			for (IVertexSet::iterator v_itr = itr->get()->GetVertices().begin(); v_itr != itr->get()->GetVertices().end(); ++v_itr)
+			{
+				cluster->AppendVertex(v_itr->get());
+			}
+		}
+#endif
+
 		if (itr->get()->OnlyConatinsOneCluster())
 			itr->get()->Delete();
 	}

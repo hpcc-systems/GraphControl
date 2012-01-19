@@ -112,11 +112,14 @@ void CDotView::OnLButtonDown(UINT nFlags, CPoint point)
 void CDotView::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	ReleaseCapture();
-	if (m_mouseDown == MOUSEDOWN_DBLCLK)
+	switch (m_mouseDown)
 	{
+	case MOUSEDOWN_DBLCLK:
+	case MOUSEDOWN_MOVED:
 		m_mouseDown = MOUSEDOWN_UNKNOWN;
 		return;
 	}
+
 	m_mouseDown = MOUSEDOWN_UNKNOWN;
 	point.Offset(m_ptOffset);
 	hpcc::IGraphItem * selectedItem = m_gr->GetItemAt(point.x, point.y);
@@ -200,7 +203,7 @@ LRESULT CDotView::OnLayoutComplete(UINT /*uMsg*/, WPARAM wParam, LPARAM lParam)
 	if (boost::algorithm::equals(m_dot, *dot))
 	{
 		m_svg = *svg;
-		MergeSVG(m_g, *svg);
+		hpcc::MergeSVG(m_g, *svg);
 		CalcScrollbars();
 		CenterOnGraphItem(NULL);
 		Invalidate();
@@ -240,6 +243,7 @@ void CDotView::OnMouseMove(UINT nFlags, CPoint point)
 	switch (m_mouseDown)
 	{
 	case MOUSEDOWN_NORMAL:
+	case MOUSEDOWN_MOVED:
 		{
 			ATLTRACE("mm_x:  %i\t", point.x);
 			ATLTRACE("mm_y:  %i\n", point.y);
@@ -248,7 +252,8 @@ void CDotView::OnMouseMove(UINT nFlags, CPoint point)
 			int deltaY = point.y - m_mouseDownPosY;
 
 			SetScrollOffset(m_scrollDownPosX - deltaX, m_scrollDownPosY - deltaY);
-			//UpdateWindow();
+			if (deltaX || deltaY)
+				m_mouseDown = MOUSEDOWN_MOVED;
 		}
 		break;
 	default:

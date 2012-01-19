@@ -224,6 +224,7 @@ void CDotView::OnMouseMove(hpcc::PointD point)
 	switch (m_mouseDown)
 	{
 	case MOUSEDOWN_NORMAL:
+	case MOUSEDOWN_MOVED:
 		{
 			std::cout << "mm_x:  " << point.x << "\t";
 			std::cout << "mm_y:  " << point.y << "\n";
@@ -232,6 +233,8 @@ void CDotView::OnMouseMove(hpcc::PointD point)
 			int deltaY = point.y - m_mouseDownPosY;
 
 			SetScrollOffset(m_scrollDownPosX - deltaX, m_scrollDownPosY - deltaY);
+			if (deltaX || deltaY)
+				m_mouseDown = MOUSEDOWN_MOVED;
 /*			
 			g_object_freeze_notify(G_OBJECT(m_scrolled_window));
 			gtk_adjustment_set_value(gtk_scrolled_window_get_hadjustment(GTK_SCROLLED_WINDOW(m_scrolled_window)), m_scrollDownPosX - deltaX);

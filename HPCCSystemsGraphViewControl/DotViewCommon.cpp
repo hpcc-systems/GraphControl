@@ -273,6 +273,13 @@ void CDotViewCommon::MergeXGMML(const std::string & xgmml)
 	Invalidate();
 }
 
+void CDotViewCommon::MergeSVG(const std::string & svg)
+{
+	std::string layout = m_g->GetPropertyString(hpcc::PROP_LAYOUT);
+	hpcc::MergeSVG(m_g, svg);
+	Invalidate();
+}
+
 void CDotViewCommon::LoadDOT(const std::string & dot)
 {
 	std::string layout = m_g->GetPropertyString(hpcc::PROP_LAYOUT);

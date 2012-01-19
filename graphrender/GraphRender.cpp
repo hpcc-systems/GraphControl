@@ -31,6 +31,7 @@
 namespace hpcc
 {
 #define OVERVIEW_CUTOFF 0.25
+#define NSHOW_BOUNDBOX
 
 class CGraphRender : public IGraphRender, public CUnknown
 {
@@ -298,7 +299,7 @@ public:
 	IGraphItem * HitTestCluster(ICluster * cluster, double x, double y) const
 	{
 		IGraphItem * retVal = NULL;
-		for(IClusterSet::const_iterator itr = cluster->GetClusters().begin(); itr != cluster->GetClusters().end(); ++itr)
+		for(IClusterSet::const_reverse_iterator itr = cluster->GetClusters().rbegin(); itr != cluster->GetClusters().rend(); ++itr)  //  Reverse order to hit the "last" cluster first (the one on top)
 		{
 			if (HitTestItemFast(*itr, x, y))
 				retVal = HitTestCluster(*itr, x, y);
@@ -349,18 +350,37 @@ public:
 		m_agg2d.font("/usr/share/fonts/truetype/freefont/FreeSans.ttf", 11.0f);
 #endif
 
-		IGraphItem * retVal = NULL;
 		if (HitTestItemFast(m_g, pt.x, pt.y))
 		{
+			IGraphItem * retVal = NULL;
 			if (m_scale > OVERVIEW_CUTOFF)
+			{
 				retVal = HitTestEdges(m_g, (int)pt.x, (int)pt.y);
+				if (retVal)
+					return retVal;
+			}
+
+			std::vector<int> selection;
+			m_selected->GetSelection(selection);
+			for (std::vector<int>::const_iterator itr = selection.begin(); itr != selection.end(); ++itr)	
+			{
+				IClusterPtr cluster = m_g->GetCluster(*itr);
+				if (cluster)
+				{
+					retVal = HitTestCluster(cluster, (int)pt.x, (int)pt.y);
+					if (retVal)
+						return retVal;
+				}
+			}
+			retVal = HitTestCluster(m_g, (int)pt.x, (int)pt.y);
+			if (retVal)
+				return retVal;
+
 			if (!retVal)
-				retVal = HitTestCluster(m_g, (int)pt.x, (int)pt.y);
-			if (!retVal)
-				retVal = m_g ;
+				return m_g;
 		}
 
-		return retVal;
+		return NULL;
 	}
 
 	// Transofmations  ---
@@ -392,11 +412,11 @@ public:
 			retVal = Agg2D::FillOnly;
 			agg2d.noLine();
 			if (m_inSelectedItem)
-				agg2d.fillColor(m_selectedFill.GetR(), m_selectedFill.GetG(), m_selectedFill.GetB(), m_selectedFill.GetA());
+				agg2d.fillColor(m_selectedFill.GetR(), m_selectedFill.GetG(), m_selectedFill.GetB(), m_selectedFill.GetA() / m_transparency);
 			else
 			{
 				Colour * c = &(m_colours[StateT(m_inType, m_inState)].m_fill);
-				agg2d.fillColor(c->GetR(), c->GetG(), c->GetB(), c->GetA());
+				agg2d.fillColor(c->GetR(), c->GetG(), c->GetB(), c->GetA() / m_transparency);
 			}
 			//if (m_inHotItem)
 			//	agg2d.fillColor(m_hotFill.GetR(), m_hotFill.GetG(), m_hotFill.GetB(), m_hotFill.GetA());
@@ -428,9 +448,9 @@ public:
 			{
 				agg2d.lineColor(m_selectedStroke.GetR(), m_selectedStroke.GetG(), m_selectedStroke.GetB(), m_selectedStroke.GetA());
 				if (m_inType == RENDER_TYPE_EDGE)
-					agg2d.fillColor(m_selectedStroke.GetR(), m_selectedStroke.GetG(), m_selectedStroke.GetB(), m_selectedStroke.GetA());
+					agg2d.fillColor(m_selectedStroke.GetR(), m_selectedStroke.GetG(), m_selectedStroke.GetB(), m_selectedStroke.GetA() / m_transparency);
 				else
-					agg2d.fillColor(m_selectedFill.GetR(), m_selectedFill.GetG(), m_selectedFill.GetB(), m_selectedFill.GetA());
+					agg2d.fillColor(m_selectedFill.GetR(), m_selectedFill.GetG(), m_selectedFill.GetB(), m_selectedFill.GetA() / m_transparency);
 			}
 			else
 			{
@@ -438,13 +458,13 @@ public:
 				agg2d.lineColor(strokeXXX->GetR(), strokeXXX->GetG(), strokeXXX->GetB(), strokeXXX->GetA());
 
 				const Colour * fillXXX = &fill;//(m_colours[StateT(m_inType, m_inState)].m_fill);
-				agg2d.fillColor(fillXXX->GetR(), fillXXX->GetG(), fillXXX->GetB(), fillXXX->GetA()  / m_transparency);
+				agg2d.fillColor(fillXXX->GetR(), fillXXX->GetG(), fillXXX->GetB(), fillXXX->GetA() / m_transparency);
 			}
 			if (m_inHotItem)
 			{
 				agg2d.lineColor(m_hotStroke.GetR(), m_hotStroke.GetG(), m_hotStroke.GetB(), m_hotStroke.GetA());
 				if (m_inType == RENDER_TYPE_EDGE)
-					agg2d.fillColor(m_hotStroke.GetR(), m_hotStroke.GetG(), m_hotStroke.GetB(), m_hotStroke.GetA());
+					agg2d.fillColor(m_hotStroke.GetR(), m_hotStroke.GetG(), m_hotStroke.GetB(), m_hotStroke.GetA() / m_transparency);
 				//else
 				//	agg2d.fillColor(m_hotFill.GetR(), m_hotFill.GetG(), m_hotFill.GetB(), m_hotFill.GetA());
 			}
@@ -687,15 +707,20 @@ public:
 		}
 	}
 
-	void RenderCluster(ICluster * cluster, IVertexSet & hotVertices, int depth = 0)
+	void RenderCluster(ICluster * cluster, IClusterSet & selectedClusters, IVertexSet & hotVertices, int depth = 0)
 	{
 		m_inType = RENDER_TYPE_CLUSTER;
 		if (depth == 0)
 			m_transparency = 1;
 		else
-			m_transparency = m_scale > OVERVIEW_CUTOFF ? 1 : 2;
+			m_transparency = 2;//m_scale > OVERVIEW_CUTOFF ? 1 : 2;
 
 		Render(m_agg2d, GetElementG(cluster));
+#ifdef SHOW_BOUNDBOX
+		m_agg2d.fillColor(33 + depth * 10, 0x00, 0x00, 128);
+		RectD rb = GetBoundingRect(cluster, true);
+		m_agg2d.rectangle(rb.GetLeft(), rb.GetTop(), rb.GetRight(), rb.GetBottom());
+#endif
 
 		for(IClusterSet::const_iterator itr = cluster->GetClusters().begin(); itr != cluster->GetClusters().end(); ++itr)
 		{
@@ -703,8 +728,10 @@ public:
 			{
 				m_inHotItem = m_hotItem->IsHot(itr->get());
 				m_inSelectedItem = m_selected->IsSelected(itr->get());
+				if (m_inSelectedItem)
+					selectedClusters.insert(itr->get());
 				m_inState = (XGMML_STATE_ENUM)itr->get()->GetPropertyInt(XGMML_STATE);
-				RenderCluster(itr->get(), hotVertices, depth + 1);
+				RenderCluster(itr->get(), selectedClusters, hotVertices, depth + 1);
 				m_inState = XGMML_STATE_UNKNOWN;
 			}
 		}
@@ -724,6 +751,12 @@ public:
 				m_inState = (XGMML_STATE_ENUM)itr->get()->GetPropertyInt(XGMML_STATE);
 				Render(m_agg2d, GetElementG(itr->get()));
 				m_inState = XGMML_STATE_UNKNOWN;
+
+#ifdef SHOW_BOUNDBOX
+				m_agg2d.fillColor(0x00, 33 + depth * 10, 0x00, 128);
+				RectD rb = GetBoundingRect(itr->get(), true);
+				m_agg2d.rectangle(rb.GetLeft(), rb.GetTop(), rb.GetRight(), rb.GetBottom());
+#endif
 			}
 		}
 		m_inType = RENDER_TYPE_UNKNOWN;
@@ -752,7 +785,14 @@ public:
 		}
 		m_inHotItem = true;
 		for (IEdgeSet::const_iterator itr = hotEdges.begin(); itr != hotEdges.end(); ++itr)	
+		{
 			Render(m_agg2d, GetElementG(itr->get()));
+#ifdef SHOW_BOUNDBOX
+			m_agg2d.fillColor(0x00, 0x00, 66, 128);
+			RectD rb = GetBoundingRect(itr->get(), true);
+			m_agg2d.rectangle(rb.GetLeft(), rb.GetTop(), rb.GetRight(), rb.GetBottom());
+#endif
+		}
 
 		m_inType = RENDER_TYPE_UNKNOWN;
 	}
@@ -785,12 +825,6 @@ public:
 				m_agg2d.clearAll(0x7f, 0x7f, 0x7f);
 			m_agg2d.lineColor(0x00, 0x00, 0x00);
 
-#ifdef _DEBUG
-			m_agg2d.fillColor(0xaf, 0xaf, 0xaf);
-			RectD rb = GetBoundingRect(true);
-			m_agg2d.rectangle(rb.GetLeft(), rb.GetTop(), rb.GetRight(), rb.GetBottom());
-#endif
-
 			m_agg2d.fillColor(0xff, 0xff, 0xff);
 #ifdef WIN32
 			m_agg2d.font("c:/windows/fonts/verdana.ttf", 11.0f);
@@ -807,10 +841,25 @@ public:
 				m_inHotItem = m_hotItem->IsHot(m_g);
 				m_inSelectedItem = m_selected->IsSelected(m_g);
 
+				IClusterSet selectedClusters;
 				IVertexSet hotVertices;
-				RenderCluster(m_g, hotVertices);
+				RenderCluster(m_g, selectedClusters, hotVertices);
+
+				m_inHotItem = false;
+				m_inSelectedItem = true;
+				for (IClusterSet::const_iterator itr = selectedClusters.begin(); itr != selectedClusters.end(); ++itr)	
+				{
+					IClusterSet selectedClustersUnused;
+					IVertexSet hotVerticesUnused;
+					RenderCluster(itr->get(), selectedClustersUnused, hotVerticesUnused, 1);
+				}
+
+				m_inHotItem = m_hotItem->IsHot(m_g);
+				m_inSelectedItem = m_selected->IsSelected(m_g);
 				RenderEdges(m_g);
+
 				m_inHotItem = true;
+				m_inSelectedItem = false;
 				for (IVertexSet::const_iterator itr = hotVertices.begin(); itr != hotVertices.end(); ++itr)	
 				{
 					m_inSelectedItem = m_selected->IsSelected(itr->get());
