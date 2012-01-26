@@ -2,12 +2,12 @@
 xmlns:em="http://www.mozilla.org/2004/em-rdf#">
   <Description about="urn:mozilla:install-manifest">
     <em:id>support_eclide@hpccsystems.com</em:id>
-    <em:name>HPCC Systems - Graph View Control</em:name>
+    <em:name>HPCC Systems Graph View Control</em:name>
     <em:description>Scriptable Graph View Control Plugin.</em:description>
     <em:version>6.0.4.4</em:version>
-    <em:creator>HPCC Systems</em:creator>
-    <em:homepageURL>http://graphcontrol.hpccsystems.com/stable</em:homepageURL>
-    <em:targetPlatform>WINNT_x86-msvc</em:targetPlatform>
+    <em:creator>LexisNexis Risk Data Management Inc. DBA HPCC Systems</em:creator>
+    <em:homepageURL>http://hpccsystems.com</em:homepageURL>
+    <em:targetPlatform>Linux</em:targetPlatform>
     <em:type>2</em:type>
     <!-- <em:bootstrap>false</em:bootstrap> -->
     <em:unpack>true</em:unpack>
