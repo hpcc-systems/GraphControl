@@ -36,30 +36,31 @@ struct Shapes
 		m_items["2"] = "rectangle";		//Disk Write
 		m_items["3"] = "hexagon";		//sort
 		m_items["5"] = "invhouse";		//Filter
+		m_items["6"] = "trapezium";		//Split
 		m_items["7"] = "invhouse";		//Filter project
 		m_items["12"] = "invhouse";		//First N
-		m_items["6"] = "trapezium";		//Split
 		m_items["15"] = "invtrapezium";	//Lightweight Join
+		m_items["17"] = "invtrapezium";	//Lookup Join
 		m_items["19"] = "invtrapezium";	//Keyed Join
-		m_items["21"] = "rectangle";		//Output
-		m_items["22"] = "note";		//Pipe Output
+		m_items["21"] = "rectangle";	//Output
+		m_items["22"] = "note";			//Pipe Output
 		m_items["23"] = "invtrapezium"; //Funnel
-		m_items["25"] = "rectangle"; //Inline Dataset
-		m_items["26"] = "octagon";	//distribute
+		m_items["25"] = "rectangle";	//Inline Dataset
+		m_items["26"] = "octagon";		//distribute
 		m_items["29"] = "ellipse";		//Store Internal Result
 		m_items["36"] = "diamond";		//If
 		m_items["44"] = "rectangle";	//write csv
 		m_items["47"] = "rectangle";	//write 
 		m_items["54"] = "ellipse";		//Workunit Read
-		m_items["56"] = "rectangle";		//Spill
+		m_items["56"] = "rectangle";	//Spill
 		m_items["59"] = "invtrapezium";	//Merge
 		m_items["61"] = "rectangle";	//write xml
 		m_items["82"] = "rectangle";	//Projected Disk Read Spill 
 		m_items["88"] = "rectangle";	//Projected Disk Read Spill 
-		m_items["92"] = "rectangle";		//Limted Index Read
-		m_items["93"] = "rectangle";		//Limted Index Read
-		m_items["99"] = "rectangle";		//CSV Read
-		m_items["105"] = "rectangle";		//CSV Read
+		m_items["92"] = "rectangle";	//Limted Index Read
+		m_items["93"] = "rectangle";	//Limted Index Read
+		m_items["99"] = "rectangle";	//CSV Read
+		m_items["105"] = "rectangle";	//CSV Read
 		m_items["point"] = "point";		
 	}
 	const char * get(const char * key)
@@ -268,7 +269,7 @@ public:
 				int len = prettyCount.length();
 				for(int i = 0; i < len; ++i)
 				{
-					tmp += (char)prettyCount.at(i);;
+					tmp += (char)prettyCount.at(i);
 					if ((len - 1 - i > 0) && (len - 1 - i) % 3 == 0)
 						tmp += ',';
 				}
