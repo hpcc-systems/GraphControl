@@ -29,9 +29,9 @@ find_path(FIREBREATH_BUILD_DIR CMakeCache.txt
 macro(_FIREBREATH_FINDLIB basename)
 string(TOUPPER ${basename} basename_upper) 
 if (WIN32)
-#find_library(FIREBREATH_${basename_upper}_LIBRARY_DEBUG ${basename}
-#             HINTS ${FIREBREATH_BUILD_DIR} 
-#			 PATH_SUFFIXES ${basename}/debug )
+find_library(FIREBREATH_${basename_upper}_LIBRARY_DEBUG ${basename}
+             HINTS ${FIREBREATH_BUILD_DIR} 
+			 PATH_SUFFIXES ${basename}/debug )
 
 #find_library(FIREBREATH_${basename_upper}_LIBRARY_RELEASE ${basename}
 #             HINTS ${FIREBREATH_BUILD_DIR} 
@@ -41,8 +41,7 @@ find_library(FIREBREATH_${basename_upper}_LIBRARY_RELWITHDEBINFO ${basename}
              HINTS ${FIREBREATH_BUILD_DIR} 
 			 PATH_SUFFIXES ${basename}/relwithdebinfo )
 
-set(FIREBREATH_${basename_upper}_LIBRARY optimized ${FIREBREATH_${basename_upper}_LIBRARY_RELWITHDEBINFO})
-# debug ${FIREBREATH_${basename_upper}_LIBRARY_DEBUG})
+set(FIREBREATH_${basename_upper}_LIBRARY optimized ${FIREBREATH_${basename_upper}_LIBRARY_RELWITHDEBINFO} debug ${FIREBREATH_${basename_upper}_LIBRARY_DEBUG})
 elseif(APPLE)
 elseif(UNIX)
 find_library(FIREBREATH_${basename_upper}_LIBRARY ${basename}/lib${basename}.a
@@ -64,7 +63,7 @@ set(FIREBREATH_LIBRARY
 	${FIREBREATH_SCRIPTINGCORE_LIBRARY} 
 	${FIREBREATH_ACTIVEXCORE_LIBRARY} 
 	)
-set(FIREBREATH_LIBRARIES ${FIREBREATH_LIBRARY} )
+set(FIREBREATH_LIBRARIES ${FIREBREATH_LIBRARY})
 
 include(FindPackageHandleStandardArgs)
 # handle the QUIETLY and REQUIRED arguments and set FIREBREATH_FOUND to TRUE
