@@ -176,7 +176,7 @@ int CDotView::OnLayoutComplete(void * wParam, void * lParam)
 	if (boost::algorithm::equals(m_dot, *dot))
 	{
 		m_svg = *svg;
-		MergeSVG(m_g, *svg);
+		hpcc::MergeSVG(m_g, *svg);
 		CalcScrollbars();
 		CenterOnGraphItem(NULL);
 		Invalidate();

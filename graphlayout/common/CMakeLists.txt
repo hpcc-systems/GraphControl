@@ -67,6 +67,7 @@ add_library ( common STATIC
 target_link_libraries ( common
 						gvc
 						graph
+						pathplan
 	)
 
 

@@ -51,6 +51,7 @@
 #include <set>
 #include <map>
 #include <vector>
+#include <string>
 
 #include <boost/assert.hpp>
 #include <boost/smart_ptr/detail/atomic_count.hpp>
