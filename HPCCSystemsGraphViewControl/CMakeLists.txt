@@ -43,7 +43,11 @@ set (	SRCS
 	DotViewCommon.cpp
 	DotViewCommon.h
 
+	npHPCCSystemsGraphViewControl.inf
+	install.rdf
+
 	gen/FBControl.htm
+	index.htm
 	)
 
 # Win *****************************************************************
