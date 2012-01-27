@@ -43,6 +43,11 @@ set (	SRCS
 	DotViewCommon.cpp
 	DotViewCommon.h
 
+	Version.h
+	Version.cpp
+
+	../config.h
+
 	npHPCCSystemsGraphViewControl.inf
 	install.rdf
 

@@ -8,6 +8,7 @@
 //
 #include "global/resource.h"
 #include "global/config.h"
+#include "../../config.h"
 
 #define APSTUDIO_READONLY_SYMBOLS
 /////////////////////////////////////////////////////////////////////////////
@@ -34,8 +35,8 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 6, 0, 4, 4
- PRODUCTVERSION 6, 0, 4, 4
+ FILEVERSION HPCC_MAJOR, HPCC_MINOR, HPCC_POINT, HPCC_BUILD
+ PRODUCTVERSION HPCC_MAJOR, HPCC_MINOR, HPCC_POINT, HPCC_BUILD
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -52,12 +53,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", FBSTRING_CompanyName
             VALUE "FileDescription", FBSTRING_FileDescription
-            VALUE "FileVersion", "6, 0, 4, 4\0"
+            VALUE "FileVersion",  HPCC_VERSION
             VALUE "LegalCopyright", FBSTRING_LegalCopyright
             VALUE "InternalName", FBSTRING_PluginFileName
             VALUE "OriginalFilename", FBSTRING_PluginFileName
             VALUE "ProductName", FBSTRING_ProductName
-            VALUE "ProductVersion", "6, 0, 4, 4\0"
+            VALUE "ProductVersion", HPCC_VERSION
             VALUE "FileExtents", FBSTRING_FileExtents
             VALUE "FileOpenName", FBSTRING_PluginName
             VALUE "MIMEType", FBSTRING_MIMETypeList

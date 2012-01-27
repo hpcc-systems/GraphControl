@@ -27,8 +27,7 @@
 
 #include "HPCCSystemsGraphViewControlAPI.h"
 #include <XgmmlParser.h>
-
-#define CURRENT_VERSION 20110705
+#include "Version.h"
 
 const char * const Scaled = "onScaled";
 const char * const LayoutFinished = "onLayoutFinished";
@@ -126,7 +125,7 @@ HPCCSystemsGraphViewControlPtr HPCCSystemsGraphViewControlAPI::getPlugin()
 // Read/Write property testString
 std::string HPCCSystemsGraphViewControlAPI::get_testString()
 {
-    return m_testString;
+    return GetVersionString();
 }
 void HPCCSystemsGraphViewControlAPI::set_testString(const std::string& val)
 {
@@ -134,9 +133,9 @@ void HPCCSystemsGraphViewControlAPI::set_testString(const std::string& val)
 }
 
 // Read-only property version
-int HPCCSystemsGraphViewControlAPI::get_version()
+std::string HPCCSystemsGraphViewControlAPI::get_version()
 {
-    return CURRENT_VERSION;
+    return GetVersionString();
 }
 
 bool HPCCSystemsGraphViewControlAPI::clear()
