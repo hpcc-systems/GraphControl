@@ -201,11 +201,12 @@ public:
 
 	bool Deselect(IGraphItem * item)
 	{
+		CGraphHotItemMap prevSelected = m_selected;
 		CGraphHotItemMap::iterator found = m_selected.find(item->GetID());
 		if (found != m_selected.end())
 		{
 			m_selected.erase(found);
-			m_prevSelected = m_selected;
+			m_prevSelected = prevSelected;
 			return true;
 		}
 		return false;
