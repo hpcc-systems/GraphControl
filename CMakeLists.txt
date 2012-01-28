@@ -27,6 +27,15 @@ configure_file (
   "${PROJECT_SOURCE_DIR}/config.h"
   )
 
+configure_file (
+  "${PROJECT_SOURCE_DIR}/install.rdf.in"
+  "${PROJECT_SOURCE_DIR}/install.rdf"
+  )
+
+configure_file (
+  "${PROJECT_SOURCE_DIR}/npHPCCSystemsGraphViewControl.inf.in"
+  "${PROJECT_SOURCE_DIR}/npHPCCSystemsGraphViewControl.inf"
+  )
 ##################################################################
 
 option(WITH_DYNAMIC_MSVC_RUNTIME "Build with dynamic MSVC runtime (/MD)" OFF)
