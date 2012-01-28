@@ -27,14 +27,14 @@ set (	SRCS
 # Win *****************************************************************
 
 set (	SRCS_WIN
-	${FIREBREATH_CURRENT_SOURCE_DIR}/win/axmain.cpp
-	${FIREBREATH_CURRENT_SOURCE_DIR}/win/axPluginObjects.cpp
-	${FIREBREATH_CURRENT_SOURCE_DIR}/win/dllmain.cpp
-	${FIREBREATH_CURRENT_SOURCE_DIR}/win/FireBreathWin.cpp
-	${FIREBREATH_CURRENT_SOURCE_DIR}/win/np_winmain.cpp
-	${FIREBREATH_CURRENT_SOURCE_DIR}/win/NpapiPluginWin.cpp
-	${FIREBREATH_CURRENT_SOURCE_DIR}/win/PluginWindowlessWin.cpp
-	${FIREBREATH_CURRENT_SOURCE_DIR}/win/PluginWindowWin.cpp
+	${FIREBREATH_CURRENT_SOURCE_DIR}/Win/axmain.cpp
+	${FIREBREATH_CURRENT_SOURCE_DIR}/Win/axPluginObjects.cpp
+	${FIREBREATH_CURRENT_SOURCE_DIR}/Win/dllmain.cpp
+	${FIREBREATH_CURRENT_SOURCE_DIR}/Win/FireBreathWin.cpp
+	${FIREBREATH_CURRENT_SOURCE_DIR}/Win/np_winmain.cpp
+	${FIREBREATH_CURRENT_SOURCE_DIR}/Win/NpapiPluginWin.cpp
+	${FIREBREATH_CURRENT_SOURCE_DIR}/Win/PluginWindowlessWin.cpp
+	${FIREBREATH_CURRENT_SOURCE_DIR}/Win/PluginWindowWin.cpp
 	)
 
 SOURCE_GROUP(Win FILES ${SRCS_WIN})
@@ -42,24 +42,24 @@ SOURCE_GROUP(Win FILES ${SRCS_WIN})
 # OSX *****************************************************************
 
 set (	SRCS_APPLE
-		${FIREBREATH_CURRENT_SOURCE_DIR}/mac/NpapiPluginMac.h
-		${FIREBREATH_CURRENT_SOURCE_DIR}/mac/PluginEventMac.h
-		${FIREBREATH_CURRENT_SOURCE_DIR}/mac/PluginWindowMac.h
-		${FIREBREATH_CURRENT_SOURCE_DIR}/mac/FactoryDummiesMac.cpp
-		${FIREBREATH_CURRENT_SOURCE_DIR}/mac/PluginEventMac.cpp
-		${FIREBREATH_CURRENT_SOURCE_DIR}/mac/NpapiPluginMac.mm
-		${FIREBREATH_CURRENT_SOURCE_DIR}/mac/PluginWindowMac.mm
-		${FIREBREATH_CURRENT_SOURCE_DIR}/mac/np_macmain.cpp
-		${FIREBREATH_CURRENT_SOURCE_DIR}/mac/PluginWindowMacCG.h
-		${FIREBREATH_CURRENT_SOURCE_DIR}/mac/PluginWindowMacCG.cpp
-		${FIREBREATH_CURRENT_SOURCE_DIR}/mac/KeyCodesCarbon.h
-		${FIREBREATH_CURRENT_SOURCE_DIR}/mac/KeyCodesCarbon.cpp
-		${FIREBREATH_CURRENT_SOURCE_DIR}/mac/PluginEventMacCarbon.h
-		${FIREBREATH_CURRENT_SOURCE_DIR}/mac/PluginEventMacCarbon.cpp
-		${FIREBREATH_CURRENT_SOURCE_DIR}/mac/KeyCodesCocoa.h
-		${FIREBREATH_CURRENT_SOURCE_DIR}/mac/KeyCodesCocoa.cpp
-		${FIREBREATH_CURRENT_SOURCE_DIR}/mac/PluginEventMacCocoa.h
-		${FIREBREATH_CURRENT_SOURCE_DIR}/mac/PluginEventMacCocoa.mm
+		${FIREBREATH_CURRENT_SOURCE_DIR}/Mac/NpapiPluginMac.h
+		${FIREBREATH_CURRENT_SOURCE_DIR}/Mac/PluginEventMac.h
+		${FIREBREATH_CURRENT_SOURCE_DIR}/Mac/PluginWindowMac.h
+		${FIREBREATH_CURRENT_SOURCE_DIR}/Mac/FactoryDummiesMac.cpp
+		${FIREBREATH_CURRENT_SOURCE_DIR}/Mac/PluginEventMac.cpp
+		${FIREBREATH_CURRENT_SOURCE_DIR}/Mac/NpapiPluginMac.mm
+		${FIREBREATH_CURRENT_SOURCE_DIR}/Mac/PluginWindowMac.mm
+		${FIREBREATH_CURRENT_SOURCE_DIR}/Mac/np_macmain.cpp
+		${FIREBREATH_CURRENT_SOURCE_DIR}/Mac/PluginWindowMacCG.h
+		${FIREBREATH_CURRENT_SOURCE_DIR}/Mac/PluginWindowMacCG.cpp
+		${FIREBREATH_CURRENT_SOURCE_DIR}/Mac/KeyCodesCarbon.h
+		${FIREBREATH_CURRENT_SOURCE_DIR}/Mac/KeyCodesCarbon.cpp
+		${FIREBREATH_CURRENT_SOURCE_DIR}/Mac/PluginEventMacCarbon.h
+		${FIREBREATH_CURRENT_SOURCE_DIR}/Mac/PluginEventMacCarbon.cpp
+		${FIREBREATH_CURRENT_SOURCE_DIR}/Mac/KeyCodesCocoa.h
+		${FIREBREATH_CURRENT_SOURCE_DIR}/Mac/KeyCodesCocoa.cpp
+		${FIREBREATH_CURRENT_SOURCE_DIR}/Mac/PluginEventMacCocoa.h
+		${FIREBREATH_CURRENT_SOURCE_DIR}/Mac/PluginEventMacCocoa.mm
 	)
 
 SOURCE_GROUP(OSX FILES ${SRCS_APPLE})

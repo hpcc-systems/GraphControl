@@ -54,7 +54,6 @@ SOURCE_GROUP(Win FILES ${SRCS_WIN})
 # OSX *****************************************************************
 
 set (	SRCS_APPLE
-	osx_pixel_map.h
 	)
 
 SOURCE_GROUP(OSX FILES ${SRCS_APPLE})
