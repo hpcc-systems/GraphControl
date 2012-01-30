@@ -47,7 +47,7 @@ set (	SRCS
 	install.rdf
 
 	gen/FBControl.htm
-	index.htm
+#	index.htm
 	)
 
 # Win *****************************************************************
@@ -56,8 +56,8 @@ set (	SRCS_WIN
 	gen/FBControl.rgs
 	gen/FireBreathWin.def
 	gen/firebreathWin.rc
-	gen/firebreathWin.rgs
-	gen/firebreathWin.idl
+	gen/FireBreathWin.rgs
+	gen/FireBreathWin.idl
 
 	DotViewWin.cpp
 	DotViewWin.h
