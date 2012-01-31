@@ -1,5 +1,4 @@
 //  CMake generated defines  ---
-#define HPCC_PROJECT "@HPCC_PROJECT@"
 #define HPCC_MAJOR @HPCC_MAJOR@
 #define HPCC_MINOR @HPCC_MINOR@
 #define HPCC_POINT @HPCC_POINT@
