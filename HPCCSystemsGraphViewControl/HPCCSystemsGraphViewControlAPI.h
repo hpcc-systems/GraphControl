@@ -21,11 +21,7 @@
  ******************************************************************************/
 
 #include "Unknown.h"
-#include <string>
-#include <sstream>
-#include <boost/weak_ptr.hpp>
-#include "JSAPIAuto.h"
-#include "BrowserHost.h"
+
 #include "HPCCSystemsGraphViewControl.h"
 
 #ifndef H_HPCCSystemsGraphViewControlAPI
@@ -56,7 +52,7 @@ public:
     void set_testString(const std::string& val);
 
     // Read-only property ${PROPERTY.ident}
-    int get_version();
+    std::string get_version();
 
     // Methods 
 	void loadTestData();

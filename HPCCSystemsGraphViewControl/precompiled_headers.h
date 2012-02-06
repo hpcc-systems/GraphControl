@@ -48,6 +48,8 @@
 #include <string.h>
 #endif
 
+#include <string>
+#include <sstream>
 #include <iostream>
 #include <set>
 
@@ -55,40 +57,12 @@
 #include <boost/smart_ptr/detail/atomic_count.hpp>
 #include <boost/signals2.hpp>
 #include <boost/algorithm/string.hpp>
-/*
-#include <string>
-#include <map>
-#include <stack>
-#include <vector>
-#include <sstream>
-namespace std
-{
-#ifdef _UNICODE
-	#define	_tstring wstring
-	#define	_tstringstream wstringstream
-#else
-	#define	_tstring string
-	#define	_tstringstream stringstream
-#endif
-}
+#include <boost/format.hpp>
+#include <boost/weak_ptr.hpp>
 
-#include <exception>
-
-#include <boost/lexical_cast.hpp>
-#include <boost/tokenizer.hpp>
-#include <boost/thread.hpp>
-#include <boost/format.hpp> 
-namespace boost
-{
-#ifdef _UNICODE
-	#define _tformat wformat
-#else
-	#define _tformat format
-#endif
-}
-
-#include <string.h>
-*/
+//  FireBreath  ---
+#include <JSAPIAuto.h>
+#include <BrowserHost.h>
 
 #if defined(_DEBUGXXX)
 # include <stdlib.h>
