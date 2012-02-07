@@ -12,7 +12,7 @@ InstallScope=user
 
 [npHPCCSystemsGraphViewControl.dll]
 file-win32-x86=thiscab
-fileversion=6,0,4,4
+fileversion=@HPCC_MAJOR@,@HPCC_MINOR@,@HPCC_POINT@,@HPCC_BUILD@
 clsid={2FF57548-1DE4-4F32-B133-2B3FBDDBF909}
 registerserver=yes
 RedirectToHKCU=yes
