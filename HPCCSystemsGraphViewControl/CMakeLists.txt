@@ -48,8 +48,8 @@ set (	SRCS
 
 	../config.h
 
-	npHPCCSystemsGraphViewControl.inf
-	install.rdf
+	../npHPCCSystemsGraphViewControl.inf
+	../install.rdf
 
 	gen/FBControl.htm
 #	index.htm
