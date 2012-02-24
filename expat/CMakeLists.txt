@@ -35,7 +35,6 @@ set (	SRCS
 	${EXPAT_INCLUDE_DIRS}/lib/macconfig.h
 	${EXPAT_INCLUDE_DIRS}/lib/nametab.h
 	${EXPAT_INCLUDE_DIRS}/lib/utf8tab.h
-	${EXPAT_INCLUDE_DIRS}/lib/watcomconfig.h
 	${EXPAT_INCLUDE_DIRS}/lib/winconfig.h
 	${EXPAT_INCLUDE_DIRS}/lib/xmlrole.h
 	${EXPAT_INCLUDE_DIRS}/lib/xmltok.h
