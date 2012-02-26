@@ -9,10 +9,7 @@ mkdir ~/hpcc_git
 cd ~/hpcc_git
 
 # Get Sources
-git clone https://GordonSmith@github.com/GordonSmith/GraphControl.git
-cd GraphControl
-git checkout FB_1-6
-cd ..
+git clone https://github.com/hpcc-systems/GraphControl.git
 
 # Get Firebreath library
 git clone https://github.com/firebreath/FireBreath.git
@@ -46,12 +43,17 @@ cd FireBreath
 # Generate FireBreath make files and build.
 cmake -DWITH_SYSTEM_BOOST=1 -DFB_RELEASE=1  ../../FireBreath
 make
+cd ..
 
 # Create build folder for GraphControl.
 mkdir GraphControl
 cd GraphControl
 
-# Generate GraphControl make files and build directly into mozilla plugins folder (for development).
+# Generate GraphControl make files and build.
 cmake -DGRAPHVIZSRC_DIR=../../graphviz-2.26.3/ -DAGGSRC_DIR=../../agg/ -DFIREBREATH_DIR=../../FireBreath/ -DFIREBREATH_BUILD_DIR=../FireBreath/ ../../GraphControl/
-sudo make
+make
+cd ../..
+
+# To build directly into "/usr/lib/mozilla/plugins" add
+# -DWITH_BUILD_TARGET_IN_PLUGINS_FOLDER=1 to the above cmake call
 
