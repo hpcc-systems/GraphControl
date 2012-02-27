@@ -22,6 +22,7 @@ include_directories (
 	${GRAPHVIZSRC_DIRS}/lib/neatogen
 	${GRAPHVIZSRC_DIRS}/lib/gvc
 	${GRAPHVIZSRC_DIRS}
+	..
 	)
 
 if (WIN32)

@@ -23,6 +23,7 @@ include_directories (
 	${GRAPHVIZSRC_DIRS}/lib/pathplan
 	${GRAPHVIZSRC_DIRS}/lib/cgraph
 	${GRAPHVIZSRC_DIRS}
+	..
 	)
 
 if (WIN32)
