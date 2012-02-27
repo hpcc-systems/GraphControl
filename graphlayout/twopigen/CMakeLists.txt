@@ -25,6 +25,7 @@ include_directories (
 	${GRAPHVIZSRC_DIRS}/lib/pack
 	${GRAPHVIZSRC_DIRS}/lib/sparse
 	${GRAPHVIZSRC_DIRS}
+	..
 	)
 
 if (WIN32)

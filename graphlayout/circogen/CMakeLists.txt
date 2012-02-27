@@ -34,6 +34,7 @@ include_directories (
 	${GRAPHVIZSRC_DIRS}/lib/pathplan
 	${GRAPHVIZSRC_DIRS}/lib/sparse
 	${GRAPHVIZSRC_DIRS}
+	..
 	)
 
 if (WIN32)

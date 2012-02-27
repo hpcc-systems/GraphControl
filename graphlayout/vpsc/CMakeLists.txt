@@ -22,6 +22,7 @@ set (	SRCS
 include_directories (
 	${GRAPHVIZSRC_DIRS}/lib/vpsc
 	${GRAPHVIZSRC_DIRS}
+	..
 	)
 
 if (WIN32)
