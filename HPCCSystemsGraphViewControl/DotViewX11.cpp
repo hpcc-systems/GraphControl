@@ -153,7 +153,12 @@ void CDotView::OnLButtonUp(hpcc::PointD point, guint modifierState)
 
 		std::vector<int> selection;
 		m_selection->GetSelection(selection);
-		m_api->fireSelChanged(selection);
+
+		FB::VariantList items;
+		for(std::vector<int>::const_iterator itr = selection.begin(); itr != selection.end(); ++itr)
+			items.push_back(*itr);
+
+		m_api->fire_SelectionChanged(items);
 	}
 }
 
@@ -165,7 +170,7 @@ void CDotView::OnLButtonDblClk(hpcc::PointD point)
 	worldDblClk = m_gr->ScreenToWorld(worldDblClk);
 
 	hpcc::IGraphItem * item = m_gr->GetItemAt(worldDblClk.x, worldDblClk.y, true);
-	m_api->fireMouseDoubleClicked(item ? item->GetID() : 0);
+	m_api->fire_MouseDoubleClicked(item ? item->GetID() : 0);
 }
 
 int CDotView::OnLayoutComplete(void * wParam, void * lParam)
@@ -180,7 +185,7 @@ int CDotView::OnLayoutComplete(void * wParam, void * lParam)
 		CalcScrollbars();
 		CenterOnGraphItem(NULL);
 		Invalidate();
-		m_api->fireLayoutFinished();
+		m_api->fire_LayoutFinished();
 	}
 	delete dot;
 	delete svg;

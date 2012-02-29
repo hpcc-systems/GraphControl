@@ -146,7 +146,12 @@ void CDotView::OnLButtonUp(UINT nFlags, CPoint point)
 
 		std::vector<int> selection;
 		m_selection->GetSelection(selection);
-		m_api->fireSelChanged(selection);
+
+		FB::VariantList items;
+		for(std::vector<int>::const_iterator itr = selection.begin(); itr != selection.end(); ++itr)
+			items.push_back(*itr);
+
+		m_api->fire_SelectionChanged(items);
 	}
 }
 
@@ -158,7 +163,7 @@ void CDotView::OnLButtonDblClk(UINT nFlags, CPoint point)
 	worldDblClk = m_gr->ScreenToWorld(worldDblClk);
 
 	hpcc::IGraphItem * item = m_gr->GetItemAt(worldDblClk.x, worldDblClk.y, true);
-	m_api->fireMouseDoubleClicked(item ? item->GetID() : 0);
+	m_api->fire_MouseDoubleClicked(item ? item->GetID() : 0);
 }
 
 bool CDotView::DoMouseWheel(UINT nFlags, short zDelta, CPoint pt)
@@ -180,7 +185,7 @@ bool CDotView::DoMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 		CalcScrollbars();
 		MoveTo(worldDblClk, pt.x, pt.y);
 
-		m_api->fireScaled((int)(m_gr->GetScale() * 100));
+		m_api->fire_Scaled((int)(m_gr->GetScale() * 100));
 		return true;
 	}
 	return false;
@@ -207,7 +212,7 @@ LRESULT CDotView::OnLayoutComplete(UINT /*uMsg*/, WPARAM wParam, LPARAM lParam)
 		CalcScrollbars();
 		CenterOnGraphItem(NULL);
 		Invalidate();
-		m_api->fireLayoutFinished();
+		m_api->fire_LayoutFinished();
 	}
 	delete dot;
 	delete svg;
