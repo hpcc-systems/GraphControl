@@ -96,10 +96,10 @@ public:
     void testEvent(const FB::variant& s);
 
 	//  Fire Events
-	void fireScaled(int newScale);
-	void fireLayoutFinished();
-	void fireMouseDoubleClicked(int item);
-	void fireSelChanged(const std::vector<int> & seection);
+	FB_JSAPI_EVENT(Scaled, 1, (int));
+	FB_JSAPI_EVENT(LayoutFinished, 0, ());
+	FB_JSAPI_EVENT(MouseDoubleClicked, 1, (int));
+	FB_JSAPI_EVENT(SelectionChanged, 1, (FB::VariantList));
 
 private:
     HPCCSystemsGraphViewControlWeakPtr m_plugin;

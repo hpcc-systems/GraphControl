@@ -88,10 +88,6 @@ HPCCSystemsGraphViewControlAPI::HPCCSystemsGraphViewControlAPI(const HPCCSystems
     registerProperty("version", make_property(this, &HPCCSystemsGraphViewControlAPI::get_version));
 
 	//  Events
-	registerEvent(Scaled);
-	registerEvent(LayoutFinished);
-	registerEvent(MouseDoubleClick);
-	registerEvent(SelectionChanged);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -379,25 +375,3 @@ void HPCCSystemsGraphViewControlAPI::testEvent(const FB::variant& var)
     FireEvent("onfired", FB::variant_list_of(var)(true)(1));
 }
 
-void HPCCSystemsGraphViewControlAPI::fireLayoutFinished()
-{
-	FireEvent(LayoutFinished, FB::variant_list_of());
-}
-
-void HPCCSystemsGraphViewControlAPI::fireScaled(int newScale)
-{
-	FireEvent(Scaled, FB::variant_list_of(newScale));
-}
-
-void HPCCSystemsGraphViewControlAPI::fireMouseDoubleClicked(int item)
-{
-	FireEvent(MouseDoubleClick, FB::variant_list_of(item));
-}
-
-void HPCCSystemsGraphViewControlAPI::fireSelChanged(const std::vector<int> & selection)
-{
- 	FB::VariantList items;
-	for(std::vector<int>::const_iterator itr = selection.begin(); itr != selection.end(); ++itr)
-		items.push_back(*itr);
-	FireEvent(SelectionChanged, FB::variant_list_of(items));
-}
