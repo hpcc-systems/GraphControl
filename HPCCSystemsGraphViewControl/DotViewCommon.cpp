@@ -103,7 +103,7 @@ void CDotViewCommon::CenterOnItem(int _item, bool sizeToFit, bool widthOnly)
 	{
 		CalcScrollbars();
 		CenterOnGraphItem(item);
-		m_api->fireScaled((int)(m_gr->GetScale() * 100));
+		m_api->fire_Scaled((int)(m_gr->GetScale() * 100));
 	}
 	else
 		CenterOnGraphItem(item);
