@@ -158,7 +158,7 @@ void gatherAttrs(void * item, AttrMap & attrs)
 	for (Agsym_t *attr = agfstattr(item); attr; attr = agnxtattr(item, attr))
 	{
 		if (strcmp(attr->name, "id") != 0 &&
-			agxget(item, attr->index) != NULL && strlen(agxget(item, attr->index)) != 0 && strcmp(agxget(item, attr->index), "\\N") != 0)
+			agxget(item, attr->index) != NULL && strcmp(agxget(item, attr->index), "\\N") != 0)
 			attrs[attr->name] = agxget(item, attr->index);
 	}
 }
@@ -188,16 +188,19 @@ void walkGraph(graph_t * g, IGraphvizVisitor * visitor, int depth)
 	for (Agnode_t *v = agfstnode(g); v; v = agnxtnode(g,v))
 	{
 		gatherAttrs(v, attrs);
-		visitor->OnStartVertex(v->name, attrs);
+		if (attrs.find("label") == attrs.end())
+			attrs["label"] = v->name;
+
+		visitor->OnStartVertex(v->id, attrs);
 		for (Agedge_t *e = agfstout(g, v); e; e = agnxtout(g, e)) 
 		{
 			gatherAttrs(e, attrs);
 
 			char buff[16];
-			visitor->OnStartEdge(g->kind, boost::lexical_cast<std::string>(e->id).c_str(), e->tail->name, e->head->name, attrs);
+			visitor->OnStartEdge(g->kind, boost::lexical_cast<std::string>(e->id).c_str(), e->tail->id, e->head->id, attrs);
 			visitor->OnEndEdge(g->kind, buff);
 		}
-		visitor->OnEndVertex(v->name);
+		visitor->OnEndVertex(v->id);
 	}
 	depth == 0 ? visitor->OnEndGraph(g->kind, g->name) : visitor->OnEndCluster(g->name);
 }
