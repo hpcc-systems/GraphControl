@@ -425,17 +425,13 @@ public:
 		{
 			retVal = Agg2D::StrokeOnly;
 			if (m_inSelectedItem)
-			{
-				if (m_inType == RENDER_TYPE_EDGE)
-					agg2d.lineColor(m_selectedStroke.GetR(), m_selectedStroke.GetG(), m_selectedStroke.GetB(), m_selectedStroke.GetA());
-				else
-					agg2d.lineColor(m_selectedFill.GetR(), m_selectedFill.GetG(), m_selectedFill.GetB(), m_selectedFill.GetA());
-			}
+				agg2d.lineColor(m_selectedStroke.GetR(), m_selectedStroke.GetG(), m_selectedStroke.GetB(), m_selectedStroke.GetA());
 			else
 			{
 				Colour * c = &(m_colours[StateT(m_inType, m_inState)].m_stroke);
 				agg2d.lineColor(c->GetR(), c->GetG(), c->GetB(), c->GetA());
 			}
+
 			if (m_inHotItem)
 				agg2d.lineColor(m_hotStroke.GetR(), m_hotStroke.GetG(), m_hotStroke.GetB(), m_hotStroke.GetA());
 			agg2d.noFill();
@@ -460,6 +456,7 @@ public:
 				const Colour * fillXXX = &fill;//(m_colours[StateT(m_inType, m_inState)].m_fill);
 				agg2d.fillColor(fillXXX->GetR(), fillXXX->GetG(), fillXXX->GetB(), fillXXX->GetA() / m_transparency);
 			}
+
 			if (m_inHotItem)
 			{
 				agg2d.lineColor(m_hotStroke.GetR(), m_hotStroke.GetG(), m_hotStroke.GetB(), m_hotStroke.GetA());
