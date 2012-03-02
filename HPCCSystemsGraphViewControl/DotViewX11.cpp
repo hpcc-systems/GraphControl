@@ -158,7 +158,7 @@ void CDotView::OnLButtonDblClk(hpcc::PointD point)
 	worldDblClk = m_gr->ScreenToWorld(worldDblClk);
 
 	hpcc::IGraphItem * item = m_gr->GetItemAt(worldDblClk.x, worldDblClk.y, true);
-	m_api->fire_MouseDoubleClicked(item ? item->GetID() : 0);
+	m_api->fire_MouseDoubleClick(item ? item->GetID() : 0);
 }
 
 int CDotView::OnLayoutComplete(void * wParam, void * lParam)
