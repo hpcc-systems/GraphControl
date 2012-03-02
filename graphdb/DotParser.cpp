@@ -25,6 +25,7 @@
 #include "GraphDB.h"
 #include "DotShapes.h"
 #include "DotParser.h"
+#include "util.h"
 
 #include <libagraph.h>
 
@@ -139,8 +140,9 @@ public:
 		m_clusterStack.pop();
 	}
 
-	void OnStartVertex(const std::string & id, const AttrMap & attrs)
+	void OnStartVertex(int _id, const AttrMap & attrs)
 	{
+		std::string id = UIntToString(_id);
 		if (m_vertexStructs.find(id) == m_vertexStructs.end())
 		{
 			IVertexPtr v = GetVertex(m_graph, m_clusterStack.top(), id, m_merge);
@@ -148,14 +150,18 @@ public:
 			v->SetProperty(DOT_PROP_CDOTITEM, m_vertexStructs[id]);
 		}
 	}
-	void OnEndVertex(const std::string & id)
+	void OnEndVertex(int id)
 	{
 	}
 
-	void OnStartEdge(int kind, const std::string & id, const std::string & source, const std::string & target, const AttrMap & attrs)
+	void OnStartEdge(int kind, const std::string & id, int _sourceID, int _targetID, const AttrMap & attrs)
 	{
 		if (m_edgeStructs.find(id) == m_edgeStructs.end())
-			m_edgeStructs[id] = new CDotEdge(kind, id, source, target, attrs);
+		{
+			std::string sourceID = UIntToString(_sourceID);
+			std::string targetID = UIntToString(_targetID);
+			m_edgeStructs[id] = new CDotEdge(kind, id, sourceID, targetID, attrs);
+		}
 	}
 	void OnEndEdge(int kind, const std::string & id)
 	{
