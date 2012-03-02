@@ -124,8 +124,6 @@ FB::JSAPIPtr HPCCSystemsGraphViewControl::createJSAPI()
 bool HPCCSystemsGraphViewControl::onMouseDown(FB::MouseDownEvent *evt, FB::PluginWindow *)
 {
 #if defined(XP_UNIX)
-	std::cout << "md_x:  " << evt->m_x << "\t";
-	std::cout << "md_Y:  " << evt->m_y << std::endl;
     m_wnd->OnLButtonDown(hpcc::PointD(evt->m_x, evt->m_y));
 #endif
     return true;
@@ -134,8 +132,6 @@ bool HPCCSystemsGraphViewControl::onMouseDown(FB::MouseDownEvent *evt, FB::Plugi
 bool HPCCSystemsGraphViewControl::onMouseDoubleClick(FB::MouseDoubleClickEvent *evt, FB::PluginWindow *)
 {
 #if defined(XP_UNIX)
-	std::cout << "mdc_x:  " << evt->m_x << "\t";
-	std::cout << "mdc_y:  " << evt->m_y << std::endl;
     m_wnd->OnLButtonDblClk(hpcc::PointD(evt->m_x, evt->m_y));
 #endif
 	return true;
@@ -144,8 +140,6 @@ bool HPCCSystemsGraphViewControl::onMouseDoubleClick(FB::MouseDoubleClickEvent *
 bool HPCCSystemsGraphViewControl::onMouseUp(FB::MouseUpEvent *evt, FB::PluginWindow *)
 {
 #if defined(XP_UNIX)
-	std::cout << "mu_x:  " << evt->m_x << "\t";
-	std::cout << "mu_y:  " << evt->m_y << std::endl;
     m_wnd->OnLButtonUp(hpcc::PointD(evt->m_x, evt->m_y), evt->m_state);
 #endif
     return true;
@@ -218,11 +212,6 @@ bool HPCCSystemsGraphViewControl::onX11(FB::X11Event *evt, FB::PluginWindow *)
 				area.y = event->y;
 				area.width = event->width;
 				area.height = event->height;
-				//std::cout << "x:  " << area.x << "\t";
-				//std::cout << "y:  " << area.y << "\t";
-				//std::cout << "w:  " << area.width << "\t";
-				//std::cout << "h:  " << area.height << std::endl;
-
 				//win->DoRender(area);
 				//gtk_widget_set_size_request (win->m_scrolled_window, area.width, area.height);
 				//gtk_widget_set_size_request (win->m_canvas, 150, 100);
@@ -250,13 +239,8 @@ bool HPCCSystemsGraphViewControl::onWindowAttached(FB::AttachedEvent *evt, FB::P
             assert(api != NULL);
 			m_wnd->m_api = api;
 			api->m_callback = m_wnd;
-			std::cout << "m_callback inited\n";
 		}
-        else
-            std::cout << "m_callback NOT inited 1\n";
 	}
-	else
-		std::cout << "m_callback NOT inited\n";
 #elif defined (XP_WIN)
 	if (FB::PluginWindowWin * win = GetWindow()->get_as<FB::PluginWindowWin>())
 	{

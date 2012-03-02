@@ -47,7 +47,6 @@ const char * const SelectionChanged = "onSelectionChanged";
 HPCCSystemsGraphViewControlAPI::HPCCSystemsGraphViewControlAPI(const HPCCSystemsGraphViewControlPtr& plugin, const FB::BrowserHostPtr& host, CDotView * callback) : m_plugin(plugin), m_host(host)
 {
 	m_callback = callback;
-    std::cout << "registerMethod\n";
 	registerMethod("clear", make_method(this, &HPCCSystemsGraphViewControlAPI::clear));
 	registerMethod("loadXGMML", make_method(this, &HPCCSystemsGraphViewControlAPI::loadXGMML));
 	registerMethod("mergeXGMML", make_method(this, &HPCCSystemsGraphViewControlAPI::mergeXGMML));
@@ -142,17 +141,13 @@ bool HPCCSystemsGraphViewControlAPI::clear()
 
 bool HPCCSystemsGraphViewControlAPI::loadXGMML(const std::string& xgmml)
 {
-    std::cout << "loadXGMML\n";
     assert(m_callback != NULL);
 	if (xgmml.empty())
 	{
-        std::cout << "loadXGMML 1\n";
 		m_callback->Clear();
 		return true;
 	}
-    std::cout << "loadXGMML 2\n";
 	m_callback->LoadXGMML(xgmml);
-    std::cout << "loadXGMML 3\n";
 	return true;
 }
 
