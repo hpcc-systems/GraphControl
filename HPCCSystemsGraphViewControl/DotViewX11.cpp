@@ -85,9 +85,7 @@ bool CDotView::GetClientRectangle(hpcc::RectD & rect)
 
 void CDotView::DoPaint(GdkEvent *evt)
 {
-//	std::cout << "GDK_EXPOSE:  Start" << "\n";
 	GdkEventExpose * event = reinterpret_cast<GdkEventExpose *>(evt);
-//	std::cout << "GDK_EXPOSE:  Start 2" << "\n";
 	//GtkAdjustment * hadj = gtk_scrolled_window_get_hadjustment(GTK_SCROLLED_WINDOW(win->m_scrolled_window));
 	//GtkAdjustment * vadj = gtk_scrolled_window_get_vadjustment(GTK_SCROLLED_WINDOW(win->m_scrolled_window));
 
@@ -95,18 +93,8 @@ void CDotView::DoPaint(GdkEvent *evt)
 	m_buffer->Resize(event->area.width, event->area.height);
 	hpcc::RectI rect(event->area.x, event->area.y, event->area.x + event->area.width, event->area.y + event->area.height);
 	rect.Offset(m_ptOffset.x, m_ptOffset.y);
-//	std::cout << "GDK_EXPOSE:  Start 3" << "\n";
 	m_gr->DoRender(rect, true);
-//	std::cout << "GDK_EXPOSE:  Start 4" << "\n";
-//
-//	std::cout << "x2:  " << event->area.x << "\t";
-//	std::cout << "y2:  " << event->area.y << "\t";
-//	std::cout << "w2:  " << event->area.width << "\t";
-//	std::cout << "h2:  " << event->area.height << "\t";
-//	std::cout << "Count:  " << event->count << "\n";
 	m_buffer->Draw(m_canvas, event->area.x, event->area.y);
-
-//	std::cout << "GDK_EXPOSE:  End" << "\n";
 }
 
 void CDotView::OnLButtonDown(hpcc::PointD point)
@@ -231,9 +219,6 @@ void CDotView::OnMouseMove(hpcc::PointD point)
 	case MOUSEDOWN_NORMAL:
 	case MOUSEDOWN_MOVED:
 		{
-			std::cout << "mm_x:  " << point.x << "\t";
-			std::cout << "mm_y:  " << point.y << "\n";
-
 			int deltaX = point.x - m_mouseDownPosX;
 			int deltaY = point.y - m_mouseDownPosY;
 
