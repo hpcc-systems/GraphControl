@@ -42,6 +42,7 @@ include_directories (
 	${GRAPHVIZSRC_DIRS}/lib/sparse
 	${GRAPHVIZSRC_DIRS}/lib/ingraphs
 	${GRAPHVIZSRC_DIRS}
+	..
 	)
 
 if (WIN32)
