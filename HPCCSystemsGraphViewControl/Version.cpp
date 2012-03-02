@@ -22,7 +22,7 @@
 #include "precompiled_headers.h"
 
 #include "Version.h"
-#include "..\config.h"
+#include "../config.h"
 
 const char * GetVersionString()
 {
