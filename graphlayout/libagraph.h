@@ -58,10 +58,10 @@ interface IGraphvizVisitor
 	virtual void OnStartCluster(const std::string & id, const AttrMap & attrs) = 0;
 	virtual void OnEndCluster(const std::string & id) = 0;
 
-	virtual void OnStartVertex(const std::string & id, const AttrMap & attrs) = 0;
-	virtual void OnEndVertex(const std::string & id) = 0;
+	virtual void OnStartVertex(int id, const AttrMap & attrs) = 0;
+	virtual void OnEndVertex(int id) = 0;
 
-	virtual void OnStartEdge(int kind, const std::string & id, const std::string & source, const std::string & target, const AttrMap & attrs) = 0;
+	virtual void OnStartEdge(int kind, const std::string & id, int sourceID, int targetID, const AttrMap & attrs) = 0;
 	virtual void OnEndEdge(int kind, const std::string & id) = 0;
 };
 
