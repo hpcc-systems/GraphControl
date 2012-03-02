@@ -163,7 +163,7 @@ void CDotView::OnLButtonDblClk(UINT nFlags, CPoint point)
 	worldDblClk = m_gr->ScreenToWorld(worldDblClk);
 
 	hpcc::IGraphItem * item = m_gr->GetItemAt(worldDblClk.x, worldDblClk.y, true);
-	m_api->fire_MouseDoubleClicked(item ? item->GetID() : 0);
+	m_api->fire_MouseDoubleClick(item ? item->GetID() : 0);
 }
 
 bool CDotView::DoMouseWheel(UINT nFlags, short zDelta, CPoint pt)
