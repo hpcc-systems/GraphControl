@@ -55,11 +55,6 @@ public:
 		if (0 == e->m_tag.compare("svg"))
 		{
 			m_valid = true;
-			RectD viewBox = CreateRectD(e->m_attr["viewBox"], PointD());
-			m_graph->SetProperty(SVG_PROP_VIEWBOX_X, viewBox.x);
-			m_graph->SetProperty(SVG_PROP_VIEWBOX_Y, viewBox.y);
-			m_graph->SetProperty(SVG_PROP_VIEWBOX_W, viewBox.Width);
-			m_graph->SetProperty(SVG_PROP_VIEWBOX_H, viewBox.Height);
 			for(hpcc::IClusterSet::const_iterator itr = m_graph->GetAllClusters().begin(); itr != m_graph->GetAllClusters().end(); ++itr)
 			{
 				itr->get()->SetProperty(SVG_PROP_ELEMENTG, (CUnknown *)NULL);
@@ -82,7 +77,7 @@ public:
 				{
 					static const char * const TRANSLATE = "translate(";
 					static int TRANSLATE_SIZE = strlen(TRANSLATE);
-					const char * start = strstr(transform.c_str(), "translate(");
+					const char * start = strstr(transform.c_str(), TRANSLATE);
 					const char * mid = strstr(start, " ");
 					const char * end = strstr(mid, ")");
 					if (start && mid && end)
