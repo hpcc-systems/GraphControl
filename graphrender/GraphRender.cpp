@@ -208,15 +208,7 @@ public:
 
 	RectD GetBoundingRect(bool world) const
 	{
-		RectD retVal;
-		if (m_message.empty())
-			retVal = RectD(m_g->GetPropertyDouble(SVG_PROP_VIEWBOX_X), m_g->GetPropertyDouble(SVG_PROP_VIEWBOX_Y), m_g->GetPropertyDouble(SVG_PROP_VIEWBOX_W), m_g->GetPropertyDouble(SVG_PROP_VIEWBOX_H));
-		else
-			retVal = RectD(0, 0, 300, 200);
-
-		if (world)
-			return retVal;
-		return WorldToScreen(retVal);
+		return GetBoundingRect(m_g, world);
 	}
 
 	RectD GetBoundingRect(double x, double y, bool world = false) const
