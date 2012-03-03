@@ -196,9 +196,8 @@ void walkGraph(graph_t * g, IGraphvizVisitor * visitor, int depth)
 		{
 			gatherAttrs(e, attrs);
 
-			char buff[16];
-			visitor->OnStartEdge(g->kind, boost::lexical_cast<std::string>(e->id).c_str(), e->tail->id, e->head->id, attrs);
-			visitor->OnEndEdge(g->kind, buff);
+			visitor->OnStartEdge(g->kind, e->id, e->tail->id, e->head->id, attrs);
+			visitor->OnEndEdge(g->kind, e->id);
 		}
 		visitor->OnEndVertex(v->id);
 	}

@@ -154,8 +154,9 @@ public:
 	{
 	}
 
-	void OnStartEdge(int kind, const std::string & id, int _sourceID, int _targetID, const AttrMap & attrs)
+	void OnStartEdge(int kind, int _id, int _sourceID, int _targetID, const AttrMap & attrs)
 	{
+		std::string id = UIntToString(_id);
 		if (m_edgeStructs.find(id) == m_edgeStructs.end())
 		{
 			std::string sourceID = UIntToString(_sourceID);
@@ -163,7 +164,7 @@ public:
 			m_edgeStructs[id] = new CDotEdge(kind, id, sourceID, targetID, attrs);
 		}
 	}
-	void OnEndEdge(int kind, const std::string & id)
+	void OnEndEdge(int kind, int _id)
 	{
 	}
 
