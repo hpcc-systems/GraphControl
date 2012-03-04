@@ -65,5 +65,4 @@ interface IGraphvizVisitor
 	virtual void OnEndEdge(int kind, int id) = 0;
 };
 
-
 LIBAGRAPH_API bool DoParse(const char* mem, IGraphvizVisitor * visitor);

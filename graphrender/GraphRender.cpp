@@ -27,6 +27,7 @@
 
 #include <agg_math_stroke.h>
 #include <agg2d.h>
+#include "FontResolver.h"
 
 namespace hpcc
 {
@@ -39,6 +40,7 @@ protected:
 	IGraphPtr m_g;
 	IGraphBufferPtr m_pixmap;
 	mutable Agg2D m_agg2d;
+	IFontResolverPtr m_fonts;
 
 	std::string m_message;
 	PointD m_offset;
@@ -136,9 +138,10 @@ public:
 	END_CUNKNOWN
 
 	CGraphRender(IGraph * g, IGraphBuffer * pixmap, IGraphHotItem * hotItem, IGraphSelectionBag * selectionBag, double scale = 1.0) : m_g(g), m_pixmap(pixmap), m_hotItem(hotItem), m_selected(selectionBag), 
-			m_hotStroke(Colour::RoyalBlue),				m_hotFill(Colour::White),				m_hotFillText(Colour::Black),
+			m_hotStroke(Colour::RoyalBlue),				m_hotFill(Colour::White),				m_hotFillText(Colour::RoyalBlue),
 			m_selectedStroke(Colour::DarkBlue),			m_selectedFill(Colour::AliceBlue),			m_selectedFillText(Colour::DarkBlue)
 	{
+		m_fonts = CreateIFontResolver();
 		m_scale = scale;
 		m_inHotItem = false;
 		m_inSelectedItem = false;
@@ -335,12 +338,7 @@ public:
 		m_agg2d.clearAll(0x7f, 0x7f, 0x7f);
 		m_agg2d.lineColor(0x00, 0x00, 0x00, 255);
 		m_agg2d.fillColor(0xff, 0xff, 0xff);
-
-#if defined WIN32
-		m_agg2d.font("c:/windows/fonts/verdana.ttf", 11.0f);
-#else
-		m_agg2d.font("/usr/share/fonts/truetype/freefont/FreeSans.ttf", 11.0f);
-#endif
+		m_agg2d.font(m_fonts->GetDefaultPath(), m_fonts->GetDefaultSize());
 
 		if (HitTestItemFast(m_g, pt.x, pt.y))
 		{
@@ -600,6 +598,7 @@ public:
 		if (!text)
 			return;
 
+		m_agg2d.font(m_fonts->GetPath(text->m_font_family), text->m_font_size);
 		Agg2D::TextAlignment xAlign = Agg2D::AlignCenter;
 		Agg2D::TextAlignment yAlign = Agg2D::AlignBottom;
 		switch(text->m_text_anchor)
@@ -804,11 +803,7 @@ public:
 			m_agg2d.lineColor(0x00, 0x00, 0x00);
 
 			m_agg2d.fillColor(0xff, 0xff, 0xff);
-#ifdef WIN32
-			m_agg2d.font("c:/windows/fonts/verdana.ttf", 11.0f);
-#else
-			m_agg2d.font("/usr/share/fonts/truetype/freefont/FreeSans.ttf", 11.0f);
-#endif
+			m_agg2d.font(m_fonts->GetDefaultPath(), m_fonts->GetDefaultSize());
 
 			if (!m_message.empty())
 			{

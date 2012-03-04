@@ -1,5 +1,5 @@
 # Get required libraries
-sudo apt-get install libboost-dev libboost-system-dev libboost-thread-dev libboost-graph-dev libfreetype6-dev libexpat1-dev libgtk2.0-dev
+sudo apt-get install libboost-dev libboost-system-dev libboost-thread-dev libboost-filesystem-dev libfreetype6-dev libexpat1-dev libgtk2.0-dev
 
 # Get git + svn support if needed
 sudo apt-get install cmake git git-svn 
