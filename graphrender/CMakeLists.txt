@@ -42,6 +42,8 @@ set (	SRCS
 	GraphBuffer.h
 	GraphHotItem.cpp
 	GraphHotItem.h
+	FontResolver.cpp
+	FontResolver.h
 	)
 
 # Win *****************************************************************

@@ -32,11 +32,11 @@
 
 namespace hpcc
 {
-boost::recursive_mutex g_mutex;
+boost::recursive_mutex g_GraphvizLayout;
 
 void DoGraphvizLayout(std::string layout, const std::string & dotStr, std::string & svgStr)
 {
-	boost::recursive_mutex::scoped_lock lock(g_mutex);
+	boost::recursive_mutex::scoped_lock lock(g_GraphvizLayout);
 #ifdef _DEBUG
 	{
 		std::ofstream fileDot("c:\\temp\\GraphvizLayout.dot", std::ios::binary);
@@ -65,7 +65,7 @@ const char * DoGraphvizLayout(IGraph * g, std::string & svgStr)
 
 void thread_DoGraphvizLayout(std::string layout, std::string dotStr, const LayoutFinishedSlot & slot)
 {
-	boost::recursive_mutex::scoped_lock lock(g_mutex);
+	boost::recursive_mutex::scoped_lock lock(g_GraphvizLayout);
 	LayoutFinishedSignal sig;
 	boost::signals2::connection c = sig.connect(slot);
 
