@@ -21,7 +21,7 @@
  ******************************************************************************/
 #pragma once
 
-#include "GraphDB.h"
+#include <GraphDB.h>
 #include "SvgShapes.h"
 #include "GraphBuffer.h"
 #include "GraphHotItem.h"
