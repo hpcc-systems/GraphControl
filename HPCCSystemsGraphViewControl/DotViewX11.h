@@ -34,6 +34,7 @@ class CDotView : public FB::PluginWindowX11, public CDotViewCommon, public boost
 	typedef FB::PluginWindowX11 base;
 protected:
     hpcc::PointD m_ptOffset;
+    hpcc::PointD m_ptSize;
 
 public:
 	CDotView(const FB::WindowContextX11 & ctx);
