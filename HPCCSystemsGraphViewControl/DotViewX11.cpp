@@ -59,13 +59,19 @@ void CDotView::SetScrollOffset(int x, int y)
 {
 	//gtk_adjustment_set_value(gtk_scrolled_window_get_hadjustment(GTK_SCROLLED_WINDOW(m_scrolled_window)), x);
 	//gtk_adjustment_set_value(gtk_scrolled_window_get_vadjustment(GTK_SCROLLED_WINDOW(m_scrolled_window)), y);
-    m_ptOffset.x = x;
-    m_ptOffset.y = y;
+    m_ptOffset.x = x < 0 ? 0 : (x > m_ptSize.x ? m_ptSize.x : x);
+    m_ptOffset.y = y < 0 ? 0 : (y > m_ptSize.y ? m_ptSize.y : y);
     Invalidate();
 }
 
 void CDotView::SetScrollSize(int w, int h, bool redraw)
 {
+	gint width;
+	gint height;
+	gdk_window_get_size(m_canvas->window, &width, &height);
+
+	m_ptSize.x = w - width;
+	m_ptSize.y = h - height;
     //gtk_widget_set_size_request(m_canvas, w, h);
 }
 
