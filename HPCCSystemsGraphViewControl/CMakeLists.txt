@@ -175,3 +175,11 @@ elseif(UNIX)
 endif()
 
 # *********************************************************************
+
+if(WIN32)
+	INSTALL(TARGETS HPCCSystemsGraphViewControl RUNTIME DESTINATION ${PLUGIN_DIRECTORY} )
+elseif(APPLE)
+elseif(UNIX)
+	INSTALL(TARGETS HPCCSystemsGraphViewControl LIBRARY DESTINATION ${PLUGIN_DIRECTORY} )
+endif()
+
