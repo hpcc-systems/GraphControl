@@ -50,11 +50,11 @@ elseif(UNIX)
 endif()
 
 ADD_MSVC_PRECOMPILED_HEADER("precompiled_headers.h" "precompiled_headers.cpp" SRCS)
-if (WITH_DYNAMIC_MSVC_RUNTIME)
-	add_library ( graphlayout SHARED ${SRCS} )
-else (WITH_DYNAMIC_MSVC_RUNTIME)
+if (WITH_STATIC_RUNTIME)
 	add_library ( graphlayout STATIC ${SRCS} )
-endif (WITH_DYNAMIC_MSVC_RUNTIME)
+else (WITH_STATIC_RUNTIME)
+	add_library ( graphlayout SHARED ${SRCS} )
+endif (WITH_STATIC_RUNTIME)
 
 # *********************************************************************
 
@@ -126,3 +126,9 @@ target_link_libraries ( graphlayout
 	)
 
 # *********************************************************************
+
+INSTALL(TARGETS graphlayout 
+	RUNTIME DESTINATION bin COMPONENT PLUGIN
+	LIBRARY DESTINATION lib
+	ARCHIVE DESTINATION lib/static
+)

@@ -91,11 +91,11 @@ endif()
 
 set(SOURCES ${SRCS} ${SRCS_WIN} ${SRCS_APPLE} ${SRCS_UNIX})
 ADD_MSVC_PRECOMPILED_HEADER("precompiled_headers.h" "precompiled_headers.cpp" SOURCES)
-if (WITH_DYNAMIC_MSVC_RUNTIME)
-	add_library ( graphrender SHARED ${SOURCES} )
-else (WITH_DYNAMIC_MSVC_RUNTIME)
+if (WITH_STATIC_RUNTIME)
 	add_library ( graphrender STATIC ${SOURCES} )
-endif (WITH_DYNAMIC_MSVC_RUNTIME)
+else (WITH_STATIC_RUNTIME)
+	add_library ( graphrender SHARED ${SOURCES} )
+endif (WITH_STATIC_RUNTIME)
 
 # *********************************************************************
 
@@ -105,3 +105,9 @@ target_link_libraries ( graphrender
 	)
 
 # *********************************************************************
+
+INSTALL(TARGETS graphrender 
+	RUNTIME DESTINATION bin COMPONENT PLUGIN
+	LIBRARY DESTINATION lib
+	ARCHIVE DESTINATION lib/static
+)
