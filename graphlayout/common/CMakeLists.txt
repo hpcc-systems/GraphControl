@@ -52,6 +52,7 @@ include_directories (
 	${GRAPHVIZSRC_DIRS}/lib/gvc
 	${GRAPHVIZSRC_DIRS}/lib/xdot
 	${GRAPHVIZSRC_DIRS}
+	..
 	)
 
 if (WIN32)

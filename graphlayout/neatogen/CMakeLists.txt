@@ -66,6 +66,7 @@ include_directories (
 	${GRAPHVIZSRC_DIRS}/lib/vpsc
 	${GRAPHVIZSRC_DIRS}/lib/ortho
 	${GRAPHVIZSRC_DIRS}
+	..
 	)
 
 if (WIN32)

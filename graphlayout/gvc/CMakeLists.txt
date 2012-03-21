@@ -32,6 +32,7 @@ include_directories (
 	${GRAPHVIZSRC_DIRS}/lib/graph
 	${GRAPHVIZSRC_DIRS}/third-party/include
 	${GRAPHVIZSRC_DIRS}
+	..
 	)
 
 #ADD_DEFINITIONS( -DHAVE_CONFIG_H -DHAVE_SETMODE -DMSWIN32 -DNONDLL)
