@@ -37,6 +37,7 @@ include_directories (
 	${GRAPHVIZSRC_DIRS}/lib/gvc
 	${GRAPHVIZSRC_DIRS}/lib/ortho
 	${GRAPHVIZSRC_DIRS}
+	..
 	)
 
 if (WIN32)
