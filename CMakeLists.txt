@@ -3,6 +3,12 @@ cmake_minimum_required (VERSION 2.6)
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules/" ${CMAKE_MODULE_PATH})
 
+if (CMAKE_SIZEOF_VOID_P EQUAL 8)
+	set ( ARCH64BIT 1 )
+else ()
+	set ( ARCH64BIT 0 )
+endif ()
+message ("-- 64bit architecture is ${ARCH64BIT}")
 ##################################################################
 
 # Build tag generation
@@ -29,17 +35,17 @@ configure_file (
   )
 ##################################################################
 
-option(WITH_DYNAMIC_MSVC_RUNTIME "Build with dynamic MSVC runtime (/MD)" OFF)
+option(WITH_DYNAMIC_RUNTIME "Build with dynamic runtimes" ON)
 
 set(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin" CACHE PATH "Location of BIN files")
 set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin" CACHE PATH "Location of LIB files")
 if (WIN32)
 elseif(APPLE)
 elseif(UNIX)
-	option(WITH_BUILD_TARGET_IN_PLUGINS_FOLDER "Build directly into mozilla/plugins" OFF)
+	option(WITH_BUILD_TARGET_IN_PLUGINS_FOLDER "Build directly into $HOME/.mozilla/plugins" OFF)
 	if (WITH_BUILD_TARGET_IN_PLUGINS_FOLDER)
-      set(EXECUTABLE_OUTPUT_PATH "/usr/lib/mozilla/plugins")
-      set(LIBRARY_OUTPUT_PATH "/usr/lib/mozilla/plugins")
+		set(EXECUTABLE_OUTPUT_PATH "~/.mozilla/plugins")
+		set(LIBRARY_OUTPUT_PATH "~/.mozilla/plugins")
 	endif()
 endif()
 
@@ -48,18 +54,18 @@ include ( "${CMAKE_SOURCE_DIR}/cmake/Modules/Externals.cmake" )
 
 if (WIN32)
 	add_definitions(-DFB_WIN=1 -DXP_WIN=1 -D_CRT_SECURE_NO_WARNINGS)
-    if (WITH_DYNAMIC_MSVC_RUNTIME)
-        message(STATUS "Building with dynamic MSVC runtime")
-	else (WITH_DYNAMIC_MSVC_RUNTIME)
-        message(STATUS "Building with static MSVC runtime")
+    if (WITH_DYNAMIC_RUNTIME)
+        message("-- Building with dynamic MSVC runtime")
+	else (WITH_DYNAMIC_RUNTIME)
+        message("-- Building with static MSVC runtime")
 		add_definitions(-DSTATIC_LIB)
-	endif (WITH_DYNAMIC_MSVC_RUNTIME)
+	endif (WITH_DYNAMIC_RUNTIME)
     foreach(flag_var
             CMAKE_CXX_FLAGS CMAKE_CXX_FLAGS_DEBUG CMAKE_CXX_FLAGS_RELEASE
             CMAKE_CXX_FLAGS_MINSIZEREL CMAKE_CXX_FLAGS_RELWITHDEBINFO
             CMAKE_C_FLAGS CMAKE_C_FLAGS_DEBUG CMAKE_C_FLAGS_RELEASE
             CMAKE_C_FLAGS_MINSIZEREL CMAKE_C_FLAGS_RELWITHDEBINFO)
-	    if (WITH_DYNAMIC_MSVC_RUNTIME)
+	    if (WITH_DYNAMIC_RUNTIME)
 		    if(${flag_var} MATCHES "/MT")
 			    string(REGEX REPLACE "/MT" "/MD" ${flag_var} "${${flag_var}}")
 			endif()
@@ -105,10 +111,86 @@ elseif(APPLE)
 elseif(UNIX)
 endif()
 
+if(WIN32)
+	set ( PLUGIN_DIRECTORY "." )
+	set ( CMAKE_INSTALL_SYSTEM_RUNTIME_DESTINATION ${PLUGIN_DIRECTORY} )
+elseif(APPLE)
+elseif(UNIX)
+	set(PLUGIN_DIRECTORY "lib/mozilla/plugins" CACHE STRING "Directory to install Firefox plugin to")
+endif()
+
+##################################################################
+
 add_subdirectory (graphlayout)
 add_subdirectory (graphdb)
 add_subdirectory (graphrender)
 add_subdirectory (HPCCSystemsGraphViewControl)
+
+##################################################################
+
+if ( WITH_DYNAMIC_RUNTIME )
+	include ( InstallRequiredSystemLibraries )
+endif ( WITH_DYNAMIC_RUNTIME )
+if(WIN32)
+  set ( CPACK_SOURCE_GENERATOR NSIS )
+elseif(APPLE)
+elseif(UNIX)
+  set ( CPACK_SOURCE_GENERATOR DEB )
+endif()
+
+set ( CPACK_NSIS_URL_INFO_ABOUT "http:\\\\\\\\hpccsystems.com" )
+set ( CPACK_PACKAGE_CONTACT "HPCCSystems <ossdevelopment@lexisnexis.com>" )
+set ( CPACK_PACKAGE_NAME "hpccsystems-graphcontrol")
+set ( CPACK_PACKAGE_VENDOR "HPCC Systems" )
+if ( ${ARCH64BIT} EQUAL 1 )
+  set ( CPACK_NSIS_DISPLAY_NAME "Graph Control x64" )
+else ()
+  set ( CPACK_NSIS_DISPLAY_NAME "Graph Control" )
+endif ()
+set ( CPACK_PACKAGE_VERSION_MAJOR ${HPCC_MAJOR} )
+set ( CPACK_PACKAGE_VERSION_MINOR ${HPCC_MINOR} )
+set ( CPACK_PACKAGE_VERSION_PATCH "${HPCC_POINT}.${HPCC_BUILD}" )
+set ( CPACK_PACKAGE_VERSION "${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}" )
+set ( CPACK_RESOURCE_FILE_LICENSE "${PROJECT_SOURCE_DIR}/Liscence.txt" )
+set ( CPACK_PACKAGE_DESCRIPTION_FILE "${PROJECT_SOURCE_DIR}/README" )
+set ( CPACK_PACKAGE_DESCRIPTION_SUMMARY "Browser plugin graph viewer." )
+set ( CPACK_PACKAGE_INSTALL_DIRECTORY "${CPACK_PACKAGE_VENDOR}\\\\${CPACK_NSIS_DISPLAY_NAME} ${CPACK_PACKAGE_VERSION}")
+set ( CPACK_PACKAGE_INSTALL_REGISTRY_KEY "${CPACK_NSIS_DISPLAY_NAME} ${CPACK_PACKAGE_VERSION}")
+set ( CPACK_NSIS_DEFINES "
+  !define MUI_STARTMENUPAGE_DEFAULTFOLDER \\\"${CPACK_PACKAGE_VENDOR}\\\\${CPACK_NSIS_DISPLAY_NAME}\\\"
+  !define MUI_FINISHPAGE_NOAUTOCLOSE
+  ")
+
+if(WIN32)
+  if ( ${ARCH64BIT} EQUAL 1 )
+	SET(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "  
+		ExecWait '\\\"$SYSDIR\\\\regsvr32.exe\\\" /s \\\"$INSTDIR\\\\${PLUGIN_DIRECTORY}\\\\npHPCCSystemsGraphViewControl.dll\\\"'
+	")
+	SET(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "  
+		ExecWait '\\\"$SYSDIR\\\\regsvr32.exe\\\" /s /u \\\"$INSTDIR\\\\${PLUGIN_DIRECTORY}\\\\npHPCCSystemsGraphViewControl.dll\\\"'
+	")
+  else ()
+    SET(CPACK_NSIS_DISPLAY_NAME "Graph Control")
+	SET(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "  
+		RegDLL '$INSTDIR\\\\${PLUGIN_DIRECTORY}\\\\npHPCCSystemsGraphViewControl.dll'
+	")
+	SET(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "  
+		UnRegDLL '$INSTDIR\\\\${PLUGIN_DIRECTORY}\\\\npHPCCSystemsGraphViewControl.dll'
+	")
+  endif ()
+	add_custom_target(SIGN 
+	   COMMAND signtool sign /f "${CMAKE_SOURCE_DIR}/hpcc_code_signing.pfx" /p "${PFX_PASSWORD}" /t "http://timestamp.verisign.com/scripts/timstamp.dll" "${CPACK_PACKAGE_NAME}*${CPACK_PACKAGE_VERSION}*.exe"
+	   COMMENT "Digital Signature"
+	)
+	add_dependencies(SIGN PACKAGE)
+	set_property(TARGET SIGN PROPERTY FOLDER "CMakePredefinedTargets")
+elseif(APPLE)
+elseif(UNIX)
+endif()
+
+INCLUDE(CPack)
+
+##################################################################
 
 if(WIN32)
 elseif(APPLE)
