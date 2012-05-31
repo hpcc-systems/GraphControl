@@ -44,6 +44,8 @@ void CGraph::Clear()
 	m_allItems.clear();
 	m_externalIDs.clear();
 	m_rexternalIDs.clear();
+	SetProperty("id", "0");
+	SetExternalID(hpcc::GRAPH_TYPE_CLUSTER, "0", (ICluster *)(CCluster *)this);
 }
 
 ICluster * CGraph::CreateCluster()

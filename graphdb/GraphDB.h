@@ -26,25 +26,34 @@
 namespace hpcc
 {
 //  ===  Forward Declarations  ===
+template<typename T>
+struct CompareT
+{
+	bool operator() (const T & l, const T & r) const
+	{
+		return l->GetID() < r ->GetID();
+	}
+};
+
 hpcc_interface IGraphItem;
 typedef CUnknownPtr<IGraphItem> IGraphItemPtr;
-typedef std::set<IGraphItemPtr> IGraphItemSet;
+typedef std::set<IGraphItemPtr, CompareT<IGraphItemPtr> > IGraphItemSet;
 
 hpcc_interface IGraph;
 typedef CUnknownPtr<IGraph> IGraphPtr;
-typedef std::set<IGraphPtr> IGraphSet;
+typedef std::set<IGraphPtr, CompareT<IGraphPtr> > IGraphSet;
 
 hpcc_interface ICluster;
 typedef CUnknownPtr<ICluster> IClusterPtr;
-typedef std::set<IClusterPtr> IClusterSet;
+typedef std::set<IClusterPtr, CompareT<IClusterPtr> > IClusterSet;
 
 hpcc_interface IVertex;
 typedef CUnknownPtr<IVertex> IVertexPtr;
-typedef std::set<IVertexPtr> IVertexSet;
+typedef std::set<IVertexPtr, CompareT<IVertexPtr> > IVertexSet;
 
 hpcc_interface IEdge;
 typedef CUnknownPtr<IEdge> IEdgePtr;
-typedef std::set<IEdgePtr> IEdgeSet;
+typedef std::set<IEdgePtr, CompareT<IEdgePtr> > IEdgeSet;
 
 typedef std::map<std::string, std::string> StringStringMap;
 
@@ -115,6 +124,7 @@ hpcc_interface GRAPHDB_API ICluster : public IGraphItem
 	virtual void AppendCluster(ICluster * cluster) = 0;
 	virtual void RemoveCluster(ICluster * cluster) = 0;
 	virtual void AppendVertex(IVertex * vertex) = 0;
+	virtual void RemoveVertex(IVertex * vertex) = 0;
 
 	virtual void Walk(IClusterVisitor * visitor) = 0;
 
@@ -125,10 +135,14 @@ hpcc_interface GRAPHDB_API ICluster : public IGraphItem
 hpcc_interface GRAPHDB_API IVertex : public IGraphItem
 {
 	virtual ICluster * GetParent() const = 0;
+	virtual void SetParent(ICluster * cluster) = 0;
 	virtual unsigned int GetInEdgeCount() const = 0;
 	virtual unsigned int GetOutEdgeCount() const = 0;
 	virtual const IEdgeSet & GetInEdges() const = 0;
 	virtual const IEdgeSet & GetOutEdges() const = 0;
+
+	virtual unsigned int GetAdjacentVertices(IVertexSet & adjacentVertices) const = 0;
+	virtual IEdge * GetEdge(IVertex * adjacentVertex) const = 0;
 
 	virtual void AppendInEdge(IEdge * edge) = 0;
 	virtual void AppendOutEdge(IEdge * edge) = 0;

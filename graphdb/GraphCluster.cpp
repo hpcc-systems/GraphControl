@@ -75,6 +75,13 @@ void CCluster::AppendVertex(IVertex * vertex)
 	m_vertices.insert(vertex);
 }
 
+void CCluster::RemoveVertex(IVertex * vertex)
+{
+	IVertexSet::const_iterator found = m_vertices.find(vertex);
+	if (found != m_vertices.end())
+		m_vertices.erase(found);
+}
+
 void CCluster::Walk(IClusterVisitor * visitor)
 {
 	for(IClusterSet::const_iterator itr = m_clusters.begin(); itr != m_clusters.end(); ++itr)

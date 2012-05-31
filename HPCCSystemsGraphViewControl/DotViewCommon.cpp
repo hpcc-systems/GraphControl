@@ -41,6 +41,7 @@ CDotViewCommon::CDotViewCommon()
 {
 	m_api = NULL;
 	m_g = hpcc::CreateGraph();
+
 	m_buffer = hpcc::CreateGraphBuffer(0, 0);
 	m_hotItem = hpcc::CreateGraphHotItem();
 	m_selection = hpcc::CreateGraphSelectionBag();
