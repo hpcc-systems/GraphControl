@@ -43,6 +43,8 @@ const char * const GraphTpl =
 //"graph[ranksep=\".3\"];\r\n"
 //"graph[pad=\"0.01, 0.01\"];\r\n"
 "graph[rankdir=\"TB\"%2%];\r\n"
+"graph[remincross=true];\r\n"
+"graph[mclimit=\"2.0\"];\r\n"
 //"graph[sep=\"0.1\"];\r\n"
 //"graph[overlap=\"scalexy\"];\r\n"
 //"graph[smoothing=\"spring\"];\r\n"
@@ -154,12 +156,8 @@ void WalkClusters(const ICluster * cluster, std::string & dot, int depth)
 	}
 }
 
-const char * WriteDOT(const IGraph * graph, std::string & dot)
+void WalkEdges(const IGraph * graph, std::string & content)
 {
-	dot.clear();
-	std::string content;
-	WalkClusters(graph, content, 0);
-
 	for(IEdgeSet::const_iterator itr = graph->GetAllEdges().begin(); itr != graph->GetAllEdges().end(); ++itr)
 	{
 		IEdge * e = itr->get();
@@ -203,6 +201,14 @@ const char * WriteDOT(const IGraph * graph, std::string & dot)
 			content += (boost::format(EdgeTpl) % from->GetIDString() % to->GetIDString() % e->GetIDString() % e->GetPropertyString(DOT_LABEL) % props.c_str()).str();
 		}
 	}
+}
+
+const char * WriteDOT(const IGraph * graph, std::string & dot)
+{
+	dot.clear();
+	std::string content;
+	WalkClusters(graph, content, 0);
+	WalkEdges(graph, content);
 
 	std::string layout = graph->GetPropertyString(PROP_LAYOUT);
 	std::string props;
@@ -341,63 +347,129 @@ bool decendent(const ICluster * cluster, const ICluster * item)
 	return decendent(cluster, item->GetParent());
 }
 
-const char * WriteLocalisedXGMML(const IGraph * graph, const ICluster * cluster, IGraphItemSet & addedItems, std::string & xgmml)
+void BuildVertexEdgeString(IEdge * e, IVertex * v, const IVertexSet & visibleVertices, IGraphItemSet & addedItems, const ICluster * cluster, std::string & clusterXgmml, std::string & externalVertices)
 {
-	std::string clusterXgmml, externalVertices;
-	clusterXgmml += (boost::format("<node id=\"%1%\"><att><graph>") % cluster->GetProperty("id")).str();
-	for(IVertexSet::const_iterator itr = cluster->GetVertices().begin(); itr != cluster->GetVertices().end(); ++itr)
+	if (visibleVertices.find(v) == visibleVertices.end())
 	{
-		std::string vertexStr, attrStr;
-		BuildVertexString(itr->get(), vertexStr, false);
-		if (addedItems.find(itr->get()) == addedItems.end())
+		if (addedItems.find(v) == addedItems.end())
 		{
-			addedItems.insert(itr->get());
-			clusterXgmml += vertexStr;
+			addedItems.insert(v);
+			std::string vertexStr;
+			BuildVertexString(v, vertexStr, true);
+			if (decendent(cluster, v->GetParent()))
+				clusterXgmml += vertexStr;
+			else
+				externalVertices += vertexStr;
 		}
 	}
-	for(IClusterSet::const_iterator itr = cluster->GetClusters().begin(); itr != cluster->GetClusters().end(); ++itr)
-		WriteLocalisedXGMML(graph, itr->get(), addedItems, clusterXgmml);
-	for(IVertexSet::const_iterator v_itr = cluster->GetVertices().begin(); v_itr != cluster->GetVertices().end(); ++v_itr)
+
+	if (addedItems.find((IGraphItem *)e) == addedItems.end())
 	{
-		IEdgeSet inEdges = v_itr->get()->GetInEdges();
-		for(IEdgeSet::const_iterator itr = inEdges.begin(); itr != inEdges.end(); ++itr)
-		{
-			IVertex * from = itr->get()->GetFromVertex();
-			if (!decendent(cluster, from->GetParent()))
-				WriteLocalisedXGMML(graph, from, addedItems, externalVertices, DIRECTION_IN, 0);
-
-			std::string edgeStr;
-			BuildEdgeString(itr->get(), edgeStr);
-			if (addedItems.find((IGraphItem *)itr->get()) == addedItems.end())
-			{
-				addedItems.insert((IGraphItem *)itr->get());
-				clusterXgmml += edgeStr;
-			}
-		}
-
-		IEdgeSet outEdges = v_itr->get()->GetOutEdges();
-		for(IEdgeSet::const_iterator itr = outEdges.begin(); itr != outEdges.end(); ++itr)
-		{
-			IVertex * to = itr->get()->GetToVertex();
-			if (!decendent(cluster, to->GetParent()))
-				WriteLocalisedXGMML(graph, to, addedItems, externalVertices, DIRECTION_OUT, 0);
-
-			std::string edgeStr;
-			BuildEdgeString(itr->get(), edgeStr);
-			if (addedItems.find((IGraphItem *)itr->get()) == addedItems.end())
-			{
-				addedItems.insert((IGraphItem *)itr->get());
-				clusterXgmml += edgeStr;
-			}
-		}
+		addedItems.insert((IGraphItem *)e);
+		std::string edgeStr;
+		BuildEdgeString(e, edgeStr);
+		clusterXgmml += edgeStr;
 	}
-	clusterXgmml += "</graph></att></node>";
-	xgmml += externalVertices + clusterXgmml;
-	return xgmml.c_str();
 }
 
-const char * WriteLocalisedXGMML(const IGraph * graph, std::string & xgmml)
+typedef std::vector<IClusterPtr> IClusterVector;
+void GetAncestors(IVertex * v, IClusterVector & ancestors)
 {
+	ICluster * parent = v->GetParent();
+	while (parent)
+	{
+		ancestors.push_back(parent);
+		parent = parent->GetParent();
+	}
+}
+
+ICluster * GetCommonAncestor(IVertex * v1, IVertex * v2)
+{
+	IClusterVector v1_ancestors, v2_ancestors;
+	GetAncestors(v1, v1_ancestors);
+	GetAncestors(v2, v2_ancestors);
+	IClusterVector::const_reverse_iterator finger1 = v1_ancestors.rbegin();
+	IClusterVector::const_reverse_iterator finger2 = v2_ancestors.rbegin();
+	ICluster * retVal = NULL;
+	while(finger1 != v1_ancestors.rend() && finger2 != v2_ancestors.rend() && finger1->get() == finger2->get()) {
+		retVal = finger1->get();
+		++finger1;
+		++finger2;
+	}
+	return retVal;
+}
+
+void CalcVisibility(const ICluster * rootCluster, const ICluster * cluster, IVertexSet & externalVertices, IEdgeSet & edges, std::string & content)
+{
+	std::string childContent;
+	IVertexSet visibleVertices, pointVertices;
+	for(IVertexSet::const_iterator itr = cluster->GetVertices().begin(); itr != cluster->GetVertices().end(); ++itr)
+	{
+		IVertex * v = itr->get();
+		bool v_display = false;
+		
+		IVertexSet adjacentVertices;
+		v->GetAdjacentVertices(adjacentVertices);
+		for(IVertexSet::const_iterator adj_itr = adjacentVertices.begin(); adj_itr != adjacentVertices.end(); ++adj_itr)
+		{
+			IVertex * v_adjacent = adj_itr->get();
+			IEdge * e = v->GetEdge(v_adjacent);
+
+			//  Both vertices are inside rootCluster and their edge crosses rootClusters white space.
+			if (rootCluster == GetCommonAncestor(v, v_adjacent))
+			{
+				v_display = true;
+				edges.insert(e);
+			} //  Main vertex is visible and adjacent vertex is external
+			else if (rootCluster == v->GetParent() && !decendent(rootCluster, v_adjacent->GetParent())) 
+			{
+				v_display = true;
+				edges.insert(e);
+				externalVertices.insert(v_adjacent);
+			} //  both vertices are within a single child cluster of root cluster
+			else
+			{
+			}
+		}
+
+		if (v_display)
+		{
+			std::string vertexStr;
+			BuildVertexString(v, vertexStr, v->GetParent() == rootCluster ? false : true);
+			childContent += vertexStr;
+		}
+	}
+
+	for(IClusterSet::const_iterator itr = cluster->GetClusters().begin(); itr != cluster->GetClusters().end(); ++itr)
+	{
+		CalcVisibility(rootCluster, itr->get(), externalVertices, edges, childContent);
+	}
+
+	if (!childContent.empty())
+	{
+		content += (boost::format("<node id=\"%1%\"><att><graph>") % cluster->GetProperty("id")).str();
+		content += childContent;
+		content += "</graph></att></node>";
+	}
+}
+
+const char * WriteLocalisedXGMML(const IGraph * graph, const ICluster * cluster, IGraphItemSet & addedItems, std::string & xgmml)
+{
+	IVertexSet externalVertices;
+	IEdgeSet edges;
+	CalcVisibility(cluster, cluster, externalVertices, edges, xgmml);
+	for (IVertexSet::const_iterator itr = externalVertices.begin(); itr != externalVertices.end(); ++itr)
+	{
+		std::string vertexStr;
+		BuildVertexString(itr->get(), vertexStr, true);
+		xgmml += vertexStr;
+	}
+	for(IEdgeSet::const_iterator itr = edges.begin(); itr != edges.end(); ++itr)
+	{
+		std::string edgeStr;
+		BuildEdgeString(itr->get(), edgeStr);
+		xgmml += edgeStr;
+	}
 	return xgmml.c_str();
 }
 
@@ -408,8 +480,6 @@ GRAPHDB_API const char * WriteLocalisedXGMML(const IGraph * graph, const IGraphI
 		WriteLocalisedXGMML(graph, vertex, addedItems, xgmml, DIRECTION_UNKNOWN, 3);
 	else if (const IEdge * edge = dynamic_cast<const IEdge *>(item))
 		WriteLocalisedXGMML(graph, edge, addedItems, xgmml, DIRECTION_UNKNOWN, 3);
-	else if (const IGraph * graph = dynamic_cast<const IGraph *>(item))
-		WriteLocalisedXGMML(graph, xgmml);
 	else if (const ICluster * cluster = dynamic_cast<const ICluster *>(item))
 		WriteLocalisedXGMML(graph, cluster, addedItems, xgmml);
 	return xgmml.c_str();
