@@ -37,6 +37,13 @@ ICluster * CVertex::GetParent() const
 	return m_parent;
 }
 
+void CVertex::SetParent(ICluster * cluster) 
+{
+	cluster->AppendVertex(this);
+	m_parent->RemoveVertex(this);
+	m_parent = cluster;
+}
+
 unsigned int CVertex::GetInEdgeCount() const
 {
 	return m_inEdges.size();
@@ -55,6 +62,33 @@ const IEdgeSet & CVertex::GetInEdges() const
 const IEdgeSet & CVertex::GetOutEdges() const
 {
 	return m_outEdges;
+}
+
+unsigned int CVertex::GetAdjacentVertices(IVertexSet & adjacentVertices) const
+{
+	for(IEdgeSet::const_iterator itr = m_inEdges.begin(); itr != m_inEdges.end(); ++itr)
+		adjacentVertices.insert(itr->get()->GetFromVertex());
+
+	for(IEdgeSet::const_iterator itr = m_outEdges.begin(); itr != m_outEdges.end(); ++itr)
+		adjacentVertices.insert(itr->get()->GetToVertex());
+
+	return adjacentVertices.size();
+}
+
+IEdge * CVertex::GetEdge(IVertex * adjacentVertex) const
+{
+	for(IEdgeSet::const_iterator itr = m_inEdges.begin(); itr != m_inEdges.end(); ++itr)
+	{
+		if (adjacentVertex == itr->get()->GetFromVertex())
+			return itr->get();
+	}
+
+	for(IEdgeSet::const_iterator itr = m_outEdges.begin(); itr != m_outEdges.end(); ++itr)
+	{
+		if (adjacentVertex == itr->get()->GetToVertex())
+			return itr->get();
+	}
+	return NULL;
 }
 
 void CVertex::AppendInEdge(IEdge * edge)

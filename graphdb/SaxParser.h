@@ -497,7 +497,7 @@ public:
 };
 typedef CUnknownPtr<CElement> CElementPtr;
 typedef std::stack<CElementPtr> CElementStack;
-typedef std::set<CElementPtr> ElementSet;
+typedef std::vector<CElementPtr> ElementVector;
 
 class CStackParser : public CExpatImpl <CStackParser>
 {
