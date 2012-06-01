@@ -51,6 +51,7 @@ public:
 	void AppendCluster(ICluster * cluster);
 	void RemoveCluster(ICluster * cluster);
 	void AppendVertex(IVertex * vertex);
+	void RemoveVertex(IVertex * vertex);
 
 	void Walk(IClusterVisitor * visitor);
 	void Walk(IVertexVisitor * visitor);
@@ -65,6 +66,7 @@ public:
 						void AppendCluster(ICluster * cluster) { CCluster::AppendCluster(cluster); } \
 						void RemoveCluster(ICluster * cluster) { CCluster::RemoveCluster(cluster); } \
 						void AppendVertex(IVertex * vertex) { CCluster::AppendVertex(vertex); } \
+						void RemoveVertex(IVertex * vertex) { CCluster::RemoveVertex(vertex); } \
 						void Walk(IClusterVisitor * visitor) { CCluster::Walk(visitor); } \
 						void Walk(IVertexVisitor * visitor) { CCluster::Walk(visitor); } \
 						bool OnlyConatinsOneCluster() const { return CCluster::OnlyConatinsOneCluster(); } \

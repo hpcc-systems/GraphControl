@@ -512,13 +512,20 @@ Path::Path(const std::string& fill, const std::string & stroke, const std::strin
 		assert(itr != tokens.end());
 		m_dash2 = boost::lexical_cast<int>(*itr);
 	}
-	try
-	{
-		m_stroke_width = boost::lexical_cast<double>(stroke_width);
-	}
-	catch (const boost::bad_lexical_cast &)
+	if (stroke_width.empty())
 	{
 		m_stroke_width = 1.0;
+	}
+	else 
+	{
+		try
+		{
+			m_stroke_width = boost::lexical_cast<double>(stroke_width);
+		}
+		catch (const boost::bad_lexical_cast &)
+		{
+			m_stroke_width = 1.0;
+		}
 	}
 	agg::svg::path_tokenizer tok;
 	tok.set_path_str(d.c_str());

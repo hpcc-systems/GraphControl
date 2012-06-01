@@ -123,8 +123,6 @@ void CDotView::OnLButtonUp(UINT nFlags, CPoint point)
 	m_mouseDown = MOUSEDOWN_UNKNOWN;
 	point.Offset(m_ptOffset);
 	hpcc::IGraphItem * selectedItem = m_gr->GetItemAt(point.x, point.y);
-	if (hpcc::IGraph * graph = dynamic_cast<hpcc::IGraph *>(selectedItem))
-		return;
 
 	bool selChanged = false;
 	if (selectedItem)
