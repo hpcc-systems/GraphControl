@@ -137,7 +137,7 @@ protected:
 	IGraphPtr m_graph;
 	GraphItemStack m_giStack;
 	StringGraphItemMap m_itemLookup;
-	ElementSet m_edgeElements;
+	ElementVector m_edgeElements;
 	bool m_merge;
 
 public:
@@ -244,7 +244,7 @@ public:
 
 	void ProcessEdges()
 	{
-		for (ElementSet::const_iterator itr = m_edgeElements.begin(); itr != m_edgeElements.end(); ++itr)
+		for (ElementVector::const_iterator itr = m_edgeElements.begin(); itr != m_edgeElements.end(); ++itr)
 		{
 			CElementPtr e = itr->get();
 			IEdge * edge = NULL;
@@ -374,7 +374,7 @@ public:
 		}
 		else if (0 == e->m_tag.compare("edge"))
 		{
-			m_edgeElements.insert(e);
+			m_edgeElements.push_back(e);
 		}
 		else if (0 == e->m_tag.compare("att"))
 		{
@@ -402,23 +402,58 @@ GRAPHDB_API bool LoadXGMML(IGraph * graph, const std::string & xgmml)
 	parser.Create();
 	bool retVal = parser.Parse(xgmml.c_str(), xgmml.length());
 	parser.ProcessEdges();
-	IClusterSet clusters = graph->GetAllClusters();
-	for(IClusterSet::const_iterator itr = clusters.begin(); itr != clusters.end(); ++itr)
+
+#define NINJECT_EXTRA_CLUSTER
+#ifdef INJECT_EXTRA_CLUSTER
 	{
-#ifdef TEST_XGMMLCLEANUP
-		if (!itr->get()->GetClusters().empty() && !itr->get()->GetVertices().empty())
+		IClusterSet clusters(graph->GetAllClusters().begin(), graph->GetAllClusters().end());
+		for(IClusterSet::const_iterator itr = clusters.begin(); itr != clusters.end(); ++itr)
 		{
-			IClusterPtr cluster = graph->CreateCluster(itr->get());
-			for (IVertexSet::iterator v_itr = itr->get()->GetVertices().begin(); v_itr != itr->get()->GetVertices().end(); ++v_itr)
+			if (!itr->get()->GetClusters().empty() && !itr->get()->GetVertices().empty())
 			{
-				cluster->AppendVertex(v_itr->get());
+				IClusterPtr cluster = graph->CreateCluster(itr->get());
+				std::string newID = itr->get()->GetProperty("id");
+				newID += "_injected";
+				graph->SetExternalID(GRAPH_TYPE_CLUSTER, newID, cluster);
+				cluster->SetProperty(DOT_ID, newID.c_str());
+				for (IVertexSet::iterator v_itr = itr->get()->GetVertices().begin(); v_itr != itr->get()->GetVertices().end(); v_itr = itr->get()->GetVertices().begin())	//  Always move the first vertex from the set
+				{
+					v_itr->get()->SetParent(cluster);
+				}
+				itr->get()->Delete();
 			}
 		}
+	}
 #endif
 
-		if (itr->get()->OnlyConatinsOneCluster())
-			itr->get()->Delete();
+#define NREMOVE_CLUSTER_OF_CLUSTERS
+#ifdef REMOVE_CLUSTER_OF_CLUSTERS
+	{
+		IClusterSet clusters(graph->GetAllClusters().begin(), graph->GetAllClusters().end());
+		for(IClusterSet::const_iterator itr = clusters.begin(); itr != clusters.end(); ++itr)
+		{
+			if (graph != itr->get()->GetParent() && !itr->get()->GetClusters().empty() && itr->get()->GetVertices().empty())
+			{
+				itr->get()->Delete();
+			}
+		}
 	}
+#endif
+
+#define NREMOVE_CLUSTER_OF_ONECLUSTER
+#ifdef REMOVE_CLUSTER_OF_ONECLUSTER
+	{
+		IClusterSet clusters(graph->GetAllClusters().begin(), graph->GetAllClusters().end());
+		for(IClusterSet::const_iterator itr = clusters.begin(); itr != clusters.end(); ++itr)
+		{
+			if (itr->get()->OnlyConatinsOneCluster())
+			{
+				itr->get()->Delete();
+			}
+		}
+	}
+#endif
+
 	return retVal;
 }
 

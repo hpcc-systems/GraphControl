@@ -44,10 +44,13 @@ public:
 
 	//  ===  IVertex  ===
 	ICluster * GetParent() const;
+	void SetParent(ICluster * cluster);
 	unsigned int GetInEdgeCount() const;
 	unsigned int GetOutEdgeCount() const;
 	const IEdgeSet & GetInEdges() const;
 	const IEdgeSet & GetOutEdges() const;
+	unsigned int GetAdjacentVertices(IVertexSet & adjacentVertices) const;
+	IEdge * GetEdge(IVertex * adjacentVertex) const;
 	void AppendInEdge(IEdge * edge);
 	void AppendOutEdge(IEdge * edge);
 };
