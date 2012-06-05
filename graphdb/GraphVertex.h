@@ -44,7 +44,7 @@ public:
 
 	//  ===  IVertex  ===
 	ICluster * GetParent() const;
-	void SetParent(ICluster * cluster);
+	void MoveTo(ICluster * cluster);
 	unsigned int GetInEdgeCount() const;
 	unsigned int GetOutEdgeCount() const;
 	const IEdgeSet & GetInEdges() const;
