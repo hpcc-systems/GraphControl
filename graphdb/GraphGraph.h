@@ -89,6 +89,7 @@ public:
 
 	ICluster * CreateCluster();
 	ICluster * CreateCluster(ICluster * cluster);
+	void DeleteCluster(ICluster * cluster);
 
 	IVertex * CreateVertex();
 	IVertex * CreateVertex(ICluster * cluster);
@@ -106,6 +107,7 @@ public:
 	const IEdgeSet & GetAllEdges() const;
 	IEdge * GetEdge(unsigned int id) const;
 	IEdge * GetEdge(const std::string & id, bool externalID = false) const;
+	void Walk(IEdgeVisitor * visitor) const;
 
 	IGraphItem * GetGraphItem(unsigned int id) const;
 	IGraphItem * GetGraphItem(const std::string & id) const;

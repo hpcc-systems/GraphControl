@@ -68,6 +68,34 @@ ICluster * CGraph::CreateCluster(ICluster * cluster)
 	return c;
 }
 
+void CGraph::DeleteCluster(ICluster * cluster)
+{
+	if (cluster != (IGraph *)this)
+	{
+		//  Elevate children  ---
+		ICluster * parent = cluster->GetParent();
+		IClusterSet clusters = cluster->GetClusters();
+		for (IClusterSet::const_iterator itr = clusters.begin(); itr != clusters.end(); ++itr)
+			itr->get()->MoveTo(parent);
+		IVertexSet vertices = cluster->GetVertices();
+		for (IVertexSet::const_iterator itr = vertices.begin(); itr != vertices.end(); ++itr)
+			itr->get()->MoveTo(parent);
+
+		//  Delete Cluster  ---
+		parent->RemoveCluster(cluster);
+		{
+			IClusterSet::const_iterator found = m_allClusters.find(cluster);
+			if (found != m_allClusters.end())
+				m_allClusters.erase(found);
+		}
+		{
+			IDGraphItemMap::const_iterator found = m_allItems.find(cluster->GetID());
+			if (found != m_allItems.end())
+				m_allItems.erase(found);
+		}
+	}
+}
+
 IVertex * CGraph::CreateVertex()
 {
 	CVertex * v = new CVertex(this, (IGraph *)this);
@@ -144,6 +172,14 @@ IEdge * CGraph::GetEdge(const std::string & id, bool externalID) const
 	if (externalID)
 		return GetItem<IEdge>(GRAPH_TYPE_EDGE, id);
 	return GetItem<IEdge>(id);
+}
+
+void CGraph::Walk(IEdgeVisitor * visitor) const
+{
+	for (IEdgeSet::const_iterator itr = m_allEdges.begin(); itr != m_allEdges.end(); ++itr) 
+	{
+		visitor->ItemVisited(itr->get());
+	}
 }
 
 IGraphItem * CGraph::GetGraphItem(unsigned int id) const
