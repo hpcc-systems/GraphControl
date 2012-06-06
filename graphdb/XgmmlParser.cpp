@@ -440,7 +440,7 @@ GRAPHDB_API bool LoadXGMML(IGraph * graph, const std::string & xgmml)
 	}
 #endif
 
-#define NREMOVE_CLUSTER_OF_ONECLUSTER
+#define REMOVE_CLUSTER_OF_ONECLUSTER
 #ifdef REMOVE_CLUSTER_OF_ONECLUSTER
 	{
 		IClusterSet clusters(graph->GetAllClusters().begin(), graph->GetAllClusters().end());
@@ -448,7 +448,7 @@ GRAPHDB_API bool LoadXGMML(IGraph * graph, const std::string & xgmml)
 		{
 			if (itr->get()->OnlyConatinsOneCluster())
 			{
-				itr->get()->Delete();
+				graph->DeleteCluster(itr->get());
 			}
 		}
 	}
