@@ -68,12 +68,14 @@ public:
 
 	BEGIN_MSG_MAP(CDotView)
 		MSG_WM_ERASEBKGND(OnEraseBkgnd)
+		MSG_WM_SIZE(OnSize)
 
 		MSG_WM_LBUTTONDOWN(OnLButtonDown)
 		MSG_WM_LBUTTONUP(OnLButtonUp)
 		MSG_WM_MOUSEMOVE(OnMouseMove)
 		MSG_WM_LBUTTONDBLCLK(OnLButtonDblClk)
 		MSG_WM_MOUSEWHEEL(OnMouseWheel)
+		MSG_WM_MOUSELEAVE(OnMouseLeave)
 
 		REFLECTED_NOTIFY_ID_HANDLER_EX(WM_MOUSEWHEEL, OnReflectedNotifyIDHandlerEX)
 
@@ -83,6 +85,7 @@ public:
 	END_MSG_MAP()
 
 	BOOL OnEraseBkgnd(CDCHandle dc);
+	void OnSize(UINT nType, CSize size);
 
 	void OnLButtonDown(UINT nFlags, CPoint point);
 	void OnLButtonUp(UINT nFlags, CPoint point);
@@ -90,6 +93,7 @@ public:
 	void OnLButtonDblClk(UINT nFlags, CPoint point);
 	bool DoMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 	BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
+	void OnMouseLeave();
 
 	LRESULT OnReflectedNotifyIDHandlerEX(LPNMHDR pnmh)
 	{

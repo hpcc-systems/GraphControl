@@ -99,6 +99,17 @@ BOOL CDotView::OnEraseBkgnd(CDCHandle dc)
 	return true;
 }
 
+void CDotView::OnSize(UINT nType, CSize size)
+{
+	ATLTRACE("size.cx:  %i\t", size.cx);
+	ATLTRACE("size.cy:  %i\n", size.cy);
+	//  Filter out silly sizes from web browser (dojo?)  ---
+	if (size.cx >= 0 && size.cx < 10000 && size.cy >= 0 && size.cy < 10000)
+		SetMsgHandled(false);
+	else
+		SetMsgHandled(true);
+}
+
 void CDotView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	m_mouseDown = MOUSEDOWN_NORMAL;
@@ -243,6 +254,7 @@ void CDotView::InvalidateWorldRect(const hpcc::RectD & worldRect)
 
 void CDotView::OnMouseMove(UINT nFlags, CPoint point)
 {
+	SetFocus();
 	switch (m_mouseDown)
 	{
 	case MOUSEDOWN_NORMAL:
@@ -265,6 +277,13 @@ void CDotView::OnMouseMove(UINT nFlags, CPoint point)
 			hpcc::IGraphItem * hotItem = NULL;//m_gro->GetItemAt(point.x, point.y);
 			if (!hotItem)
 				hotItem = m_gr->GetItemAt(point.x, point.y);
+
+			TRACKMOUSEEVENT tme = { 0 };
+			tme.cbSize = sizeof(tme);
+			tme.dwFlags = TME_LEAVE;
+			tme.hwndTrack = m_hWnd;
+			_TrackMouseEvent(&tme);
+
 			if (m_hotItem->Set(hotItem))
 			{
 				hpcc::RectD invalidateRect;
@@ -275,6 +294,18 @@ void CDotView::OnMouseMove(UINT nFlags, CPoint point)
 			}
 		}
 		break;
+	}
+}
+
+void CDotView::OnMouseLeave()
+{
+	if (m_hotItem->Set(NULL))
+	{
+		hpcc::RectD invalidateRect;
+		if (m_hotItem->GetInvalidateRect(invalidateRect))
+			InvalidateWorldRect(invalidateRect);
+		if (m_hotItem->GetPrevInvalidateRect(invalidateRect))
+			InvalidateWorldRect(invalidateRect);
 	}
 }
 

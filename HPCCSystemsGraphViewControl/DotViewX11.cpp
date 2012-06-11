@@ -77,12 +77,13 @@ void CDotView::SetScrollSize(int w, int h, bool redraw)
 
 bool CDotView::GetClientRectangle(hpcc::RectD & rect)
 {
-	gint width;
-	gint height;
-	gdk_window_get_size(m_canvas->window, &width, &height);
+	gint x, y;
+	gdk_window_get_position(m_container->window, &x, &y);
+	gint width, height;
+	gdk_window_get_size(m_container->window, &width, &height);
 
-	rect.x = 0;
-	rect.y = 0;
+	rect.x = x;
+	rect.y = y;
 	rect.Width = width;
 	rect.Height = height;
 
@@ -116,11 +117,14 @@ void CDotView::OnLButtonDown(hpcc::PointD point)
 void CDotView::OnLButtonUp(hpcc::PointD point, guint modifierState)
 {
 	//ReleaseCapture();
-	if (m_mouseDown == MOUSEDOWN_DBLCLK)
+	switch (m_mouseDown)
 	{
+	case MOUSEDOWN_DBLCLK:
+	case MOUSEDOWN_MOVED:
 		m_mouseDown = MOUSEDOWN_UNKNOWN;
 		return;
 	}
+
 	m_mouseDown = MOUSEDOWN_UNKNOWN;
 	point.Offset(m_ptOffset);
 	hpcc::IGraphItem * selectedItem = m_gr->GetItemAt(point.x, point.y);
@@ -128,7 +132,7 @@ void CDotView::OnLButtonUp(hpcc::PointD point, guint modifierState)
 	bool selChanged = false;
 	if (selectedItem)
 	{
-		if (modifierState && FB::MouseButtonEvent::ModifierState_Control)
+		if (modifierState & FB::MouseButtonEvent::ModifierState_Control)
 		{
 			if (m_selection->IsSelected(selectedItem))
 				selChanged = m_selection->Deselect(selectedItem);
