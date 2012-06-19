@@ -48,6 +48,16 @@ ICluster * CCluster::GetParent() const
 	return m_parent;
 }
 
+void CCluster::MoveTo(ICluster * cluster)
+{
+	if (m_parent != cluster)
+	{
+		cluster->AppendCluster(this);
+		m_parent->RemoveCluster(this);
+		m_parent = cluster;
+	}
+}
+
 const IClusterSet & CCluster::GetClusters() const
 {
 	return m_clusters;
@@ -82,16 +92,16 @@ void CCluster::RemoveVertex(IVertex * vertex)
 		m_vertices.erase(found);
 }
 
-void CCluster::Walk(IClusterVisitor * visitor)
+void CCluster::Walk(IClusterVisitor * visitor) const
 {
 	for(IClusterSet::const_iterator itr = m_clusters.begin(); itr != m_clusters.end(); ++itr)
 	{
-		visitor->ItemVisited(*itr);
-		itr->get()->Walk(visitor);
+		if (visitor->ItemVisited(*itr))
+			itr->get()->Walk(visitor);
 	}
 }
 
-void CCluster::Walk(IVertexVisitor * visitor)
+void CCluster::Walk(IVertexVisitor * visitor) const
 {
 	for(IVertexSet::const_iterator itr = m_vertices.begin(); itr != m_vertices.end(); ++itr)
 	{
@@ -104,18 +114,6 @@ bool CCluster::OnlyConatinsOneCluster() const
 	if (m_clusters.size() == 1 && m_vertices.size() == 0)
 		return true;
 	return false;
-}
-
-void CCluster::Delete()
-{
-	if (ICluster * parent = GetParent())
-	{
-		for (IClusterSet::const_iterator itr = m_clusters.begin(); itr != m_clusters.end(); ++itr)
-			parent->AppendCluster(itr->get());
-		for (IVertexSet::const_iterator itr = m_vertices.begin(); itr != m_vertices.end(); ++itr)
-			parent->AppendVertex(itr->get());
-		parent->RemoveCluster(this);
-	}
 }
 
 }

@@ -77,7 +77,7 @@ enum GRAPH_TYPE
 
 hpcc_interface GRAPHDB_API IClusterVisitor
 {
-	virtual void ItemVisited(ICluster * cluster) = 0;
+	virtual bool ItemVisited(ICluster * cluster) = 0;
 };
 
 hpcc_interface GRAPHDB_API IVertexVisitor
@@ -118,6 +118,7 @@ hpcc_interface GRAPHDB_API IGraphItem : public IUnknown
 hpcc_interface GRAPHDB_API ICluster : public IGraphItem
 {
 	virtual ICluster * GetParent() const = 0;
+	virtual void MoveTo(ICluster * cluster) = 0;
 	virtual const IClusterSet & GetClusters() const = 0;
 	virtual const IVertexSet & GetVertices() const = 0;
 
@@ -126,16 +127,16 @@ hpcc_interface GRAPHDB_API ICluster : public IGraphItem
 	virtual void AppendVertex(IVertex * vertex) = 0;
 	virtual void RemoveVertex(IVertex * vertex) = 0;
 
-	virtual void Walk(IClusterVisitor * visitor) = 0;
+	virtual void Walk(IClusterVisitor * visitor) const = 0;
+	virtual void Walk(IVertexVisitor * visitor) const = 0;
 
 	virtual bool OnlyConatinsOneCluster() const = 0;
-	virtual void Delete() = 0;
 };
 
 hpcc_interface GRAPHDB_API IVertex : public IGraphItem
 {
 	virtual ICluster * GetParent() const = 0;
-	virtual void SetParent(ICluster * cluster) = 0;
+	virtual void MoveTo(ICluster * cluster) = 0;
 	virtual unsigned int GetInEdgeCount() const = 0;
 	virtual unsigned int GetOutEdgeCount() const = 0;
 	virtual const IEdgeSet & GetInEdges() const = 0;
@@ -160,8 +161,11 @@ hpcc_interface GRAPHDB_API IGraph : public ICluster
 
 	virtual ICluster * CreateCluster() = 0;
 	virtual ICluster * CreateCluster(ICluster * cluster) = 0;
+	virtual void DeleteCluster(ICluster * cluster) = 0;
+
 	virtual IVertex * CreateVertex() = 0;
 	virtual IVertex * CreateVertex(ICluster * cluster) = 0;
+
 	virtual IEdge * CreateEdge(IVertex * from, IVertex * to) = 0;
 
 	virtual const IClusterSet & GetAllClusters() const = 0;
@@ -175,6 +179,7 @@ hpcc_interface GRAPHDB_API IGraph : public ICluster
 	virtual const IEdgeSet & GetAllEdges() const = 0;
 	virtual IEdge * GetEdge(unsigned int id) const = 0;
 	virtual IEdge * GetEdge(const std::string & id, bool externalID = false) const = 0;
+	virtual void Walk(IEdgeVisitor * visitor) const = 0;
 
 	virtual IGraphItem * GetGraphItem(unsigned int id) const = 0;
 	virtual IGraphItem * GetGraphItem(GRAPH_TYPE type, const std::string & id) const = 0;
