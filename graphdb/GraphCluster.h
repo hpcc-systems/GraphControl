@@ -46,6 +46,7 @@ public:
 
 	//  ===  ICluster  ===
 	ICluster * GetParent() const;
+	void MoveTo(ICluster * cluster);
 	const IClusterSet & GetClusters() const;
 	const IVertexSet & GetVertices() const;
 	void AppendCluster(ICluster * cluster);
@@ -53,23 +54,21 @@ public:
 	void AppendVertex(IVertex * vertex);
 	void RemoveVertex(IVertex * vertex);
 
-	void Walk(IClusterVisitor * visitor);
-	void Walk(IVertexVisitor * visitor);
+	void Walk(IClusterVisitor * visitor) const;
+	void Walk(IVertexVisitor * visitor) const;
 
 	bool OnlyConatinsOneCluster() const;
-	void Delete();
 };
 
 #define ICLUSTER_IMPL	ICluster * GetParent() const { return CCluster::GetParent(); } \
+						void MoveTo(ICluster * cluster) { CCluster::MoveTo(cluster); } \
 						const IClusterSet & GetClusters() const { return CCluster::GetClusters(); } \
 						const IVertexSet & GetVertices() const { return CCluster::GetVertices(); } \
 						void AppendCluster(ICluster * cluster) { CCluster::AppendCluster(cluster); } \
 						void RemoveCluster(ICluster * cluster) { CCluster::RemoveCluster(cluster); } \
 						void AppendVertex(IVertex * vertex) { CCluster::AppendVertex(vertex); } \
 						void RemoveVertex(IVertex * vertex) { CCluster::RemoveVertex(vertex); } \
-						void Walk(IClusterVisitor * visitor) { CCluster::Walk(visitor); } \
-						void Walk(IVertexVisitor * visitor) { CCluster::Walk(visitor); } \
-						bool OnlyConatinsOneCluster() const { return CCluster::OnlyConatinsOneCluster(); } \
-						void Delete() { CCluster::Delete(); };
-
+						void Walk(IClusterVisitor * visitor) const { CCluster::Walk(visitor); } \
+						void Walk(IVertexVisitor * visitor) const { CCluster::Walk(visitor); } \
+						bool OnlyConatinsOneCluster() const { return CCluster::OnlyConatinsOneCluster(); } 
 }

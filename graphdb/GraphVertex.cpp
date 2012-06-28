@@ -37,11 +37,14 @@ ICluster * CVertex::GetParent() const
 	return m_parent;
 }
 
-void CVertex::SetParent(ICluster * cluster) 
+void CVertex::MoveTo(ICluster * cluster) 
 {
-	cluster->AppendVertex(this);
-	m_parent->RemoveVertex(this);
-	m_parent = cluster;
+	if (m_parent != cluster)
+	{
+		cluster->AppendVertex(this);
+		m_parent->RemoveVertex(this);
+		m_parent = cluster;
+	}
 }
 
 unsigned int CVertex::GetInEdgeCount() const
