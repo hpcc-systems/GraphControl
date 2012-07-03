@@ -19,7 +19,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  ******************************************************************************/
-#include "precompiled_headers.h"
 
 #include "FactoryBase.h"
 #include "HPCCSystemsGraphViewControl.h"
@@ -54,14 +53,6 @@ public:
     {
         HPCCSystemsGraphViewControl::StaticDeinitialize();
     }
-
-#ifdef FB_X11	//  GJS  ---
-    virtual FB::PluginWindowX11* createPluginWindowX11(const FB::WindowContextX11 & ctx)
-	{
-		return new CDotView(ctx);
-	}
-#endif			//  GJS  ---
-
 };
 
 ///////////////////////////////////////////////////////////////////////////////
