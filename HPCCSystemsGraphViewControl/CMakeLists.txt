@@ -1,183 +1,64 @@
+#/**********************************************************\ 
+# 
+# Auto-generated CMakeLists.txt for the HPCC Systems Graph View Control project
+#
+#\**********************************************************/
 
-# Component: npHPCCSystemsGraphViewControl
-#####################################################
-# Description:
-# ------------
-#	 Cmake Input File for npHPCCSystemsGraphViewControl
-#####################################################
+# Written to work with cmake 2.6
+cmake_minimum_required (VERSION 2.6)
+set (CMAKE_BACKWARDS_COMPATIBILITY 2.6)
 
-project( HPCCSystemsGraphViewControl )
+Project(${PLUGIN_NAME})
 
-# *********************************************************************
+file (GLOB GENERAL RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+    [^.]*.cpp
+    [^.]*.h
+    [^.]*.cmake
+    )
 
-include_directories (
-	gen
-	../graphdb
-	../graphrender
-	${WTL_INCLUDE_DIR}/include
+message("${CMAKE_CURRENT_SOURCE_DIR}")
+message("Boost:  ${Boost_INCLUDE_DIRS}")
+include_directories(${PLUGIN_INCLUDE_DIRS}
 	${Boost_INCLUDE_DIRS}
-	${AGGSRC_DIRS}/agg-2.4/include
-	${FIREBREATH_INCLUDE_DIRS}
+	${CMAKE_CURRENT_SOURCE_DIR}/../libs/graphdb
+	${CMAKE_CURRENT_SOURCE_DIR}/../libs/graphrender
 	)
 
-if(WIN32)
-elseif(APPLE)
-elseif(UNIX)
-include_directories (
-	${GTK_INCLUDE_DIRS}
-	)
-endif()
+# Generated files are stored in ${GENERATED} by the project configuration
+SET_SOURCE_FILES_PROPERTIES(
+    ${GENERATED}
+    PROPERTIES
+        GENERATED 1
+    )
 
-# SRC *****************************************************************
+SOURCE_GROUP(Generated FILES
+    ${GENERATED}
+    )
 
-set (	SRCS
-	precompiled_headers.h
+SET( SOURCES
+    ${GENERAL}
+    ${GENERATED}
+    )
 
-	Factory.cpp
+# This will include Win/projectDef.cmake, X11/projectDef.cmake, Mac/projectDef 
+# depending on the platform
+include_platform()
 
-	HPCCSystemsGraphViewControl.cpp
-	HPCCSystemsGraphViewControl.h
-	HPCCSystemsGraphViewControlAPI.cpp
-	HPCCSystemsGraphViewControlAPI.h
-
-	DotViewCommon.cpp
-	DotViewCommon.h
-
-	Version.h
-	Version.cpp
-
-	../config.h
-
-	../npHPCCSystemsGraphViewControl.inf
-	../install.rdf
-
-	gen/FBControl.htm
-#	index.htm
-	)
-
-# Win *****************************************************************
-
-set (	SRCS_WIN
-	gen/FBControl.rgs
-	gen/FireBreathWin.def
-	gen/firebreathWin.rc
-	gen/FireBreathWin.rgs
-	gen/FireBreathWin.idl
-
-	DotViewWin.cpp
-	DotViewWin.h
-	)
-set (	SRCS_WIN_NO_PRECOMPILED_HEADERS
-	gen/FireBreathWin_i.c
-	)
-
-SOURCE_GROUP(Win FILES ${SRCS_WIN} ${SRCS_WIN_NO_PRECOMPILED_HEADERS})
-
-# OSX *****************************************************************
-
-set (	SRCS_APPLE
-	)
-
-SOURCE_GROUP(OSX FILES ${SRCS_APPLE})
-
-# X11 *****************************************************************
-
-set (	SRCS_UNIX
-	DotViewX11.cpp
-	DotViewX11.h
-	)
-
-SOURCE_GROUP(X11 FILES ${SRCS_UNIX})
-
-# *********************************************************************
-
-set (	SRCS_CMAKE
-	../cmake/Modules/Externals.cmake
-	../cmake/Modules/Utils.cmake
-	../cmake/Modules/FindAGGSRC.cmake
-	../cmake/Modules/FindFIREBREATH.cmake
-	../cmake/Modules/FindGRAPHVIZSRC.cmake
-	../cmake/Modules/FindWTL.cmake
-	../README
-	)
-
-SOURCE_GROUP(CMake FILES ${SRCS_CMAKE})
-
-# *********************************************************************
-
-if(WIN32)
-    set_source_files_properties(${SRCS_APPLE} PROPERTIES HEADER_FILE_ONLY 1)
-    set_source_files_properties(${SRCS_UNIX} PROPERTIES HEADER_FILE_ONLY 1)
-elseif(APPLE)
-    set_source_files_properties(${SRCS_WIN} PROPERTIES HEADER_FILE_ONLY 1)
-    set_source_files_properties(${SRCS_WIN_NO_PRECOMPILED_HEADERS} PROPERTIES HEADER_FILE_ONLY 1)
-    set_source_files_properties(${SRCS_UNIX} PROPERTIES HEADER_FILE_ONLY 1)
-elseif(UNIX)
-    set_source_files_properties(${SRCS_WIN} PROPERTIES HEADER_FILE_ONLY 1)
-    set_source_files_properties(${SRCS_WIN_NO_PRECOMPILED_HEADERS} PROPERTIES HEADER_FILE_ONLY 1)
-    set_source_files_properties(${SRCS_APPLE} PROPERTIES HEADER_FILE_ONLY 1)
-endif()
-
-# *********************************************************************
-
-add_definitions(-DUNICODE -D_UNICODE)
-
-if(WIN32)
-	add_definitions(-DHPCCSYSTEMSGRAPHVIEWCONTROL_EXPORTS)
-elseif(APPLE)
-elseif(UNIX)
-endif()
-
-set(SOURCES ${SRCS} ${SRCS_WIN} ${SRCS_APPLE} ${SRCS_UNIX} ${SRCS_CMAKE})
-ADD_MSVC_PRECOMPILED_HEADER("precompiled_headers.h" "precompiled_headers.cpp" SOURCES)
-add_library(HPCCSystemsGraphViewControl SHARED ${SOURCES} ${SRCS_WIN_NO_PRECOMPILED_HEADERS})
-
-# *********************************************************************
-
-if(WIN32)
-elseif(APPLE)
-elseif(UNIX)
-	set(NPAPI_LINK_FLAGS "-Wl,--discard-all -Wl,-Bsymbolic -Wl,-z,defs -Wl")
-endif()
-set_target_properties ("HPCCSystemsGraphViewControl" PROPERTIES
-       OUTPUT_NAME npHPCCSystemsGraphViewControl
-       PROJECT_LABEL "HPCCSystemsGraphViewControl"
-       LINK_FLAGS "${NPAPI_LINK_FLAGS}"
-       PREFIX ""
-	)
-
-add_subdirectory(PluginAuto)
-set_property(TARGET PluginAuto PROPERTY FOLDER "3rdParty/FireBreath Generated")
-
-#  Libraries added twice to resolve circular references on linux (when using static linking).
-target_link_libraries( HPCCSystemsGraphViewControl
-	graphdb
-	graphrender
-	${FIREBREATH_LIBRARIES}
-	PluginAuto
-	${FIREBREATH_LIBRARIES}
-	PluginAuto
+message("EXECUTABLE_OUTPUT_PATH  ${EXECUTABLE_OUTPUT_PATH}")
+if ( WIN32 )
+target_link_libraries(${PROJECT_NAME}
 	${Boost_LIBRARIES}
-	)
-
-if(WIN32)
-	target_link_libraries( HPCCSystemsGraphViewControl
-		wininet
-		)
-elseif(APPLE)
-elseif(UNIX)
-    set(LIBDL_LIBRARIES dl)
-	target_link_libraries( HPCCSystemsGraphViewControl
-		${GTK_LIBRARIES}
-		${LIBDL_LIBRARIES}
-		${CMAKE_THREAD_LIBS_INIT}
-		)
+	${CMAKE_BINARY_DIR}/bin/HPCCSystemsGraphViewControl/Release/graphdb.lib
+	${CMAKE_BINARY_DIR}/bin/HPCCSystemsGraphViewControl/Release/graphrender.lib
+    )
+elseif ( APPLE )
+target_link_libraries(${PROJECT_NAME}
+	${CMAKE_BINARY_DIR}/bin/HPCCSystemsGraphViewControl/Release/libgraphdb.dylib
+	${CMAKE_BINARY_DIR}/bin/HPCCSystemsGraphViewControl/Release/libgraphrender.dylib
+    )
+elseif ( UNIX )
+target_link_libraries(${PROJECT_NAME}
+	${CMAKE_BINARY_DIR}/bin/HPCCSystemsGraphViewControl/libgraphdb.so
+	${CMAKE_BINARY_DIR}/bin/HPCCSystemsGraphViewControl/libgraphrender.so
+    )
 endif()
-
-# *********************************************************************
-
-INSTALL(TARGETS HPCCSystemsGraphViewControl 
-	RUNTIME DESTINATION bin COMPONENT PLUGIN
-	LIBRARY DESTINATION lib
-	ARCHIVE DESTINATION lib/static
-)

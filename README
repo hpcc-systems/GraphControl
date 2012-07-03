@@ -12,9 +12,9 @@ cd ~/hpcc_git
 git clone https://github.com/hpcc-systems/GraphControl.git
 
 # Get Firebreath library
-git clone https://github.com/firebreath/FireBreath.git
+git clone https://github.com/GordonSmith/FireBreath.git
 cd FireBreath
-git checkout firebreath-1.6
+git checkout X11_Support
 cd ..
 
 # Get unrestricted (2.4) agg libraries
@@ -36,24 +36,27 @@ cd ..
 mkdir build
 cd build
 
-# Create build folder for FireBreath.
-mkdir FireBreath
-cd FireBreath
+# Create build folder for GraphControl.
+mkdir GraphConctrol
+cd GraphControl
 
-# Generate FireBreath make files and build.
-cmake -DWITH_SYSTEM_BOOST=1 -DFB_RELEASE=1  ../../FireBreath
+# Create build folder for GraphControl libs.
+mkdir libs
+cd libs
+
+# Generate libs make files and build.
+cmake -DGRAPHVIZSRC_DIR=../../../graphviz-2.26.3/ -DAGGSRC_DIR=../../../agg/ ../../../GraphControl/libs
 make
 cd ..
 
-# Create build folder for GraphControl.
-mkdir GraphControl
-cd GraphControl
-
 # Generate GraphControl make files and build.
-cmake -DGRAPHVIZSRC_DIR=../../graphviz-2.26.3/ -DAGGSRC_DIR=../../agg/ -DFIREBREATH_DIR=../../FireBreath/ -DFIREBREATH_BUILD_DIR=../FireBreath/ ../../GraphControl/
+cmake -DWITH_SYSTEM_BOOST=1 -DFB_PROJECTS_DIR=../GraphControl  ../../FireBreath
 make
-cd ../..
+cd ..
 
-# To build directly into "/usr/lib/mozilla/plugins" add
-# -DWITH_BUILD_TARGET_IN_PLUGINS_FOLDER=1 to the above cmake call
+# For debugging Create symbolic link to plugin
+# Linux:
+ ln -s ~/git/build/GraphControl/bin/HPCCSystemsGraphViewControl/npHPCCSystemsGraphViewControl.so ~/.mozilla/plugins/npHPCCSystemsGraphViewControl.so
+# OSX:
+ ln -s ~/git/build/GraphControl/bin/HPCCSystemsGraphViewControl/Release/HPCCSystemsGraphViewControl.plugin ~/Library/Internet\ Plug-Ins/HPCCSystemsGraphViewControl.plugin
 
