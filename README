@@ -40,17 +40,8 @@ cd build
 mkdir GraphControl
 cd GraphControl
 
-# Create build folder for GraphControl libs.
-mkdir libs
-cd libs
-
-# Generate libs make files and build.
-cmake -DGRAPHVIZSRC_DIR=../../../graphviz-2.26.3/ -DAGGSRC_DIR=../../../agg/ ../../../GraphControl/libs
-make
-cd ..
-
 # Generate GraphControl make files and build.
-cmake -DWITH_SYSTEM_BOOST=1 -DFB_PROJECTS_DIR=../GraphControl  ../../FireBreath
+cmake -DWITH_SYSTEM_BOOST=1 -DFB_PROJECTS_DIR=../GraphControl -DGRAPHVIZSRC_DIR=../../graphviz-2.26.3/ -DAGGSRC_DIR=../../agg ../../GraphControl/libs ../../FireBreath
 make
 cd ..
 
