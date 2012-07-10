@@ -48,7 +48,7 @@ protected:
 
 	RectD m_renderRect;
 
-	int m_transparency;
+	double m_transparency;
 	IGraphHotItemPtr m_hotItem;
 	IGraphSelectionBagPtr m_selected;
 
@@ -138,8 +138,8 @@ public:
 	END_CUNKNOWN
 
 	CGraphRender(IGraph * g, IGraphBuffer * pixmap, IGraphHotItem * hotItem, IGraphSelectionBag * selectionBag, double scale = 1.0) : m_g(g), m_pixmap(pixmap), m_hotItem(hotItem), m_selected(selectionBag), 
-			m_hotStroke(Colour::RoyalBlue),				m_hotFill(Colour::White),				m_hotFillText(Colour::RoyalBlue),
-			m_selectedStroke(Colour::DarkBlue),			m_selectedFill(Colour::AliceBlue),			m_selectedFillText(Colour::DarkBlue)
+			m_hotStroke(Colour::RoyalBlue),				m_hotFill(Colour::AliceBlue),				m_hotFillText(Colour::RoyalBlue),
+			m_selectedStroke(Colour::DarkBlue),			m_selectedFill(Colour::LightBlue),		m_selectedFillText(Colour::DarkBlue)
 	{
 		m_fonts = CreateIFontResolver();
 		m_scale = scale;
@@ -402,11 +402,11 @@ public:
 			retVal = Agg2D::FillOnly;
 			agg2d.noLine();
 			if (m_inHotItem)
-				agg2d.fillColor(m_hotFill.GetR(), m_hotFill.GetG(), m_hotFill.GetB(), m_hotFill.GetA() / m_transparency);
+				agg2d.fillColor(m_hotFill.GetR(), m_hotFill.GetG(), m_hotFill.GetB(), static_cast<unsigned int>(m_hotFill.GetA() / m_transparency));
 			else if (m_inSelectedItem)
-				agg2d.fillColor(m_selectedFill.GetR(), m_selectedFill.GetG(), m_selectedFill.GetB(), m_selectedFill.GetA() / m_transparency);
+				agg2d.fillColor(m_selectedFill.GetR(), m_selectedFill.GetG(), m_selectedFill.GetB(), static_cast<unsigned int>(m_selectedFill.GetA() / m_transparency));
 			else
-				agg2d.fillColor(fill.GetR(), fill.GetG(), fill.GetB(), fill.GetA() / m_transparency);
+				agg2d.fillColor(fill.GetR(), fill.GetG(), fill.GetB(), static_cast<unsigned int>(fill.GetA() / m_transparency));
 		}
 		else if (fill.IsEmpty())
 		{
@@ -427,22 +427,22 @@ public:
 			{
 				agg2d.lineColor(m_hotStroke.GetR(), m_hotStroke.GetG(), m_hotStroke.GetB(), m_hotStroke.GetA());
 				if (m_inType == RENDER_TYPE_EDGE)
-					agg2d.fillColor(m_hotStroke.GetR(), m_hotStroke.GetG(), m_hotStroke.GetB(), m_hotStroke.GetA() / m_transparency);
+					agg2d.fillColor(m_hotStroke.GetR(), m_hotStroke.GetG(), m_hotStroke.GetB(), static_cast<unsigned int>(m_hotStroke.GetA() / m_transparency));
 				else
-					agg2d.fillColor(m_hotFill.GetR(), m_hotFill.GetG(), m_hotFill.GetB(), m_hotFill.GetA() / m_transparency);
+					agg2d.fillColor(m_hotFill.GetR(), m_hotFill.GetG(), m_hotFill.GetB(), static_cast<unsigned int>(m_hotFill.GetA() / m_transparency));
 			}
 			else if (m_inSelectedItem)
 			{
 				agg2d.lineColor(m_selectedStroke.GetR(), m_selectedStroke.GetG(), m_selectedStroke.GetB(), m_selectedStroke.GetA());
 				if (m_inType == RENDER_TYPE_EDGE)
-					agg2d.fillColor(m_selectedStroke.GetR(), m_selectedStroke.GetG(), m_selectedStroke.GetB(), m_selectedStroke.GetA() / m_transparency);
+					agg2d.fillColor(m_selectedStroke.GetR(), m_selectedStroke.GetG(), m_selectedStroke.GetB(), static_cast<unsigned int>(m_selectedStroke.GetA() / m_transparency));
 				else
-					agg2d.fillColor(m_selectedFill.GetR(), m_selectedFill.GetG(), m_selectedFill.GetB(), m_selectedFill.GetA() / m_transparency);
+					agg2d.fillColor(m_selectedFill.GetR(), m_selectedFill.GetG(), m_selectedFill.GetB(), static_cast<unsigned int>(m_selectedFill.GetA() / m_transparency));
 			}
 			else
 			{
 				agg2d.lineColor(stroke.GetR(), stroke.GetG(), stroke.GetB(), stroke.GetA());
-				agg2d.fillColor(fill.GetR(), fill.GetG(), fill.GetB(), fill.GetA() / m_transparency);
+				agg2d.fillColor(fill.GetR(), fill.GetG(), fill.GetB(), static_cast<unsigned int>(fill.GetA() / m_transparency));
 			}
 		}
 		return retVal;
@@ -684,13 +684,13 @@ public:
 		}
 	}
 
-	void RenderCluster(ICluster * cluster, IClusterSet & selectedClusters, IVertexSet & hotVertices, int depth = 0)
+	void RenderCluster(ICluster * cluster, int depth = 0)
 	{
 		m_inType = RENDER_TYPE_CLUSTER;
 		if (depth == 0)
 			m_transparency = 1;
 		else
-			m_transparency = 2;//m_scale > OVERVIEW_CUTOFF ? 1 : 2;
+			m_transparency = 3.0f / 2.0f;//m_scale > OVERVIEW_CUTOFF ? 1 : 2;
 
 		Render(m_agg2d, GetElementG(cluster));
 #ifdef SHOW_BOUNDBOX
@@ -705,10 +705,14 @@ public:
 			{
 				m_inHotItem = m_hotItem->IsHot(itr->get());
 				m_inSelectedItem = m_selected->IsSelected(itr->get());
-				if (m_inSelectedItem)
-					selectedClusters.insert(itr->get());
 				m_inState = (XGMML_STATE_ENUM)itr->get()->GetPropertyInt(XGMML_STATE);
-				RenderCluster(itr->get(), selectedClusters, hotVertices, depth + 1);
+				if (m_inHotItem && m_inSelectedItem)
+				{
+					m_inHotItem = false;
+					RenderCluster(itr->get(), depth + 1);
+					m_inHotItem = true;
+				}
+				RenderCluster(itr->get(), depth + 1);
 				m_inState = XGMML_STATE_UNKNOWN;
 			}
 		}
@@ -720,12 +724,15 @@ public:
 		{
 			if (HitTestItemFast(itr->get(), m_renderRect))
 			{
-				//if (m_hotItem->IsHot(itr->get()))
-				//	hotVertices.insert(itr->get());
-
 				m_inHotItem = m_hotItem->IsHot(itr->get());
 				m_inSelectedItem = m_selected->IsSelected(itr->get());
 				m_inState = (XGMML_STATE_ENUM)itr->get()->GetPropertyInt(XGMML_STATE);
+				if (m_inHotItem && m_inSelectedItem)
+				{
+					m_inHotItem = false;
+					Render(m_agg2d, GetElementG(itr->get()));
+					m_inHotItem = true;
+				}
 				Render(m_agg2d, GetElementG(itr->get()));
 				m_inState = XGMML_STATE_UNKNOWN;
 
@@ -814,43 +821,12 @@ public:
 				m_inHotItem = m_hotItem->IsHot(m_g);
 				m_inSelectedItem = m_selected->IsSelected(m_g);
 
-				IClusterSet selectedClusters;
-				IVertexSet hotVertices;
-				RenderCluster(m_g, selectedClusters, hotVertices);
-
-				m_inHotItem = false;
-				m_inSelectedItem = true;
-				for (IClusterSet::const_iterator itr = selectedClusters.begin(); itr != selectedClusters.end(); ++itr)	
-				{
-					IClusterSet selectedClustersUnused;
-					IVertexSet hotVerticesUnused;
-					RenderCluster(itr->get(), selectedClustersUnused, hotVerticesUnused, 1);
-				}
+				RenderCluster(m_g);
 
 				m_inHotItem = m_hotItem->IsHot(m_g);
 				m_inSelectedItem = m_selected->IsSelected(m_g);
 				RenderEdges(m_g);
-
-				m_inHotItem = true;
-				m_inSelectedItem = false;
-				for (IVertexSet::const_iterator itr = hotVertices.begin(); itr != hotVertices.end(); ++itr)	
-				{
-					m_inSelectedItem = m_selected->IsSelected(itr->get());
-					Render(m_agg2d, GetElementG(itr->get()));
-				}
 			}
-
-			//m_agg2d.noFill();
-			//m_agg2d.rectangle(0, 0 - m_boundingRect.Height(), 640, 320);// - m_boundingRect.Height());
-			//m_agg2d.text(100, 100, "Testing");
-			//for (int i = 0; i <= 640; i += 10)
-			//{
-			//	m_agg2d.line(i, 0- m_boundingRect.Height(), 640 - i, 320- m_boundingRect.Height());
-			//}
-			//for (int i = 0; i <= 320; i += 10)
-			//{
-			//	m_agg2d.line(0, i- m_boundingRect.Height(), 640, 320 - i- m_boundingRect.Height());
-			//}
 		}
 	}
 

@@ -197,6 +197,8 @@ unsigned int CDotViewCommon::GetItem(const std::string &externalID)
 		return item->GetID();
 	if (hpcc::IGraphItem * item = m_g->GetCluster(externalID, true))
 		return item->GetID();
+	if (hpcc::IGraphItem * item = m_g->GetGraph(externalID, true))
+		return item->GetID();
 	return 0;
 }
 
@@ -260,7 +262,6 @@ void CDotViewCommon::LoadXML2(const std::string & xml)
 
 void CDotViewCommon::LoadXGMML(const std::string & xgmml)
 {
-	std::string layout = m_g->GetPropertyString(hpcc::PROP_LAYOUT);
 	m_hotItem->Set(NULL);
 	m_selection->Clear();
 	m_g->Clear();
@@ -290,10 +291,14 @@ void CDotViewCommon::LoadDOT(const std::string & dot)
 	hpcc::LoadDOT(m_g, dot);
 }
 
-const char * CDotViewCommon::GetLocalisedXGMML(int _item, std::string & xgmml)
+const char * CDotViewCommon::GetLocalisedXGMML(const std::vector<int> & items, int localisationDepth, int localisationDistance, std::string & xgmml)
 {
-	hpcc::IGraphItemPtr item = m_g->GetGraphItem(_item);
-	hpcc::WriteLocalisedXGMML(m_g, item, xgmml);
+	hpcc::IGraphItemSet graphItems;
+	for(std::vector<int>::const_iterator itr = items.begin(); itr != items.end(); ++itr)
+	{
+		graphItems.insert(m_g->GetGraphItem(*itr));
+	}
+	hpcc::WriteLocalisedXGMML(m_g, graphItems, localisationDepth, localisationDistance, xgmml);
 	return xgmml.c_str();
 }
 

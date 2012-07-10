@@ -68,6 +68,7 @@ enum PROP
 enum GRAPH_TYPE
 {
 	GRAPH_TYPE_UNKNOWN = 0,
+	GRAPH_TYPE_GRAPH,
 	GRAPH_TYPE_CLUSTER,
 	GRAPH_TYPE_VERTEX,
 	GRAPH_TYPE_EDGE,
@@ -168,6 +169,8 @@ hpcc_interface GRAPHDB_API IGraph : public ICluster
 
 	virtual IEdge * CreateEdge(IVertex * from, IVertex * to) = 0;
 
+	virtual IGraph * GetGraph(const std::string & id, bool externalID = false) const = 0;
+
 	virtual const IClusterSet & GetAllClusters() const = 0;
 	virtual ICluster * GetCluster(unsigned int id) const = 0;
 	virtual ICluster * GetCluster(const std::string & id, bool externalID = false) const = 0;
@@ -191,5 +194,5 @@ hpcc_interface GRAPHDB_API IGraph : public ICluster
 //  ===  Factories  ===
 GRAPHDB_API IGraph * CreateGraph();
 GRAPHDB_API const char * WriteDOT(const IGraph * graph, std::string & dot);
-GRAPHDB_API const char * WriteLocalisedXGMML(const IGraph * graph, const IGraphItem * item, std::string & xgmml);
+GRAPHDB_API const char * WriteLocalisedXGMML(const IGraph * graph, const IGraphItemSet & items, int localisationDepth, int localisationDistance, std::string & xgmml);
 }

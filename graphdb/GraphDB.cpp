@@ -315,7 +315,18 @@ ICluster * GetCommonAncestor(IEdge * e)
 	return GetCommonAncestor(e->GetFromVertex(), e->GetToVertex());
 }
 
-#define LOCALISATION_DEPTH 3
+bool isAncestor(const ICluster * ancestor, const ICluster * descendent)
+{
+	const ICluster * parent = descendent;
+	while (parent)
+	{
+		if (parent == ancestor)
+			return true;
+		parent = parent->GetParent();
+	}
+	return false;
+}
+
 class CLocalisedXGMMLWriter : public IClusterVisitor, public IVertexVisitor, public IEdgeVisitor
 {
 public: 
@@ -329,57 +340,76 @@ public:
 public:
 	std::string m_xgmml;
 
-	CLocalisedXGMMLWriter(const IGraph * graph, const ICluster * cluster) : m_graph(graph)
+
+	CLocalisedXGMMLWriter(const IGraph * graph) : m_graph(graph)
 	{
-		m_visibleVertices = cluster->GetVertices();
+	}
+
+	void CalcVisibility(const IGraphItemSet & items, int localisationDepth, int localisationDistance)
+	{
+		for (IGraphItemSet::const_iterator itr = items.begin(); itr != items.end(); ++itr)
+		{
+			if (const IVertex * vertex = dynamic_cast<const IVertex *>(itr->get()))
+			{
+				CalcInVertexVisibility(vertex, localisationDistance);
+				CalcOutVertexVisibility(vertex, localisationDistance);
+			}
+			else if (const IEdge * edge = dynamic_cast<const IEdge *>(itr->get()))
+			{
+				CalcInVertexVisibility(edge->GetFromVertex(), localisationDistance - 1);
+				CalcOutVertexVisibility(edge->GetToVertex(), localisationDistance - 1);
+			}
+			else if (const ICluster * cluster = dynamic_cast<const ICluster *>(itr->get()))
+			{
+				CalcClusterVisibility(cluster, localisationDepth);
+			}
+		}
+
+		CalcVisibility();
+	}
+
+	void CalcInVertexVisibility(const IVertex * vertex, int localisationDistance)
+	{
+		m_visibleVertices.insert(const_cast<IVertex *>(vertex));
+
+		if (localisationDistance > 0)
+		{
+			for (IEdgeSet::const_iterator itr = vertex->GetInEdges().begin(); itr != vertex->GetInEdges().end(); ++itr)
+				CalcInVertexVisibility(itr->get()->GetFromVertex(), localisationDistance - 1);
+		}
+	}
+
+	void CalcOutVertexVisibility(const IVertex * vertex, int localisationDistance)
+	{
+		m_visibleVertices.insert(const_cast<IVertex *>(vertex));
+
+		if (localisationDistance > 0)
+		{
+			for (IEdgeSet::const_iterator itr = vertex->GetOutEdges().begin(); itr != vertex->GetOutEdges().end(); ++itr)
+				CalcOutVertexVisibility(itr->get()->GetToVertex(), localisationDistance - 1);
+		}
+	}
+
+	void CalcClusterVisibility(const ICluster * cluster, int localisationDepth)
+	{
+		if (localisationDepth <= 0)
+			return;
+
+		for (IClusterSet::const_iterator itr = cluster->GetClusters().begin(); itr != cluster->GetClusters().end(); ++itr)
+		{
+			CalcClusterVisibility(itr->get(), localisationDepth - 1);
+		}
+
+		m_visibleClusters.insert(cluster->GetClusters().begin(), cluster->GetClusters().end());
+		m_visibleVertices.insert(cluster->GetVertices().begin(), cluster->GetVertices().end());
 
 		//  Calculate edges that pass through the cluster  ---
 		for(IEdgeSet::const_iterator itr = m_graph->GetAllEdges().begin(); itr != m_graph->GetAllEdges().end(); ++itr)
 		{
-			if (GetCommonAncestor(itr->get()) == cluster)
+			if (itr->get()->GetFromVertex()->GetParent() != itr->get()->GetToVertex()->GetParent() && isAncestor(cluster, GetCommonAncestor(itr->get())))
 			{
 				m_visibleEdges.insert(itr->get());
 			}
-		}
-		CalcVisibility();
-		WriteXgmml();
-	}
-
-	CLocalisedXGMMLWriter(const IGraph * graph, const IVertex * vertex) : m_graph(graph)
-	{
-		CalcInVertexVisibility(vertex, LOCALISATION_DEPTH, m_visibleVertices);
-		CalcOutVertexVisibility(vertex, LOCALISATION_DEPTH, m_visibleVertices);
-		CalcVisibility();
-		WriteXgmml();
-	}
-
-	CLocalisedXGMMLWriter(const IGraph * graph, const IEdge * edge) : m_graph(graph)
-	{
-		CalcInVertexVisibility(edge->GetFromVertex(), LOCALISATION_DEPTH - 1, m_visibleVertices);
-		CalcOutVertexVisibility(edge->GetToVertex(), LOCALISATION_DEPTH - 1, m_visibleVertices);
-		CalcVisibility();
-		WriteXgmml();
-	}
-
-	void CalcInVertexVisibility(const IVertex * vertex, int depth, IVertexSet & results)
-	{
-		results.insert(const_cast<IVertex *>(vertex));
-
-		if (depth > 0)
-		{
-			for (IEdgeSet::const_iterator itr = vertex->GetInEdges().begin(); itr != vertex->GetInEdges().end(); ++itr)
-				CalcInVertexVisibility(itr->get()->GetFromVertex(), depth - 1, results);
-		}
-	}
-
-	void CalcOutVertexVisibility(const IVertex * vertex, int depth, IVertexSet & results)
-	{
-		results.insert(const_cast<IVertex *>(vertex));
-
-		if (depth > 0)
-		{
-			for (IEdgeSet::const_iterator itr = vertex->GetOutEdges().begin(); itr != vertex->GetOutEdges().end(); ++itr)
-				CalcOutVertexVisibility(itr->get()->GetToVertex(), depth - 1, results);
 		}
 	}
 
@@ -399,6 +429,12 @@ public:
 			CalcAncestorVisibility(itr->get());
 
 		}
+		CalcSemiVisibleVertices();
+	}
+	
+	void CalcSemiVisibleVertices()
+	{
+		assert(m_semiVisibleVertices.empty());
 		for(IEdgeSet::const_iterator itr = m_visibleEdges.begin(); itr != m_visibleEdges.end(); ++itr)
 		{
 			if (m_visibleVertices.find(itr->get()->GetFromVertex()) == m_visibleVertices.end())
@@ -425,8 +461,19 @@ public:
 		if (m_visibleClusters.find(cluster) != m_visibleClusters.end())
 		{
 			m_xgmml += (boost::format("<node id=\"%1%\"><att><graph>") % cluster->GetProperty("id")).str();
+			int xgmmlLen = m_xgmml.length();
 			cluster->Walk((IClusterVisitor *) this);
 			cluster->Walk((IVertexVisitor *) this);
+			if (xgmmlLen == m_xgmml.length()) 
+			{	//  Add at least one child otherwise clusters will render as a vertex  ---
+				IVertexSet::const_iterator vertex = cluster->GetVertices().begin();
+				if (vertex != cluster->GetVertices().end()) 
+				{
+					std::string vertexString;
+					BuildVertexString(vertex->get(), vertexString, true);
+					m_xgmml += vertexString;
+				}
+			}
 			m_xgmml += "</graph></att></node>";
 		}
 		return false;
@@ -459,23 +506,12 @@ public:
 	}
 };
 
-GRAPHDB_API const char * WriteLocalisedXGMML(const IGraph * graph, const IGraphItem * item, std::string & xgmml)
+GRAPHDB_API const char * WriteLocalisedXGMML(const IGraph * graph, const IGraphItemSet & items, int localisationDepth, int localisationDistance, std::string & xgmml)
 {
-	if (const IVertex * vertex = dynamic_cast<const IVertex *>(item))
-	{
-		CLocalisedXGMMLWriter xgmmlWriter(graph, vertex);
-		xgmml = xgmmlWriter.m_xgmml;
-	}
-	else if (const IEdge * edge = dynamic_cast<const IEdge *>(item))
-	{
-		CLocalisedXGMMLWriter xgmmlWriter(graph, edge);
-		xgmml = xgmmlWriter.m_xgmml;
-	}
-	else if (const ICluster * cluster = dynamic_cast<const ICluster *>(item))
-	{
-		CLocalisedXGMMLWriter xgmmlWriter(graph, cluster);
-		xgmml = xgmmlWriter.m_xgmml;
-	}
+	CLocalisedXGMMLWriter xgmmlWriter(graph);
+	xgmmlWriter.CalcVisibility(items, localisationDepth, localisationDistance);
+	xgmmlWriter.WriteXgmml();
+	xgmml = xgmmlWriter.m_xgmml;
 	return xgmml.c_str();
 }
 
