@@ -23,27 +23,53 @@
 #define H_HPCCSystemsGraphViewControlPLUGIN
 
 #include "PluginWindow.h"
-#ifdef XP_WIN
-#include "PluginEvents/WindowsEvent.h"
-#elif defined(XP_UNIX)
-#include "PluginEvents/X11Event.h"
-#endif
 #include "PluginEvents/MouseEvents.h"
 #include "PluginEvents/DrawingEvents.h"
 #include "PluginEvents/AttachedEvent.h"
 
 #include "PluginCore.h"
-#ifdef XP_WIN
-#include "DotViewWin.h"
-#elif defined(XP_UNIX)
-#include "DotViewX11.h"
-#endif
+
+#include <boost/smart_ptr/detail/atomic_count.hpp>
+#include <boost/signals2.hpp>
+
+#include <GraphDB.h>
+#include <GraphvizLayout.h>
+#include <GraphRender.h>
+#include <GraphHotItem.h>
 
 FB_FORWARD_PTR(HPCCSystemsGraphViewControl)
 class HPCCSystemsGraphViewControl : public FB::PluginCore
 {
 protected:
-	CDotView *m_wnd;
+	hpcc::IGraphBufferPtr m_buffer;
+	hpcc::IGraphPtr m_g;
+	hpcc::IGraphRenderPtr m_gr;
+	//hpcc::IGraphRenderPtr m_gro;
+	hpcc::IGraphHotItemPtr m_hotItem;
+	hpcc::IGraphSelectionBagPtr m_selection;
+
+	enum MOUSEDOWN
+	{
+		MOUSEDOWN_UNKNOWN = 0,
+		MOUSEDOWN_NORMAL,
+		MOUSEDOWN_DBLCLK,
+		MOUSEDOWN_OVERVIEW,
+		MOUSEDOWN_OVERVIEW_WIN,
+		MOUSEDOWN_MOVED,
+		MOUSEDOWN_LAST
+
+	} m_mouseDown;
+	int m_mouseDownPosX;
+	int m_mouseDownPosY;
+	int m_scrollDownPosX;
+	int m_scrollDownPosY;
+
+	std::string m_dot;
+	std::string m_svg;
+
+	hpcc::PointD m_ptOffset;
+	hpcc::PointD m_ptSize;
+
 
 public:
     static void StaticInitialize();
@@ -54,6 +80,53 @@ public:
     virtual ~HPCCSystemsGraphViewControl();
 
 public:
+	void Invalidate();
+	void InvalidateWorldRect(const hpcc::RectD & worldRect);
+	int GetScrollOffsetX();
+	int GetScrollOffsetY();
+	void SetScrollOffset(int x, int y);
+	void SetScrollSize(int w, int h, bool redraw);
+    bool GetClientRectangle(hpcc::RectD & rect);
+	void UpdateWindow();
+	void InvalidateSelection();
+	void operator()(const std::string & dot, const std::string & svg);
+
+	void CalcScrollbars(bool redraw = false);
+	void CenterOn(const hpcc::PointD & worldPoint);
+	void MoveTo(const hpcc::PointD & worldPoint, int x, int y);
+	hpcc::PointD GetCenterAsWorldPoint();
+
+	//  --- IAPICallback ---
+	void Clear();
+	void LoadTestData();
+	void LoadXML(const std::string & verticesXML, const std::string & edgesXML);
+	void LoadXML2(const std::string & xml);
+	void LoadXGMML(const std::string & xgmml);
+	void MergeXGMML(const std::string & xgmml);
+	void MergeSVG(const std::string & svg);
+	void LoadDOT(const std::string & dot);
+	const std::string GetSVG();
+	const std::string GetDOT();
+	const char * GetLocalisedXGMML(const std::vector<int> & items, int localisationDepth, int localisationDistance, std::string & xgmml);
+	double SetScale(double scale);
+	double GetScale();
+	void CenterOnGraphItem(hpcc::IGraphItem * item = NULL);
+	void CenterOnItem(int item, bool sizeToFit, bool widthOnly);
+	void StartLayout(const std::string & layout);
+	void SetMessage(const std::string & msg);
+	int Find(const std::string & text, bool includeProperties, std::vector<int> & results);
+	bool HasItems();
+	int GetSelection(std::vector<int> & results);
+	int GetSelection(std::vector<std::string> & results);
+	bool SetSelected(const std::vector<int> & items, bool clearPrevious);
+	bool SetSelected(const std::vector<std::string> & items, bool clearPrevious);
+	const hpcc::IClusterSet & GetClusters();
+	int GetProperties(int item, hpcc::StringStringMap & results);
+	unsigned int GetItem(const std::string &externalID);
+	const char * GetGlobalID(int item);
+	int GetVertices(std::vector<int> & results);
+	//  --- IAPICallback ---
+
     void onPluginReady();
     void shutdown();
     virtual FB::JSAPIPtr createJSAPI();
@@ -68,14 +141,9 @@ public:
 		EVENTTYPE_CASE(FB::MouseDoubleClickEvent, onMouseDoubleClick, FB::PluginWindow)
         EVENTTYPE_CASE(FB::MouseUpEvent, onMouseUp, FB::PluginWindow)
         EVENTTYPE_CASE(FB::MouseMoveEvent, onMouseMove, FB::PluginWindow)
-
+        EVENTTYPE_CASE(FB::MouseMoveEvent, onMouseMove, FB::PluginWindow)
+        EVENTTYPE_CASE(FB::MouseScrollEvent, onMouseScroll, FB::PluginWindow)
 		EVENTTYPE_CASE(FB::RefreshEvent, onRefresh, FB::PluginWindow)
-#ifdef XP_WIN
-		EVENTTYPE_CASE(FB::WindowsEvent, onWindows, FB::PluginWindow)
-#elif defined(XP_UNIX)
-		EVENTTYPE_CASE(FB::X11Event, onX11, FB::PluginWindow)
-#endif
-
         EVENTTYPE_CASE(FB::AttachedEvent, onWindowAttached, FB::PluginWindow)
         EVENTTYPE_CASE(FB::DetachedEvent, onWindowDetached, FB::PluginWindow)
     END_PLUGIN_EVENT_MAP()
@@ -85,19 +153,12 @@ public:
 	virtual bool onMouseDoubleClick(FB::MouseDoubleClickEvent *evt, FB::PluginWindow *);
     virtual bool onMouseUp(FB::MouseUpEvent *evt, FB::PluginWindow *);
     virtual bool onMouseMove(FB::MouseMoveEvent *evt, FB::PluginWindow *);
-
+    virtual bool onMouseScroll(FB::MouseScrollEvent *evt, FB::PluginWindow *);
 	virtual bool onRefresh(FB::RefreshEvent *evt, FB::PluginWindow *);
-
-	void DoRender(int x, int y, int width, int height, bool resized);
-#ifdef XP_WIN
-	virtual bool onWindows(FB::WindowsEvent *evt, FB::PluginWindow *);
-#elif defined(XP_UNIX)
-	virtual bool onX11(FB::X11Event *evt, FB::PluginWindow *);
-#endif
-
-	virtual bool onWindowAttached(FB::AttachedEvent *evt, FB::PluginWindow *);
-	virtual bool onWindowDetached(FB::DetachedEvent *evt, FB::PluginWindow *);
-	/** END EVENTDEF -- DON'T CHANGE THIS LINE **/
+    virtual bool onWindowAttached(FB::AttachedEvent *evt, FB::PluginWindow *);
+    virtual bool onWindowDetached(FB::DetachedEvent *evt, FB::PluginWindow *);
+    /** END EVENTDEF -- DON'T CHANGE THIS LINE **/
+	int OnLayoutComplete(void * wParam, void * lParam);
 };
 
 

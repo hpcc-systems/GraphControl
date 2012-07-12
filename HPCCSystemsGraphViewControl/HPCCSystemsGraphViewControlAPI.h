@@ -20,8 +20,11 @@
  * THE SOFTWARE.
  ******************************************************************************/
 
-#include "Unknown.h"
-
+#include <string>
+#include <sstream>
+#include <boost/weak_ptr.hpp>
+#include "JSAPIAuto.h"
+#include "BrowserHost.h"
 #include "HPCCSystemsGraphViewControl.h"
 
 #ifndef H_HPCCSystemsGraphViewControlAPI
@@ -29,21 +32,83 @@
 
 class HPCCSystemsGraphViewControlAPI : public FB::JSAPIAuto
 {
-private:
-	HPCCSystemsGraphViewControlAPI()
-	{
-		assert(false);
-	}
-
-	HPCCSystemsGraphViewControlAPI(const HPCCSystemsGraphViewControlAPI & other)
-	{
-		assert(false);
-	}
 public:
-	CDotView * m_callback;
+    ////////////////////////////////////////////////////////////////////////////
+    /// @fn HPCCSystemsGraphViewControlAPI::HPCCSystemsGraphViewControlAPI(const HPCCSystemsGraphViewControlPtr& plugin, const FB::BrowserHostPtr host)
+    ///
+    /// @brief  Constructor for your JSAPI object.
+    ///         You should register your methods, properties, and events
+    ///         that should be accessible to Javascript from here.
+    ///
+    /// @see FB::JSAPIAuto::registerMethod
+    /// @see FB::JSAPIAuto::registerProperty
+    /// @see FB::JSAPIAuto::registerEvent
+    ////////////////////////////////////////////////////////////////////////////
+    HPCCSystemsGraphViewControlAPI(const HPCCSystemsGraphViewControlPtr& plugin, const FB::BrowserHostPtr& host) :
+        m_plugin(plugin), m_host(host)
+    {
+        registerMethod("echo",      make_method(this, &HPCCSystemsGraphViewControlAPI::echo));
+        registerMethod("testEvent", make_method(this, &HPCCSystemsGraphViewControlAPI::testEvent));
+        
+        // Read-write property
+        registerProperty("testString",
+                         make_property(this,
+                                       &HPCCSystemsGraphViewControlAPI::get_testString,
+                                       &HPCCSystemsGraphViewControlAPI::set_testString));
+        
+        // Read-only property
+        registerProperty("version",
+                         make_property(this,
+                                       &HPCCSystemsGraphViewControlAPI::get_version));
+	
+	registerMethod("clear", make_method(this, &HPCCSystemsGraphViewControlAPI::clear));
+	registerMethod("loadXGMML", make_method(this, &HPCCSystemsGraphViewControlAPI::loadXGMML));
+	registerMethod("mergeXGMML", make_method(this, &HPCCSystemsGraphViewControlAPI::mergeXGMML));
+	registerMethod("mergeSVG", make_method(this, &HPCCSystemsGraphViewControlAPI::mergeSVG));
+	registerMethod("loadDOT", make_method(this, &HPCCSystemsGraphViewControlAPI::loadDOT));
+	registerMethod("startLayout", make_method(this, &HPCCSystemsGraphViewControlAPI::startLayout));
+	registerMethod("setScale", make_method(this, &HPCCSystemsGraphViewControlAPI::setScale));
+	registerMethod("getScale", make_method(this, &HPCCSystemsGraphViewControlAPI::getScale));
+	registerMethod("centerOnItem", make_method(this, &HPCCSystemsGraphViewControlAPI::centerOnItem));
+	registerMethod("setMessage", make_method(this, &HPCCSystemsGraphViewControlAPI::setMessage));
+	registerMethod("find", make_method(this, &HPCCSystemsGraphViewControlAPI::find));
+	registerMethod("hasItems", make_method(this, &HPCCSystemsGraphViewControlAPI::hasItems));
+	registerMethod("getSelection", make_method(this, &HPCCSystemsGraphViewControlAPI::getSelection));
+	registerMethod("getSelectionAsGlobalID", make_method(this, &HPCCSystemsGraphViewControlAPI::getSelectionAsGlobalID));
+	registerMethod("setSelected", make_method(this, &HPCCSystemsGraphViewControlAPI::setSelected));
+	registerMethod("setSelectedAsGlobalID", make_method(this, &HPCCSystemsGraphViewControlAPI::setSelectedAsGlobalID));
+	registerMethod("getProperties", make_method(this, &HPCCSystemsGraphViewControlAPI::getProperties));
+	registerMethod("getProperty", make_method(this, &HPCCSystemsGraphViewControlAPI::getProperty));
+	registerMethod("getItem", make_method(this, &HPCCSystemsGraphViewControlAPI::getItem));
+	registerMethod("getGlobalID", make_method(this, &HPCCSystemsGraphViewControlAPI::getGlobalID));
+	registerMethod("getVertices", make_method(this, &HPCCSystemsGraphViewControlAPI::getVertices));
+	registerMethod("onMouseWheel", make_method(this, &HPCCSystemsGraphViewControlAPI::onMouseWheel));
+	registerMethod("getRunningSubgraph", make_method(this, &HPCCSystemsGraphViewControlAPI::getRunningSubgraph));
 
-	HPCCSystemsGraphViewControlAPI(const HPCCSystemsGraphViewControlPtr& plugin, const FB::BrowserHostPtr& host, CDotView * callback);
-    virtual ~HPCCSystemsGraphViewControlAPI();
+	registerMethod("loadTestData", make_method(this, &HPCCSystemsGraphViewControlAPI::loadTestData));
+	registerMethod("loadXML", make_method(this, &HPCCSystemsGraphViewControlAPI::loadXML));
+	registerMethod("loadXML2", make_method(this, &HPCCSystemsGraphViewControlAPI::loadXML2));
+	registerMethod("getSVG", make_method(this, &HPCCSystemsGraphViewControlAPI::getSVG));
+	registerMethod("getDOT", make_method(this, &HPCCSystemsGraphViewControlAPI::getDOT));
+	registerMethod("getLocalisedXGMML", make_method(this, &HPCCSystemsGraphViewControlAPI::getLocalisedXGMML));
+
+    registerMethod("testEvent", make_method(this, &HPCCSystemsGraphViewControlAPI::testEvent));
+
+    // Read-write property
+    registerProperty("testString", make_property(this, &HPCCSystemsGraphViewControlAPI::get_testString, &HPCCSystemsGraphViewControlAPI::set_testString));
+
+    // Read-only property
+    registerProperty("version", make_property(this, &HPCCSystemsGraphViewControlAPI::get_version));
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////
+    /// @fn HPCCSystemsGraphViewControlAPI::~HPCCSystemsGraphViewControlAPI()
+    ///
+    /// @brief  Destructor.  Remember that this object will not be released until
+    ///         the browser is done with it; this will almost definitely be after
+    ///         the plugin is released.
+    ///////////////////////////////////////////////////////////////////////////////
+    virtual ~HPCCSystemsGraphViewControlAPI() {};
 
     HPCCSystemsGraphViewControlPtr getPlugin();
 
@@ -54,7 +119,7 @@ public:
     // Read-only property ${PROPERTY.ident}
     std::string get_version();
 
-    // Methods 
+    // Method echo
 	void loadTestData();
 	bool loadXML(const std::string& verticesXML, const std::string& edgesXML);
 	bool loadXML2(const std::string& xml);
@@ -92,8 +157,14 @@ public:
 
 	bool setMessage(const std::string& msg);
 
+    FB::variant echo(const FB::variant& msg);
+    
+    // Event helpers
+    FB_JSAPI_EVENT(test, 0, ());
+    FB_JSAPI_EVENT(echo, 2, (const FB::variant&, const int));
+
     // Method test-event
-    void testEvent(const FB::variant& s);
+    void testEvent();
 
 	//  Fire Events
 	FB_JSAPI_EVENT(Scaled, 1, (int));
