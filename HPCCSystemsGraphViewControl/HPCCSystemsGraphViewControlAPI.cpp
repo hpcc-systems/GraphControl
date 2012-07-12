@@ -19,85 +19,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  ******************************************************************************/
-#include "precompiled_headers.h"
 
 #include "JSObject.h"
 #include "variant_list.h"
 #include "DOM/Document.h"
+#include "global/config.h"
 
 #include "HPCCSystemsGraphViewControlAPI.h"
 #include <XgmmlParser.h>
-#include "Version.h"
-
-const char * const Scaled = "onScaled";
-const char * const LayoutFinished = "onLayoutFinished";
-const char * const MouseDoubleClick = "onMouseDoubleClick";
-const char * const SelectionChanged = "onSelectionChanged";
+#include <boost/algorithm/string.hpp>
 
 ///////////////////////////////////////////////////////////////////////////////
-/// @fn HPCCSystemsGraphViewControlAPI::HPCCSystemsGraphViewControlAPI(HPCCSystemsGraphViewControlPtr plugin, FB::BrowserHostPtr host)
+/// @fn FB::variant HPCCSystemsGraphViewControlAPI::echo(const FB::variant& msg)
 ///
-/// @brief  Constructor for your JSAPI object.  You should register your methods, properties, and events
-///         that should be accessible to Javascript from here.
-///
-/// @see FB::JSAPIAuto::registerMethod
-/// @see FB::JSAPIAuto::registerProperty
-/// @see FB::JSAPIAuto::registerEvent
+/// @brief  Echos whatever is passed from Javascript.
+///         Go ahead and change it. See what happens!
 ///////////////////////////////////////////////////////////////////////////////
-HPCCSystemsGraphViewControlAPI::HPCCSystemsGraphViewControlAPI(const HPCCSystemsGraphViewControlPtr& plugin, const FB::BrowserHostPtr& host, CDotView * callback) : m_plugin(plugin), m_host(host)
+FB::variant HPCCSystemsGraphViewControlAPI::echo(const FB::variant& msg)
 {
-	m_callback = callback;
-	registerMethod("clear", make_method(this, &HPCCSystemsGraphViewControlAPI::clear));
-	registerMethod("loadXGMML", make_method(this, &HPCCSystemsGraphViewControlAPI::loadXGMML));
-	registerMethod("mergeXGMML", make_method(this, &HPCCSystemsGraphViewControlAPI::mergeXGMML));
-	registerMethod("mergeSVG", make_method(this, &HPCCSystemsGraphViewControlAPI::mergeSVG));
-	registerMethod("loadDOT", make_method(this, &HPCCSystemsGraphViewControlAPI::loadDOT));
-	registerMethod("startLayout", make_method(this, &HPCCSystemsGraphViewControlAPI::startLayout));
-	registerMethod("setScale", make_method(this, &HPCCSystemsGraphViewControlAPI::setScale));
-	registerMethod("getScale", make_method(this, &HPCCSystemsGraphViewControlAPI::getScale));
-	registerMethod("centerOnItem", make_method(this, &HPCCSystemsGraphViewControlAPI::centerOnItem));
-	registerMethod("setMessage", make_method(this, &HPCCSystemsGraphViewControlAPI::setMessage));
-	registerMethod("find", make_method(this, &HPCCSystemsGraphViewControlAPI::find));
-	registerMethod("hasItems", make_method(this, &HPCCSystemsGraphViewControlAPI::hasItems));
-	registerMethod("getSelection", make_method(this, &HPCCSystemsGraphViewControlAPI::getSelection));
-	registerMethod("getSelectionAsGlobalID", make_method(this, &HPCCSystemsGraphViewControlAPI::getSelectionAsGlobalID));
-	registerMethod("setSelected", make_method(this, &HPCCSystemsGraphViewControlAPI::setSelected));
-	registerMethod("setSelectedAsGlobalID", make_method(this, &HPCCSystemsGraphViewControlAPI::setSelectedAsGlobalID));
-	registerMethod("getProperties", make_method(this, &HPCCSystemsGraphViewControlAPI::getProperties));
-	registerMethod("getProperty", make_method(this, &HPCCSystemsGraphViewControlAPI::getProperty));
-	registerMethod("getItem", make_method(this, &HPCCSystemsGraphViewControlAPI::getItem));
-	registerMethod("getGlobalID", make_method(this, &HPCCSystemsGraphViewControlAPI::getGlobalID));
-	registerMethod("getVertices", make_method(this, &HPCCSystemsGraphViewControlAPI::getVertices));
-	registerMethod("onMouseWheel", make_method(this, &HPCCSystemsGraphViewControlAPI::onMouseWheel));
-	registerMethod("getRunningSubgraph", make_method(this, &HPCCSystemsGraphViewControlAPI::getRunningSubgraph));
+    static int n(0);
+    fire_echo("So far, you clicked this many timesXXX: ", n++);
 
-	registerMethod("loadTestData", make_method(this, &HPCCSystemsGraphViewControlAPI::loadTestData));
-	registerMethod("loadXML", make_method(this, &HPCCSystemsGraphViewControlAPI::loadXML));
-	registerMethod("loadXML2", make_method(this, &HPCCSystemsGraphViewControlAPI::loadXML2));
-	registerMethod("getSVG", make_method(this, &HPCCSystemsGraphViewControlAPI::getSVG));
-	registerMethod("getDOT", make_method(this, &HPCCSystemsGraphViewControlAPI::getDOT));
-	registerMethod("getLocalisedXGMML", make_method(this, &HPCCSystemsGraphViewControlAPI::getLocalisedXGMML));
-
-    registerMethod("testEvent", make_method(this, &HPCCSystemsGraphViewControlAPI::testEvent));
-
-    // Read-write property
-    registerProperty("testString", make_property(this, &HPCCSystemsGraphViewControlAPI::get_testString, &HPCCSystemsGraphViewControlAPI::set_testString));
-
-    // Read-only property
-    registerProperty("version", make_property(this, &HPCCSystemsGraphViewControlAPI::get_version));
-
-	//  Events
-}
-
-///////////////////////////////////////////////////////////////////////////////
-/// @fn HPCCSystemsGraphViewControlAPI::~HPCCSystemsGraphViewControlAPI()
-///
-/// @brief  Destructor.  Remember that this object will not be released until
-///         the browser is done with it; this will almost definitely be after
-///         the plugin is released.
-///////////////////////////////////////////////////////////////////////////////
-HPCCSystemsGraphViewControlAPI::~HPCCSystemsGraphViewControlAPI()
-{
+    // return "foobar";
+    return msg;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -120,8 +64,9 @@ HPCCSystemsGraphViewControlPtr HPCCSystemsGraphViewControlAPI::getPlugin()
 // Read/Write property testString
 std::string HPCCSystemsGraphViewControlAPI::get_testString()
 {
-    return GetVersionString();
+    return "TODO";//GetVersionString();
 }
+
 void HPCCSystemsGraphViewControlAPI::set_testString(const std::string& val)
 {
     m_testString = val;
@@ -130,90 +75,89 @@ void HPCCSystemsGraphViewControlAPI::set_testString(const std::string& val)
 // Read-only property version
 std::string HPCCSystemsGraphViewControlAPI::get_version()
 {
-    return GetVersionString();
+    return "TODO";//GetVersionString();
 }
 
 bool HPCCSystemsGraphViewControlAPI::clear()
 {
-	m_callback->Clear();
+	getPlugin()->Clear();
 	return true;
 }
 
 bool HPCCSystemsGraphViewControlAPI::loadXGMML(const std::string& xgmml)
 {
-    assert(m_callback != NULL);
 	if (xgmml.empty())
 	{
-		m_callback->Clear();
+		getPlugin()->Clear();
 		return true;
 	}
-	m_callback->LoadXGMML(xgmml);
+	getPlugin()->LoadXGMML(xgmml);
 	return true;
 }
 
 bool HPCCSystemsGraphViewControlAPI::mergeXGMML(const std::string& xgmml)
 {
-	m_callback->MergeXGMML(xgmml);
+	getPlugin()->MergeXGMML(xgmml);
 	return true;
 }
 
 bool HPCCSystemsGraphViewControlAPI::mergeSVG(const std::string& svg)
 {
-	m_callback->MergeSVG(svg);
+	getPlugin()->MergeSVG(svg);
 	return true;
 }
 
 bool HPCCSystemsGraphViewControlAPI::loadDOT(const std::string& dot)
 {
-    assert(m_callback != NULL);
+    assert(getPlugin() != NULL);
 	if (dot.empty())
 	{
-		m_callback->Clear();
+		getPlugin()->Clear();
 		return true;
 	}
-	m_callback->LoadDOT(dot);
+	getPlugin()->LoadDOT(dot);
 	return true;
 }
 
 bool HPCCSystemsGraphViewControlAPI::startLayout(const std::string& layout)
 {
-	m_callback->StartLayout(layout);
+	getPlugin()->StartLayout(layout);
 	return true;
 }
 
 int HPCCSystemsGraphViewControlAPI::setScale(int percent)
 {
 	double newScale = percent;
-	double oldScale = m_callback->SetScale(newScale / 100) * 100;
+	double oldScale = getPlugin()->SetScale(newScale / 100) * 100;
 	return (int)oldScale;
 }
 
 int HPCCSystemsGraphViewControlAPI::getScale()
 {
-	return (int)m_callback->GetScale() * 100;
+	return (int)getPlugin()->GetScale() * 100;
 }
 
 bool HPCCSystemsGraphViewControlAPI::centerOnItem(int item, boost::optional<bool> scaleToFit, boost::optional<bool> widthOnly)
 {
-	assert(m_callback);
-	m_callback->CenterOnItem(item, scaleToFit ? *scaleToFit : false, widthOnly ? *widthOnly : false);
+	assert(getPlugin());
+	getPlugin()->CenterOnItem(item, scaleToFit ? *scaleToFit : false, widthOnly ? *widthOnly : false);
 	return true;
 }
 
 bool HPCCSystemsGraphViewControlAPI::setMessage(const std::string& msg)
 {
-	assert(m_callback);
-	m_callback->SetMessage(msg);
+	assert(getPlugin());
+	getPlugin()->SetMessage(msg);
 	return true;
 }
 
 FB::VariantList HPCCSystemsGraphViewControlAPI::find(const std::string & text, boost::optional<bool> includeProperties)
 {
-	assert(m_callback);
+	assert(getPlugin());
 	FB::VariantList retVal;
 
 	std::vector<int> foundItems;
-	m_callback->Find(text, includeProperties ? *includeProperties : true, foundItems);
+	getPlugin()->Find(text, includeProperties ? *includeProperties : true, foundItems);
 	for(std::vector<int>::const_iterator itr = foundItems.begin(); itr != foundItems.end(); ++itr)
 		retVal.push_back(*itr);
 
@@ -222,7 +166,7 @@ FB::VariantList HPCCSystemsGraphViewControlAPI::find(const std::string & text, b
 
 bool HPCCSystemsGraphViewControlAPI::hasItems()
 {
-	return m_callback->HasItems();
+	return getPlugin()->HasItems();
 }
 
 FB::VariantList HPCCSystemsGraphViewControlAPI::getSelection()
@@ -230,7 +174,7 @@ FB::VariantList HPCCSystemsGraphViewControlAPI::getSelection()
 	FB::VariantList retVal;
 
 	std::vector<int> selectedItems;
-	m_callback->GetSelection(selectedItems);
+	getPlugin()->GetSelection(selectedItems);
 	for(std::vector<int>::const_iterator itr = selectedItems.begin(); itr != selectedItems.end(); ++itr)
 		retVal.push_back(*itr);
 
@@ -239,7 +183,7 @@ FB::VariantList HPCCSystemsGraphViewControlAPI::getSelection()
 
 int HPCCSystemsGraphViewControlAPI::getRunningSubgraph()
 {
-	hpcc::IClusterSet clusters = m_callback->GetClusters();
+	hpcc::IClusterSet clusters = getPlugin()->GetClusters();
 	for(hpcc::IClusterSet::const_iterator itr = clusters.begin(); itr != clusters.end(); ++itr)
 	{
 		if ((hpcc::XGMML_STATE_ENUM)itr->get()->GetPropertyInt(hpcc::XGMML_STATE) == hpcc::XGMML_STATE_RUNNING)
@@ -253,7 +197,7 @@ FB::VariantList HPCCSystemsGraphViewControlAPI::getSelectionAsGlobalID()
 	FB::VariantList retVal;
 
 	std::vector<std::string> selectedItems;
-	m_callback->GetSelection(selectedItems);
+	getPlugin()->GetSelection(selectedItems);
 	for(std::vector<std::string>::const_iterator itr = selectedItems.begin(); itr != selectedItems.end(); ++itr)
 		retVal.push_back(*itr);
 
@@ -262,21 +206,21 @@ FB::VariantList HPCCSystemsGraphViewControlAPI::getSelectionAsGlobalID()
 
 bool HPCCSystemsGraphViewControlAPI::setSelected(const std::vector<int> & items, boost::optional<bool> clearPrevious)
 {
-	return m_callback->SetSelected(items, clearPrevious ? *clearPrevious : true);
+	return getPlugin()->SetSelected(items, clearPrevious ? *clearPrevious : true);
 }
 
 bool HPCCSystemsGraphViewControlAPI::setSelectedAsGlobalID(const std::vector<std::string> & items, boost::optional<bool> clearPrevious)
 {
-	return m_callback->SetSelected(items, clearPrevious ? *clearPrevious : true);
+	return getPlugin()->SetSelected(items, clearPrevious ? *clearPrevious : true);
 }
 
 FB::VariantMap HPCCSystemsGraphViewControlAPI::getProperties(int item)
 {
-	assert(m_callback);
+	assert(getPlugin());
 	FB::VariantMap retVal;
 
 	hpcc::StringStringMap properties;
-	m_callback->GetProperties(item, properties);
+	getPlugin()->GetProperties(item, properties);
 	for(hpcc::StringStringMap::const_iterator itr = properties.begin(); itr != properties.end(); ++itr)
 		retVal[itr->first] = itr->second;
 
@@ -286,18 +230,18 @@ FB::VariantMap HPCCSystemsGraphViewControlAPI::getProperties(int item)
 std::string HPCCSystemsGraphViewControlAPI::getProperty(int item, const std::string & key)
 {
 	hpcc::StringStringMap properties;
-	m_callback->GetProperties(item, properties);
+	getPlugin()->GetProperties(item, properties);
 	return properties[key];
 }
 
 int HPCCSystemsGraphViewControlAPI::getItem(const std::string & externalID)
 {
-	return m_callback->GetItem(externalID);
+	return getPlugin()->GetItem(externalID);
 }
 
 std::string HPCCSystemsGraphViewControlAPI::getGlobalID(int item)
 {
-	if (const char * globalIDChar = m_callback->GetGlobalID(item))
+	if (const char * globalIDChar = getPlugin()->GetGlobalID(item))
 		return globalIDChar;
 	return "";
 }
@@ -306,7 +250,7 @@ FB::VariantList HPCCSystemsGraphViewControlAPI::getVertices()
 {
  	FB::VariantList items;
 	std::vector<int> vertices;
-	m_callback->GetVertices(vertices);
+	getPlugin()->GetVertices(vertices);
 	for(std::vector<int>::const_iterator itr = vertices.begin(); itr != vertices.end(); ++itr)
 		items.push_back(*itr);
 
@@ -317,31 +261,31 @@ bool HPCCSystemsGraphViewControlAPI::onMouseWheel(unsigned int nFlags, short zDe
 {
 #ifdef _WIN
 	//  Hack for windows mouse wheel notifications  ---
-	return m_callback->DoMouseWheel(nFlags, zDelta, CPoint(x, y));
+	return getPlugin()->DoMouseWheel(nFlags, zDelta, CPoint(x, y));
 #endif
 	return false;
 }
 
 void HPCCSystemsGraphViewControlAPI::loadTestData()
 {
-	m_callback->LoadTestData();
+	getPlugin()->LoadTestData();
 }
 
 bool HPCCSystemsGraphViewControlAPI::loadXML(const std::string& verticesXML, const std::string& edgesXML)
 {
-	m_callback->LoadXML(verticesXML, edgesXML);
+	getPlugin()->LoadXML(verticesXML, edgesXML);
 	return true;
 }
 
 bool HPCCSystemsGraphViewControlAPI::loadXML2(const std::string& xml)
 {
-	m_callback->LoadXML2(xml);
+	getPlugin()->LoadXML2(xml);
 	return true;
 }
 
 const std::string HPCCSystemsGraphViewControlAPI::getSVG()
 {
-	std::string svg = m_callback->GetSVG();
+	std::string svg = getPlugin()->GetSVG();
 	boost::iterator_range<std::string::iterator> result = boost::algorithm::find_first(svg, "<svg");
 	std::string retVal(result.begin(), svg.end());
 	return retVal;
@@ -349,14 +293,14 @@ const std::string HPCCSystemsGraphViewControlAPI::getSVG()
 
 const std::string HPCCSystemsGraphViewControlAPI::getDOT()
 {
-	std::string dot = m_callback->GetDOT();
+	std::string dot = getPlugin()->GetDOT();
 	return dot;
 }
 
 const std::string HPCCSystemsGraphViewControlAPI::getLocalisedXGMML(const std::vector<int> & items, boost::optional<int> localisationDepth, boost::optional<int> localisationDistance)
 {
 	std::string retVal;
-	m_callback->GetLocalisedXGMML(items, localisationDepth ? *localisationDepth : 1, localisationDistance ? *localisationDistance : 3, retVal);
+	getPlugin()->GetLocalisedXGMML(items, localisationDepth ? *localisationDepth : 1, localisationDistance ? *localisationDistance : 3, retVal);
 	if (retVal.empty())
 		return retVal;
 
@@ -364,8 +308,8 @@ const std::string HPCCSystemsGraphViewControlAPI::getLocalisedXGMML(const std::v
 	return retVal;
 }
 
-void HPCCSystemsGraphViewControlAPI::testEvent(const FB::variant& var)
+void HPCCSystemsGraphViewControlAPI::testEvent()
 {
-    FireEvent("onfired", FB::variant_list_of(var)(true)(1));
+    fire_test();
 }
 

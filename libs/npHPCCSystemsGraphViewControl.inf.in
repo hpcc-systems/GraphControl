@@ -1,0 +1,21 @@
+[version] 
+; version signature (same for both NT and Win95) do not remove
+signature="$CHICAGO$"
+AdvancedINF=2.0  
+
+[Add.Code]
+npHPCCSystemsGraphViewControl.dll=npHPCCSystemsGraphViewControl.dll
+npHPCCSystemsGraphViewControl.inf=npHPCCSystemsGraphViewControl.inf
+
+[Deployment]    
+InstallScope=user  
+
+[npHPCCSystemsGraphViewControl.dll]
+file-win32-x86=thiscab
+fileversion=@HPCC_MAJOR@,@HPCC_MINOR@,@HPCC_POINT@,@HPCC_BUILD@
+clsid={2FF57548-1DE4-4F32-B133-2B3FBDDBF909}
+registerserver=yes
+RedirectToHKCU=yes
+
+[npHPCCSystemsGraphViewControl.inf]
+file=thiscab
