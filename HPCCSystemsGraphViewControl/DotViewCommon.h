@@ -80,7 +80,7 @@ public:
 	void LoadDOT(const std::string & dot);
 	const std::string GetSVG();
 	const std::string GetDOT();
-	const char * GetLocalisedXGMML(int item, std::string & xgmml);
+	const char * GetLocalisedXGMML(const std::vector<int> & items, int localisationDepth, int localisationDistance, std::string & xgmml);
 	double SetScale(double scale);
 	double GetScale();
 	virtual void CenterOnGraphItem(hpcc::IGraphItem * item = NULL);

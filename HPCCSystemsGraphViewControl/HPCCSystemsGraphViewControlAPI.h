@@ -60,7 +60,7 @@ public:
 	bool loadXML2(const std::string& xml);
 	const std::string getSVG();
 	const std::string getDOT();
-	const std::string getLocalisedXGMML(const std::vector<int> & items);
+	const std::string getLocalisedXGMML(const std::vector<int> & items, boost::optional<int> localisationDepth, boost::optional<int> localisationDistance);
 
 	bool clear();
 	bool loadXGMML(const std::string& xgmml);

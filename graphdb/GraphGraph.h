@@ -96,6 +96,8 @@ public:
 
 	IEdge * CreateEdge(IVertex * from, IVertex * to);
 
+	IGraph * GetGraph(const std::string & id, bool externalID = false) const;
+
 	const IClusterSet & GetAllClusters() const;
 	ICluster * GetCluster(unsigned int id) const;
 	ICluster * GetCluster(const std::string & id, bool externalID = false) const;
