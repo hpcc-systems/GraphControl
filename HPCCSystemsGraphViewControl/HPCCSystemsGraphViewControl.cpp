@@ -126,7 +126,11 @@ FB::JSAPIPtr HPCCSystemsGraphViewControl::createJSAPI()
 
 void HPCCSystemsGraphViewControl::Invalidate()
 {
-	GetWindow()->InvalidateWindow();
+	FB::PluginWindow* window = GetWindow();
+	if (window)
+	{
+		GetWindow()->InvalidateWindow();
+	}
 }
 
 void HPCCSystemsGraphViewControl::InvalidateWorldRect(const hpcc::RectD & worldRect)
@@ -153,21 +157,30 @@ void HPCCSystemsGraphViewControl::SetScrollOffset(int x, int y)
 
 void HPCCSystemsGraphViewControl::SetScrollSize(int w, int h, bool redraw)
 {
-	int width = GetWindow()->getWindowWidth();
-	int height = GetWindow()->getWindowHeight();
+	FB::PluginWindow* window = GetWindow();
+	if (window)
+	{
+		int width = GetWindow()->getWindowWidth();
+		int height = GetWindow()->getWindowHeight();
 
-	m_ptSize.x = w - width;
-	m_ptSize.y = h - height;
+		m_ptSize.x = w - width;
+		m_ptSize.y = h - height;
+	}
 }
 
 bool HPCCSystemsGraphViewControl::GetClientRectangle(hpcc::RectD & rect)
 {
-	FB::Rect rect2 = GetWindow()->getWindowPosition();
-	rect.x = rect2.left;
-	rect.y = rect2.top;
-	rect.Width = rect2.right - rect2.left;
-	rect.Height = rect2.bottom - rect2.top;
-	return true;
+	FB::PluginWindow* window = GetWindow();
+	if (window)
+	{
+		FB::Rect rect2 = GetWindow()->getWindowPosition();
+		rect.x = rect2.left;
+		rect.y = rect2.top;
+		rect.Width = rect2.right - rect2.left;
+		rect.Height = rect2.bottom - rect2.top;
+		return true;
+	}
+	return false;
 }
 
 void HPCCSystemsGraphViewControl::UpdateWindow()
@@ -285,8 +298,9 @@ void HPCCSystemsGraphViewControl::MergeXGMML(const std::string & xgmml)
 
 void HPCCSystemsGraphViewControl::MergeSVG(const std::string & svg)
 {
-	std::string layout = m_g->GetPropertyString(hpcc::PROP_LAYOUT);
 	hpcc::MergeSVG(m_g, svg);
+	CalcScrollbars();
+	CenterOnGraphItem(NULL);
 	Invalidate();
 }
 
@@ -587,9 +601,10 @@ bool HPCCSystemsGraphViewControl::onMouseMove(FB::MouseMoveEvent *evt, FB::Plugi
 
 bool HPCCSystemsGraphViewControl::onMouseScroll(FB::MouseScrollEvent *evt, FB::PluginWindow *)
 {
+    printf("onMouseScroll: %d\n", evt->m_state);
 	hpcc::PointD pt(evt->m_x, evt->m_y);
 	hpcc::PointD delta(evt->m_dx, evt->m_dy);
-	if (!(evt->m_state & FB::MouseButtonEvent::ModifierState_Control))
+	if (evt->m_state & FB::MouseButtonEvent::ModifierState_Control)
 	{
 		hpcc::PointD point = pt;
 		point.Offset(m_ptOffset);
@@ -606,6 +621,16 @@ bool HPCCSystemsGraphViewControl::onMouseScroll(FB::MouseScrollEvent *evt, FB::P
 		MoveTo(worldDblClk, pt.x, pt.y);
 
 		boost::static_pointer_cast<HPCCSystemsGraphViewControlAPI>(getRootJSAPI())->fire_Scaled((int)(m_gr->GetScale() * 100));
+	} else {
+		hpcc::PointD point = pt;
+		point.Offset(m_ptOffset);
+		hpcc::PointD worldDblClk(point.x, point.y);
+		worldDblClk = m_gr->ScreenToWorld(worldDblClk);
+
+		pt.x -= delta.x;
+		pt.y -= delta.y;
+
+		MoveTo(worldDblClk, pt.x, pt.y);
 	}
     return true;
 }
@@ -629,9 +654,14 @@ int HPCCSystemsGraphViewControl::OnLayoutComplete(void * wParam, void * lParam)
 	return 0;
 }
 
+bool HPCCSystemsGraphViewControl::onResized(FB::ResizedEvent *evt, FB::PluginWindow *)
+{
+	CalcScrollbars();
+	return true;
+}
+
 bool HPCCSystemsGraphViewControl::onRefresh(FB::RefreshEvent *evt, FB::PluginWindow *)
 {
-    printf("onRefresh: %d, %d\n", 0, 0);
 	hpcc::RectI bounds(0, 0, evt->bounds.right, evt->bounds.bottom);
 	hpcc::RectI rect(bounds);
 	rect.Offset(m_ptOffset.x, m_ptOffset.y);
