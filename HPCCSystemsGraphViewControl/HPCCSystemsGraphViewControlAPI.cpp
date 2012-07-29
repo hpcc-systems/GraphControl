@@ -103,8 +103,7 @@ bool HPCCSystemsGraphViewControlAPI::mergeXGMML(const std::string& xgmml)
 
 bool HPCCSystemsGraphViewControlAPI::mergeSVG(const std::string& svg)
 {
-	getPlugin()->MergeSVG(svg);
-	return true;
+	return getPlugin()->MergeSVG(svg);
 }
 
 bool HPCCSystemsGraphViewControlAPI::loadDOT(const std::string& dot)
