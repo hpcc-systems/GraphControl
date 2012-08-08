@@ -37,9 +37,9 @@ set(FBSTRING_FileDescription "HPCC Systems Graph View Control")
 set(FBSTRING_PLUGIN_VERSION "1.0.0.0")
 set(FBSTRING_LegalCopyright "Copyright 2012 HPCC Systems")
 set(FBSTRING_PluginFileName "np${PLUGIN_NAME}.dll")
-set(FBSTRING_ProductName "HPCC Systems Graph View Control")
+set(FBSTRING_ProductName "HPCCSystemsGraphViewControl")
 set(FBSTRING_FileExtents "")
-set(FBSTRING_PluginName "HPCC Systems Graph View Control")
+set(FBSTRING_PluginName "HPCCSystemsGraphViewControl")
 set(FBSTRING_MIMEType "application/x-hpccsystemsgraphviewcontrol")
 
 # Uncomment this next line if you're not planning on your plugin doing
