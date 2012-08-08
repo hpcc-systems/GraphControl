@@ -605,7 +605,6 @@ bool HPCCSystemsGraphViewControl::onMouseMove(FB::MouseMoveEvent *evt, FB::Plugi
 
 bool HPCCSystemsGraphViewControl::onMouseScroll(FB::MouseScrollEvent *evt, FB::PluginWindow *)
 {
-    printf("onMouseScroll: %d\n", evt->m_state);
 	hpcc::PointD pt(evt->m_x, evt->m_y);
 	hpcc::PointD delta(evt->m_dx, evt->m_dy);
 	if (evt->m_state & FB::MouseButtonEvent::ModifierState_Control)

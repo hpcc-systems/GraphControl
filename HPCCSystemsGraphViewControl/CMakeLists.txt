@@ -52,10 +52,17 @@ target_link_libraries(${PROJECT_NAME}
 	${CMAKE_BINARY_DIR}/bin/HPCCSystemsGraphViewControl/Release/graphrender.lib
     )
 elseif ( APPLE )
-target_link_libraries(${PROJECT_NAME}
-	${CMAKE_BINARY_DIR}/bin/HPCCSystemsGraphViewControl/Release/libgraphdb.dylib
-	${CMAKE_BINARY_DIR}/bin/HPCCSystemsGraphViewControl/Release/libgraphrender.dylib
-    )
+IF ( "${CMAKE_GENERATOR}" STREQUAL "Unix Makefiles" )
+	target_link_libraries(${PROJECT_NAME}
+		${CMAKE_BINARY_DIR}/bin/HPCCSystemsGraphViewControl/libgraphdb.dylib
+		${CMAKE_BINARY_DIR}/bin/HPCCSystemsGraphViewControl/libgraphrender.dylib
+		)
+ELSE ()
+	target_link_libraries(${PROJECT_NAME}
+		${CMAKE_BINARY_DIR}/bin/HPCCSystemsGraphViewControl/Release/libgraphdb.dylib
+		${CMAKE_BINARY_DIR}/bin/HPCCSystemsGraphViewControl/Release/libgraphrender.dylib
+		)
+ENDIF ()
 elseif ( UNIX )
 target_link_libraries(${PROJECT_NAME}
 	${CMAKE_BINARY_DIR}/bin/HPCCSystemsGraphViewControl/libgraphdb.so
