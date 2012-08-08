@@ -29,6 +29,14 @@
 namespace hpcc
 {
 //  ===========================================================================
+class ParseException : public std::exception
+{
+public:
+	ParseException() : std::exception()
+	{
+	}
+};
+//  ===========================================================================
 class CSvgParser : public CStackParser
 {
 protected:
@@ -92,14 +100,21 @@ public:
 				}
 			}
 
-			unsigned int id = StringToUInt(e->m_attr["id"].c_str());
-			if (id)
-			{
-				m_currentItem = m_graph->GetGraphItem(id);
-				m_currentElementG = new ElementG();
-				m_currentItem->SetProperty(SVG_PROP_ELEMENTG, m_currentElementG);
+			GRAPH_TYPE type = GRAPH_TYPE_UNKNOWN;
+			if (e->m_attr["class"].compare("graph") == 0)
+				type = GRAPH_TYPE_GRAPH;
+			else if (e->m_attr["class"].compare("cluster") == 0)
+				type = GRAPH_TYPE_CLUSTER;
+			else if (e->m_attr["class"].compare("node") == 0)
+				type = GRAPH_TYPE_VERTEX;
+			else if (e->m_attr["class"].compare("edge") == 0)
+				type = GRAPH_TYPE_EDGE;
+			m_currentItem = m_graph->GetGraphItem(type, e->m_attr["id"]);
+			if (!m_currentItem) {
+				throw ParseException();
 			}
-			assert(m_currentItem);
+			m_currentElementG = new ElementG();
+			m_currentItem->SetProperty(SVG_PROP_ELEMENTG, m_currentElementG);
 		}
 
 		return;
@@ -215,13 +230,19 @@ void FixSubgraphSizes(ICluster * cluster, RectD  & parentRect)
 		parentRect.Union(childRect);
 }
 
-GRAPHDB_API void MergeSVG(IGraph * graph, const std::string & svg)
+GRAPHDB_API bool MergeSVG(IGraph * graph, const std::string & svg)
 {
 	CSvgParser parser(graph);
 	parser.Create();
-	parser.Parse(svg.c_str(), svg.length());
+	try
+	{
+		parser.Parse(svg.c_str(), svg.length());
+	} catch (ParseException & e) {
+		return false;
+	}
 	RectD childRect;
 	FixSubgraphSizes(graph, childRect);
+	return true;
 }
 
 GRAPHDB_API ElementG * GetElementG(IGraphItem * item)

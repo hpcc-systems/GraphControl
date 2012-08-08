@@ -102,7 +102,7 @@ public:
 	void LoadXML2(const std::string & xml);
 	void LoadXGMML(const std::string & xgmml);
 	void MergeXGMML(const std::string & xgmml);
-	void MergeSVG(const std::string & svg);
+	bool MergeSVG(const std::string & svg);
 	void LoadDOT(const std::string & dot);
 	const std::string GetSVG();
 	const std::string GetDOT();

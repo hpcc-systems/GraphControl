@@ -296,12 +296,16 @@ void HPCCSystemsGraphViewControl::MergeXGMML(const std::string & xgmml)
 	Invalidate();
 }
 
-void HPCCSystemsGraphViewControl::MergeSVG(const std::string & svg)
+bool HPCCSystemsGraphViewControl::MergeSVG(const std::string & svg)
 {
-	hpcc::MergeSVG(m_g, svg);
-	CalcScrollbars();
-	CenterOnGraphItem(NULL);
-	Invalidate();
+	if (hpcc::MergeSVG(m_g, svg))
+	{
+		CalcScrollbars();
+		CenterOnGraphItem(NULL);
+		Invalidate();
+		return true;
+	}
+	return false;
 }
 
 void HPCCSystemsGraphViewControl::LoadDOT(const std::string & dot)
