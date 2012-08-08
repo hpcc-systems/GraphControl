@@ -44,7 +44,6 @@ protected:
 	hpcc::IGraphBufferPtr m_buffer;
 	hpcc::IGraphPtr m_g;
 	hpcc::IGraphRenderPtr m_gr;
-	//hpcc::IGraphRenderPtr m_gro;
 	hpcc::IGraphHotItemPtr m_hotItem;
 	hpcc::IGraphSelectionBagPtr m_selection;
 
@@ -143,6 +142,7 @@ public:
         EVENTTYPE_CASE(FB::MouseMoveEvent, onMouseMove, FB::PluginWindow)
         EVENTTYPE_CASE(FB::MouseMoveEvent, onMouseMove, FB::PluginWindow)
         EVENTTYPE_CASE(FB::MouseScrollEvent, onMouseScroll, FB::PluginWindow)
+		EVENTTYPE_CASE(FB::ResizedEvent, onResized, FB::PluginWindow)
 		EVENTTYPE_CASE(FB::RefreshEvent, onRefresh, FB::PluginWindow)
         EVENTTYPE_CASE(FB::AttachedEvent, onWindowAttached, FB::PluginWindow)
         EVENTTYPE_CASE(FB::DetachedEvent, onWindowDetached, FB::PluginWindow)
@@ -154,6 +154,7 @@ public:
     virtual bool onMouseUp(FB::MouseUpEvent *evt, FB::PluginWindow *);
     virtual bool onMouseMove(FB::MouseMoveEvent *evt, FB::PluginWindow *);
     virtual bool onMouseScroll(FB::MouseScrollEvent *evt, FB::PluginWindow *);
+	virtual bool onResized(FB::ResizedEvent *evt, FB::PluginWindow *);
 	virtual bool onRefresh(FB::RefreshEvent *evt, FB::PluginWindow *);
     virtual bool onWindowAttached(FB::AttachedEvent *evt, FB::PluginWindow *);
     virtual bool onWindowDetached(FB::DetachedEvent *evt, FB::PluginWindow *);
