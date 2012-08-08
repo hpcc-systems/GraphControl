@@ -37,7 +37,7 @@ mkdir build
 cd build
 
 # Create build folder for GraphControl.
-mkdir GraphConctrol
+mkdir GraphControl
 cd GraphControl
 
 # Create build folder for GraphControl libs.
@@ -58,5 +58,6 @@ cd ..
 # Linux:
  ln -s ~/git/build/GraphControl/bin/HPCCSystemsGraphViewControl/npHPCCSystemsGraphViewControl.so ~/.mozilla/plugins/npHPCCSystemsGraphViewControl.so
 # OSX:
- ln -s ~/git/build/GraphControl/bin/HPCCSystemsGraphViewControl/Release/HPCCSystemsGraphViewControl.plugin ~/Library/Internet\ Plug-Ins/HPCCSystemsGraphViewControl.plugin
+ ln -s ~/git/build/GraphControl/projects/HPCCSystemsGraphViewControl/HPCCSystemsGraphViewControl.plugin ~/Library/Internet\ Plug-Ins/HPCCSystemsGraphViewControl.plugin
+
 
