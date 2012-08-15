@@ -48,8 +48,8 @@ message("EXECUTABLE_OUTPUT_PATH  ${EXECUTABLE_OUTPUT_PATH}")
 if ( WIN32 )
 target_link_libraries(${PROJECT_NAME}
 	${Boost_LIBRARIES}
-	${CMAKE_BINARY_DIR}/bin/HPCCSystemsGraphViewControl/Release/graphdb.lib
-	${CMAKE_BINARY_DIR}/bin/HPCCSystemsGraphViewControl/Release/graphrender.lib
+	${CMAKE_BINARY_DIR}/bin/HPCCSystemsGraphViewControl/$(ConfigurationName)/graphdb.lib
+	${CMAKE_BINARY_DIR}/bin/HPCCSystemsGraphViewControl/$(ConfigurationName)/graphrender.lib
     )
 elseif ( APPLE )
 IF ( "${CMAKE_GENERATOR}" STREQUAL "Unix Makefiles" )
@@ -69,3 +69,4 @@ target_link_libraries(${PROJECT_NAME}
 	${CMAKE_BINARY_DIR}/bin/HPCCSystemsGraphViewControl/libgraphrender.so
     )
 endif()
+

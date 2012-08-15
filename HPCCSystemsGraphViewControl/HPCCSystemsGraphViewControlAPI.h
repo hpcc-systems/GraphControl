@@ -167,10 +167,10 @@ public:
     void testEvent();
 
 	//  Fire Events
-	FB_JSAPI_EVENT(Scaled, 1, (int));
+	FB_JSAPI_EVENT(Scaled, 1, (const int));
 	FB_JSAPI_EVENT(LayoutFinished, 0, ());
-	FB_JSAPI_EVENT(MouseDoubleClick, 1, (int));
-	FB_JSAPI_EVENT(SelectionChanged, 1, (FB::VariantList));
+	FB_JSAPI_EVENT(MouseDoubleClick, 1, (const int));
+	FB_JSAPI_EVENT(SelectionChanged, 1, (const FB::VariantList &));
 
 private:
     HPCCSystemsGraphViewControlWeakPtr m_plugin;
