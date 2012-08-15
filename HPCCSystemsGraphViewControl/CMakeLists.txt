@@ -48,17 +48,25 @@ message("EXECUTABLE_OUTPUT_PATH  ${EXECUTABLE_OUTPUT_PATH}")
 if ( WIN32 )
 target_link_libraries(${PROJECT_NAME}
 	${Boost_LIBRARIES}
-	${CMAKE_BINARY_DIR}/bin/HPCCSystemsGraphViewControl/Release/graphdb.lib
-	${CMAKE_BINARY_DIR}/bin/HPCCSystemsGraphViewControl/Release/graphrender.lib
+	${CMAKE_BINARY_DIR}/bin/HPCCSystemsGraphViewControl/$(ConfigurationName)/graphdb.lib
+	${CMAKE_BINARY_DIR}/bin/HPCCSystemsGraphViewControl/$(ConfigurationName)/graphrender.lib
     )
 elseif ( APPLE )
-target_link_libraries(${PROJECT_NAME}
-	${CMAKE_BINARY_DIR}/bin/HPCCSystemsGraphViewControl/Release/libgraphdb.dylib
-	${CMAKE_BINARY_DIR}/bin/HPCCSystemsGraphViewControl/Release/libgraphrender.dylib
-    )
+IF ( "${CMAKE_GENERATOR}" STREQUAL "Unix Makefiles" )
+	target_link_libraries(${PROJECT_NAME}
+		${CMAKE_BINARY_DIR}/bin/HPCCSystemsGraphViewControl/libgraphdb.dylib
+		${CMAKE_BINARY_DIR}/bin/HPCCSystemsGraphViewControl/libgraphrender.dylib
+		)
+ELSE ()
+	target_link_libraries(${PROJECT_NAME}
+		${CMAKE_BINARY_DIR}/bin/HPCCSystemsGraphViewControl/Release/libgraphdb.dylib
+		${CMAKE_BINARY_DIR}/bin/HPCCSystemsGraphViewControl/Release/libgraphrender.dylib
+		)
+ENDIF ()
 elseif ( UNIX )
 target_link_libraries(${PROJECT_NAME}
 	${CMAKE_BINARY_DIR}/bin/HPCCSystemsGraphViewControl/libgraphdb.so
 	${CMAKE_BINARY_DIR}/bin/HPCCSystemsGraphViewControl/libgraphrender.so
     )
 endif()
+
