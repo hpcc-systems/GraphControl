@@ -34,6 +34,7 @@ include_directories (
 
 set (	SRCS
 	precompiled_headers.h
+	precompiled_headers.cpp
 
 	libagraph.cpp
 	libagraph.h
@@ -50,12 +51,12 @@ elseif(APPLE)
 elseif(UNIX)
 endif()
 
-ADD_PRECOMPILED_HEADER(${PROJECT_NAME} "${CMAKE_CURRENT_SOURCE_DIR}/precompiled_headers.h" "${CMAKE_CURRENT_SOURCE_DIR}/precompiled_headers.cpp" SRCS)
 if (WITH_HPCC_RUNTIME)
 	add_library ( graphlayout SHARED ${SRCS} )
 else (WITH_HPCC_RUNTIME)
 	add_library ( graphlayout STATIC ${SRCS} )
 endif (WITH_HPCC_RUNTIME)
+ADD_PRECOMPILED_HEADER(${PROJECT_NAME} "precompiled_headers.h" "precompiled_headers.cpp" SRCS)
 
 # *********************************************************************
 

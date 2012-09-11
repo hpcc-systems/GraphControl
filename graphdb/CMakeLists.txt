@@ -19,6 +19,8 @@ include_directories (
 
 set (	SRCS 
 	precompiled_headers.h
+	precompiled_headers.cpp
+
 	GraphCluster.cpp
 	GraphCluster.h
 	GraphDB.cpp
@@ -58,12 +60,12 @@ set (	SRCS
 
 add_definitions(-D_UNICODE)
 
-ADD_PRECOMPILED_HEADER(${PROJECT_NAME} "${CMAKE_CURRENT_SOURCE_DIR}/precompiled_headers.h" "${CMAKE_CURRENT_SOURCE_DIR}/precompiled_headers.cpp" SRCS)
 if (WITH_HPCC_RUNTIME)
 	add_library ( graphdb SHARED ${SRCS} )
 else (WITH_HPCC_RUNTIME)
 	add_library ( graphdb STATIC ${SRCS} )
 endif (WITH_HPCC_RUNTIME)
+ADD_PRECOMPILED_HEADER(${PROJECT_NAME} "precompiled_headers.h" "precompiled_headers.cpp" SRCS)
 
 # *********************************************************************
 

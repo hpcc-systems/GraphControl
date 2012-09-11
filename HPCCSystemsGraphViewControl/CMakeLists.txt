@@ -16,8 +16,6 @@ file (GLOB GENERAL RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
     [^.]*.cmake
     )
 
-message("${CMAKE_CURRENT_SOURCE_DIR}")
-message("Boost:  ${Boost_INCLUDE_DIRS}")
 include_directories(${PLUGIN_INCLUDE_DIRS}
 	${Boost_INCLUDE_DIRS}
 	${CMAKE_CURRENT_SOURCE_DIR}/../graphdb
@@ -75,3 +73,34 @@ target_link_libraries(${PROJECT_NAME}
 	graphdb
 	graphrender
 	)
+
+include ( InstallRequiredSystemLibraries )
+
+if ( CMAKE_SIZEOF_VOID_P EQUAL 8 )
+    set(CPACK_SYSTEM_NAME "${CMAKE_SYSTEM_NAME}_x86_64")
+else ()
+    set(CPACK_SYSTEM_NAME "${CMAKE_SYSTEM_NAME}_i386")
+endif ()
+
+if ( "${HPCC_MATURITY}" STREQUAL "release" )
+    set ( stagever "${HPCC_SEQUENCE}" )
+else ()
+    set ( stagever "${HPCC_SEQUENCE}${HPCC_MATURITY}" )
+endif ()
+
+if ( "${CMAKE_BUILD_TYPE}" STREQUAL "Debug" )
+    set ( stagever "${stagever}-Debug" )
+endif ( "${CMAKE_BUILD_TYPE}" STREQUAL "Debug" )
+
+set ( CPACK_PACKAGE_NAME "hpccsystems-graphcontrol" )
+set ( CPACK_PACKAGE_VERSION_MAJOR ${HPCC_MAJOR} )
+set ( CPACK_PACKAGE_VERSION_MINOR ${HPCC_MINOR} )
+set ( CPACK_PACKAGE_VERSION_PATCH ${HPCC_POINT}-${stagever} )
+
+set ( CPACK_PACKAGE_CONTACT "HPCCSystems <ossdevelopment@lexisnexis.com>" )
+set ( CPACK_DEBIAN_PACKAGE_MAINTAINER "HPCCSystems <ossdevelopment@lexisnexis.com>" )
+set ( CPACK_RESOURCE_FILE_LICENSE "${FB_PROJECTS_DIR}/License.txt" )
+set ( CPACK_RESOURCE_FILE_README "${FB_PROJECTS_DIR}/CPackReadMe.txt" )
+
+include ( CPack )
+

@@ -30,3 +30,9 @@ add_x11_plugin(${PROJECT_NAME} SOURCES)
 target_link_libraries(${PROJECT_NAME}
     ${PLUGIN_INTERNAL_DEPS}
     )
+
+install ( TARGETS ${PROJECT_NAME} DESTINATION  "." )
+
+set ( PLUGIN_INSTALL_PREFIX "/usr/lib/mozilla/plugins" )
+set ( CMAKE_INSTALL_PREFIX "${PLUGIN_INSTALL_PREFIX}" CACHE INTERNAL "" )
+

@@ -39,10 +39,10 @@ add_windows_plugin(${PROJECT_NAME} SOURCES)
 # still work. Your cert should only be on the build machine and shouldn't be in
 # source control!
 # -- uncomment lines below this to enable signing --
-#firebreath_sign_plugin(${PROJECT_NAME}
-#    "${CMAKE_CURRENT_SOURCE_DIR}/sign/certificate.pfx"
-#    "${CMAKE_CURRENT_SOURCE_DIR}/sign/passphrase.txt"
-#    "http://timestamp.verisign.com/scripts/timestamp.dll")
+firebreath_sign_plugin(${PROJECT_NAME}
+    "${CMAKE_CURRENT_SOURCE_DIR}/sign/certificate.pfx"
+    "${CMAKE_CURRENT_SOURCE_DIR}/sign/passphrase.txt"
+    "http://timestamp.verisign.com/scripts/timestamp.dll")
 
 # add library dependencies here; leave ${PLUGIN_INTERNAL_DEPS} there unless you know what you're doing!
 target_link_libraries(${PROJECT_NAME}
@@ -66,8 +66,8 @@ add_wix_installer( ${PLUGIN_NAME}
 
 # This is an example of how to add a build step to sign the WiX installer
 # -- uncomment lines below this to enable signing --
-#firebreath_sign_file("${PLUGIN_NAME}_WiXInstall"
-#    "${FB_BIN_DIR}/${PLUGIN_NAME}/${CMAKE_CFG_INTDIR}/${PLUGIN_NAME}.msi"
-#    "${CMAKE_CURRENT_SOURCE_DIR}/sign/certificate.pfx"
-#    "${CMAKE_CURRENT_SOURCE_DIR}/sign/passphrase.txt"
-#    "http://timestamp.verisign.com/scripts/timestamp.dll")
+firebreath_sign_file("${PLUGIN_NAME}_WiXInstall"
+    "${FB_BIN_DIR}/${PLUGIN_NAME}/${CMAKE_CFG_INTDIR}/${PLUGIN_NAME}.msi"
+    "${CMAKE_CURRENT_SOURCE_DIR}/sign/certificate.pfx"
+    "${CMAKE_CURRENT_SOURCE_DIR}/sign/passphrase.txt"
+    "http://timestamp.verisign.com/scripts/timestamp.dll")
