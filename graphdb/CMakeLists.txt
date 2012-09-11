@@ -58,18 +58,12 @@ set (	SRCS
 
 add_definitions(-D_UNICODE)
 
-if(WIN32)
-	add_definitions(-DGRAPHDB_EXPORTS)
-elseif(APPLE)
-elseif(UNIX)
-endif()
-
-ADD_MSVC_PRECOMPILED_HEADER("precompiled_headers.h" "precompiled_headers.cpp" SRCS)
-if (WITH_STATIC_RUNTIME)
-	add_library ( graphdb STATIC ${SRCS} )
-else (WITH_STATIC_RUNTIME)
+ADD_PRECOMPILED_HEADER(${PROJECT_NAME} "${CMAKE_CURRENT_SOURCE_DIR}/precompiled_headers.h" "${CMAKE_CURRENT_SOURCE_DIR}/precompiled_headers.cpp" SRCS)
+if (WITH_HPCC_RUNTIME)
 	add_library ( graphdb SHARED ${SRCS} )
-endif (WITH_STATIC_RUNTIME)
+else (WITH_HPCC_RUNTIME)
+	add_library ( graphdb STATIC ${SRCS} )
+endif (WITH_HPCC_RUNTIME)
 
 # *********************************************************************
 
@@ -81,8 +75,7 @@ target_link_libraries ( graphdb
 
 # *********************************************************************
 
-INSTALL(TARGETS graphdb 
-	RUNTIME DESTINATION bin COMPONENT PLUGIN
-	LIBRARY DESTINATION lib
-	ARCHIVE DESTINATION lib/static
-)
+if (WITH_HPCC_RUNTIME)
+	install ( TARGETS graphdb RUNTIME DESTINATION bin LIBRARY DESTINATION lib )
+endif (WITH_HPCC_RUNTIME)
+

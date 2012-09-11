@@ -21,55 +21,48 @@
  ******************************************************************************/
 #pragma once
 
-#include <Unknown.h>
-
 #ifdef WIN32
-#  ifdef STATIC_LIB
-#    define GRAPHRENDER_API
-#  elif defined GRAPHRENDER_EXPORTS
-#    define GRAPHRENDER_API __declspec(dllexport)
+#  ifdef GRAPHLAYOUT_STATIC
+#    define LIBAGRAPH_API
+#  elif defined GRAPHLAYOUT_EXPORTS
+#    define LIBAGRAPH_API __declspec(dllexport)
 #  else
-#    define GRAPHRENDER_API __declspec(dllimport)
+#    define LIBAGRAPH_API __declspec(dllimport)
 #  endif
 #else
 #	if __GNUC__ >= 4
-#		define GRAPHRENDER_API __attribute__ ((visibility("default")))
+#		define LIBAGRAPH_API __attribute__ ((visibility("default")))
 #	else
-#		define GRAPHRENDER_API
+#		define LIBAGRAPH_API
 #	endif
 #endif
 
-#ifdef WIN32
-#include "targetver.h"
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#elif FB_MACOSX
-#include <Carbon/Carbon.h>
-#elif FB_X11
-#include <X11/Xlib.h>
-#include <gtk/gtk.h>
+#ifdef _MSC_VER
+#ifndef interface
+#define interface    struct __declspec(novtable)
+#endif
+#else
+#ifndef interface
+#define interface    struct
+#endif
 #endif
 
-namespace hpcc
-{
-hpcc_interface GRAPHRENDER_API IGraphBuffer : public IUnknown
-{
-	virtual void Resize(unsigned int width, unsigned int Height) = 0;
-	virtual unsigned int Width() const = 0;
-	virtual unsigned int Height() const = 0;
-	virtual int Stride() const = 0;
-    virtual unsigned char* GetBuffer() = 0;
+LIBAGRAPH_API bool DoLayout(const char * layout, const char* mem, const char* format, const char* scale, std::string & result);
 
-#ifdef WIN32
-    virtual void Draw(HWND hwnd, int dest_x, int dest_y) const = 0;
-#elif FB_MACOSX
-    virtual void Draw(CGContextRef context, int dest_x, int dest_y) const = 0;
-#elif FB_X11
-    virtual void Draw(GtkWidget * widget, int dest_x, int dest_y) const = 0;
-#endif
+typedef std::map<std::string, std::string> AttrMap;
+interface IGraphvizVisitor
+{
+	virtual void OnStartGraph(int kind, const std::string & id, const AttrMap & attrs) = 0;
+	virtual void OnEndGraph(int kind, const std::string & id) = 0;
 
+	virtual void OnStartCluster(const std::string & id, const AttrMap & attrs) = 0;
+	virtual void OnEndCluster(const std::string & id) = 0;
+
+	virtual void OnStartVertex(int id, const AttrMap & attrs) = 0;
+	virtual void OnEndVertex(int id) = 0;
+
+	virtual void OnStartEdge(int kind, int id, int sourceID, int targetID, const AttrMap & attrs) = 0;
+	virtual void OnEndEdge(int kind, int id) = 0;
 };
-typedef CUnknownPtr<IGraphBuffer> IGraphBufferPtr;
 
-GRAPHRENDER_API IGraphBuffer * CreateGraphBuffer(int width, int height);
-}
+LIBAGRAPH_API bool DoParse(const char* mem, IGraphvizVisitor * visitor);
