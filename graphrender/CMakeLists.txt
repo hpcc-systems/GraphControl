@@ -87,19 +87,13 @@ endif()
 
 add_definitions(-D_UNICODE -DAGG_USE_FREETYPE -DAGG_USE_AGG2D -DAGG2D_USE_FREETYPE)
 
-if(WIN32)
-	add_definitions(-DGRAPHRENDER_EXPORTS)
-elseif(APPLE)
-elseif(UNIX)
-endif()
-
 set(SOURCES ${SRCS} ${SRCS_WIN} ${SRCS_APPLE} ${SRCS_UNIX})
-ADD_MSVC_PRECOMPILED_HEADER("precompiled_headers.h" "precompiled_headers.cpp" SOURCES)
-if (WITH_STATIC_RUNTIME)
-	add_library ( graphrender STATIC ${SOURCES} )
-else (WITH_STATIC_RUNTIME)
+ADD_PRECOMPILED_HEADER(${PROJECT_NAME} "${CMAKE_CURRENT_SOURCE_DIR}/precompiled_headers.h" "${CMAKE_CURRENT_SOURCE_DIR}/precompiled_headers.cpp" SOURCES)
+if (WITH_HPCC_RUNTIME)
 	add_library ( graphrender SHARED ${SOURCES} )
-endif (WITH_STATIC_RUNTIME)
+else (WITH_HPCC_RUNTIME)
+	add_library ( graphrender STATIC ${SOURCES} )
+endif (WITH_HPCC_RUNTIME)
 
 # *********************************************************************
 
@@ -110,8 +104,7 @@ target_link_libraries ( graphrender
 
 # *********************************************************************
 
-INSTALL(TARGETS graphrender 
-	RUNTIME DESTINATION bin COMPONENT PLUGIN
-	LIBRARY DESTINATION lib
-	ARCHIVE DESTINATION lib/static
-)
+if (WITH_HPCC_RUNTIME)
+	install ( TARGETS graphrender RUNTIME DESTINATION bin LIBRARY DESTINATION lib )
+endif (WITH_HPCC_RUNTIME)
+
