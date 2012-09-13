@@ -5,6 +5,8 @@
 #
 #\**********************************************************/
 
+include ( "${FB_PROJECTS_DIR}/version.cmake" )
+
 set(PLUGIN_NAME "HPCCSystemsGraphViewControl")
 set(PLUGIN_PREFIX "HSGVC")
 set(COMPANY_NAME "HPCCSystems")
@@ -33,8 +35,8 @@ set(MOZILLA_PLUGINID "hpccsystems.com/HPCCSystemsGraphViewControl")
 
 # strings
 set(FBSTRING_CompanyName "HPCC Systems")
-set(FBSTRING_FileDescription "HPCC Systems Graph View Control")
-set(FBSTRING_PLUGIN_VERSION "1.0.0.0")
+set(FBSTRING_PluginDescription "HPCC Systems Graph View Control")
+set(FBSTRING_PLUGIN_VERSION "${HPCC_MAJOR}.${HPCC_MINOR}.${HPCC_POINT}.${HPCC_SEQUENCE}")
 set(FBSTRING_LegalCopyright "Copyright 2012 HPCC Systems")
 set(FBSTRING_PluginFileName "np${PLUGIN_NAME}.dll")
 set(FBSTRING_ProductName "HPCCSystemsGraphViewControl")
