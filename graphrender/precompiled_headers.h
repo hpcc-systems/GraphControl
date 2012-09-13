@@ -57,7 +57,7 @@
 #include <boost/smart_ptr/detail/atomic_count.hpp>
 #include <boost/thread.hpp>
 #include <boost/algorithm/string.hpp>
-#define BOOST_FILESYSTEM_VERSION 2
+#define BOOST_FILESYSTEM_VERSION 3
 #include <boost/filesystem.hpp>
 
 #include <ft2build.h>
