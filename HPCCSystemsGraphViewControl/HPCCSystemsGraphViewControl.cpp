@@ -605,7 +605,6 @@ bool HPCCSystemsGraphViewControl::onMouseMove(FB::MouseMoveEvent *evt, FB::Plugi
 
 bool HPCCSystemsGraphViewControl::onMouseScroll(FB::MouseScrollEvent *evt, FB::PluginWindow *)
 {
-    printf("onMouseScroll: %d\n", evt->m_state);
 	hpcc::PointD pt(evt->m_x, evt->m_y);
 	hpcc::PointD delta(evt->m_dx, evt->m_dy);
 	if (evt->m_state & FB::MouseButtonEvent::ModifierState_Control)
@@ -631,8 +630,8 @@ bool HPCCSystemsGraphViewControl::onMouseScroll(FB::MouseScrollEvent *evt, FB::P
 		hpcc::PointD worldDblClk(point.x, point.y);
 		worldDblClk = m_gr->ScreenToWorld(worldDblClk);
 
-		pt.x -= delta.x;
-		pt.y -= delta.y;
+		pt.x += delta.x;
+		pt.y += delta.y;
 
 		MoveTo(worldDblClk, pt.x, pt.y);
 	}
@@ -687,6 +686,9 @@ bool HPCCSystemsGraphViewControl::onRefresh(FB::RefreshEvent *evt, FB::PluginWin
 bool HPCCSystemsGraphViewControl::onWindowAttached(FB::AttachedEvent *evt, FB::PluginWindow *)
 {
     // The window is attached; act appropriately
+#if defined FB_WIN
+	((FB::PluginWindowWin*)GetWindow())->setSuppressEraseBackground(true);
+#endif
     return false;
 }
 
