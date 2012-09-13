@@ -35,6 +35,7 @@ endif()
 
 set (	SRCS
 	precompiled_headers.h
+	precompiled_headers.cpp
 
 	GraphRender.cpp
 	GraphRender.h
@@ -88,12 +89,12 @@ endif()
 add_definitions(-D_UNICODE -DAGG_USE_FREETYPE -DAGG_USE_AGG2D -DAGG2D_USE_FREETYPE)
 
 set(SOURCES ${SRCS} ${SRCS_WIN} ${SRCS_APPLE} ${SRCS_UNIX})
-ADD_PRECOMPILED_HEADER(${PROJECT_NAME} "${CMAKE_CURRENT_SOURCE_DIR}/precompiled_headers.h" "${CMAKE_CURRENT_SOURCE_DIR}/precompiled_headers.cpp" SOURCES)
 if (WITH_HPCC_RUNTIME)
 	add_library ( graphrender SHARED ${SOURCES} )
 else (WITH_HPCC_RUNTIME)
 	add_library ( graphrender STATIC ${SOURCES} )
 endif (WITH_HPCC_RUNTIME)
+ADD_PRECOMPILED_HEADER(${PROJECT_NAME} "precompiled_headers.h" "precompiled_headers.cpp" SOURCES)
 
 # *********************************************************************
 
