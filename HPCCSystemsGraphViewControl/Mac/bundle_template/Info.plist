@@ -5,9 +5,9 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
-	<string>${PLUGIN_NAME}</string>
+	<string>${FBSTRING_PluginName}</string>
 	<key>CFBundleGetInfoString</key>
-    <string>${PLUGIN_NAME} ${FBSTRING_PLUGIN_VERSION}, ${FBSTRING_LegalCopyright}</string>
+    <string>${FBSTRING_PluginName} ${FBSTRING_PLUGIN_VERSION}, ${FBSTRING_LegalCopyright}</string>
 	<key>CFBundleIdentifier</key>
     <string>com.${FBTYPELIB_NAME}.${FBSTRING_PluginName}</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -15,7 +15,7 @@
 	<key>CFBundlePackageType</key>
 	<string>BRPL</string>
 	<key>CFBundleShortVersionString</key>
-    <string>${PLUGIN_NAME} ${FBSTRING_PLUGIN_VERSION}</string>
+    <string>${FBSTRING_PluginName} ${FBSTRING_PLUGIN_VERSION}</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
@@ -41,10 +41,10 @@
 	<key>WebPluginName</key>
 	<string>${FBSTRING_ProductName}</string>
 	<key>WebPluginDescription</key>
-	<string>${FBSTRING_FileDescription}</string>
+	<string>${FBSTRING_PluginDescription}</string>
 	<key>WebPluginMIMETypes</key>
 	<dict>
-@foreach (FBSTRING_MIMEType CUR_MIMETYPE FBSTRING_FileDescription CUR_DESC)
+@foreach (FBSTRING_MIMEType CUR_MIMETYPE FBSTRING_PluginDescription CUR_DESC)
 		<key>${CUR_MIMETYPE}</key>
 		<dict>
             <key>WebPluginExtensions</key>

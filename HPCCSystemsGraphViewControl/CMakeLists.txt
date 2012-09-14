@@ -76,11 +76,7 @@ target_link_libraries(${PROJECT_NAME}
 
 include ( InstallRequiredSystemLibraries )
 
-if ( CMAKE_SIZEOF_VOID_P EQUAL 8 )
-    set(CPACK_SYSTEM_NAME "${CMAKE_SYSTEM_NAME}_x86_64")
-else ()
-    set(CPACK_SYSTEM_NAME "${CMAKE_SYSTEM_NAME}_i386")
-endif ()
+set(CPACK_SYSTEM_NAME "${CMAKE_SYSTEM_NAME}_${FB_PLATFORM_ARCH_NAME}")
 
 if ( "${HPCC_MATURITY}" STREQUAL "release" )
     set ( stagever "${HPCC_SEQUENCE}" )
@@ -101,6 +97,8 @@ set ( CPACK_PACKAGE_CONTACT "HPCCSystems <ossdevelopment@lexisnexis.com>" )
 set ( CPACK_DEBIAN_PACKAGE_MAINTAINER "HPCCSystems <ossdevelopment@lexisnexis.com>" )
 set ( CPACK_RESOURCE_FILE_LICENSE "${FB_PROJECTS_DIR}/License.txt" )
 set ( CPACK_RESOURCE_FILE_README "${FB_PROJECTS_DIR}/CPackReadMe.txt" )
+
+set ( CPACK_PACKAGING_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX} )
 
 include ( CPack )
 
