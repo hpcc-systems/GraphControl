@@ -14,7 +14,7 @@ git clone https://github.com/hpcc-systems/GraphControl.git
 # Get Firebreath library
 git clone https://github.com/GordonSmith/FireBreath.git
 cd FireBreath
-git checkout X11_Support
+git checkout HPCCSystems
 cd ..
 
 # Get unrestricted (2.4) agg libraries

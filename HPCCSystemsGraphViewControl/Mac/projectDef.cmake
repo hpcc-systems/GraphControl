@@ -37,30 +37,9 @@ target_link_libraries(${PROJECT_NAME}
     ${PLUGIN_INTERNAL_DEPS}
     )
 
-# Copy plugin to Plug-Ins directory:
-function(releasePlugin projectName pathToPlugin releaseDirectory)
- ADD_CUSTOM_COMMAND(
- TARGET ${PROJECT_NAME}
- POST_BUILD
- COMMAND mkdir -p ${releaseDirectory}/${projectName}.plugin
- )
- ADD_CUSTOM_COMMAND( TARGET ${PROJECT_NAME}
- POST_BUILD
- COMMAND cp -pr ${pathToPlugin} ${releaseDirectory}
- )
-endfunction()
- 
 # Current output
-set(PBIN "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${PROJECT_NAME}.plugin")
+set(PBIN "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${FBSTRING_PluginName}.plugin")
  
-# Uncomment one of the following releasePlugin() calls to install the plugin
-  
-# Copy plugin to ~/Library/Internet Plug-Ins (single user)
-# releasePlugin("${PROJECT_NAME}" "${PBIN}" "~/Library/Internet Plug-Ins")
- 
-# Copy plugin to /Library/Internet Plug-Ins (all users)
-# releasePlugin("${PROJECT_NAME}" "${PBIN}" "/Library/Internet Plug-Ins")
-
 install ( DIRECTORY ${PBIN} DESTINATION "." )
 
 set ( PLUGIN_INSTALL_PREFIX "/Library/Internet Plug-Ins" )
