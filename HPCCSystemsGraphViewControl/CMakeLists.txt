@@ -8,7 +8,7 @@
 cmake_minimum_required (VERSION 2.6)
 set (CMAKE_BACKWARDS_COMPATIBILITY 2.6)
 
-Project(${PLUGIN_NAME})
+Project ( ${PLUGIN_NAME} )
 
 file (GLOB GENERAL RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
     [^.]*.cpp
@@ -73,6 +73,10 @@ target_link_libraries(${PROJECT_NAME}
 	graphdb
 	graphrender
 	)
+link_boost_library ( ${PROJECT_NAME} system )
+link_boost_library ( ${PROJECT_NAME} date_time )
+link_boost_library ( ${PROJECT_NAME} filesystem )
+link_boost_library ( ${PROJECT_NAME} regex )
 
 include ( InstallRequiredSystemLibraries )
 
