@@ -122,8 +122,8 @@ protected:
 			{
 				if (boost::algorithm::iequals(boost::filesystem::extension(*itr), ext))
 				{
-					found[itr->path().stem()] = itr->path().native_file_string();
-					getFamilyName(itr->path().native_file_string());
+					found[itr->path().stem().string()] = itr->path().string();
+					getFamilyName(itr->path().string());
 				}
 
 				findFilesByExt(*itr, ext, found);
