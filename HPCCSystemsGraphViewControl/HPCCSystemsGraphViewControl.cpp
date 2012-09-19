@@ -491,10 +491,26 @@ const char * HPCCSystemsGraphViewControl::GetGlobalID(int item)
 	return m_g->GetExternalID(item);
 }
 
+int HPCCSystemsGraphViewControl::GetClusters(std::vector<int> & results)
+{
+	const hpcc::IClusterSet & clusters = m_g->GetAllClusters();
+	for(hpcc::IClusterSet::const_iterator itr = clusters.begin(); itr != clusters.end(); ++itr)
+		results.push_back(itr->get()->GetID());
+	return results.size();
+}
+
 int HPCCSystemsGraphViewControl::GetVertices(std::vector<int> & results)
 {
 	const hpcc::IVertexSet & vertices = m_g->GetAllVertices();
 	for(hpcc::IVertexSet::const_iterator itr = vertices.begin(); itr != vertices.end(); ++itr)
+		results.push_back(itr->get()->GetID());
+	return results.size();
+}
+
+int HPCCSystemsGraphViewControl::GetEdges(std::vector<int> & results)
+{
+	const hpcc::IEdgeSet & edges = m_g->GetAllEdges();
+	for(hpcc::IEdgeSet::const_iterator itr = edges.begin(); itr != edges.end(); ++itr)
 		results.push_back(itr->get()->GetID());
 	return results.size();
 }
