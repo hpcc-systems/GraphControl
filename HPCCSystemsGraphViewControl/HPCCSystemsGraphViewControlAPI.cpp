@@ -29,20 +29,7 @@
 #include <XgmmlParser.h>
 #include <boost/algorithm/string.hpp>
 
-///////////////////////////////////////////////////////////////////////////////
-/// @fn FB::variant HPCCSystemsGraphViewControlAPI::echo(const FB::variant& msg)
-///
-/// @brief  Echos whatever is passed from Javascript.
-///         Go ahead and change it. See what happens!
-///////////////////////////////////////////////////////////////////////////////
-FB::variant HPCCSystemsGraphViewControlAPI::echo(const FB::variant& msg)
-{
-    static int n(0);
-    fire_echo("So far, you clicked this many timesXXX: ", n++);
-
-    // return "foobar";
-    return msg;
-}
+#include "Version.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 /// @fn HPCCSystemsGraphViewControlPtr HPCCSystemsGraphViewControlAPI::getPlugin()
@@ -61,21 +48,29 @@ HPCCSystemsGraphViewControlPtr HPCCSystemsGraphViewControlAPI::getPlugin()
     return plugin;
 }
 
-// Read/Write property testString
-std::string HPCCSystemsGraphViewControlAPI::get_testString()
+std::string HPCCSystemsGraphViewControlAPI::get_version() const
 {
-    return "TODO";//GetVersionString();
+    return hpcc_version;
 }
 
-void HPCCSystemsGraphViewControlAPI::set_testString(const std::string& val)
+int HPCCSystemsGraphViewControlAPI::get_versionMajor() const
 {
-    m_testString = val;
+	return hpcc_major;
 }
 
-// Read-only property version
-std::string HPCCSystemsGraphViewControlAPI::get_version()
+int HPCCSystemsGraphViewControlAPI::get_versionMinor() const
 {
-    return "TODO";//GetVersionString();
+	return hpcc_minor;
+}
+
+int HPCCSystemsGraphViewControlAPI::get_versionPoint() const
+{
+	return hpcc_point;
+}
+
+int HPCCSystemsGraphViewControlAPI::get_versionSequence() const
+{
+	return hpcc_sequence;
 }
 
 bool HPCCSystemsGraphViewControlAPI::clear()
@@ -305,10 +300,5 @@ const std::string HPCCSystemsGraphViewControlAPI::getLocalisedXGMML(const std::v
 
 	retVal = "<graph>" + retVal + "</graph>";
 	return retVal;
-}
-
-void HPCCSystemsGraphViewControlAPI::testEvent()
-{
-    fire_test();
 }
 
