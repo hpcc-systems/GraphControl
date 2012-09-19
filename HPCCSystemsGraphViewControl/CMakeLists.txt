@@ -10,6 +10,8 @@ set (CMAKE_BACKWARDS_COMPATIBILITY 2.6)
 
 Project ( ${PLUGIN_NAME} )
 
+configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/Version.h.in ${CMAKE_CURRENT_SOURCE_DIR}/Version.h )
+
 file (GLOB GENERAL RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
     [^.]*.cpp
     [^.]*.h

@@ -1,0 +1,12 @@
+#ifndef H_HPCCSystemsGraphViewControlVersion
+#define H_HPCCSystemsGraphViewControlVersion
+
+const char * const hpcc_project = "@HPCC_PROJECT@";
+const int hpcc_major = @HPCC_MAJOR@;
+const int hpcc_minor = @HPCC_MINOR@;
+const int hpcc_point = @HPCC_POINT@;
+const char * const hpcc_maturity = "@HPCC_MATURITY@";
+const int hpcc_sequence = @HPCC_SEQUENCE@;
+const char * const hpcc_version = "@HPCC_MAJOR@.@HPCC_MINOR@.@HPCC_POINT@.@HPCC_SEQUENCE@";
+
+#endif

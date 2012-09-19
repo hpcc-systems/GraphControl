@@ -47,58 +47,43 @@ public:
     HPCCSystemsGraphViewControlAPI(const HPCCSystemsGraphViewControlPtr& plugin, const FB::BrowserHostPtr& host) :
         m_plugin(plugin), m_host(host)
     {
-        registerMethod("echo",      make_method(this, &HPCCSystemsGraphViewControlAPI::echo));
-        registerMethod("testEvent", make_method(this, &HPCCSystemsGraphViewControlAPI::testEvent));
         
-        // Read-write property
-        registerProperty("testString",
-                         make_property(this,
-                                       &HPCCSystemsGraphViewControlAPI::get_testString,
-                                       &HPCCSystemsGraphViewControlAPI::set_testString));
-        
-        // Read-only property
-        registerProperty("version",
-                         make_property(this,
-                                       &HPCCSystemsGraphViewControlAPI::get_version));
+        registerProperty("version", make_property(this, &HPCCSystemsGraphViewControlAPI::get_version));
+        registerProperty("version_major", make_property(this, &HPCCSystemsGraphViewControlAPI::get_versionMajor));
+        registerProperty("version_minor", make_property(this, &HPCCSystemsGraphViewControlAPI::get_versionMinor));
+        registerProperty("version_point", make_property(this, &HPCCSystemsGraphViewControlAPI::get_versionPoint));
+        registerProperty("version_sequence", make_property(this, &HPCCSystemsGraphViewControlAPI::get_versionSequence));
 	
-	registerMethod("clear", make_method(this, &HPCCSystemsGraphViewControlAPI::clear));
-	registerMethod("loadXGMML", make_method(this, &HPCCSystemsGraphViewControlAPI::loadXGMML));
-	registerMethod("mergeXGMML", make_method(this, &HPCCSystemsGraphViewControlAPI::mergeXGMML));
-	registerMethod("mergeSVG", make_method(this, &HPCCSystemsGraphViewControlAPI::mergeSVG));
-	registerMethod("loadDOT", make_method(this, &HPCCSystemsGraphViewControlAPI::loadDOT));
-	registerMethod("startLayout", make_method(this, &HPCCSystemsGraphViewControlAPI::startLayout));
-	registerMethod("setScale", make_method(this, &HPCCSystemsGraphViewControlAPI::setScale));
-	registerMethod("getScale", make_method(this, &HPCCSystemsGraphViewControlAPI::getScale));
-	registerMethod("centerOnItem", make_method(this, &HPCCSystemsGraphViewControlAPI::centerOnItem));
-	registerMethod("setMessage", make_method(this, &HPCCSystemsGraphViewControlAPI::setMessage));
-	registerMethod("find", make_method(this, &HPCCSystemsGraphViewControlAPI::find));
-	registerMethod("hasItems", make_method(this, &HPCCSystemsGraphViewControlAPI::hasItems));
-	registerMethod("getSelection", make_method(this, &HPCCSystemsGraphViewControlAPI::getSelection));
-	registerMethod("getSelectionAsGlobalID", make_method(this, &HPCCSystemsGraphViewControlAPI::getSelectionAsGlobalID));
-	registerMethod("setSelected", make_method(this, &HPCCSystemsGraphViewControlAPI::setSelected));
-	registerMethod("setSelectedAsGlobalID", make_method(this, &HPCCSystemsGraphViewControlAPI::setSelectedAsGlobalID));
-	registerMethod("getProperties", make_method(this, &HPCCSystemsGraphViewControlAPI::getProperties));
-	registerMethod("getProperty", make_method(this, &HPCCSystemsGraphViewControlAPI::getProperty));
-	registerMethod("getItem", make_method(this, &HPCCSystemsGraphViewControlAPI::getItem));
-	registerMethod("getGlobalID", make_method(this, &HPCCSystemsGraphViewControlAPI::getGlobalID));
-	registerMethod("getVertices", make_method(this, &HPCCSystemsGraphViewControlAPI::getVertices));
-	registerMethod("onMouseWheel", make_method(this, &HPCCSystemsGraphViewControlAPI::onMouseWheel));
-	registerMethod("getRunningSubgraph", make_method(this, &HPCCSystemsGraphViewControlAPI::getRunningSubgraph));
+		registerMethod("clear", make_method(this, &HPCCSystemsGraphViewControlAPI::clear));
+		registerMethod("loadXGMML", make_method(this, &HPCCSystemsGraphViewControlAPI::loadXGMML));
+		registerMethod("mergeXGMML", make_method(this, &HPCCSystemsGraphViewControlAPI::mergeXGMML));
+		registerMethod("mergeSVG", make_method(this, &HPCCSystemsGraphViewControlAPI::mergeSVG));
+		registerMethod("loadDOT", make_method(this, &HPCCSystemsGraphViewControlAPI::loadDOT));
+		registerMethod("startLayout", make_method(this, &HPCCSystemsGraphViewControlAPI::startLayout));
+		registerMethod("setScale", make_method(this, &HPCCSystemsGraphViewControlAPI::setScale));
+		registerMethod("getScale", make_method(this, &HPCCSystemsGraphViewControlAPI::getScale));
+		registerMethod("centerOnItem", make_method(this, &HPCCSystemsGraphViewControlAPI::centerOnItem));
+		registerMethod("setMessage", make_method(this, &HPCCSystemsGraphViewControlAPI::setMessage));
+		registerMethod("find", make_method(this, &HPCCSystemsGraphViewControlAPI::find));
+		registerMethod("hasItems", make_method(this, &HPCCSystemsGraphViewControlAPI::hasItems));
+		registerMethod("getSelection", make_method(this, &HPCCSystemsGraphViewControlAPI::getSelection));
+		registerMethod("getSelectionAsGlobalID", make_method(this, &HPCCSystemsGraphViewControlAPI::getSelectionAsGlobalID));
+		registerMethod("setSelected", make_method(this, &HPCCSystemsGraphViewControlAPI::setSelected));
+		registerMethod("setSelectedAsGlobalID", make_method(this, &HPCCSystemsGraphViewControlAPI::setSelectedAsGlobalID));
+		registerMethod("getProperties", make_method(this, &HPCCSystemsGraphViewControlAPI::getProperties));
+		registerMethod("getProperty", make_method(this, &HPCCSystemsGraphViewControlAPI::getProperty));
+		registerMethod("getItem", make_method(this, &HPCCSystemsGraphViewControlAPI::getItem));
+		registerMethod("getGlobalID", make_method(this, &HPCCSystemsGraphViewControlAPI::getGlobalID));
+		registerMethod("getVertices", make_method(this, &HPCCSystemsGraphViewControlAPI::getVertices));
+		registerMethod("onMouseWheel", make_method(this, &HPCCSystemsGraphViewControlAPI::onMouseWheel));
+		registerMethod("getRunningSubgraph", make_method(this, &HPCCSystemsGraphViewControlAPI::getRunningSubgraph));
 
-	registerMethod("loadTestData", make_method(this, &HPCCSystemsGraphViewControlAPI::loadTestData));
-	registerMethod("loadXML", make_method(this, &HPCCSystemsGraphViewControlAPI::loadXML));
-	registerMethod("loadXML2", make_method(this, &HPCCSystemsGraphViewControlAPI::loadXML2));
-	registerMethod("getSVG", make_method(this, &HPCCSystemsGraphViewControlAPI::getSVG));
-	registerMethod("getDOT", make_method(this, &HPCCSystemsGraphViewControlAPI::getDOT));
-	registerMethod("getLocalisedXGMML", make_method(this, &HPCCSystemsGraphViewControlAPI::getLocalisedXGMML));
-
-    registerMethod("testEvent", make_method(this, &HPCCSystemsGraphViewControlAPI::testEvent));
-
-    // Read-write property
-    registerProperty("testString", make_property(this, &HPCCSystemsGraphViewControlAPI::get_testString, &HPCCSystemsGraphViewControlAPI::set_testString));
-
-    // Read-only property
-    registerProperty("version", make_property(this, &HPCCSystemsGraphViewControlAPI::get_version));
+		registerMethod("loadTestData", make_method(this, &HPCCSystemsGraphViewControlAPI::loadTestData));
+		registerMethod("loadXML", make_method(this, &HPCCSystemsGraphViewControlAPI::loadXML));
+		registerMethod("loadXML2", make_method(this, &HPCCSystemsGraphViewControlAPI::loadXML2));
+		registerMethod("getSVG", make_method(this, &HPCCSystemsGraphViewControlAPI::getSVG));
+		registerMethod("getDOT", make_method(this, &HPCCSystemsGraphViewControlAPI::getDOT));
+		registerMethod("getLocalisedXGMML", make_method(this, &HPCCSystemsGraphViewControlAPI::getLocalisedXGMML));
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -112,12 +97,11 @@ public:
 
     HPCCSystemsGraphViewControlPtr getPlugin();
 
-    // Read/Write property ${PROPERTY.ident}
-    std::string get_testString();
-    void set_testString(const std::string& val);
-
-    // Read-only property ${PROPERTY.ident}
-    std::string get_version();
+    std::string get_version() const;
+    int get_versionMajor() const;
+    int get_versionMinor() const;
+    int get_versionPoint() const;
+    int get_versionSequence() const;
 
     // Method echo
 	void loadTestData();
