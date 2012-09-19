@@ -84,7 +84,11 @@ public:
 		registerMethod("getSVG", make_method(this, &HPCCSystemsGraphViewControlAPI::getSVG));
 		registerMethod("getDOT", make_method(this, &HPCCSystemsGraphViewControlAPI::getDOT));
 		registerMethod("getLocalisedXGMML", make_method(this, &HPCCSystemsGraphViewControlAPI::getLocalisedXGMML));
-    }
+
+		registerMethod("getSubgraphsWithProperties", make_method(this, &HPCCSystemsGraphViewControlAPI::getSubgraphsWithProperties));
+		registerMethod("getVerticesWithProperties", make_method(this, &HPCCSystemsGraphViewControlAPI::getVerticesWithProperties));
+		registerMethod("getEdgesWithProperties", make_method(this, &HPCCSystemsGraphViewControlAPI::getEdgesWithProperties));
+	}
 
     ///////////////////////////////////////////////////////////////////////////////
     /// @fn HPCCSystemsGraphViewControlAPI::~HPCCSystemsGraphViewControlAPI()
@@ -131,12 +135,19 @@ public:
 	int getRunningSubgraph();
 
 	FB::VariantMap getProperties(int item);
+	FB::VariantList getPropertiesForItems(const std::vector<int> & items);
 	std::string getProperty(int item, const std::string & key);
 
 	int getItem(const std::string & externalID);
 	std::string getGlobalID(int item);
-	FB::VariantList getVertices();
 
+	FB::VariantList getSubgraphsWithProperties();
+
+	FB::VariantList getVertices();
+	FB::VariantList getVerticesWithProperties();
+
+	FB::VariantList getEdgesWithProperties();
+	
 	bool onMouseWheel(unsigned int nFlags, short zDelta, int x, int y);
 
 	bool setMessage(const std::string& msg);

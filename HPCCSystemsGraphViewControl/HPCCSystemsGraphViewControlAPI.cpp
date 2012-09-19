@@ -212,11 +212,22 @@ FB::VariantMap HPCCSystemsGraphViewControlAPI::getProperties(int item)
 {
 	assert(getPlugin());
 	FB::VariantMap retVal;
+	retVal["_internalID"] = item;
+	retVal["_globalID"] = getGlobalID(item);
 
 	hpcc::StringStringMap properties;
 	getPlugin()->GetProperties(item, properties);
 	for(hpcc::StringStringMap::const_iterator itr = properties.begin(); itr != properties.end(); ++itr)
 		retVal[itr->first] = itr->second;
+
+	return retVal;
+}
+
+FB::VariantList HPCCSystemsGraphViewControlAPI::getPropertiesForItems(const std::vector<int> & items)
+{
+	FB::VariantList retVal;
+	for(std::vector<int>::const_iterator itr = items.begin(); itr != items.end(); ++itr)
+		retVal.push_back(getProperties(*itr));
 
 	return retVal;
 }
@@ -249,6 +260,27 @@ FB::VariantList HPCCSystemsGraphViewControlAPI::getVertices()
 		items.push_back(*itr);
 
 	return items;
+}
+
+FB::VariantList HPCCSystemsGraphViewControlAPI::getSubgraphsWithProperties()
+{
+	std::vector<int> subgraphs;
+	getPlugin()->GetClusters(subgraphs);
+	return getPropertiesForItems(subgraphs);
+}
+
+FB::VariantList HPCCSystemsGraphViewControlAPI::getVerticesWithProperties()
+{
+	std::vector<int> vertices;
+	getPlugin()->GetVertices(vertices);
+	return getPropertiesForItems(vertices);
+}
+
+FB::VariantList HPCCSystemsGraphViewControlAPI::getEdgesWithProperties()
+{
+	std::vector<int> edges;
+	getPlugin()->GetEdges(edges);
+	return getPropertiesForItems(edges);
 }
 
 bool HPCCSystemsGraphViewControlAPI::onMouseWheel(unsigned int nFlags, short zDelta, int x, int y)
