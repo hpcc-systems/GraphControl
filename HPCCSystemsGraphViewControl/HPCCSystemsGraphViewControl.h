@@ -123,7 +123,9 @@ public:
 	int GetProperties(int item, hpcc::StringStringMap & results);
 	unsigned int GetItem(const std::string &externalID);
 	const char * GetGlobalID(int item);
+	int GetClusters(std::vector<int> & results);
 	int GetVertices(std::vector<int> & results);
+	int GetEdges(std::vector<int> & results);
 	//  --- IAPICallback ---
 
     void onPluginReady();
