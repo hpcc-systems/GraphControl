@@ -16,7 +16,7 @@ message ("-- 64bit architecture is ${ARCH64BIT}")
 set ( HPCC_MAJOR 6 )
 set ( HPCC_MINOR 8 )
 set ( HPCC_POINT 4 )
-set ( HPCC_BUILD 0 )
+set ( HPCC_BUILD 1001 )
 set ( HPCC_VERSION ${HPCC_MAJOR}.${HPCC_MINOR}.${HPCC_POINT}.${HPCC_BUILD} )
 
 configure_file (
