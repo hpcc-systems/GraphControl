@@ -21,52 +21,48 @@
  ******************************************************************************/
 #pragma once
 
-#pragma warning(disable:4251)
-//#pragma warning(disable:4275)
-#pragma warning(disable:4503)
-//#pragma warning(disable:4127)
-
-//  Leak Checking ---
-#if defined(_DEBUG)
-#define _CRTDBG_MAP_ALLOC
-#endif
-
 #ifdef WIN32
-#include "targetver.h"
-#endif
-
-#include <stdio.h>
-#ifdef WIN32
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#undef WIN32_LEAN_AND_MEAN
-#include <tchar.h>
+#  ifdef GRAPHLAYOUT_STATIC
+#    define LIBAGRAPH_API
+#  elif defined GRAPHLAYOUT_EXPORTS
+#    define LIBAGRAPH_API __declspec(dllexport)
+#  else
+#    define LIBAGRAPH_API __declspec(dllimport)
+#  endif
 #else
-#define TCHAR wchar_t
-#define _T(x) L ## x
-#include <inttypes.h>
-#include <string.h>
+#	if __GNUC__ >= 4
+#		define LIBAGRAPH_API __attribute__ ((visibility("default")))
+#	else
+#		define LIBAGRAPH_API
+#	endif
 #endif
 
-#include <set>
-#include <map>
-#include <vector>
-#include <string>
-
-#include <boost/assert.hpp>
-#include <boost/smart_ptr/detail/atomic_count.hpp>
-#include <boost/thread.hpp>
-#include <boost/algorithm/string.hpp>
-#define BOOST_FILESYSTEM_VERSION 2
-#include <boost/filesystem.hpp>
-
-#include <ft2build.h>
-#include FT_FREETYPE_H
-
-#if defined(_DEBUGXXX)
-# include <stdlib.h>
-# include <crtdbg.h>
-# define GJS_DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
-# define new GJS_DEBUG_NEW
+#ifdef _MSC_VER
+#ifndef interface
+#define interface    struct __declspec(novtable)
+#endif
+#else
+#ifndef interface
+#define interface    struct
+#endif
 #endif
 
+LIBAGRAPH_API bool DoLayout(const char * layout, const char* mem, const char* format, const char* scale, std::string & result);
+
+typedef std::map<std::string, std::string> AttrMap;
+interface IGraphvizVisitor
+{
+	virtual void OnStartGraph(int kind, const std::string & id, const AttrMap & attrs) = 0;
+	virtual void OnEndGraph(int kind, const std::string & id) = 0;
+
+	virtual void OnStartCluster(const std::string & id, const AttrMap & attrs) = 0;
+	virtual void OnEndCluster(const std::string & id) = 0;
+
+	virtual void OnStartVertex(int id, const AttrMap & attrs) = 0;
+	virtual void OnEndVertex(int id) = 0;
+
+	virtual void OnStartEdge(int kind, int id, int sourceID, int targetID, const AttrMap & attrs) = 0;
+	virtual void OnEndEdge(int kind, int id) = 0;
+};
+
+LIBAGRAPH_API bool DoParse(const char* mem, IGraphvizVisitor * visitor);

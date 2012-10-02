@@ -24,7 +24,7 @@
 #include <Unknown.h>
 
 #ifdef WIN32
-#  ifdef STATIC_LIB
+#  ifdef GRAPHRENDER_STATIC
 #    define GRAPHRENDER_API
 #  elif defined GRAPHRENDER_EXPORTS
 #    define GRAPHRENDER_API __declspec(dllexport)

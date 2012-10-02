@@ -44,7 +44,6 @@ protected:
 	hpcc::IGraphBufferPtr m_buffer;
 	hpcc::IGraphPtr m_g;
 	hpcc::IGraphRenderPtr m_gr;
-	//hpcc::IGraphRenderPtr m_gro;
 	hpcc::IGraphHotItemPtr m_hotItem;
 	hpcc::IGraphSelectionBagPtr m_selection;
 
@@ -103,7 +102,7 @@ public:
 	void LoadXML2(const std::string & xml);
 	void LoadXGMML(const std::string & xgmml);
 	void MergeXGMML(const std::string & xgmml);
-	void MergeSVG(const std::string & svg);
+	bool MergeSVG(const std::string & svg);
 	void LoadDOT(const std::string & dot);
 	const std::string GetSVG();
 	const std::string GetDOT();
@@ -124,7 +123,9 @@ public:
 	int GetProperties(int item, hpcc::StringStringMap & results);
 	unsigned int GetItem(const std::string &externalID);
 	const char * GetGlobalID(int item);
+	int GetClusters(std::vector<int> & results);
 	int GetVertices(std::vector<int> & results);
+	int GetEdges(std::vector<int> & results);
 	//  --- IAPICallback ---
 
     void onPluginReady();
@@ -143,6 +144,7 @@ public:
         EVENTTYPE_CASE(FB::MouseMoveEvent, onMouseMove, FB::PluginWindow)
         EVENTTYPE_CASE(FB::MouseMoveEvent, onMouseMove, FB::PluginWindow)
         EVENTTYPE_CASE(FB::MouseScrollEvent, onMouseScroll, FB::PluginWindow)
+		EVENTTYPE_CASE(FB::ResizedEvent, onResized, FB::PluginWindow)
 		EVENTTYPE_CASE(FB::RefreshEvent, onRefresh, FB::PluginWindow)
         EVENTTYPE_CASE(FB::AttachedEvent, onWindowAttached, FB::PluginWindow)
         EVENTTYPE_CASE(FB::DetachedEvent, onWindowDetached, FB::PluginWindow)
@@ -154,6 +156,7 @@ public:
     virtual bool onMouseUp(FB::MouseUpEvent *evt, FB::PluginWindow *);
     virtual bool onMouseMove(FB::MouseMoveEvent *evt, FB::PluginWindow *);
     virtual bool onMouseScroll(FB::MouseScrollEvent *evt, FB::PluginWindow *);
+	virtual bool onResized(FB::ResizedEvent *evt, FB::PluginWindow *);
 	virtual bool onRefresh(FB::RefreshEvent *evt, FB::PluginWindow *);
     virtual bool onWindowAttached(FB::AttachedEvent *evt, FB::PluginWindow *);
     virtual bool onWindowDetached(FB::DetachedEvent *evt, FB::PluginWindow *);

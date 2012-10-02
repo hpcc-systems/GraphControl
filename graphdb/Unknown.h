@@ -22,7 +22,7 @@
 #pragma once
 
 #ifdef WIN32
-#  ifdef STATIC_LIB
+#  ifdef GRAPHDB_STATIC
 #    define GRAPHDB_API
 #  elif defined GRAPHDB_EXPORTS
 #    define GRAPHDB_API __declspec(dllexport)

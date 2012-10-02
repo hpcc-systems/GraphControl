@@ -14,7 +14,7 @@ git clone https://github.com/hpcc-systems/GraphControl.git
 # Get Firebreath library
 git clone https://github.com/GordonSmith/FireBreath.git
 cd FireBreath
-git checkout X11_Support
+git checkout HPCCSystems
 cd ..
 
 # Get unrestricted (2.4) agg libraries
@@ -37,20 +37,11 @@ mkdir build
 cd build
 
 # Create build folder for GraphControl.
-mkdir GraphConctrol
+mkdir GraphControl
 cd GraphControl
 
-# Create build folder for GraphControl libs.
-mkdir libs
-cd libs
-
-# Generate libs make files and build.
-cmake -DGRAPHVIZSRC_DIR=../../../graphviz-2.26.3/ -DAGGSRC_DIR=../../../agg/ ../../../GraphControl/libs
-make
-cd ..
-
 # Generate GraphControl make files and build.
-cmake -DWITH_SYSTEM_BOOST=1 -DFB_PROJECTS_DIR=../GraphControl  ../../FireBreath
+cmake -DWITH_SYSTEM_BOOST=1 -DFB_PROJECTS_DIR=../GraphControl -DGRAPHVIZSRC_DIR=../../graphviz-2.26.3/ -DAGGSRC_DIR=../../agg ../../GraphControl/libs ../../FireBreath
 make
 cd ..
 
@@ -58,5 +49,6 @@ cd ..
 # Linux:
  ln -s ~/git/build/GraphControl/bin/HPCCSystemsGraphViewControl/npHPCCSystemsGraphViewControl.so ~/.mozilla/plugins/npHPCCSystemsGraphViewControl.so
 # OSX:
- ln -s ~/git/build/GraphControl/bin/HPCCSystemsGraphViewControl/Release/HPCCSystemsGraphViewControl.plugin ~/Library/Internet\ Plug-Ins/HPCCSystemsGraphViewControl.plugin
+ ln -s ~/git/build/GraphControl/projects/HPCCSystemsGraphViewControl/HPCCSystemsGraphViewControl.plugin ~/Library/Internet\ Plug-Ins/HPCCSystemsGraphViewControl.plugin
+
 

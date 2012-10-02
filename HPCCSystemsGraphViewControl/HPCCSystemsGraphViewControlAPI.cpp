@@ -29,20 +29,7 @@
 #include <XgmmlParser.h>
 #include <boost/algorithm/string.hpp>
 
-///////////////////////////////////////////////////////////////////////////////
-/// @fn FB::variant HPCCSystemsGraphViewControlAPI::echo(const FB::variant& msg)
-///
-/// @brief  Echos whatever is passed from Javascript.
-///         Go ahead and change it. See what happens!
-///////////////////////////////////////////////////////////////////////////////
-FB::variant HPCCSystemsGraphViewControlAPI::echo(const FB::variant& msg)
-{
-    static int n(0);
-    fire_echo("So far, you clicked this many timesXXX: ", n++);
-
-    // return "foobar";
-    return msg;
-}
+#include "Version.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 /// @fn HPCCSystemsGraphViewControlPtr HPCCSystemsGraphViewControlAPI::getPlugin()
@@ -61,21 +48,29 @@ HPCCSystemsGraphViewControlPtr HPCCSystemsGraphViewControlAPI::getPlugin()
     return plugin;
 }
 
-// Read/Write property testString
-std::string HPCCSystemsGraphViewControlAPI::get_testString()
+std::string HPCCSystemsGraphViewControlAPI::get_version() const
 {
-    return "TODO";//GetVersionString();
+    return hpcc_version;
 }
 
-void HPCCSystemsGraphViewControlAPI::set_testString(const std::string& val)
+int HPCCSystemsGraphViewControlAPI::get_versionMajor() const
 {
-    m_testString = val;
+	return hpcc_major;
 }
 
-// Read-only property version
-std::string HPCCSystemsGraphViewControlAPI::get_version()
+int HPCCSystemsGraphViewControlAPI::get_versionMinor() const
 {
-    return "TODO";//GetVersionString();
+	return hpcc_minor;
+}
+
+int HPCCSystemsGraphViewControlAPI::get_versionPoint() const
+{
+	return hpcc_point;
+}
+
+int HPCCSystemsGraphViewControlAPI::get_versionSequence() const
+{
+	return hpcc_sequence;
 }
 
 bool HPCCSystemsGraphViewControlAPI::clear()
@@ -103,8 +98,7 @@ bool HPCCSystemsGraphViewControlAPI::mergeXGMML(const std::string& xgmml)
 
 bool HPCCSystemsGraphViewControlAPI::mergeSVG(const std::string& svg)
 {
-	getPlugin()->MergeSVG(svg);
-	return true;
+	return getPlugin()->MergeSVG(svg);
 }
 
 bool HPCCSystemsGraphViewControlAPI::loadDOT(const std::string& dot)
@@ -218,11 +212,22 @@ FB::VariantMap HPCCSystemsGraphViewControlAPI::getProperties(int item)
 {
 	assert(getPlugin());
 	FB::VariantMap retVal;
+	retVal["_internalID"] = item;
+	retVal["_globalID"] = getGlobalID(item);
 
 	hpcc::StringStringMap properties;
 	getPlugin()->GetProperties(item, properties);
 	for(hpcc::StringStringMap::const_iterator itr = properties.begin(); itr != properties.end(); ++itr)
 		retVal[itr->first] = itr->second;
+
+	return retVal;
+}
+
+FB::VariantList HPCCSystemsGraphViewControlAPI::getPropertiesForItems(const std::vector<int> & items)
+{
+	FB::VariantList retVal;
+	for(std::vector<int>::const_iterator itr = items.begin(); itr != items.end(); ++itr)
+		retVal.push_back(getProperties(*itr));
 
 	return retVal;
 }
@@ -255,6 +260,27 @@ FB::VariantList HPCCSystemsGraphViewControlAPI::getVertices()
 		items.push_back(*itr);
 
 	return items;
+}
+
+FB::VariantList HPCCSystemsGraphViewControlAPI::getSubgraphsWithProperties()
+{
+	std::vector<int> subgraphs;
+	getPlugin()->GetClusters(subgraphs);
+	return getPropertiesForItems(subgraphs);
+}
+
+FB::VariantList HPCCSystemsGraphViewControlAPI::getVerticesWithProperties()
+{
+	std::vector<int> vertices;
+	getPlugin()->GetVertices(vertices);
+	return getPropertiesForItems(vertices);
+}
+
+FB::VariantList HPCCSystemsGraphViewControlAPI::getEdgesWithProperties()
+{
+	std::vector<int> edges;
+	getPlugin()->GetEdges(edges);
+	return getPropertiesForItems(edges);
 }
 
 bool HPCCSystemsGraphViewControlAPI::onMouseWheel(unsigned int nFlags, short zDelta, int x, int y)
@@ -306,10 +332,5 @@ const std::string HPCCSystemsGraphViewControlAPI::getLocalisedXGMML(const std::v
 
 	retVal = "<graph>" + retVal + "</graph>";
 	return retVal;
-}
-
-void HPCCSystemsGraphViewControlAPI::testEvent()
-{
-    fire_test();
 }
 
