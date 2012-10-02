@@ -5,6 +5,8 @@
 #
 #\**********************************************************/
 
+include ( "${FB_PROJECTS_DIR}/version.cmake" )
+
 set(PLUGIN_NAME "HPCCSystemsGraphViewControl")
 set(PLUGIN_PREFIX "HSGVC")
 set(COMPANY_NAME "HPCCSystems")
@@ -26,6 +28,11 @@ set(FBControl_GUID 2FF57548-1DE4-4F32-B133-2B3FBDDBF909)
 set(IFBComJavascriptObject_GUID 19170988-05B7-4A75-B249-3F3F18533CDF)
 set(FBComJavascriptObject_GUID 8D2D03E7-DE42-4902-B3EA-A16FBE863BEF)
 set(IFBComEventSource_GUID E0C8280C-4448-45DF-A750-F1C5A8ED7C40)
+if ( FB_PLATFORM_ARCH_32 )
+    set(FBControl_WixUpgradeCode_GUID 1DD0D554-E642-402E-8330-88B8199562F8)
+else ( FB_PLATFORM_ARCH_32 )
+    set(FBControl_WixUpgradeCode_GUID 199562F8-E642-402E-8330-88B81DD0D554)
+endif ( FB_PLATFORM_ARCH_32 )
 
 # these are the pieces that are relevant to using it from Javascript
 set(ACTIVEX_PROGID "HPCCSystems.HPCCSystemsGraphViewControl")
@@ -33,13 +40,17 @@ set(MOZILLA_PLUGINID "hpccsystems.com/HPCCSystemsGraphViewControl")
 
 # strings
 set(FBSTRING_CompanyName "HPCC Systems")
-set(FBSTRING_FileDescription "HPCC Systems Graph View Control")
-set(FBSTRING_PLUGIN_VERSION "1.0.0.0")
+set(FBSTRING_PluginDescription "HPCC Systems Graph View Control")
+set(FBSTRING_PLUGIN_VERSION "${HPCC_MAJOR}.${HPCC_MINOR}.${HPCC_POINT}.${HPCC_SEQUENCE}")
 set(FBSTRING_LegalCopyright "Copyright 2012 HPCC Systems")
 set(FBSTRING_PluginFileName "np${PLUGIN_NAME}.dll")
-set(FBSTRING_ProductName "HPCC Systems Graph View Control")
+set(FBSTRING_ProductName "HPCCSystemsGraphViewControl")
 set(FBSTRING_FileExtents "")
-set(FBSTRING_PluginName "HPCC Systems Graph View Control")
+if ( FB_PLATFORM_ARCH_32 )
+    set(FBSTRING_PluginName "HPCCSystemsGraphViewControl") # No 32bit postfix to maintain backward compatability.
+else ( FB_PLATFORM_ARCH_32 )
+    set(FBSTRING_PluginName "HPCCSystemsGraphViewControl_${FB_PLATFORM_ARCH_NAME}")
+endif ( FB_PLATFORM_ARCH_32 )
 set(FBSTRING_MIMEType "application/x-hpccsystemsgraphviewcontrol")
 
 # Uncomment this next line if you're not planning on your plugin doing

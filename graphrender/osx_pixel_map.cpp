@@ -109,7 +109,10 @@ namespace agg
         
         Rect	r;
     	int		row_bytes = calc_row_len (width, m_bpp);
-    	MacSetRect(&r, 0, 0, width, height);
+        r.left = 0;
+        r.top = 0;
+        r.right = width;
+        r.bottom = height;
     	m_buf = new unsigned char[m_img_size = row_bytes * height];
  		// The Quicktime version for creating GWorlds is more flexible than the classical function.
 //    	CGBitmapContextCreate (&m_pmap, m_bpp, &r, nil, nil, 0, m_buf, row_bytes);
@@ -167,7 +170,10 @@ namespace agg
         unsigned width  = (unsigned)(this->width() * scale);
         unsigned height = (unsigned)(this->height() * scale);
         Rect rect;
-        SetRect (&rect, x, y, x + width, y + height);
+        rect.left = x;
+        rect.top = y;
+        rect.right = x + width;
+        rect.bottom = y + height;
         draw(context, &rect);
     }
 

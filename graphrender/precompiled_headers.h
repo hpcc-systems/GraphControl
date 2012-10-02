@@ -21,19 +21,52 @@
  ******************************************************************************/
 #pragma once
 
-#include "GraphDB.h"
-#include "SvgShapes.h"
+#pragma warning(disable:4251)
+//#pragma warning(disable:4275)
+#pragma warning(disable:4503)
+//#pragma warning(disable:4127)
 
-namespace hpcc
-{
-enum SVG_PROP
-{
-	SVG_PROP_UNKNOWN = PROP_LAST,
-	SVG_PROP_ELEMENTG,
-	SVG_PROP_LAST
-};
+//  Leak Checking ---
+#if defined(_DEBUG)
+#define _CRTDBG_MAP_ALLOC
+#endif
 
-GRAPHDB_API void MergeSVG(IGraph * graph, const std::string & svg);
+#ifdef WIN32
+#include "targetver.h"
+#endif
 
-GRAPHDB_API ElementG * GetElementG(IGraphItem * item);
-}
+#include <stdio.h>
+#ifdef WIN32
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#undef WIN32_LEAN_AND_MEAN
+#include <tchar.h>
+#else
+#define TCHAR wchar_t
+#define _T(x) L ## x
+#include <inttypes.h>
+#include <string.h>
+#endif
+
+#include <set>
+#include <map>
+#include <vector>
+#include <string>
+
+#include <boost/assert.hpp>
+#include <boost/smart_ptr/detail/atomic_count.hpp>
+#include <boost/thread.hpp>
+#include <boost/algorithm/string.hpp>
+#define BOOST_FILESYSTEM_VERSION 3
+#include <boost/filesystem.hpp>
+
+#include <ft2build.h>
+#include FT_FREETYPE_H
+
+#if defined(_DEBUGXXX)
+# include <stdlib.h>
+# include <crtdbg.h>
+# define GJS_DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
+# define new GJS_DEBUG_NEW
+#endif
+

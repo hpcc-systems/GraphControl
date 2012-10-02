@@ -34,6 +34,7 @@ include_directories (
 
 set (	SRCS
 	precompiled_headers.h
+	precompiled_headers.cpp
 
 	libagraph.cpp
 	libagraph.h
@@ -43,18 +44,19 @@ set (	SRCS
 # *********************************************************************
 
 add_definitions(-DHAVE_CONFIG_H -DHAVE_SETMODE)
+
 if(WIN32)
-	add_definitions(-DLIBAGRAPH_EXPORTS -DMSWIN32 -D_UNICODE)
+  add_definitions(-DMSWIN32 -D_UNICODE)
 elseif(APPLE)
 elseif(UNIX)
 endif()
 
-ADD_MSVC_PRECOMPILED_HEADER("precompiled_headers.h" "precompiled_headers.cpp" SRCS)
-if (WITH_STATIC_RUNTIME)
-	add_library ( graphlayout STATIC ${SRCS} )
-else (WITH_STATIC_RUNTIME)
+if (WITH_HPCC_RUNTIME)
 	add_library ( graphlayout SHARED ${SRCS} )
-endif (WITH_STATIC_RUNTIME)
+else (WITH_HPCC_RUNTIME)
+	add_library ( graphlayout STATIC ${SRCS} )
+endif (WITH_HPCC_RUNTIME)
+ADD_PRECOMPILED_HEADER(${PROJECT_NAME} "precompiled_headers.h" "precompiled_headers.cpp" SRCS)
 
 # *********************************************************************
 
@@ -127,8 +129,7 @@ target_link_libraries ( graphlayout
 
 # *********************************************************************
 
-INSTALL(TARGETS graphlayout 
-	RUNTIME DESTINATION bin COMPONENT PLUGIN
-	LIBRARY DESTINATION lib
-	ARCHIVE DESTINATION lib/static
-)
+if (WITH_HPCC_RUNTIME)
+	install ( TARGETS graphlayout RUNTIME DESTINATION bin LIBRARY DESTINATION lib )
+endif (WITH_HPCC_RUNTIME)
+
