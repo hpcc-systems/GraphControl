@@ -129,6 +129,9 @@ target_link_libraries ( agg
 	${CARBON_FRAMEWORK}
 	)
 elseif(UNIX)
+target_link_libraries ( agg 
+    ${GTK_LIBRARIES}
+    )
 endif()
 
 

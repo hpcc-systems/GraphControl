@@ -40,8 +40,8 @@ add_windows_plugin(${PROJECT_NAME} SOURCES)
 # source control!
 # -- uncomment lines below this to enable signing --
 firebreath_sign_plugin(${PROJECT_NAME}
-    "${CMAKE_CURRENT_SOURCE_DIR}/sign/certificate.pfx"
-    "${CMAKE_CURRENT_SOURCE_DIR}/sign/passphrase.txt"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../../sign/hpcc_code_signing.pfx"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../../sign/passphrase.txt"
     "http://timestamp.verisign.com/scripts/timestamp.dll")
 
 # add library dependencies here; leave ${PLUGIN_INTERNAL_DEPS} there unless you know what you're doing!
@@ -68,6 +68,6 @@ add_wix_installer( ${PLUGIN_NAME}
 # -- uncomment lines below this to enable signing --
 firebreath_sign_file("${PLUGIN_NAME}_WiXInstall"
     "${FB_BIN_DIR}/${PLUGIN_NAME}/${CMAKE_CFG_INTDIR}/${PLUGIN_NAME}.msi"
-    "${CMAKE_CURRENT_SOURCE_DIR}/sign/certificate.pfx"
-    "${CMAKE_CURRENT_SOURCE_DIR}/sign/passphrase.txt"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../../sign/hpcc_code_signing.pfx"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../../sign/passphrase.txt"
     "http://timestamp.verisign.com/scripts/timestamp.dll")
