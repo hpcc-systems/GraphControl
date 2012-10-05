@@ -13,6 +13,9 @@ sudo apt-get install libboost-dev libboost-system-dev libboost-thread-dev libboo
 # On OSX (Snow Leopard)
 sudo port install boost freetype expat
 
+# On Windows
+TODO:  How to get "externals folder" + how to install WIX
+
 #### Create development folder #### 
 mkdir ~/git
 cd ~/git
@@ -53,13 +56,28 @@ mkdir GraphControl
 cd GraphControl
 
 #### Generate GraphControl make files #### 
+# On OSX and Linux
 cmake -DCMAKE_BUILD_TYPE=Release -DWITH_SYSTEM_BOOST=1 -DFB_PROJECTS_DIR:PATH=../GraphControl -DGRAPHVIZSRC_DIR=../../graphviz-2.26.3 -DAGGSRC_DIR=../../agg ../../FireBreath
+# On Windows
+cmake -DCMAKE_BUILD_TYPE=Release -DWITH_SYSTEM_BOOST=1 -DFB_PROJECTS_DIR:PATH=../GraphControl -DGRAPHVIZSRC_DIR=../../graphviz-2.26.3 -DAGGSRC_DIR=../../agg -DEXTERNALS_DIRECTORY:PATH=c:/full/path/to/externals ../../FireBreath
+
 #### Compile the sources #### 
+# On OSX and Linux
 make
+# On Windows
+msbuild /m /p:Configuration=Release FireBreath.sln 
+
 #### To install the plugin #### 
+# On OSX and Linux
 make install
+# On Windows
+msbuild /m /p:Configuration=Release INSTALL.vcxproj
+
 #### Create an install package #### 
+# On OSX and Linux
 make package
+# On Windows
+msbuild /m /p:Configuration=Release .\projects\HPCCSystemsGraphViewControl\HPCCSystemsGraphViewControl_WiXInstall.vcxproj
 
 #### For debugging, create a symbolic link to the built plugin #### 
 # Linux
