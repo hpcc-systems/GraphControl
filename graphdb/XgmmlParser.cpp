@@ -29,7 +29,7 @@ namespace hpcc
 //  ===========================================================================
 struct Shapes
 {
-	StringStringMap m_items;
+	ciStringStringMap m_items;
 	std::string m_blankStr;
 	Shapes()
 	{
@@ -145,9 +145,9 @@ public:
 	{
 	}
 
-	const std::string & constGet(const StringStringMap & map, const std::string & key, const std::string & defVal  = "")
+	const std::string & constGet(const ciStringStringMap & map, const std::string & key, const std::string & defVal  = "")
 	{
-		StringStringMap::const_iterator found = map.find(key);
+		ciStringStringMap::const_iterator found = map.find(key);
 		if (found == map.end())
 			return defVal;
 		return found->second;
@@ -248,15 +248,15 @@ public:
 		{
 			CElementPtr e = itr->get();
 			IEdge * edge = NULL;
-			StringStringMap::const_iterator itrSource = e->m_attr.find("_sourceActivity");
-			StringStringMap::const_iterator itrTarget = e->m_attr.find("_targetActivity");
+			ciStringStringMap::const_iterator itrSource = e->m_attr.find("_sourceActivity");
+			ciStringStringMap::const_iterator itrTarget = e->m_attr.find("_targetActivity");
 			if (itrSource != e->m_attr.end() && !itrSource->second.empty() && itrTarget != e->m_attr.end() && !itrTarget->second.empty())
 				edge = GetEdge(e->m_attr["id"], itrSource->second, itrTarget->second);
 			else
 				edge = GetEdge(e->m_attr["id"], e->m_attr["source"], e->m_attr["target"]);
 			assert(edge);
 
-			for(StringStringMap::const_iterator itr = e->m_attr.begin(); itr != e->m_attr.end(); ++itr)
+			for(ciStringStringMap::const_iterator itr = e->m_attr.begin(); itr != e->m_attr.end(); ++itr)
 				edge->SetProperty(itr->first, itr->second);
 
 			std::string prettyCount = constGet(e->m_attr, "count");
@@ -348,7 +348,7 @@ public:
 			assert(top != m_giStack.end());
 			EnsureTopIsAVertex(e->m_attr["id"]); //  If top is NULL at this point it must be a vertex.
 
-			for(StringStringMap::const_iterator itr = e->m_attr.begin(); itr != e->m_attr.end(); ++itr)
+			for(ciStringStringMap::const_iterator itr = e->m_attr.begin(); itr != e->m_attr.end(); ++itr)
 				top->item->SetProperty(itr->first, itr->second);
 
 			boost::algorithm::replace_all(e->m_attr["label"], "\n", "\\n");
@@ -382,8 +382,8 @@ public:
 			CElementPtr e_p = m_stack.top();
 			assert(e_p);
 			m_stack.push(e);
-			StringStringMap::const_iterator key = e->m_attr.find("name");
-			StringStringMap::const_iterator val = e->m_attr.find("value");
+			ciStringStringMap::const_iterator key = e->m_attr.find("name");
+			ciStringStringMap::const_iterator val = e->m_attr.find("value");
 			if (key != e->m_attr.end() && val != e->m_attr.end())
 				e_p->m_attr[key->second] = val->second;
 			else if (key != e->m_attr.end())
