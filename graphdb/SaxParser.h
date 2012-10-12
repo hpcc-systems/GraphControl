@@ -456,7 +456,13 @@ protected:
 	XML_Parser m_p;
 };
 
-typedef std::map<std::string, std::string> StringStringMap;
+struct ciLessBoost : std::binary_function<std::string, std::string, bool> 
+{ 
+    bool operator() (const std::string & s1, const std::string & s2) const { 
+        return boost::lexicographical_compare(s1, s2, boost::is_iless()); 
+    } 
+}; 
+typedef std::map<std::string, std::string, ciLessBoost> ciStringStringMap;
 class CElement : public CUnknown
 {
 protected:
@@ -467,7 +473,7 @@ public:
 	END_CUNKNOWN
 
 	std::string m_tag;
-	StringStringMap m_attr;
+	ciStringStringMap m_attr;
 
 	CElement()
 	{
