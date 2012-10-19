@@ -1,54 +1,86 @@
-# Get required libraries
-sudo apt-get install libboost-dev libboost-system-dev libboost-thread-dev libboost-filesystem-dev libfreetype6-dev libexpat1-dev libgtk2.0-dev
-
-# Get git + svn support if needed
+#### Get cmake, git, git-svn ####
+# Linux
 sudo apt-get install cmake git git-svn 
 
-# Create development folder
-mkdir ~/hpcc_git
-cd ~/hpcc_git
+# OSX
+cmake:  http://cmake.org/cmake/resources/software.html
+git: http://git-scm.com/download
 
-# Get Sources
+#### Get required libraries #### 
+# On Linux (Ubuntu 12.04)
+sudo apt-get install libboost-dev libboost-system-dev libboost-thread-dev libboost-filesystem-dev libfreetype6-dev libexpat1-dev libgtk2.0-dev
+
+# On OSX (Snow Leopard)
+sudo port install boost freetype expat
+
+# On Windows
+TODO:  How to get "externals folder" + how to install WIX
+
+#### Create development folder #### 
+mkdir ~/git
+cd ~/git
+
+#### Get GraphControl Sources #### 
 git clone https://github.com/hpcc-systems/GraphControl.git
-
-# Get Firebreath library
-git clone https://github.com/GordonSmith/FireBreath.git
-cd FireBreath
-git checkout HPCCSystems
+cd GraphControl
+git checkout candidate-6.10.x
 cd ..
 
-# Get unrestricted (2.4) agg libraries
+#### Get Firebreath library #### 
+git clone https://github.com/GordonSmith/FireBreath.git
+cd FireBreath
+git checkout graphcontrol-6.10.x
+cd ..
+
+#### Get unrestricted (2.4) agg libraries #### 
 git svn clone https://agg.svn.sourceforge.net/svnroot/agg
 
-# Get AT&T Graphviz libraries
+#### Get AT&T Graphviz libraries #### 
 wget http://www.graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.26.3.tar.gz
 tar xf graphviz-2.26.3.tar.gz
 rm graphviz-2.26.3.tar.gz
 cd graphviz-2.26.3
 ./configure
-# edit config.h and comment out the following lines:
+## Manually edit config.h and comment out the following lines:
 #define ENABLE_LTDL 1
 #define HAVE_EXPAT
 #define HAVE_LIBZ
 cd ..
 
-# Create general build folder.
+#### Create general build folder #### 
 mkdir build
 cd build
 
-# Create build folder for GraphControl.
+#### Create build folder for GraphControl #### 
 mkdir GraphControl
 cd GraphControl
 
-# Generate GraphControl make files and build.
-cmake -DWITH_SYSTEM_BOOST=1 -DFB_PROJECTS_DIR=../GraphControl -DGRAPHVIZSRC_DIR=../../graphviz-2.26.3/ -DAGGSRC_DIR=../../agg ../../GraphControl/libs ../../FireBreath
+#### Generate GraphControl make files #### 
+# On OSX and Linux
+cmake -DCMAKE_BUILD_TYPE=Release -DWITH_SYSTEM_BOOST=1 -DFB_PROJECTS_DIR:PATH=../GraphControl -DGRAPHVIZSRC_DIR=../../graphviz-2.26.3 -DAGGSRC_DIR=../../agg ../../FireBreath
+# On Windows
+cmake -DCMAKE_BUILD_TYPE=Release -DWITH_SYSTEM_BOOST=1 -DFB_PROJECTS_DIR:PATH=../GraphControl -DGRAPHVIZSRC_DIR=../../graphviz-2.26.3 -DAGGSRC_DIR=../../agg -DEXTERNALS_DIRECTORY:PATH=c:/full/path/to/externals ../../FireBreath
+
+#### Compile the sources #### 
+# On OSX and Linux
 make
-cd ..
+# On Windows
+msbuild /m /p:Configuration=Release FireBreath.sln 
 
-# For debugging Create symbolic link to plugin
-# Linux:
- ln -s ~/git/build/GraphControl/bin/HPCCSystemsGraphViewControl/npHPCCSystemsGraphViewControl.so ~/.mozilla/plugins/npHPCCSystemsGraphViewControl.so
-# OSX:
- ln -s ~/git/build/GraphControl/projects/HPCCSystemsGraphViewControl/HPCCSystemsGraphViewControl.plugin ~/Library/Internet\ Plug-Ins/HPCCSystemsGraphViewControl.plugin
+#### To install the plugin #### 
+# On OSX and Linux
+make install
+# On Windows
+msbuild /m /p:Configuration=Release INSTALL.vcxproj
 
+#### Create an install package #### 
+# On OSX and Linux
+make package
+# On Windows
+msbuild /m /p:Configuration=Release .\projects\HPCCSystemsGraphViewControl\HPCCSystemsGraphViewControl_WiXInstall.vcxproj
 
+#### For debugging, create a symbolic link to the built plugin #### 
+# Linux
+ln -s ~/git/build/GraphControl/bin/HPCCSystemsGraphViewControl/npHPCCSystemsGraphViewControl.so ~/.mozilla/plugins/npHPCCSystemsGraphViewControl.so
+# OSX
+ln -s ~/git/build/GraphControl/projects/HPCCSystemsGraphViewControl/HPCCSystemsGraphViewControl.plugin ~/Library/Internet\ Plug-Ins/HPCCSystemsGraphViewControl.plugin

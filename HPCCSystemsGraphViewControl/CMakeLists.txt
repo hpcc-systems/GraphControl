@@ -19,10 +19,11 @@ file (GLOB GENERAL RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
     )
 
 include_directories(${PLUGIN_INCLUDE_DIRS}
-	${Boost_INCLUDE_DIRS}
-	${CMAKE_CURRENT_SOURCE_DIR}/../graphdb
-	${CMAKE_CURRENT_SOURCE_DIR}/../graphrender
-	)
+    ${GTK_INCLUDE_DIRS}
+    ${Boost_INCLUDE_DIRS}
+    ${CMAKE_CURRENT_SOURCE_DIR}/../graphdb
+    ${CMAKE_CURRENT_SOURCE_DIR}/../graphrender
+    )
 
 # Generated files are stored in ${GENERATED} by the project configuration
 SET_SOURCE_FILES_PROPERTIES(
@@ -43,6 +44,38 @@ SET( SOURCES
 # This will include Win/projectDef.cmake, X11/projectDef.cmake, Mac/projectDef 
 # depending on the platform
 include_platform()
+
+macro(optional_append _list _cond _item)
+  if(${_cond})
+    set(${_list} ${${_list}} ${_item})
+  endif(${_cond})
+endmacro(optional_append _list _cond _item)
+
+if(NOT CPACK_GENERATOR)
+    if(WIN32)
+        option(CPACK_BINARY_NSIS         "Enable to build NSIS packages" ON)
+        option(CPACK_BINARY_ZIP          "Enable to build ZIP packages" OFF)
+    elseif(APPLE)
+        option(CPACK_BINARY_BUNDLE       "Enable to build OSX bundles" OFF)
+        option(CPACK_BINARY_DRAGNDROP    "Enable to build OSX Drag And Drop package" OFF)
+        option(CPACK_BINARY_PACKAGEMAKER "Enable to build PackageMaker packages" ON)
+        option(CPACK_BINARY_OSXX11       "Enable to build OSX X11 packages" OFF)
+    elseif(UNIX)
+        option(CPACK_BINARY_DEB          "Enable to build Debian packages" ON)
+        option(CPACK_BINARY_RPM          "Enable to build RPM packages" OFF)
+    endif()
+
+    optional_append(CPACK_GENERATOR  CPACK_BINARY_NSIS         NSIS)
+    optional_append(CPACK_GENERATOR  CPACK_BINARY_ZIP          ZIP)
+
+    optional_append(CPACK_GENERATOR  CPACK_BINARY_BUNDLE       Bundle)
+    optional_append(CPACK_GENERATOR  CPACK_BINARY_DRAGNDROP    DragNDrop)
+    optional_append(CPACK_GENERATOR  CPACK_BINARY_PACKAGEMAKER PackageMaker)
+    optional_append(CPACK_GENERATOR  CPACK_BINARY_OSXX11       OSXX11)
+
+    optional_append(CPACK_GENERATOR  CPACK_BINARY_DEB          DEB)
+    optional_append(CPACK_GENERATOR  CPACK_BINARY_RPM          RPM)
+endif(NOT CPACK_GENERATOR)
 
 set ( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${FB_PROJECTS_DIR}/cmake/Modules" )
 include ( "${FB_PROJECTS_DIR}/cmake/Modules/Externals.cmake" )
@@ -72,9 +105,9 @@ add_subdirectory ("${FB_PROJECTS_DIR}/graphdb" "graphdb")
 add_subdirectory ("${FB_PROJECTS_DIR}/graphrender" "graphrender")
 
 target_link_libraries(${PROJECT_NAME}
-	graphdb
-	graphrender
-	)
+    graphdb
+    graphrender
+    )
 link_boost_library ( ${PROJECT_NAME} system )
 link_boost_library ( ${PROJECT_NAME} date_time )
 link_boost_library ( ${PROJECT_NAME} filesystem )
@@ -98,13 +131,16 @@ set ( CPACK_PACKAGE_NAME "hpccsystems-graphcontrol" )
 set ( CPACK_PACKAGE_VERSION_MAJOR ${HPCC_MAJOR} )
 set ( CPACK_PACKAGE_VERSION_MINOR ${HPCC_MINOR} )
 set ( CPACK_PACKAGE_VERSION_PATCH ${HPCC_POINT}-${stagever} )
+set ( CPACK_PACKAGE_DESCRIPTION_SUMMARY "HPCC Systems Graph Control." )
 
 set ( CPACK_PACKAGE_CONTACT "HPCCSystems <ossdevelopment@lexisnexis.com>" )
 set ( CPACK_DEBIAN_PACKAGE_MAINTAINER "HPCCSystems <ossdevelopment@lexisnexis.com>" )
+set ( CPACK_DEBIAN_PACKAGE_DEPENDS "libboost-dev (>=1.46.0), libboost-system-dev (>=1.46.0), libboost-thread-dev (>=1.46.0), libboost-filesystem-dev (>=1.46.0)")
+
 set ( CPACK_RESOURCE_FILE_LICENSE "${FB_PROJECTS_DIR}/License.txt" )
 set ( CPACK_RESOURCE_FILE_README "${FB_PROJECTS_DIR}/CPackReadMe.txt" )
 
 set ( CPACK_PACKAGING_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX} )
+message("CPACK_PACKAGING_INSTALL_PREFIX:  ${CMAKE_INSTALL_PREFIX}")
 
 include ( CPack )
-
