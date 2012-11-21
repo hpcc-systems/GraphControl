@@ -129,7 +129,7 @@ void HPCCSystemsGraphViewControl::Invalidate()
 	FB::PluginWindow* window = GetWindow();
 	if (window)
 	{
-		GetWindow()->InvalidateWindow();
+		window->InvalidateWindow();
 	}
 }
 
@@ -183,19 +183,23 @@ bool HPCCSystemsGraphViewControl::GetClientRectangle(hpcc::RectD & rect)
 	return false;
 }
 
-void HPCCSystemsGraphViewControl::UpdateWindow()
-{
-}
-
 void HPCCSystemsGraphViewControl::InvalidateSelection()
 {
 	Invalidate();
 }
 
+//  This is the only method not on main thread  ---
 void HPCCSystemsGraphViewControl::operator()(const std::string & dot, const std::string & svg)
 {
-	//PostMessage(UMDV_LAYOUT_COMPLETE, (WPARAM)new std::string(dot), (LPARAM)new std::string(svg));
-	OnLayoutComplete(new std::string(dot), new std::string(svg));
+	{
+		boost::recursive_mutex::scoped_lock lock(m_pendingMutex);
+		m_pendingDot = dot;
+		m_pendingSvg = svg;
+	}
+	Invalidate();
+#if defined FB_WIN
+	::UpdateWindow(((FB::PluginWindowWin*)GetWindow())->getHWND());
+#endif
 }
 
 void HPCCSystemsGraphViewControl::CalcScrollbars(bool redraw)
@@ -403,7 +407,6 @@ void HPCCSystemsGraphViewControl::SetMessage(const std::string & msg)
 	if (msg.empty())
 		CenterOnGraphItem(NULL);
 	Invalidate();
-	UpdateWindow();
 }
 
 int HPCCSystemsGraphViewControl::Find(const std::string & text, bool includeProperties, std::vector<int> & results)
@@ -654,23 +657,27 @@ bool HPCCSystemsGraphViewControl::onMouseScroll(FB::MouseScrollEvent *evt, FB::P
     return true;
 }
 
-int HPCCSystemsGraphViewControl::OnLayoutComplete(void * wParam, void * lParam)
+void HPCCSystemsGraphViewControl::FinishLayout()
 {
-	assert(wParam && lParam);
-	std::string * dot = (std::string *)wParam;
-	std::string * svg = (std::string *)lParam;
-	if (boost::algorithm::equals(m_dot, *dot))
 	{
-		m_svg = *svg;
-		hpcc::MergeSVG(m_g, *svg);
-		CalcScrollbars();
-		CenterOnGraphItem(NULL);
-		Invalidate();
-		boost::static_pointer_cast<HPCCSystemsGraphViewControlAPI>(getRootJSAPI())->fire_LayoutFinished();
+		boost::recursive_mutex::scoped_lock lock(m_pendingMutex);
+		if (m_pendingDot.empty() || !boost::algorithm::equals(m_dot, m_pendingDot))
+		{
+			m_pendingDot = "";
+			m_pendingSvg = "";
+			return;
+		}
+
+		m_svg = m_pendingSvg;
+		hpcc::MergeSVG(m_g, m_pendingSvg);
+		m_pendingDot = "";
+		m_pendingSvg = "";
 	}
-	delete dot;
-	delete svg;
-	return 0;
+
+	CalcScrollbars();
+	CenterOnGraphItem(NULL);
+	Invalidate();
+	boost::static_pointer_cast<HPCCSystemsGraphViewControlAPI>(getRootJSAPI())->fire_LayoutFinished();
 }
 
 bool HPCCSystemsGraphViewControl::onResized(FB::ResizedEvent *evt, FB::PluginWindow *)
@@ -681,6 +688,8 @@ bool HPCCSystemsGraphViewControl::onResized(FB::ResizedEvent *evt, FB::PluginWin
 
 bool HPCCSystemsGraphViewControl::onRefresh(FB::RefreshEvent *evt, FB::PluginWindow *)
 {
+	FinishLayout();
+
 	hpcc::RectI bounds(0, 0, evt->bounds.right, evt->bounds.bottom);
 	hpcc::RectI rect(bounds);
 	rect.Offset(m_ptOffset.x, m_ptOffset.y);
