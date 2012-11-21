@@ -62,22 +62,17 @@ cmake -DCMAKE_BUILD_TYPE=Release -DWITH_SYSTEM_BOOST=1 -DFB_PROJECTS_DIR:PATH=..
 cmake -DCMAKE_BUILD_TYPE=Release -DWITH_SYSTEM_BOOST=1 -DFB_PROJECTS_DIR:PATH=../GraphControl -DGRAPHVIZSRC_DIR=../../graphviz-2.26.3 -DAGGSRC_DIR=../../agg -DEXTERNALS_DIRECTORY:PATH=c:/full/path/to/externals ../../FireBreath
 
 #### Compile the sources #### 
-# On OSX and Linux
-make
-# On Windows
-msbuild /m /p:Configuration=Release FireBreath.sln 
+cmake --build . --config Release
 
 #### To install the plugin #### 
-# On OSX and Linux
-make install
-# On Windows
-msbuild /m /p:Configuration=Release INSTALL.vcxproj
+cmake --build . --config Release --target install
 
 #### Create an install package #### 
 # On OSX and Linux
-make package
+cmake --build . --config Release --target package
 # On Windows
-msbuild /m /p:Configuration=Release .\projects\HPCCSystemsGraphViewControl\HPCCSystemsGraphViewControl_WiXInstall.vcxproj
+cmake --build . --config Release --target HPCCSystemsGraphViewControl\HPCCSystemsGraphViewControl_WiXInstall
+cd ..
 
 #### For debugging, create a symbolic link to the built plugin #### 
 # Linux
