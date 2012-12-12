@@ -69,6 +69,9 @@ protected:
 	hpcc::PointD m_ptOffset;
 	hpcc::PointD m_ptSize;
 
+	mutable boost::recursive_mutex m_pendingMutex;
+	std::string m_pendingDot;
+	std::string m_pendingSvg;
 
 public:
     static void StaticInitialize();
@@ -86,7 +89,6 @@ public:
 	void SetScrollOffset(int x, int y);
 	void SetScrollSize(int w, int h, bool redraw);
     bool GetClientRectangle(hpcc::RectD & rect);
-	void UpdateWindow();
 	void InvalidateSelection();
 	void operator()(const std::string & dot, const std::string & svg);
 
@@ -161,7 +163,7 @@ public:
     virtual bool onWindowAttached(FB::AttachedEvent *evt, FB::PluginWindow *);
     virtual bool onWindowDetached(FB::DetachedEvent *evt, FB::PluginWindow *);
     /** END EVENTDEF -- DON'T CHANGE THIS LINE **/
-	int OnLayoutComplete(void * wParam, void * lParam);
+	void FinishLayout();
 };
 
 

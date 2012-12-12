@@ -113,8 +113,7 @@ link_boost_library ( ${PROJECT_NAME} date_time )
 link_boost_library ( ${PROJECT_NAME} filesystem )
 link_boost_library ( ${PROJECT_NAME} regex )
 
-include ( InstallRequiredSystemLibraries )
-
+####  CPACK  ####
 set(CPACK_SYSTEM_NAME "${CMAKE_SYSTEM_NAME}_${FB_PLATFORM_ARCH_NAME}")
 
 if ( "${HPCC_MATURITY}" STREQUAL "release" )
@@ -140,7 +139,36 @@ set ( CPACK_DEBIAN_PACKAGE_DEPENDS "libboost-dev (>=1.46.0), libboost-system-dev
 set ( CPACK_RESOURCE_FILE_LICENSE "${FB_PROJECTS_DIR}/License.txt" )
 set ( CPACK_RESOURCE_FILE_README "${FB_PROJECTS_DIR}/CPackReadMe.txt" )
 
-set ( CPACK_PACKAGING_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX} )
-message("CPACK_PACKAGING_INSTALL_PREFIX:  ${CMAKE_INSTALL_PREFIX}")
+if ( UNIX )
+    set ( CPACK_PACKAGING_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX} )
+elseif ( WIN32 )
+    if ( "${FB_PLATFORM_ARCH_NAME}" EQUAL "x86_64" )
+        set ( CPACK_NSIS_DISPLAY_NAME "Graph Control x64" )
+        SET ( CPACK_NSIS_EXTRA_INSTALL_COMMANDS "  
+            ExecWait '\\\"$SYSDIR\\\\regsvr32.exe\\\" /s \\\"$INSTDIR\\\\${PLUGIN_DIRECTORY}\\\\npHPCCSystemsGraphViewControl.dll\\\"'
+        " )
+        SET ( CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "  
+            ExecWait '\\\"$SYSDIR\\\\regsvr32.exe\\\" /s /u \\\"$INSTDIR\\\\${PLUGIN_DIRECTORY}\\\\npHPCCSystemsGraphViewControl.dll\\\"'
+        " )
+    else ()
+        set ( CPACK_NSIS_DISPLAY_NAME "Graph Control" )
+        SET ( CPACK_NSIS_DISPLAY_NAME "Graph Control")
+        SET ( CPACK_NSIS_EXTRA_INSTALL_COMMANDS "  
+            RegDLL '$INSTDIR\\\\${PLUGIN_DIRECTORY}\\\\npHPCCSystemsGraphViewControl.dll'
+        " )
+        SET ( CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "  
+            UnRegDLL '$INSTDIR\\\\${PLUGIN_DIRECTORY}\\\\npHPCCSystemsGraphViewControl.dll'
+        " )
+    endif ()
+    file(STRINGS "${FB_PROJECTS_DIR}/../sign/passphrase.txt" PFX_PASSWORD LIMIT_COUNT 1)
+
+    add_custom_target(SIGN 
+        COMMAND signtool sign /f "${FB_PROJECTS_DIR}/../sign/hpcc_code_signing.pfx" /p "${PFX_PASSWORD}" /t "http://timestamp.verisign.com/scripts/timstamp.dll" "${CMAKE_BINARY_DIR}/${CPACK_PACKAGE_NAME}*.exe"
+        COMMENT "Digital Signature"
+    )
+    add_dependencies(SIGN PACKAGE)
+    set_property(TARGET SIGN PROPERTY FOLDER "CMakePredefinedTargets")
+endif ( WIN32 )
 
 include ( CPack )
+####  #####  ####
