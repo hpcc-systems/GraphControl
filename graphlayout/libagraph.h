@@ -23,7 +23,7 @@
 
 #ifdef WIN32
 #  ifdef GRAPHLAYOUT_STATIC
-#    define LIBAGRAPH_API
+#    define LIBAGRAPH_API __declspec(dllexport)
 #  elif defined GRAPHLAYOUT_EXPORTS
 #    define LIBAGRAPH_API __declspec(dllexport)
 #  else
