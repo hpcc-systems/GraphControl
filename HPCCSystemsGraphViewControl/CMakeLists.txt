@@ -168,7 +168,7 @@ elseif ( WIN32 )
     )
     add_dependencies(SIGN PACKAGE)
     set_property(TARGET SIGN PROPERTY FOLDER "CMakePredefinedTargets")
-endif ( WIN32 )
+endif ( )
 
 include ( CPack )
 ####  #####  ####

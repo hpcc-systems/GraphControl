@@ -7,6 +7,8 @@
 
 project(graphlayout)
 
+set ( GRAPHLAYOUTSRC_DIRS ${CMAKE_CURRENT_SOURCE_DIR} )
+
 # *********************************************************************
 
 include_directories (
@@ -26,6 +28,7 @@ include_directories (
 	${GRAPHVIZSRC_DIRS}/lib/sparse
 	${GRAPHVIZSRC_DIRS}/lib/xdot
 	${GRAPHVIZSRC_DIRS}/lib/gd
+	${GRAPHLAYOUTSRC_DIRS}
 	${GRAPHVIZSRC_DIRS}
 	${Boost_INCLUDE_DIRS}
 	)
