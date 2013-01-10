@@ -23,17 +23,20 @@ cd ~/git
 #### Get GraphControl Sources #### 
 git clone https://github.com/hpcc-systems/GraphControl.git
 cd GraphControl
-git checkout candidate-6.10.x
+git checkout candidate-3.10.x
 cd ..
 
 #### Get Firebreath library #### 
 git clone https://github.com/GordonSmith/FireBreath.git
 cd FireBreath
-git checkout graphcontrol-6.10.x
+git checkout graphcontrol-3.10.x
 cd ..
 
 #### Get unrestricted (2.4) agg libraries #### 
-git svn clone https://agg.svn.sourceforge.net/svnroot/agg
+git clone https://github.com/GordonSmith/agg.git
+cd agg
+git checkout graphcontrol-3.10.x
+cd ..
 
 #### Get AT&T Graphviz libraries #### 
 wget http://www.graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.26.3.tar.gz
@@ -41,10 +44,6 @@ tar xf graphviz-2.26.3.tar.gz
 rm graphviz-2.26.3.tar.gz
 cd graphviz-2.26.3
 ./configure
-## Manually edit config.h and comment out the following lines:
-#define ENABLE_LTDL 1
-#define HAVE_EXPAT
-#define HAVE_LIBZ
 cd ..
 
 #### Create general build folder #### 
