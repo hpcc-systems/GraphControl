@@ -113,6 +113,8 @@ link_boost_library ( ${PROJECT_NAME} date_time )
 link_boost_library ( ${PROJECT_NAME} filesystem )
 link_boost_library ( ${PROJECT_NAME} regex )
 
+install ( TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin LIBRARY DESTINATION lib )
+
 ####  CPACK  ####
 set(CPACK_SYSTEM_NAME "${CMAKE_SYSTEM_NAME}_${FB_PLATFORM_ARCH_NAME}")
 
@@ -126,6 +128,7 @@ if ( "${CMAKE_BUILD_TYPE}" STREQUAL "Debug" )
     set ( stagever "${stagever}-Debug" )
 endif ( "${CMAKE_BUILD_TYPE}" STREQUAL "Debug" )
 
+set ( CPACK_PACKAGE_VENDOR "HPCC Systems" )
 set ( CPACK_PACKAGE_NAME "hpccsystems-graphcontrol" )
 set ( CPACK_PACKAGE_VERSION_MAJOR ${HPCC_MAJOR} )
 set ( CPACK_PACKAGE_VERSION_MINOR ${HPCC_MINOR} )
@@ -142,24 +145,33 @@ set ( CPACK_RESOURCE_FILE_README "${FB_PROJECTS_DIR}/CPackReadMe.txt" )
 if ( UNIX )
     set ( CPACK_PACKAGING_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX} )
 elseif ( WIN32 )
+    set( DIR_NAME "HPCCSystems" )
+    set( version ${HPCC_MAJOR}.${HPCC_MINOR}.${HPCC_POINT} )
+    set ( CPACK_PACKAGE_INSTALL_DIRECTORY "${DIR_NAME}\\\\${version}\\\\graphcontrol" )
+    set ( CPACK_PACKAGE_INSTALL_REGISTRY_KEY "${DIR_NAME}\\\\${version}\\\\graphcontrol" )
+    set ( CPACK_PACKAGE_INSTALL_PLUGINFILE "bin\\\\npHPCCSystemsGraphViewControl.dll")
     if ( "${FB_PLATFORM_ARCH_NAME}" EQUAL "x86_64" )
-        set ( CPACK_NSIS_DISPLAY_NAME "Graph Control x64" )
+        SET ( CPACK_NSIS_DISPLAY_NAME "Graph Control x64" )
         SET ( CPACK_NSIS_EXTRA_INSTALL_COMMANDS "  
-            ExecWait '\\\"$SYSDIR\\\\regsvr32.exe\\\" /s \\\"$INSTDIR\\\\${PLUGIN_DIRECTORY}\\\\npHPCCSystemsGraphViewControl.dll\\\"'
+            ExecWait '\\\"$SYSDIR\\\\regsvr32.exe\\\" /s \\\"$INSTDIR\\\\${CPACK_PACKAGE_INSTALL_PLUGINFILE}\\\"'
         " )
         SET ( CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "  
-            ExecWait '\\\"$SYSDIR\\\\regsvr32.exe\\\" /s /u \\\"$INSTDIR\\\\${PLUGIN_DIRECTORY}\\\\npHPCCSystemsGraphViewControl.dll\\\"'
+            ExecWait '\\\"$SYSDIR\\\\regsvr32.exe\\\" /s /u \\\"$INSTDIR\\\\${CPACK_PACKAGE_INSTALL_PLUGINFILE}\\\"'
         " )
     else ()
-        set ( CPACK_NSIS_DISPLAY_NAME "Graph Control" )
-        SET ( CPACK_NSIS_DISPLAY_NAME "Graph Control")
+        SET ( CPACK_NSIS_DISPLAY_NAME "Graph Control" )
         SET ( CPACK_NSIS_EXTRA_INSTALL_COMMANDS "  
-            RegDLL '$INSTDIR\\\\${PLUGIN_DIRECTORY}\\\\npHPCCSystemsGraphViewControl.dll'
+            RegDLL '$INSTDIR\\\\${CPACK_PACKAGE_INSTALL_PLUGINFILE}'
         " )
         SET ( CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "  
-            UnRegDLL '$INSTDIR\\\\${PLUGIN_DIRECTORY}\\\\npHPCCSystemsGraphViewControl.dll'
+            UnRegDLL '$INSTDIR\\\\${CPACK_PACKAGE_INSTALL_PLUGINFILE}'
         " )
     endif ()
+    set ( CPACK_NSIS_DEFINES "
+        !define MUI_STARTMENUPAGE_DEFAULTFOLDER \\\"${CPACK_PACKAGE_VENDOR}\\\\${CPACK_NSIS_DISPLAY_NAME}\\\"
+        !define MUI_FINISHPAGE_NOAUTOCLOSE
+    ")
+
     file(STRINGS "${FB_PROJECTS_DIR}/../sign/passphrase.txt" PFX_PASSWORD LIMIT_COUNT 1)
 
     add_custom_target(SIGN 
@@ -168,7 +180,7 @@ elseif ( WIN32 )
     )
     add_dependencies(SIGN PACKAGE)
     set_property(TARGET SIGN PROPERTY FOLDER "CMakePredefinedTargets")
-endif ( WIN32 )
+endif ( )
 
 include ( CPack )
 ####  #####  ####
