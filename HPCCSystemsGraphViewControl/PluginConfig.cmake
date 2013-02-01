@@ -41,7 +41,7 @@ set(MOZILLA_PLUGINID "hpccsystems.com/HPCCSystemsGraphViewControl")
 # strings
 set(FBSTRING_CompanyName "HPCC Systems")
 set(FBSTRING_PluginDescription "HPCC Systems Graph View Control")
-set(FBSTRING_PLUGIN_VERSION "${HPCC_MAJOR}.${HPCC_MINOR}.${HPCC_POINT}.${HPCC_SEQUENCE}")
+set(FBSTRING_PLUGIN_VERSION "${HPCC_VERSION}")
 set(FBSTRING_LegalCopyright "Copyright 2012 HPCC Systems")
 set(FBSTRING_PluginFileName "np${PLUGIN_NAME}.dll")
 set(FBSTRING_ProductName "HPCCSystemsGraphViewControl")

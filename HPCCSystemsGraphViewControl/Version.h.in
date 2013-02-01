@@ -7,6 +7,6 @@ const int hpcc_minor = @HPCC_MINOR@;
 const int hpcc_point = @HPCC_POINT@;
 const char * const hpcc_maturity = "@HPCC_MATURITY@";
 const int hpcc_sequence = @HPCC_SEQUENCE@;
-const char * const hpcc_version = "@HPCC_MAJOR@.@HPCC_MINOR@.@HPCC_POINT@.@HPCC_SEQUENCE@";
+const char * const hpcc_version = "@HPCC_VERSION@";
 
 #endif
