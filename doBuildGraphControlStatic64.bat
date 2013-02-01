@@ -19,7 +19,7 @@ call :DOBUILD
 goto :EOF
 
 :DOBUILD
-msbuild /p:Configuration=%CONFIG_MODE% /nologo /noconsolelogger /fl /flp:logfile=%BUILD_DIR%\GraphControlStatic64_3_10_%CONFIG_MODE%.txt;ErrorsOnly FireBreath.sln
+cmake --build . --config %CONFIG_MODE%
 if not errorlevel 0 goto :ERROR 
 goto :EOF
 
