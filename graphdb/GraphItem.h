@@ -47,7 +47,7 @@ protected:
 	IntIUnknownMap m_propIUnknown;
 	IntCUnknownMap m_propCUnknown;
 
-	StringStringMap m_propStringString;
+	ciStringStringMap m_propStringString;
 
 	std::string m_blankString;
 	
@@ -84,8 +84,9 @@ public:
 	CUnknown * GetPropertyCUnknown(unsigned int key) const;
 
 	void SetProperty(const std::string & key, const std::string & val);
+	bool HasProperty(const std::string & key) const;
 	const char * GetProperty(const std::string & key) const;
-	int GetProperties(StringStringMap & results) const;
+	int GetProperties(ciStringStringMap & results) const;
 };
 typedef CUnknownPtr<CGraphItem> CGraphItemPtr;
 typedef std::map<unsigned int, CGraphItemPtr> IDGraphItemMap;
@@ -107,6 +108,7 @@ typedef std::map<unsigned int, CGraphItemPtr> IDGraphItemMap;
 						void SetProperty(unsigned int key, CUnknown * val) { CGraphItem::SetProperty(key, val); } \
 						CUnknown * GetPropertyCUnknown(unsigned int key) const { return CGraphItem::GetPropertyCUnknown(key); } \
 						void SetProperty(const std::string & key, const std::string & val) { CGraphItem::SetProperty(key, val); } \
+						bool HasProperty(const std::string & key) const { return CGraphItem::HasProperty(key); } \
 						const char * GetProperty(const std::string & key) const { return CGraphItem::GetProperty(key); } \
-						int GetProperties(StringStringMap & results) const { return CGraphItem::GetProperties(results); }
+						int GetProperties(ciStringStringMap & results) const { return CGraphItem::GetProperties(results); }
 }

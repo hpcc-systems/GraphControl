@@ -20,6 +20,8 @@
  * THE SOFTWARE.
  ******************************************************************************/
 
+#include <boost/algorithm/string.hpp>
+
 #include "JSObject.h"
 #include "variant_list.h"
 #include "DOM/Document.h"
@@ -27,7 +29,6 @@
 
 #include "HPCCSystemsGraphViewControlAPI.h"
 #include <XgmmlParser.h>
-#include <boost/algorithm/string.hpp>
 
 #include "Version.h"
 
@@ -215,9 +216,9 @@ FB::VariantMap HPCCSystemsGraphViewControlAPI::getProperties(int item)
 	retVal["_internalID"] = item;
 	retVal["_globalID"] = getGlobalID(item);
 
-	hpcc::StringStringMap properties;
+	hpcc::ciStringStringMap properties;
 	getPlugin()->GetProperties(item, properties);
-	for(hpcc::StringStringMap::const_iterator itr = properties.begin(); itr != properties.end(); ++itr)
+	for(hpcc::ciStringStringMap::const_iterator itr = properties.begin(); itr != properties.end(); ++itr)
 		retVal[itr->first] = itr->second;
 
 	return retVal;
@@ -234,7 +235,7 @@ FB::VariantList HPCCSystemsGraphViewControlAPI::getPropertiesForItems(const std:
 
 std::string HPCCSystemsGraphViewControlAPI::getProperty(int item, const std::string & key)
 {
-	hpcc::StringStringMap properties;
+	hpcc::ciStringStringMap properties;
 	getPlugin()->GetProperties(item, properties);
 	return properties[key];
 }

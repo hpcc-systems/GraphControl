@@ -20,6 +20,8 @@
  * THE SOFTWARE.
  ******************************************************************************/
 
+#include <boost/algorithm/string.hpp>
+
 #include "HPCCSystemsGraphViewControlAPI.h"
 
 #include "HPCCSystemsGraphViewControl.h"
@@ -33,7 +35,6 @@
 
 #include <XgmmlParser.h>
 #include <DotParser.h>
-#include <boost/algorithm/string.hpp>
 
 ///////////////////////////////////////////////////////////////////////////////
 /// @fn HPCCSystemsGraphViewControl::StaticInitialize()
@@ -470,7 +471,7 @@ const hpcc::IClusterSet & HPCCSystemsGraphViewControl::GetClusters()
 	return m_g->GetClusters();
 }
 
-int HPCCSystemsGraphViewControl::GetProperties(int _item, hpcc::StringStringMap & results)
+int HPCCSystemsGraphViewControl::GetProperties(int _item, hpcc::ciStringStringMap & results)
 {
 	hpcc::IGraphItemPtr item = m_g->GetGraphItem(_item);
 	if (item)
