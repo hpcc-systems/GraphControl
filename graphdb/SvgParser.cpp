@@ -237,7 +237,7 @@ GRAPHDB_API bool MergeSVG(IGraph * graph, const std::string & svg)
 	try
 	{
 		parser.Parse(svg.c_str(), svg.length());
-	} catch (ParseException & e) {
+	} catch (ParseException &) {
 		return false;
 	}
 	RectD childRect;
