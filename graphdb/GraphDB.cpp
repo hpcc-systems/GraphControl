@@ -251,9 +251,9 @@ std::string xmlEncode(const std::string & text)
 const char * BuildVertexString(const IVertex * vertex, std::string &vertexStr, bool isPoint)
 {
 	std::string attrStr, propsStr;
-	StringStringMap props;
+	ciStringStringMap props;
 	vertex->GetProperties(props);
-	for(StringStringMap::const_iterator itr = props.begin(); itr != props.end(); ++itr)
+	for(ciStringStringMap::const_iterator itr = props.begin(); itr != props.end(); ++itr)
 	{
 		if (isPoint && boost::algorithm::iequals(itr->first, "_kind"))
 			propsStr += "<att name=\"_kind\" value=\"point\"/>";
@@ -270,9 +270,9 @@ const char * BuildVertexString(const IVertex * vertex, std::string &vertexStr, b
 const char * BuildEdgeString(const IEdge * edge, std::string &edgeStr)
 {
 	std::string attrStr, propsStr;
-	StringStringMap props;
+	ciStringStringMap props;
 	edge->GetProperties(props);
-	for(StringStringMap::const_iterator itr = props.begin(); itr != props.end(); ++itr)
+	for(ciStringStringMap::const_iterator itr = props.begin(); itr != props.end(); ++itr)
 	{
 		if (boost::algorithm::iequals(itr->first, "id") ||
 			boost::algorithm::iequals(itr->first, "label") ||

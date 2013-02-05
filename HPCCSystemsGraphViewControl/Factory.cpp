@@ -20,9 +20,10 @@
  * THE SOFTWARE.
  ******************************************************************************/
 
+#include <boost/algorithm/string.hpp>
+
 #include "FactoryBase.h"
 #include "HPCCSystemsGraphViewControl.h"
-#include <boost/make_shared.hpp>
 
 class PluginFactory : public FB::FactoryBase
 {
