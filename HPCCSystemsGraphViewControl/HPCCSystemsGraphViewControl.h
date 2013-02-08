@@ -122,7 +122,7 @@ public:
 	bool SetSelected(const std::vector<int> & items, bool clearPrevious);
 	bool SetSelected(const std::vector<std::string> & items, bool clearPrevious);
 	const hpcc::IClusterSet & GetClusters();
-	int GetProperties(int item, hpcc::StringStringMap & results);
+	int GetProperties(int item, hpcc::ciStringStringMap & results);
 	unsigned int GetItem(const std::string &externalID);
 	const char * GetGlobalID(int item);
 	int GetClusters(std::vector<int> & results);

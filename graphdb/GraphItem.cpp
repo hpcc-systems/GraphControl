@@ -169,13 +169,19 @@ void CGraphItem::SetProperty(const std::string & key, const std::string & val)
 
 const char * CGraphItem::GetProperty(const std::string & key) const
 {
-	StringStringMap::const_iterator found = m_propStringString.find(key);
+	ciStringStringMap::const_iterator found = m_propStringString.find(key);
 	if (found != m_propStringString.end())
 		return found->second.c_str();
 	return NULL;
 }
 
-int CGraphItem::GetProperties(StringStringMap & results) const 
+bool CGraphItem::HasProperty(const std::string & key) const
+{
+	ciStringStringMap::const_iterator found = m_propStringString.find(key);
+	return found != m_propStringString.end();
+}
+
+int CGraphItem::GetProperties(ciStringStringMap & results) const
 { 
 	results = m_propStringString;
 	return results.size();

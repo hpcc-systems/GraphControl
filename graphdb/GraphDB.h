@@ -56,6 +56,13 @@ typedef CUnknownPtr<IEdge> IEdgePtr;
 typedef std::set<IEdgePtr, CompareT<IEdgePtr> > IEdgeSet;
 
 typedef std::map<std::string, std::string> StringStringMap;
+struct ciLessBoost : std::binary_function<std::string, std::string, bool>
+{
+    bool operator() (const std::string & s1, const std::string & s2) const {
+        return boost::lexicographical_compare(s1, s2, boost::is_iless());
+    }
+};
+typedef std::map<std::string, std::string, ciLessBoost> ciStringStringMap;
 
 //  ===========================================================================
 enum PROP
@@ -112,8 +119,9 @@ hpcc_interface GRAPHDB_API IGraphItem : public IUnknown
 	virtual CUnknown * GetPropertyCUnknown(unsigned int key) const = 0;
 
 	virtual void SetProperty(const std::string & key, const std::string & val) = 0;
+	virtual bool HasProperty(const std::string & key) const = 0;
 	virtual const char * GetProperty(const std::string & key) const = 0;
-	virtual int GetProperties(StringStringMap & results) const = 0;
+	virtual int GetProperties(ciStringStringMap & results) const = 0;
 };
 
 hpcc_interface GRAPHDB_API ICluster : public IGraphItem
