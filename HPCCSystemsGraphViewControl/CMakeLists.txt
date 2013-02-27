@@ -115,24 +115,41 @@ link_boost_library ( ${PROJECT_NAME} regex )
 
 install ( TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin LIBRARY DESTINATION lib )
 
-####  CPACK  ####
-set(CPACK_SYSTEM_NAME "${CMAKE_SYSTEM_NAME}_${FB_PLATFORM_ARCH_NAME}")
+##############################################
+# Build tag generation
 
-if ( "${HPCC_MATURITY}" STREQUAL "release" )
-    set ( stagever "${HPCC_SEQUENCE}" )
+if (CMAKE_SIZEOF_VOID_P EQUAL 8)
+    set ( ARCH64BIT 1 )
 else ()
-    set ( stagever "${HPCC_SEQUENCE}${HPCC_MATURITY}" )
+    set ( ARCH64BIT 0 )
 endif ()
+message ("-- 64bit architecture is ${ARCH64BIT}")
 
-if ( "${CMAKE_BUILD_TYPE}" STREQUAL "Debug" )
-    set ( stagever "${stagever}-Debug" )
-endif ( "${CMAKE_BUILD_TYPE}" STREQUAL "Debug" )
+set(projname ${HPCC_PROJECT})
+set(majorver ${HPCC_MAJOR})
+set(minorver ${HPCC_MINOR})
+set(point ${HPCC_POINT})
+if ( "${HPCC_MATURITY}" STREQUAL "release" )
+    set(stagever "${HPCC_SEQUENCE}")
+else()
+    set(stagever "${HPCC_MATURITY}${HPCC_SEQUENCE}")
+endif()
+set(version ${majorver}.${minorver}.${point})
+
+IF ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+    set( stagever "${stagever}-Debug" )
+ENDIF ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+##############################################
+
+####  CPACK  ####
+INCLUDE(InstallRequiredSystemLibraries)
+set(CPACK_SYSTEM_NAME "${CMAKE_SYSTEM_NAME}_${FB_PLATFORM_ARCH_NAME}")
 
 set ( CPACK_PACKAGE_VENDOR "HPCC Systems" )
 set ( CPACK_PACKAGE_NAME "hpccsystems-graphcontrol" )
-set ( CPACK_PACKAGE_VERSION_MAJOR ${HPCC_MAJOR} )
-set ( CPACK_PACKAGE_VERSION_MINOR ${HPCC_MINOR} )
-set ( CPACK_PACKAGE_VERSION_PATCH ${HPCC_POINT}-${stagever} )
+SET(CPACK_PACKAGE_VERSION_MAJOR ${majorver})
+SET(CPACK_PACKAGE_VERSION_MINOR ${minorver})
+SET(CPACK_PACKAGE_VERSION_PATCH ${point}${stagever})
 set ( CPACK_PACKAGE_DESCRIPTION_SUMMARY "HPCC Systems Graph Control." )
 
 set ( CPACK_PACKAGE_CONTACT "HPCCSystems <ossdevelopment@lexisnexis.com>" )
@@ -141,6 +158,73 @@ set ( CPACK_DEBIAN_PACKAGE_DEPENDS "libboost-dev (>=1.46.0), libboost-system-dev
 
 set ( CPACK_RESOURCE_FILE_LICENSE "${FB_PROJECTS_DIR}/License.txt" )
 set ( CPACK_RESOURCE_FILE_README "${FB_PROJECTS_DIR}/CPackReadMe.txt" )
+
+
+set ( CPACK_RPM_PACKAGE_VERSION "${projname}")
+SET(CPACK_RPM_PACKAGE_RELEASE "${version}${stagever}")
+if ( ${ARCH64BIT} EQUAL 1 )
+    set ( CPACK_RPM_PACKAGE_ARCHITECTURE "x86_64")
+else( ${ARCH64BIT} EQUAL 1 )
+    set ( CPACK_RPM_PACKAGE_ARCHITECTURE "i386")
+endif ( ${ARCH64BIT} EQUAL 1 )
+set(CPACK_SYSTEM_NAME "${CMAKE_SYSTEM_NAME}-${CPACK_RPM_PACKAGE_ARCHITECTURE}")
+if ("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
+    set(CPACK_STRIP_FILES TRUE)
+endif()
+if ( APPLE )
+elseif ( UNIX )
+    EXECUTE_PROCESS (
+                COMMAND ${FB_PROJECTS_DIR}/cmake_utils/distrocheck.sh
+                    OUTPUT_VARIABLE packageManagement
+                        ERROR_VARIABLE  packageManagement
+                )
+    EXECUTE_PROCESS (
+                COMMAND ${FB_PROJECTS_DIR}/cmake_utils/getpackagerevisionarch.sh
+                    OUTPUT_VARIABLE packageRevisionArch
+                        ERROR_VARIABLE  packageRevisionArch
+                )
+    EXECUTE_PROCESS (
+                COMMAND ${FB_PROJECTS_DIR}/cmake_utils/getpackagerevisionarch.sh --noarch
+                    OUTPUT_VARIABLE packageRevision
+                        ERROR_VARIABLE  packageRevision
+                )
+
+    message ( "-- Auto Detecting Packaging type")
+    message ( "-- distro uses ${packageManagement}, revision is ${packageRevisionArch}" )
+    
+    if ( "${packageManagement}" STREQUAL "DEB" )
+        set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}_${CPACK_RPM_PACKAGE_VERSION}-${version}-${stagever}${packageRevisionArch}")
+    elseif ( "${packageManagement}" STREQUAL "RPM" )
+        set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}_${CPACK_RPM_PACKAGE_VERSION}-${version}-${stagever}.${packageRevisionArch}")
+    else()
+        set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}_${CPACK_RPM_PACKAGE_VERSION}_${version}-${stagever}${CPACK_SYSTEM_NAME}")
+    endif ()
+endif ()
+MESSAGE ("-- Current release version is ${CPACK_PACKAGE_FILE_NAME}")
+
+###
+## Run file configuration to set build tag along with install lines for generated
+## config files.
+###
+set( BUILD_TAG "${CPACK_RPM_PACKAGE_VERSION}_${version}-${stagever}")
+if (USE_GIT_DESCRIBE OR CHECK_GIT_TAG)
+    FETCH_GIT_TAG (${CMAKE_SOURCE_DIR} ${CPACK_RPM_PACKAGE_VERSION}_${version} GIT_BUILD_TAG)
+    message ("-- Git tag is '${GIT_BUILD_TAG}'")
+    if (NOT "${GIT_BUILD_TAG}" STREQUAL "${BUILD_TAG}")
+        if (CHECK_GIT_TAG)
+            message(FATAL_ERROR "Git tag '${GIT_BUILD_TAG}' does not match source version '${BUILD_TAG}'" )
+        else()
+            if(NOT "${GIT_BUILD_TAG}" STREQUAL "") # probably means being built from a tarball...
+                set( BUILD_TAG "${BUILD_TAG}[${GIT_BUILD_TAG}]")
+            endif()
+        endif()
+    endif()
+endif()
+message ("-- Build tag is '${BUILD_TAG}'")
+if (NOT "${BASE_BUILD_TAG}" STREQUAL "")
+    set(BASE_BUILD_TAG "${BUILD_TAG}")
+endif()
+message ("-- Base build tag is '${BASE_BUILD_TAG}'")
 
 if ( UNIX )
     set ( CPACK_PACKAGING_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX} )
