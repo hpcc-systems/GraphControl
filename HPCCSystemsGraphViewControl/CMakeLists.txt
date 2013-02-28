@@ -10,6 +10,9 @@ set (CMAKE_BACKWARDS_COMPATIBILITY 2.6)
 
 Project ( ${PLUGIN_NAME} )
 
+SET ( EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin/HPCCSystemsGraphViewControl" CACHE PATH "Location of BIN files" )
+SET ( LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin/HPCCSystemsGraphViewControl" CACHE PATH "Location of LIB files" )
+
 configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/Version.h.in ${CMAKE_CURRENT_SOURCE_DIR}/Version.h )
 
 file (GLOB GENERAL RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
@@ -99,6 +102,7 @@ if(WIN32)
 elseif(APPLE)
 elseif(UNIX)
 endif()
+add_definitions( -DBOOST_ALL_NO_LIB )
 
 add_subdirectory ("${FB_PROJECTS_DIR}/graphlayout" "graphlayout")
 add_subdirectory ("${FB_PROJECTS_DIR}/graphdb" "graphdb")

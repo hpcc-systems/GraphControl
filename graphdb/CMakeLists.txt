@@ -72,8 +72,9 @@ ADD_PRECOMPILED_HEADER(${PROJECT_NAME} "precompiled_headers.h" "precompiled_head
 target_link_libraries ( graphdb 
 	graphlayout 
 	expat 
-	${Boost_LIBRARIES}
 	)
+link_boost_library ( ${PROJECT_NAME} date_time )
+link_boost_library ( ${PROJECT_NAME} system )
 
 # *********************************************************************
 
