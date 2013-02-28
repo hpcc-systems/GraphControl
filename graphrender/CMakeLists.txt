@@ -102,6 +102,7 @@ target_link_libraries ( graphrender
 	graphdb 
 	agg
 	)
+link_boost_library ( ${PROJECT_NAME} filesystem )
 
 # *********************************************************************
 
