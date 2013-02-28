@@ -259,11 +259,11 @@ public:
 			for(ciStringStringMap::const_iterator itr = e->m_attr.begin(); itr != e->m_attr.end(); ++itr)
 				edge->SetProperty(itr->first, itr->second);
 
-			std::string prettyCount = edge->GetProperty("count");
+			std::string prettyCount = constGet(e->m_attr, "count");
 			if (!prettyCount.empty() &&
-					(!boost::algorithm::equals(prettyCount, "0") || 
-					(boost::algorithm::equals(prettyCount, "0") && boost::algorithm::equals(edge->GetProperty("_eofSeen"), "1")) ||
-					(boost::algorithm::equals(prettyCount, "0") && boost::algorithm::equals(edge->GetProperty("started"), "1"))))
+					(!boost::algorithm::equals(prettyCount, "0") ||
+					(boost::algorithm::equals(prettyCount, "0") && boost::algorithm::equals(constGet(e->m_attr, "_eofSeen"), "1")) ||
+					(boost::algorithm::equals(prettyCount, "0") && boost::algorithm::equals(constGet(e->m_attr, "started"), "1"))))
 			{
 				std::string tmp;
 				int len = prettyCount.length();
@@ -280,15 +280,15 @@ public:
 
 			std::string edgeLabel;
 			if (!prettyCount.empty() && edge->HasProperty("label") && edge->HasProperty("maxskew") && edge->HasProperty("minskew"))
-				edgeLabel = (boost::format("%1%\n%2%\n+%3%%%, -%4%%%") % edge->GetProperty("label") % prettyCount % edge->GetProperty("maxskew") % edge->GetProperty("minskew")).str();
+				edgeLabel = (boost::format("%1%\n%2%\n+%3%%%, -%4%%%") % constGet(e->m_attr, "label") % prettyCount % constGet(e->m_attr, "maxskew") % constGet(e->m_attr, "minskew")).str();
 			else if (!prettyCount.empty() && edge->HasProperty("maxskew") && edge->HasProperty("minskew"))
-				edgeLabel = (boost::format("%1%\n+%2%%%, -%3%%%") % prettyCount % edge->GetProperty("maxskew") % edge->GetProperty("minskew")).str();
+				edgeLabel = (boost::format("%1%\n+%2%%%, -%3%%%") % prettyCount % constGet(e->m_attr, "maxskew") % constGet(e->m_attr, "minskew")).str();
 			else if (!prettyCount.empty() && edge->HasProperty("label"))
-				edgeLabel = (boost::format("%1%\n%2%") % edge->GetProperty("label") % prettyCount).str();
+				edgeLabel = (boost::format("%1%\n%2%") % constGet(e->m_attr, "label") % prettyCount).str();
 			else if (!prettyCount.empty())
 				edgeLabel = (boost::format("%1%") % prettyCount).str();
-			else if (edge->HasProperty("label"))
-				edgeLabel = (boost::format("%1%") % edge->GetProperty("label")).str();
+			else if (constGet(e->m_attr, "label").length())
+				edgeLabel = (boost::format("%1%") % constGet(e->m_attr, "label")).str();
 
 			boost::algorithm::replace_all(edgeLabel, "\n", "\\n");
 			if (edgeLabel.empty())
@@ -297,11 +297,11 @@ public:
 			if (m_merge)
 				UpdateVisibleLabel(edge, edgeLabel);
 
-			if (boost::algorithm::equals(edge->GetProperty("_dependsOn"), "1") || boost::algorithm::equals(edge->GetProperty("_childGraph"), "1"))
+			if (boost::algorithm::equals(constGet(e->m_attr, "_dependsOn"), "1") || boost::algorithm::equals(constGet(e->m_attr, "_childGraph"), "1"))
 				edge->SetProperty(DOT_EDGE_STYLE, "dashed");
 
-			std::string started = edge->GetProperty("started");
-			std::string stopped = edge->GetProperty("stopped");
+			std::string started = constGet(e->m_attr, "started");
+			std::string stopped = constGet(e->m_attr, "stopped");
 			if (started.empty() && stopped.empty())
 			{
 				edge->SetProperty(XGMML_STATE, XGMML_STATE_UNKNOWN);
