@@ -129,6 +129,12 @@ target_link_libraries ( graphlayout
 	xdot
 	vpsc
 	)
+link_boost_library ( ${PROJECT_NAME} thread )
+link_boost_library ( ${PROJECT_NAME} system )
+if (Boost_MAJOR_VERSION GREATER 0 AND Boost_MINOR_VERSION GREATER 47)
+    link_boost_library( ${PROJECT_NAME} chrono)
+endif ()
+
 
 # *********************************************************************
 
