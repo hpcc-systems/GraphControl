@@ -107,6 +107,9 @@ add_definitions( -DBOOST_ALL_NO_LIB )
 add_subdirectory ("${FB_PROJECTS_DIR}/graphlayout" "graphlayout")
 add_subdirectory ("${FB_PROJECTS_DIR}/graphdb" "graphdb")
 add_subdirectory ("${FB_PROJECTS_DIR}/graphrender" "graphrender")
+if (APPLE)
+    add_subdirectory ("${FB_PROJECTS_DIR}/lib2" "lib2")
+endif (APPLE)
 
 target_link_libraries(${PROJECT_NAME}
     graphdb
