@@ -107,6 +107,9 @@ add_definitions( -DBOOST_ALL_NO_LIB )
 add_subdirectory ("${FB_PROJECTS_DIR}/graphlayout" "graphlayout")
 add_subdirectory ("${FB_PROJECTS_DIR}/graphdb" "graphdb")
 add_subdirectory ("${FB_PROJECTS_DIR}/graphrender" "graphrender")
+if (APPLE)
+    add_subdirectory ("${FB_PROJECTS_DIR}/lib2" "lib2")
+endif (APPLE)
 
 target_link_libraries(${PROJECT_NAME}
     graphdb
@@ -116,8 +119,6 @@ link_boost_library ( ${PROJECT_NAME} system )
 link_boost_library ( ${PROJECT_NAME} date_time )
 link_boost_library ( ${PROJECT_NAME} filesystem )
 link_boost_library ( ${PROJECT_NAME} regex )
-
-install ( TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin LIBRARY DESTINATION lib )
 
 ##############################################
 # Build tag generation
@@ -175,7 +176,8 @@ set(CPACK_SYSTEM_NAME "${CMAKE_SYSTEM_NAME}-${CPACK_RPM_PACKAGE_ARCHITECTURE}")
 if ("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
     set(CPACK_STRIP_FILES TRUE)
 endif()
-if ( APPLE )
+if ( APPLE OR WIN32)
+    set ( CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}_${CPACK_RPM_PACKAGE_VERSION}-${version}-${stagever}${CPACK_SYSTEM_NAME}" )
 elseif ( UNIX )
     EXECUTE_PROCESS (
                 COMMAND ${FB_PROJECTS_DIR}/cmake_utils/distrocheck.sh
@@ -195,7 +197,7 @@ elseif ( UNIX )
 
     message ( "-- Auto Detecting Packaging type")
     message ( "-- distro uses ${packageManagement}, revision is ${packageRevisionArch}" )
-    
+
     if ( "${packageManagement}" STREQUAL "DEB" )
         set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}_${CPACK_RPM_PACKAGE_VERSION}-${version}-${stagever}${packageRevisionArch}")
     elseif ( "${packageManagement}" STREQUAL "RPM" )
