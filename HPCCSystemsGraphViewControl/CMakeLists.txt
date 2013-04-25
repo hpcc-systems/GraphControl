@@ -238,27 +238,30 @@ elseif ( WIN32 )
     set( DIR_NAME "HPCCSystems" )
     set( version ${HPCC_MAJOR}.${HPCC_MINOR}.${HPCC_POINT} )
     set ( CPACK_PACKAGE_INSTALL_DIRECTORY "${DIR_NAME}\\\\${version}\\\\graphcontrol" )
-    set ( CPACK_PACKAGE_INSTALL_REGISTRY_KEY "${DIR_NAME}\\\\${version}\\\\graphcontrol" )
+    set ( CPACK_PACKAGE_INSTALL_REGISTRY_KEY "graphcontrol_${version}" )
+    set ( CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL "ON" )
+    set ( CPACK_NSIS_URL_INFO_ABOUT "http:\\\\\\\\hpccsystems.com" )
+    set ( CPACK_NSIS_CONTACT ${CPACK_PACKAGE_CONTACT} )
     set ( CPACK_PACKAGE_INSTALL_PLUGINFILE "bin\\\\npHPCCSystemsGraphViewControl.dll")
     if ( "${FB_PLATFORM_ARCH_NAME}" EQUAL "x86_64" )
         SET ( CPACK_NSIS_DISPLAY_NAME "Graph Control x64" )
-        SET ( CPACK_NSIS_EXTRA_INSTALL_COMMANDS "  
+        list ( APPEND CPACK_NSIS_EXTRA_INSTALL_COMMANDS "
             ExecWait '\\\"$SYSDIR\\\\regsvr32.exe\\\" /s \\\"$INSTDIR\\\\${CPACK_PACKAGE_INSTALL_PLUGINFILE}\\\"'
         " )
-        SET ( CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "  
+        list ( APPEND CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "
             ExecWait '\\\"$SYSDIR\\\\regsvr32.exe\\\" /s /u \\\"$INSTDIR\\\\${CPACK_PACKAGE_INSTALL_PLUGINFILE}\\\"'
         " )
     else ()
         SET ( CPACK_NSIS_DISPLAY_NAME "Graph Control" )
-        SET ( CPACK_NSIS_EXTRA_INSTALL_COMMANDS "  
+        list ( APPEND CPACK_NSIS_EXTRA_INSTALL_COMMANDS "
             RegDLL '$INSTDIR\\\\${CPACK_PACKAGE_INSTALL_PLUGINFILE}'
         " )
-        SET ( CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "  
+        list ( APPEND CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "
             UnRegDLL '$INSTDIR\\\\${CPACK_PACKAGE_INSTALL_PLUGINFILE}'
         " )
     endif ()
     set ( CPACK_NSIS_DEFINES "
-        !define MUI_STARTMENUPAGE_DEFAULTFOLDER \\\"${CPACK_PACKAGE_VENDOR}\\\\${CPACK_NSIS_DISPLAY_NAME}\\\"
+        !define MUI_STARTMENUPAGE_DEFAULTFOLDER \\\"${CPACK_PACKAGE_VENDOR}\\\\${version}\\\\${CPACK_NSIS_DISPLAY_NAME}\\\"
         !define MUI_FINISHPAGE_NOAUTOCLOSE
     ")
 
