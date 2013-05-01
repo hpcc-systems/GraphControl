@@ -10,8 +10,11 @@ set (CMAKE_BACKWARDS_COMPATIBILITY 2.6)
 
 Project ( ${PLUGIN_NAME} )
 
-SET ( EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin/HPCCSystemsGraphViewControl" CACHE PATH "Location of BIN files" )
-SET ( LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin/HPCCSystemsGraphViewControl" CACHE PATH "Location of LIB files" )
+if ( APPLE )
+else ( APPLE )
+  SET ( EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin/HPCCSystemsGraphViewControl" CACHE PATH "Location of BIN files" )
+  SET ( LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin/HPCCSystemsGraphViewControl" CACHE PATH "Location of LIB files" )
+endif ( APPLE )
 
 configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/Version.h.in ${CMAKE_CURRENT_SOURCE_DIR}/Version.h )
 
