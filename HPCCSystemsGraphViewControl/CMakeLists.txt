@@ -10,8 +10,11 @@ set (CMAKE_BACKWARDS_COMPATIBILITY 2.6)
 
 Project ( ${PLUGIN_NAME} )
 
-SET ( EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin/HPCCSystemsGraphViewControl" CACHE PATH "Location of BIN files" )
-SET ( LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin/HPCCSystemsGraphViewControl" CACHE PATH "Location of LIB files" )
+if ( APPLE )
+else ( APPLE )
+  SET ( EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin/HPCCSystemsGraphViewControl" CACHE PATH "Location of BIN files" )
+  SET ( LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin/HPCCSystemsGraphViewControl" CACHE PATH "Location of LIB files" )
+endif ( APPLE )
 
 configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/Version.h.in ${CMAKE_CURRENT_SOURCE_DIR}/Version.h )
 
@@ -107,6 +110,9 @@ add_definitions( -DBOOST_ALL_NO_LIB )
 add_subdirectory ("${FB_PROJECTS_DIR}/graphlayout" "graphlayout")
 add_subdirectory ("${FB_PROJECTS_DIR}/graphdb" "graphdb")
 add_subdirectory ("${FB_PROJECTS_DIR}/graphrender" "graphrender")
+if (APPLE)
+    add_subdirectory ("${FB_PROJECTS_DIR}/lib2" "lib2")
+endif (APPLE)
 
 target_link_libraries(${PROJECT_NAME}
     graphdb
@@ -116,8 +122,6 @@ link_boost_library ( ${PROJECT_NAME} system )
 link_boost_library ( ${PROJECT_NAME} date_time )
 link_boost_library ( ${PROJECT_NAME} filesystem )
 link_boost_library ( ${PROJECT_NAME} regex )
-
-install ( TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin LIBRARY DESTINATION lib )
 
 ##############################################
 # Build tag generation
