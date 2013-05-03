@@ -150,7 +150,10 @@ ENDIF ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
 ##############################################
 
 ####  CPACK  ####
-INCLUDE(InstallRequiredSystemLibraries)
+if ( WIN32 AND WITH_DYNAMIC_MSVC_RUNTIME )
+    include ( InstallRequiredSystemLibraries )
+endif ( WIN32 AND WITH_DYNAMIC_MSVC_RUNTIME )
+
 set(CPACK_SYSTEM_NAME "${CMAKE_SYSTEM_NAME}_${FB_PLATFORM_ARCH_NAME}")
 
 set ( CPACK_PACKAGE_VENDOR "HPCC Systems" )
