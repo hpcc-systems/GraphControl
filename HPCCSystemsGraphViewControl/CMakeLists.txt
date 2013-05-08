@@ -150,7 +150,10 @@ ENDIF ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
 ##############################################
 
 ####  CPACK  ####
-INCLUDE(InstallRequiredSystemLibraries)
+if ( WIN32 AND WITH_DYNAMIC_MSVC_RUNTIME )
+    include ( InstallRequiredSystemLibraries )
+endif ( WIN32 AND WITH_DYNAMIC_MSVC_RUNTIME )
+
 set(CPACK_SYSTEM_NAME "${CMAKE_SYSTEM_NAME}_${FB_PLATFORM_ARCH_NAME}")
 
 set ( CPACK_PACKAGE_VENDOR "HPCC Systems" )
@@ -241,7 +244,7 @@ elseif ( WIN32 )
     set( DIR_NAME "HPCCSystems" )
     set( version ${HPCC_MAJOR}.${HPCC_MINOR}.${HPCC_POINT} )
     set ( CPACK_PACKAGE_INSTALL_DIRECTORY "${DIR_NAME}\\\\${version}\\\\graphcontrol" )
-    set ( CPACK_PACKAGE_INSTALL_REGISTRY_KEY "graphcontrol_${version}" )
+    set ( CPACK_PACKAGE_INSTALL_REGISTRY_KEY "graphcontrol_${version}_${FB_PLATFORM_ARCH_NAME}" )
     set ( CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL "ON" )
     set ( CPACK_NSIS_URL_INFO_ABOUT "http:\\\\\\\\hpccsystems.com" )
     set ( CPACK_NSIS_CONTACT ${CPACK_PACKAGE_CONTACT} )

@@ -56,18 +56,4 @@ set(WIX_HEAT_FLAGS
     -dr INSTALLDIR      # Set the directory ID to put the files in
     )
 
-add_wix_installer( ${PLUGIN_NAME}
-    ${CMAKE_CURRENT_SOURCE_DIR}/Win/WiX/HPCCSystemsGraphViewControlInstaller.wxs
-    PluginDLLGroup
-    ${FB_BIN_DIR}/${PLUGIN_NAME}/${CMAKE_CFG_INTDIR}/
-    ${FB_BIN_DIR}/${PLUGIN_NAME}/${CMAKE_CFG_INTDIR}/${FBSTRING_PluginFileName}.dll
-    ${PROJECT_NAME}
-    )
-
-# This is an example of how to add a build step to sign the WiX installer
-# -- uncomment lines below this to enable signing --
-firebreath_sign_file("${PLUGIN_NAME}_WiXInstall"
-    "${FB_BIN_DIR}/${PLUGIN_NAME}/${CMAKE_CFG_INTDIR}/${PLUGIN_NAME}.msi"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../sign/hpcc_code_signing.pfx"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../sign/passphrase.txt"
-    "http://timestamp.verisign.com/scripts/timestamp.dll")
+install ( TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin LIBRARY DESTINATION lib )
