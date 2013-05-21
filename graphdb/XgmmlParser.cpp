@@ -191,8 +191,12 @@ public:
 		StringGraphItemMap::const_iterator to = m_itemLookup.find(target);
 		assert(from != m_itemLookup.end());
 		assert(to != m_itemLookup.end());
-				//top->item = m_graph->CreateEdge(dynamic_cast<IVertex *>(from->second.get()), dynamic_cast<IVertex *>(to->second.get()));
-		retVal = hpcc::GetEdge(m_graph, id, dynamic_cast<IVertex *>(from->second.get()), dynamic_cast<IVertex *>(to->second.get()), m_merge);
+
+		IVertex * from_vertex = dynamic_cast<IVertex *>(from->second.get());
+		if (from_vertex->GetPropertyInt(XGMML_GLOBAL_USAGE_COUNT) > 0)
+			return NULL;
+
+		retVal = hpcc::GetEdge(m_graph, id, from_vertex, dynamic_cast<IVertex *>(to->second.get()), m_merge);
 		m_itemLookup[id] = retVal;
 		return retVal;
 	}
@@ -254,7 +258,8 @@ public:
 				edge = GetEdge(e->m_attr["id"], itrSource->second, itrTarget->second);
 			else
 				edge = GetEdge(e->m_attr["id"], e->m_attr["source"], e->m_attr["target"]);
-			assert(edge);
+			if (!edge)
+				continue;
 
 			for(ciStringStringMap::const_iterator itr = e->m_attr.begin(); itr != e->m_attr.end(); ++itr)
 				edge->SetProperty(itr->first, itr->second);
