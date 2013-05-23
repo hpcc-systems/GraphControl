@@ -7,8 +7,8 @@ cmake:  http://cmake.org/cmake/resources/software.html
 git: http://git-scm.com/download
 
 #### Get required libraries #### 
-# On Linux (Ubuntu 12.04)
-sudo apt-get install libboost-dev libboost-system-dev libboost-thread-dev libboost-filesystem-dev libfreetype6-dev libexpat1-dev libgtk2.0-dev
+# On Linux (Ubuntu 13.04)
+sudo apt-get install libboost-dev libboost-system-dev libboost-thread-dev libboost-filesystem-dev libboost-chrono-dev libfreetype6-dev libexpat1-dev libgtk2.0-dev
 
 # On OSX (Snow Leopard)
 sudo port install boost freetype expat
@@ -29,7 +29,7 @@ cd ..
 #### Get Firebreath library #### 
 git clone https://github.com/GordonSmith/FireBreath.git
 cd FireBreath
-git checkout graphcontrol-3.10.x
+git checkout closedown-4.0.x
 cd ..
 
 #### Get unrestricted (2.4) agg libraries #### 
