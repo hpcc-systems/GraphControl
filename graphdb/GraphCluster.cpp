@@ -109,11 +109,4 @@ void CCluster::Walk(IVertexVisitor * visitor) const
 	}
 }
 
-bool CCluster::OnlyConatinsOneCluster() const
-{
-	if (m_clusters.size() == 1 && m_vertices.size() == 0)
-		return true;
-	return false;
-}
-
 }

@@ -138,8 +138,6 @@ hpcc_interface GRAPHDB_API ICluster : public IGraphItem
 
 	virtual void Walk(IClusterVisitor * visitor) const = 0;
 	virtual void Walk(IVertexVisitor * visitor) const = 0;
-
-	virtual bool OnlyConatinsOneCluster() const = 0;
 };
 
 hpcc_interface GRAPHDB_API IVertex : public IGraphItem

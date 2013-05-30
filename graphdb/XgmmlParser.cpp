@@ -426,27 +426,13 @@ GRAPHDB_API bool LoadXGMML(IGraph * graph, const std::string & xgmml)
 	}
 #endif
 
-#define NREMOVE_CLUSTER_OF_CLUSTERS
+#define REMOVE_CLUSTER_OF_CLUSTERS
 #ifdef REMOVE_CLUSTER_OF_CLUSTERS
 	{
 		IClusterSet clusters(graph->GetAllClusters().begin(), graph->GetAllClusters().end());
 		for(IClusterSet::const_iterator itr = clusters.begin(); itr != clusters.end(); ++itr)
 		{
-			if (graph != itr->get()->GetParent() && !itr->get()->GetClusters().empty() && itr->get()->GetVertices().empty())
-			{
-				itr->get()->Delete();
-			}
-		}
-	}
-#endif
-
-#define REMOVE_CLUSTER_OF_ONECLUSTER
-#ifdef REMOVE_CLUSTER_OF_ONECLUSTER
-	{
-		IClusterSet clusters(graph->GetAllClusters().begin(), graph->GetAllClusters().end());
-		for(IClusterSet::const_iterator itr = clusters.begin(); itr != clusters.end(); ++itr)
-		{
-			if (itr->get()->OnlyConatinsOneCluster())
+			if (!itr->get()->GetClusters().empty() && itr->get()->GetVertices().empty())
 			{
 				graph->DeleteCluster(itr->get());
 			}
