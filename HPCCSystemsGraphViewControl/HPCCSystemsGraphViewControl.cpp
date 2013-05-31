@@ -231,17 +231,19 @@ void HPCCSystemsGraphViewControl::CenterOn(const hpcc::PointD & worldPoint)
 	SetScrollOffset((int)(newCenter.x - clientRect.Width / 2.0f), (int)(newCenter.y - clientRect.Height / 2.0f));
 }
 
-hpcc::PointD HPCCSystemsGraphViewControl::GetCenterAsWorldPoint()
+hpcc::PointD HPCCSystemsGraphViewControl::GetCenterPoint(bool world)
 {
 	hpcc::RectD rc;
 	GetClientRectangle(rc);
+	rc.ResetOrigin();
 	hpcc::PointD point;
 	rc.GetCenter(&point);
 	point.x += GetScrollOffsetX();
 	point.y += GetScrollOffsetY();
 
-	hpcc::PointD worldDblClk(point.x, point.y);
-	return m_gr->ScreenToWorld(worldDblClk);
+	if (world)
+		return m_gr->ScreenToWorld(point);
+	return point;
 }
 
 void HPCCSystemsGraphViewControl::MoveTo(const hpcc::PointD & worldPoint, int x, int y)
@@ -346,7 +348,7 @@ const char * HPCCSystemsGraphViewControl::GetLocalisedXGMML(const std::vector<in
 double HPCCSystemsGraphViewControl::SetScale(double scale)
 {
 	//  Keep center of screen in the middle
-	hpcc::PointD worldDblClk = GetCenterAsWorldPoint();
+	hpcc::PointD worldDblClk = GetCenterPoint(true);
 
 	double oldScale = m_gr->SetScale(scale);
 	if (oldScale != scale)
