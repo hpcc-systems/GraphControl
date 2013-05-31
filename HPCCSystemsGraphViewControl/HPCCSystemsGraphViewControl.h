@@ -95,7 +95,7 @@ public:
 	void CalcScrollbars(bool redraw = false);
 	void CenterOn(const hpcc::PointD & worldPoint);
 	void MoveTo(const hpcc::PointD & worldPoint, int x, int y);
-	hpcc::PointD GetCenterAsWorldPoint();
+	hpcc::PointD GetCenterPoint(bool world);
 
 	//  --- IAPICallback ---
 	void Clear();
