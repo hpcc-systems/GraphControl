@@ -454,6 +454,11 @@ public:
 		return !c.IsEmptyArea();
 	}
 
+	void ResetOrigin()
+	{
+		Offset(-x, -y);
+	}
+
 	void Offset(const PointD& point)
 	{
 		Offset(point.x, point.y);

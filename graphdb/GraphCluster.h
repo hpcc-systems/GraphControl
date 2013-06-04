@@ -56,8 +56,6 @@ public:
 
 	void Walk(IClusterVisitor * visitor) const;
 	void Walk(IVertexVisitor * visitor) const;
-
-	bool OnlyConatinsOneCluster() const;
 };
 
 #define ICLUSTER_IMPL	ICluster * GetParent() const { return CCluster::GetParent(); } \
@@ -69,6 +67,5 @@ public:
 						void AppendVertex(IVertex * vertex) { CCluster::AppendVertex(vertex); } \
 						void RemoveVertex(IVertex * vertex) { CCluster::RemoveVertex(vertex); } \
 						void Walk(IClusterVisitor * visitor) const { CCluster::Walk(visitor); } \
-						void Walk(IVertexVisitor * visitor) const { CCluster::Walk(visitor); } \
-						bool OnlyConatinsOneCluster() const { return CCluster::OnlyConatinsOneCluster(); } 
+						void Walk(IVertexVisitor * visitor) const { CCluster::Walk(visitor); } 
 }

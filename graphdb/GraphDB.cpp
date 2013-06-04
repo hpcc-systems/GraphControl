@@ -165,7 +165,10 @@ void WalkEdges(const IGraph * graph, std::string & content)
 			IVertex * from = e->GetFromVertex();
 			IVertex * to = e->GetToVertex();
 			if (from->GetPropertyInt(XGMML_GLOBAL_USAGE_COUNT) > 0)
+			{
+				assert(false);  //Edges of this type should have been removed by the XGMML parser.
 				continue;
+			}
 
 			//if (from->GetPropertyBool(XGMML_IS_SPILL) && (from->GetParent() != to->GetParent()) && from->GetOutEdgeCount() > 1)
 			//	continue;
