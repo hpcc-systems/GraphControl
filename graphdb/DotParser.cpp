@@ -89,6 +89,7 @@ bgcolor = lightgrey
 */
 namespace hpcc
 {
+#ifdef DOT_PARSER
 typedef std::map<std::string, CDotEdgePtr> EdgeStructSet;
 typedef std::map<std::string, CDotVertexPtr> VertexStructSet;
 
@@ -116,14 +117,16 @@ public:
 		assert(m_clusterStack.empty());
 	}
 
-	void OnStartGraph(int kind, const std::string & id, const AttrMap & attrs)
+	void OnStartGraph(bool directed, const std::string & id, const AttrMap & attrs)
 	{
 		assert(!id.empty());
-		m_graph->SetProperty(DOT_PROP_CDOTITEM, new CDotGraph(kind, id, attrs));
+		m_graph->SetExternalID(GRAPH_TYPE_GRAPH, id, m_graph);
+		m_graph->SetProperty(DOT_ID, id.c_str());
+		m_graph->SetProperty(DOT_PROP_CDOTITEM, new CDotGraph(directed, id, attrs));
 		m_clusterStack.push(NULL);
 	}
 
-	void OnEndGraph(int kind, const std::string & id)
+	void OnEndGraph(const std::string & id)
 	{
 		m_clusterStack.pop();
 	}
@@ -142,7 +145,13 @@ public:
 
 	void OnStartVertex(int _id, const AttrMap & attrs)
 	{
-		std::string id = UIntToString(_id);
+		OnStartVertex(UIntToString(_id), attrs);
+	}
+	void OnEndVertex(int id)
+	{
+	}
+	void OnStartVertex(const std::string & id, const AttrMap & attrs)
+	{
 		if (m_vertexStructs.find(id) == m_vertexStructs.end())
 		{
 			IVertexPtr v = GetVertex(m_graph, m_clusterStack.top(), id, m_merge);
@@ -150,21 +159,17 @@ public:
 			v->SetProperty(DOT_PROP_CDOTITEM, m_vertexStructs[id]);
 		}
 	}
-	void OnEndVertex(int id)
+	void OnEndVertex(const std::string & id)
 	{
 	}
-
-	void OnStartEdge(int kind, int _id, int _sourceID, int _targetID, const AttrMap & attrs)
+	void OnStartEdge(bool directed, const std::string & id, const std::string & sourceID, const std::string & targetID, const AttrMap & attrs)
 	{
-		std::string id = UIntToString(_id);
 		if (m_edgeStructs.find(id) == m_edgeStructs.end())
 		{
-			std::string sourceID = UIntToString(_sourceID);
-			std::string targetID = UIntToString(_targetID);
-			m_edgeStructs[id] = new CDotEdge(kind, id, sourceID, targetID, attrs);
+			m_edgeStructs[id] = new CDotEdge(directed, id, sourceID, targetID, attrs);
 		}
 	}
-	void OnEndEdge(int kind, int _id)
+	void OnEndEdge(const std::string & id)
 	{
 	}
 
@@ -185,14 +190,19 @@ public:
 		}
 	}
 };
+#endif
 
 GRAPHDB_API bool LoadDOT(IGraph * graph, const std::string & dot)
 {
+#ifdef DOT_PARSER
 	AttrMap attrs;
 	CGraphvizVisitor visitor(graph, false);
 	DoParse(dot.c_str(), &visitor);
 	visitor.ProcessEdges();
 	return true;
+#else
+	return false;
+#endif
 }
 
 GRAPHDB_API bool MergeDOT(IGraph * graph, const std::string & dot)

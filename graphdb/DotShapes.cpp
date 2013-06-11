@@ -26,25 +26,28 @@
 
 namespace hpcc
 {
+
+void attrsToString(const CDotItem::AttrMap & attrs, const std::string & delim, std::string & result)
+{
+	for (CDotItem::AttrMap::const_iterator itr = attrs.begin(); itr != attrs.end(); ++itr)
+	{
+		if (itr->first.compare("id") != 0)
+			result += itr->first + "=\"" + itr->second + "\"" + delim;
+	}
+}
+
 CDotItem::CDotItem(const std::string & name, const AttrMap & attrs) : m_name(name), m_attrs(attrs)
 {
 }
 
-CDotGraph::CDotGraph(int kind, const std::string & name, const AttrMap & attrs) : CDotItem(name, attrs), m_kind(kind)
+CDotGraph::CDotGraph(bool directed, const std::string & name, const AttrMap & attrs) : CDotItem(name, attrs), m_directed(directed)
 {
 }
 
 const std::string CDotGraph::ToDot(const std::string & id, const std::string & content)
 {
-	try {
-		boost::lexical_cast<int>(id); 
-	} catch(boost::bad_lexical_cast &) {
-		assert(false);
-	}
-
-	std::string retVal = (m_kind == 0 ? "graph " : "digraph ") + m_name + " {\nid=\"" + id + "\";\n";
-	for (AttrMap::const_iterator itr = m_attrs.begin(); itr != m_attrs.end(); ++itr)
-		retVal += itr->first + "=\"" + itr->second + "\";\n";
+	std::string retVal = (m_directed == 0 ? "graph \"" : "digraph \"") + m_name + "\" {\nid=\"" + id + "\";\n";
+	attrsToString(m_attrs, ";\n", retVal);
 	retVal += content + "}\n";
 	return retVal;
 }
@@ -55,15 +58,8 @@ CDotCluster::CDotCluster(const std::string & name, const AttrMap & attrs) : CDot
 
 const std::string CDotCluster::ToDot(const std::string & id, const std::string & content)
 {
-	try {
-		boost::lexical_cast<int>(id); 
-	} catch(boost::bad_lexical_cast &) {
-		assert(false);
-	}
-
-	std::string retVal = "subgraph " + m_name + " {\nid=\"" + id + "\";\n";
-	for (AttrMap::const_iterator itr = m_attrs.begin(); itr != m_attrs.end(); ++itr)
-		retVal += itr->first + "=\"" + itr->second + "\";\n";
+	std::string retVal = "subgraph \"cluster_" + id + "\" {\nid=\"" + id + "\";\n";
+	attrsToString(m_attrs, ";\n", retVal);
 	retVal += content + "}\n";
 	return retVal;
 }
@@ -74,34 +70,20 @@ CDotVertex::CDotVertex(const std::string & name, const AttrMap & attrs) : CDotIt
 
 const std::string CDotVertex::ToDot(const std::string & id, const std::string & content)
 {
-	try {
-		boost::lexical_cast<int>(id); 
-	} catch(boost::bad_lexical_cast &) {
-		assert(false);
-	}
-
-	std::string retVal = m_name + " [id=\"" + id + "\" ";
-	for (AttrMap::const_iterator itr = m_attrs.begin(); itr != m_attrs.end(); ++itr)
-		retVal += itr->first + "=\"" + itr->second + "\" ";
+	std::string retVal = "\"" + m_name + "\" [id=\"" + id + "\" ";
+	attrsToString(m_attrs, " ", retVal);
 	retVal += content + "];\n";
 	return retVal;
 }
 
-CDotEdge::CDotEdge(int kind, const std::string & name, const std::string & source, const std::string & target, const AttrMap & attrs) : CDotItem(name, attrs), m_kind(kind), m_source(source), m_target(target)
+CDotEdge::CDotEdge(bool directed, const std::string & name, const std::string & source, const std::string & target, const AttrMap & attrs) : CDotItem(name, attrs), m_directed(directed), m_source(source), m_target(target)
 {
 }
 
 const std::string CDotEdge::ToDot(const std::string & id, const std::string & content)
 {
-	try {
-		boost::lexical_cast<int>(id); 
-	} catch(boost::bad_lexical_cast &) {
-		assert(false);
-	}
-
-	std::string retVal = m_source + (m_kind == 0 ? " -- " : " -> ") + m_target + " [id=\"" + id + "\" ";
-	for (AttrMap::const_iterator itr = m_attrs.begin(); itr != m_attrs.end(); ++itr)
-		retVal += itr->first + "=\"" + itr->second + "\" ";
+	std::string retVal = "\"" + m_source + "\"" + (m_directed == 0 ? " -- " : " -> ") + "\"" + m_target + "\" [id=\"" + id + "\" ";
+	attrsToString(m_attrs, " ", retVal);
 	retVal += content + "];\n";
 	return retVal;
 }

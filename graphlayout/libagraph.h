@@ -49,20 +49,25 @@
 
 LIBAGRAPH_API bool DoLayout(const char * layout, const char* mem, const char* format, const char* scale, std::string & result);
 
+#define DOT_PARSER
+#ifdef DOT_PARSER
 typedef std::map<std::string, std::string> AttrMap;
 interface IGraphvizVisitor
 {
-	virtual void OnStartGraph(int kind, const std::string & id, const AttrMap & attrs) = 0;
-	virtual void OnEndGraph(int kind, const std::string & id) = 0;
+	virtual void OnStartGraph(bool directed, const std::string & id, const AttrMap & attrs) = 0;
+	virtual void OnEndGraph(const std::string & id) = 0;
 
 	virtual void OnStartCluster(const std::string & id, const AttrMap & attrs) = 0;
 	virtual void OnEndCluster(const std::string & id) = 0;
 
 	virtual void OnStartVertex(int id, const AttrMap & attrs) = 0;
 	virtual void OnEndVertex(int id) = 0;
+	virtual void OnStartVertex(const std::string & id, const AttrMap & attrs) = 0;
+	virtual void OnEndVertex(const std::string & id) = 0;
 
-	virtual void OnStartEdge(int kind, int id, int sourceID, int targetID, const AttrMap & attrs) = 0;
-	virtual void OnEndEdge(int kind, int id) = 0;
+	virtual void OnStartEdge(bool directed, const std::string & id, const std::string & sourceID, const std::string & targetID, const AttrMap & attrs) = 0;
+	virtual void OnEndEdge(const std::string & id) = 0;
 };
 
 LIBAGRAPH_API bool DoParse(const char* mem, IGraphvizVisitor * visitor);
+#endif

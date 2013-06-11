@@ -20,21 +20,6 @@ set (	SRCS
 	${GRAPHVIZSRC_DIRS}/lib/graph/trie.c
 	)
 
-include_directories (
-	${GRAPHVIZSRC_DIRS}/lib/graph
-	${GRAPHVIZSRC_DIRS}/lib/cdt
-	${GRAPHVIZSRC_DIRS}
-	..
-	)
-
-#ADD_DEFINITIONS( -DHAVE_CONFIG_H -DHAVE_SETMODE -DMSWIN32 -DNONDLL)
-
-if (WIN32)
-	ADD_DEFINITIONS( -DHAVE_CONFIG_H -DHAVE_SETMODE -DMSWIN32)
-else ()
-	ADD_DEFINITIONS( -DHAVE_CONFIG_H -DHAVE_SETMODE )
-endif ()
-
 add_library ( graph STATIC
 			${SRCS}
 			)

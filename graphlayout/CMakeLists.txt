@@ -9,14 +9,19 @@ project(graphlayout)
 
 set ( GRAPHLAYOUTSRC_DIRS ${CMAKE_CURRENT_SOURCE_DIR} )
 
+if ( GRAPHVIZSRC_DIR MATCHES ".*2\\.30\\.1$")
+	set ( GRAPHVIZ_VER_2_30_1 TRUE )
+else ( GRAPHVIZSRC_DIR MATCHES ".*2\\.30\\.1$")
+	set ( GRAPHVIZ_VER_2_30_1 FALSE )
+endif ( GRAPHVIZSRC_DIR MATCHES ".*2\\.30\\.1$")
+
 # *********************************************************************
 
 include_directories (
-	${GRAPHVIZSRC_DIRS}/lib/graph
+	${GRAPHLAYOUTSRC_DIRS}
+	${GRAPHVIZSRC_DIRS}
 	${GRAPHVIZSRC_DIRS}/lib/pathplan
 	${GRAPHVIZSRC_DIRS}/lib/common
-#	${GRAPHVIZSRC_DIRS}/lib/agraph
-#	${GRAPHVIZSRC_DIRS}/lib/cgraph
 	${GRAPHVIZSRC_DIRS}/lib/gvc
 	${GRAPHVIZSRC_DIRS}/lib/dotgen
 	${GRAPHVIZSRC_DIRS}/lib/neatogen
@@ -28,10 +33,25 @@ include_directories (
 	${GRAPHVIZSRC_DIRS}/lib/sparse
 	${GRAPHVIZSRC_DIRS}/lib/xdot
 	${GRAPHVIZSRC_DIRS}/lib/gd
-	${GRAPHLAYOUTSRC_DIRS}
-	${GRAPHVIZSRC_DIRS}
+	${GRAPHVIZSRC_DIRS}/lib/pack
+	${GRAPHVIZSRC_DIRS}/lib/vpsc
+	${GRAPHVIZSRC_DIRS}/lib/patchwork
 	${Boost_INCLUDE_DIRS}
 	)
+
+if ( GRAPHVIZ_VER_2_30_1 )
+	include_directories (
+		${GRAPHVIZSRC_DIRS}/lib/cgraph
+		${GRAPHVIZSRC_DIRS}/lib/label
+		${GRAPHVIZSRC_DIRS}/lib/ingraphs
+		${GRAPHVIZSRC_DIRS}/lib/ortho
+		${GRAPHVIZSRC_DIRS}/libltdl
+		)
+else ( GRAPHVIZ_VER_2_30_1 )
+	include_directories (
+		${GRAPHVIZSRC_DIRS}/lib/graph
+		)
+endif ( GRAPHVIZ_VER_2_30_1 )
 
 # *********************************************************************
 
@@ -42,6 +62,9 @@ set (	SRCS
 	libagraph.cpp
 	libagraph.h
 	libagraphsp.h
+
+	compat.h
+	config.h
 	)
 
 # *********************************************************************
@@ -67,8 +90,6 @@ add_subdirectory (gvc)
 set_property(TARGET gvc PROPERTY FOLDER "3rdParty/Graphviz")
 add_subdirectory (cdt)
 set_property(TARGET cdt PROPERTY FOLDER "3rdParty/Graphviz")
-#add_subdirectory (cgraph)
-#set_property(TARGET cgraph PROPERTY FOLDER "3rdParty/Graphviz")
 add_subdirectory (circogen)
 set_property(TARGET circogen PROPERTY FOLDER "3rdParty/Graphviz")
 add_subdirectory (common)
@@ -79,8 +100,6 @@ add_subdirectory (fdpgen)
 set_property(TARGET fdpgen PROPERTY FOLDER "3rdParty/Graphviz")
 add_subdirectory (sfdpgen)
 set_property(TARGET sfdpgen PROPERTY FOLDER "3rdParty/Graphviz")
-add_subdirectory (graph)
-set_property(TARGET graph PROPERTY FOLDER "3rdParty/Graphviz")
 add_subdirectory (gvplugin_core)
 set_property(TARGET gvplugin_core PROPERTY FOLDER "3rdParty/Graphviz")
 add_subdirectory (gvplugin_dot_layout)
@@ -106,15 +125,31 @@ set_property(TARGET xdot PROPERTY FOLDER "3rdParty/Graphviz")
 add_subdirectory (vpsc)
 set_property(TARGET vpsc PROPERTY FOLDER "3rdParty/Graphviz")
 
+if ( GRAPHVIZ_VER_2_30_1 )
+	add_subdirectory (cgraph)
+	set_property(TARGET cgraph PROPERTY FOLDER "3rdParty/Graphviz")
+	add_subdirectory (ingraphs)
+	set_property(TARGET ingraphs PROPERTY FOLDER "3rdParty/Graphviz")
+	add_subdirectory (label)
+	set_property(TARGET label PROPERTY FOLDER "3rdParty/Graphviz")
+	add_subdirectory (ortho)
+	set_property(TARGET gvortho PROPERTY FOLDER "3rdParty/Graphviz")
+	if ( WIN32 )
+		add_subdirectory (stubs)
+		set_property(TARGET gvortho PROPERTY FOLDER "3rdParty/Graphviz")
+	endif ( WIN32 )
+else ( GRAPHVIZ_VER_2_30_1 )
+	add_subdirectory (graph)
+	set_property(TARGET graph PROPERTY FOLDER "3rdParty/Graphviz")
+endif ( GRAPHVIZ_VER_2_30_1 )
+
 target_link_libraries ( graphlayout
 	cdt
-#	cgraph
 	circogen
 	common
 	dotgen
 	fdpgen
 	sfdpgen
-	graph
 	gvc
 	gvplugin_core
 	gvplugin_dot_layout
@@ -129,6 +164,29 @@ target_link_libraries ( graphlayout
 	xdot
 	vpsc
 	)
+
+if ( GRAPHVIZ_VER_2_30_1 )
+	target_link_libraries ( graphlayout
+		cgraph
+		gvortho
+		ingraphs
+		label
+		)
+	if ( WIN32 )
+		target_link_libraries ( graphlayout
+			gts
+			glib-2.0
+			ltdl
+			xml2
+			zdll
+			)
+	endif ( WIN32 )
+else ( GRAPHVIZ_VER_2_30_1 )
+	target_link_libraries ( graphlayout
+		graph
+		)
+endif ( GRAPHVIZ_VER_2_30_1 )
+
 link_boost_library ( ${PROJECT_NAME} thread )
 link_boost_library ( ${PROJECT_NAME} system )
 if (Boost_MAJOR_VERSION GREATER 0 AND Boost_MINOR_VERSION GREATER 47)

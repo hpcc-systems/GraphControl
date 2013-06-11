@@ -1,10 +1,6 @@
 project( gvortho )
 
 set (	SRCS
-	#${GRAPHVIZSRC_DIRS}/lib/ortho/fPQ.c
-	#${GRAPHVIZSRC_DIRS}/lib/ortho/fPQ.h
-	${GRAPHVIZSRC_DIRS}/lib/ortho/intset.c
-	${GRAPHVIZSRC_DIRS}/lib/ortho/intset.h
 	${GRAPHVIZSRC_DIRS}/lib/ortho/maze.c
 	${GRAPHVIZSRC_DIRS}/lib/ortho/maze.h
 	${GRAPHVIZSRC_DIRS}/lib/ortho/ortho.c
@@ -20,16 +16,17 @@ set (	SRCS
 	${GRAPHVIZSRC_DIRS}/lib/ortho/trapezoid.c
 	)
 
-include_directories (
-	${GRAPHVIZSRC_DIRS}/lib/ortho
-	${GRAPHVIZSRC_DIRS}
+if ( GRAPHVIZ_VER_2_30_1 )
+	list ( APPEND SRCS
+		${GRAPHVIZSRC_DIRS}/lib/ortho/fPQ.c
+		${GRAPHVIZSRC_DIRS}/lib/ortho/fPQ.h
 	)
-
-if (WIN32)
-	ADD_DEFINITIONS( -DHAVE_CONFIG_H -DHAVE_SETMODE -DMSWIN32)
-else ()
-	ADD_DEFINITIONS( -DHAVE_CONFIG_H -DHAVE_SETMODE )
-endif ()
+else ( GRAPHVIZ_VER_2_30_1 )
+	list ( APPEND SRCS
+		${GRAPHVIZSRC_DIRS}/lib/ortho/intset.c
+		${GRAPHVIZSRC_DIRS}/lib/ortho/intset.h
+	)
+endif ( GRAPHVIZ_VER_2_30_1 )
 
 add_library ( gvortho STATIC
 			${SRCS}
