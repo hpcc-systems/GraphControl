@@ -45,6 +45,7 @@ const char * const GraphTpl =
 "graph[rankdir=\"TB\"%2%];\r\n"
 "graph[remincross=true];\r\n"
 "graph[mclimit=\"2.0\"];\r\n"
+//"graph[clusterrank=\"none\"];\r\n"
 //"graph[sep=\"0.1\"];\r\n"
 //"graph[overlap=\"scalexy\"];\r\n"
 //"graph[smoothing=\"spring\"];\r\n"
@@ -65,6 +66,8 @@ const char * const GraphTpl =
 "edge[arrowsize=\"1\"];\r\n"
 "\r\n"
 "%3%\r\n"
+"\r\n"
+"%4%\r\n"
 "}\r\n";
 
 const char * const ClusterTpl = 
@@ -223,7 +226,8 @@ const char * WriteDOT(const IGraph * graph, std::string & dot)
 	}
 	else
 	{
-		dot = (boost::format(GraphTpl) % GetIDString(graph) % props.c_str() % content).str();
+		std::string attrs = graph->GetPropertyString(DOT_GRAPH_ATTRIBUTES);
+		dot = (boost::format(GraphTpl) % GetIDString(graph) % props % attrs % content).str();
 	}
 	return dot.c_str();
 }
