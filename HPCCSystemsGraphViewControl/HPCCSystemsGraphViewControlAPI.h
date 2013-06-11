@@ -120,7 +120,7 @@ public:
 	bool mergeXGMML(const std::string& xgmml);
 	bool mergeSVG(const std::string& svg);
 	bool loadDOT(const std::string& dot);
-	bool startLayout(const std::string& layout);
+	bool startLayout(const std::string& layout, boost::optional<std::string> attributes);
 
 	int setScale(int percent);
 	int getScale();

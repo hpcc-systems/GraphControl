@@ -113,7 +113,7 @@ public:
 	double GetScale();
 	void CenterOnGraphItem(hpcc::IGraphItem * item = NULL);
 	void CenterOnItem(int item, bool sizeToFit, bool widthOnly);
-	void StartLayout(const std::string & layout);
+	void StartLayout(const std::string & layout, const std::string & attributes);
 	void SetMessage(const std::string & msg);
 	int Find(const std::string & text, bool includeProperties, std::vector<int> & results);
 	bool HasItems();

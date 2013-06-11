@@ -397,9 +397,10 @@ void HPCCSystemsGraphViewControl::CenterOnItem(int _item, bool sizeToFit, bool w
 		CenterOnGraphItem(item);
 }
 
-void HPCCSystemsGraphViewControl::StartLayout(const std::string & layout)
+void HPCCSystemsGraphViewControl::StartLayout(const std::string & layout, const std::string & attributes)
 {
 	m_g->SetProperty(hpcc::PROP_LAYOUT, layout.c_str());
+	m_g->SetProperty(hpcc::DOT_GRAPH_ATTRIBUTES, attributes.c_str());
 	hpcc::DoGraphvizLayout(m_g, m_dot, boost::ref(*this));
 }
 
