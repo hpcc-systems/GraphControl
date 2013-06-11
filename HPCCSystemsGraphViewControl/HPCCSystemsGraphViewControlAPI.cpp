@@ -209,6 +209,17 @@ bool HPCCSystemsGraphViewControlAPI::setSelectedAsGlobalID(const std::vector<std
 	return getPlugin()->SetSelected(items, clearPrevious ? *clearPrevious : true);
 }
 
+bool HPCCSystemsGraphViewControlAPI::setControlProperty(const std::string & key, const std::string & value)
+{
+	hpcc::SetProperty(key, value);
+	return true;
+}
+
+std::string HPCCSystemsGraphViewControlAPI::getControlProperty(const std::string & key)
+{
+	return hpcc::GetProperty(key);
+}
+
 FB::VariantMap HPCCSystemsGraphViewControlAPI::getProperties(int item)
 {
 	assert(getPlugin());
@@ -233,11 +244,15 @@ FB::VariantList HPCCSystemsGraphViewControlAPI::getPropertiesForItems(const std:
 	return retVal;
 }
 
+bool HPCCSystemsGraphViewControlAPI::setProperty(int item, const std::string & key, const std::string & value)
+{
+	getPlugin()->SetProperty(item, key, value);
+	return true;
+}
+
 std::string HPCCSystemsGraphViewControlAPI::getProperty(int item, const std::string & key)
 {
-	hpcc::ciStringStringMap properties;
-	getPlugin()->GetProperties(item, properties);
-	return properties[key];
+	return getPlugin()->GetProperty(item, key);
 }
 
 int HPCCSystemsGraphViewControlAPI::getItem(const std::string & externalID)
