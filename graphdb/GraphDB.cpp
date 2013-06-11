@@ -68,7 +68,7 @@ const char * const GraphTpl =
 "}\r\n";
 
 const char * const ClusterTpl = 
-"subgraph cluster_%1% {\r\n"
+"subgraph \"cluster_%1%\" {\r\n"
 "id=\"%1%\";\r\n"
 "label=\"%2%\";\r\n"
 "fontname=\"Verdana\";\r\n"
@@ -86,13 +86,28 @@ const char * const PropTpl =
 " %1%=\"%2%\"";
 
 const char * const VertexTpl = 
-"%1%[id=\"%1%\" label=\"%2%\"%3%];\r\n";
+"\"%1%\" [id=\"%1%\" label=\"%2%\"%3%];\r\n";
 
 const char * const EdgeTpl = 
-"%1%->%2%[id=\"%3%\" label=\"%4%\"%5%];\r\n";
+"\"%1%\" -> \"%2%\" [id=\"%3%\" label=\"%4%\"%5%];\r\n";
 
 std::string GetIDString(const IGraphItem * item) {
 	return item->GetGraph()->GetExternalID(item->GetID());
+}
+
+#define NOBFUSCATE
+std::string GetLabelString(const IGraphItem * item) {
+#ifdef OBFUSCATE
+	std::string retVal = item->GetPropertyString(DOT_LABEL);
+	for (int i = 0; i < retVal.length(); ++i)
+	{
+		if (isalnum(retVal[i]))
+			retVal[i] = 'Q';
+	}
+	return retVal;
+#else
+	return item->GetPropertyString(DOT_LABEL);
+#endif
 }
 
 void WalkClusters(const ICluster * cluster, std::string & dot, int depth)
@@ -125,7 +140,7 @@ void WalkClusters(const ICluster * cluster, std::string & dot, int depth)
 			if (v->HasPropertyString(DOT_VERTEX_STYLE))
 				props += (boost::format(PropTpl) % "style" % v->GetPropertyString(DOT_VERTEX_STYLE)).str();
 
-			content += (boost::format(VertexTpl) % GetIDString(v) % v->GetPropertyString(DOT_LABEL) % props.c_str()).str();
+			content += (boost::format(VertexTpl) % GetIDString(v) % GetLabelString(v) % props.c_str()).str();
 		}
 	}
 
@@ -138,7 +153,7 @@ void WalkClusters(const ICluster * cluster, std::string & dot, int depth)
 		}
 		else
 		{
-			std::string label = cluster->GetPropertyString(DOT_LABEL);
+			std::string label = GetLabelString(cluster);
 			if (label.empty())
 				label = cluster->GetPropertyString(DOT_ID);
 			dot += (boost::format(ClusterTpl) % GetIDString(cluster) % label % content % "").str();
@@ -195,7 +210,7 @@ void WalkEdges(const IGraph * graph, std::string & content)
 			if (e->HasPropertyString(DOT_EDGE_STYLE))
 				props += (boost::format(PropTpl) % "style" % e->GetPropertyString(DOT_EDGE_STYLE)).str();
 
-			content += (boost::format(EdgeTpl) % GetIDString(from) % GetIDString(to) % GetIDString(e) % e->GetPropertyString(DOT_LABEL) % props.c_str()).str();
+			content += (boost::format(EdgeTpl) % GetIDString(from) % GetIDString(to) % GetIDString(e) % GetLabelString(e) % props.c_str()).str();
 		}
 	}
 }
@@ -254,16 +269,32 @@ std::string xmlEncode(const std::string & text)
 const char * BuildVertexString(const IVertex * vertex, std::string &vertexStr, bool isPoint)
 {
 	std::string attrStr, propsStr;
-	ciStringStringMap props;
-	vertex->GetProperties(props);
-	for(ciStringStringMap::const_iterator itr = props.begin(); itr != props.end(); ++itr)
+	if (vertex->GetPropertyCUnknown(DOT_PROP_CDOTITEM))
 	{
-		if (isPoint && boost::algorithm::iequals(itr->first, "_kind"))
+		if (isPoint)
 			propsStr += "<att name=\"_kind\" value=\"point\"/>";
-		else if (boost::algorithm::iequals(itr->first, "id") || boost::algorithm::iequals(itr->first, "label"))
-			attrStr += (boost::format(" %1%=\"%2%\"") % itr->first % xmlEncode(itr->second)).str();
-		else
-			propsStr += (boost::format("<att name=\"%1%\" value=\"%2%\"/>") % itr->first % xmlEncode(itr->second)).str();
+		CDotItem * dotItem = (CDotItem *)vertex->GetPropertyCUnknown(DOT_PROP_CDOTITEM);
+		for (CDotItem::AttrMap::const_iterator itr = dotItem->m_attrs.begin(); itr != dotItem->m_attrs.end(); ++itr)
+		{
+			if (itr->first.compare("id") != 0 || itr->first.compare("label") != 0 )
+				attrStr += (boost::format(" %1%=\"%2%\"") % itr->first % xmlEncode(itr->second)).str();
+			else
+				propsStr += (boost::format("<att name=\"%1%\" value=\"%2%\"/>") % itr->first % xmlEncode(itr->second)).str();
+		}
+	}
+	else
+	{
+		ciStringStringMap props;
+		vertex->GetProperties(props);
+		for(ciStringStringMap::const_iterator itr = props.begin(); itr != props.end(); ++itr)
+		{
+			if (isPoint && boost::algorithm::iequals(itr->first, "_kind"))
+				propsStr += "<att name=\"_kind\" value=\"point\"/>";
+			else if (boost::algorithm::iequals(itr->first, "id") || boost::algorithm::iequals(itr->first, "label"))
+				attrStr += (boost::format(" %1%=\"%2%\"") % itr->first % xmlEncode(itr->second)).str();
+			else
+				propsStr += (boost::format("<att name=\"%1%\" value=\"%2%\"/>") % itr->first % xmlEncode(itr->second)).str();
+		}
 	}
 
 	vertexStr = (boost::format("<node%1%>%2%</node>") % attrStr % propsStr).str();
@@ -273,17 +304,34 @@ const char * BuildVertexString(const IVertex * vertex, std::string &vertexStr, b
 const char * BuildEdgeString(const IEdge * edge, std::string &edgeStr)
 {
 	std::string attrStr, propsStr;
-	ciStringStringMap props;
-	edge->GetProperties(props);
-	for(ciStringStringMap::const_iterator itr = props.begin(); itr != props.end(); ++itr)
+	if (edge->GetPropertyCUnknown(DOT_PROP_CDOTITEM))
 	{
-		if (boost::algorithm::iequals(itr->first, "id") ||
-			boost::algorithm::iequals(itr->first, "label") ||
-			boost::algorithm::iequals(itr->first, "source") ||
-			boost::algorithm::iequals(itr->first, "target"))
-			attrStr += (boost::format(" %1%=\"%2%\"") % itr->first % xmlEncode(itr->second)).str();
-		else
-			propsStr += (boost::format("<att name=\"%1%\" value=\"%2%\"/>") % itr->first % xmlEncode(itr->second)).str();
+		CDotItem * dotItem = (CDotItem *)edge->GetPropertyCUnknown(DOT_PROP_CDOTITEM);
+		for (CDotItem::AttrMap::const_iterator itr = dotItem->m_attrs.begin(); itr != dotItem->m_attrs.end(); ++itr)
+		{
+			if (boost::algorithm::iequals(itr->first, "id") ||
+				boost::algorithm::iequals(itr->first, "label") ||
+				boost::algorithm::iequals(itr->first, "source") ||
+				boost::algorithm::iequals(itr->first, "target"))
+				attrStr += (boost::format(" %1%=\"%2%\"") % itr->first % xmlEncode(itr->second)).str();
+			else
+				propsStr += (boost::format("<att name=\"%1%\" value=\"%2%\"/>") % itr->first % xmlEncode(itr->second)).str();
+		}
+	}
+	else
+	{
+		ciStringStringMap props;
+		edge->GetProperties(props);
+		for(ciStringStringMap::const_iterator itr = props.begin(); itr != props.end(); ++itr)
+		{
+			if (boost::algorithm::iequals(itr->first, "id") ||
+				boost::algorithm::iequals(itr->first, "label") ||
+				boost::algorithm::iequals(itr->first, "source") ||
+				boost::algorithm::iequals(itr->first, "target"))
+				attrStr += (boost::format(" %1%=\"%2%\"") % itr->first % xmlEncode(itr->second)).str();
+			else
+				propsStr += (boost::format("<att name=\"%1%\" value=\"%2%\"/>") % itr->first % xmlEncode(itr->second)).str();
+		}
 	}
 
 	edgeStr = (boost::format("<edge%1%>%2%</edge>") % attrStr % propsStr).str();
@@ -459,7 +507,7 @@ public:
 
 	void WriteXgmml() 
 	{
-		((ICluster *)m_graph)->Walk((IClusterVisitor *)this);
+		ItemVisited(const_cast<IGraph *>(m_graph));
 		m_graph->Walk((IEdgeVisitor *)this);
 	}
 
@@ -467,7 +515,7 @@ public:
 	{
 		if (m_visibleClusters.find(cluster) != m_visibleClusters.end())
 		{
-			m_xgmml += (boost::format("<node id=\"%1%\"><att><graph>") % cluster->GetProperty("id")).str();
+			m_xgmml += (boost::format("<node id=\"%1%\"><att><graph>") % GetIDString(cluster)).str();
 			int xgmmlLen = m_xgmml.length();
 			cluster->Walk((IClusterVisitor *) this);
 			cluster->Walk((IVertexVisitor *) this);

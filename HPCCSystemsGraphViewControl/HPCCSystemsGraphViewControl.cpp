@@ -489,6 +489,8 @@ unsigned int HPCCSystemsGraphViewControl::GetItem(const std::string &externalID)
 		return item->GetID();
 	if (hpcc::IGraphItem * item = m_g->GetCluster(externalID, true))
 		return item->GetID();
+	if (hpcc::IGraphItem * item = m_g->GetGraph(externalID, true))
+		return item->GetID();
 	return 0;
 }
 
