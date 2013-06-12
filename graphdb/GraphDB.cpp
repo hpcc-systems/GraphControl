@@ -459,7 +459,7 @@ public:
 
 	void WriteXgmml() 
 	{
-		((ICluster *)m_graph)->Walk((IClusterVisitor *)this);
+		ItemVisited(const_cast<IGraph *>(m_graph));
 		m_graph->Walk((IEdgeVisitor *)this);
 	}
 
