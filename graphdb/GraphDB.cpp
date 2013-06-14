@@ -37,34 +37,10 @@ const char * const GraphTpl =
 "digraph G {\r\n"
 "id=\"%1%\";\r\n"
 //"pad=\"0.0,0.0\";\r\n"
-"graph[fontname=\"Verdana\",fontsize=11,fontcolor=\"#000000\"];\r\n"
-"graph[bgcolor=\"#FFFFFF\"];\r\n"
-//"graph[nodesep=\"\"];\r\n"
-//"graph[ranksep=\".3\"];\r\n"
-//"graph[pad=\"0.01, 0.01\"];\r\n"
-"graph[rankdir=\"TB\"%2%];\r\n"
-"graph[remincross=true];\r\n"
-"graph[mclimit=\"2.0\"];\r\n"
-//"graph[sep=\"0.1\"];\r\n"
-//"graph[overlap=\"scalexy\"];\r\n"
-//"graph[smoothing=\"spring\"];\r\n"
-//"graph[splines=\"line\"];\r\n"
+"graph[%2%];\r\n"
+"%3%;\r\n"
 "\r\n"
-"node[fontname=\"Verdana\",fontsize=11,fontcolor=\"#000000\"];\r\n"
-"node[shape=\"box\"];\r\n"
-//"node[margin=\"0.1,0.05\"];\r\n"
-//"node[height=.3];\r\n"
-//"node[width=.3];\r\n"
-"node[style=\"filled,solid\"];\r\n"
-"node[fillcolor=\"#E6E6E6\",color=\"#000000\"];\r\n"
-"\r\n"
-"edge[fontname=\"Verdana\",fontsize=11,fontcolor=\"#000000\"];\r\n"
-"edge[arrowhead=\"normal\"]; \r\n"
-"edge[style=\"solid\"];\r\n"
-"edge[color=\"#000000\"];\r\n"
-"edge[arrowsize=\"1\"];\r\n"
-"\r\n"
-"%3%\r\n"
+"%4%\r\n"
 "}\r\n";
 
 const char * const ClusterTpl = 
@@ -207,15 +183,6 @@ const char * WriteDOT(const IGraph * graph, std::string & dot)
 	WalkClusters(graph, content, 0);
 	WalkEdges(graph, content);
 
-	std::string layout = graph->GetPropertyString(PROP_LAYOUT);
-	std::string props;
-	if (boost::algorithm::equals(layout, "neato"))
-		props += (boost::format(PropTpl) % "overlap" % "scale").str();
-	else if (boost::algorithm::equals(layout, "twopi"))
-		props += (boost::format(PropTpl) % "overlap" % "scale").str();
-	else if (boost::algorithm::equals(layout, "circo"))
-		props += (boost::format(PropTpl) % "overlap" % "compress").str();
-
 	if (graph->GetPropertyCUnknown(DOT_PROP_CDOTITEM))  
 	{
 		CDotItem * dotItem = (CDotItem *)graph->GetPropertyCUnknown(DOT_PROP_CDOTITEM);
@@ -223,7 +190,17 @@ const char * WriteDOT(const IGraph * graph, std::string & dot)
 	}
 	else
 	{
-		dot = (boost::format(GraphTpl) % GetIDString(graph) % props.c_str() % content).str();
+		std::string layout = graph->GetPropertyString(PROP_LAYOUT);
+		std::string props;
+		if (boost::algorithm::equals(layout, "neato"))
+			props += (boost::format(PropTpl) % "overlap" % "scale").str();
+		else if (boost::algorithm::equals(layout, "twopi"))
+			props += (boost::format(PropTpl) % "overlap" % "scale").str();
+		else if (boost::algorithm::equals(layout, "circo"))
+			props += (boost::format(PropTpl) % "overlap" % "compress").str();
+		std::string meta = GetProperty(DOT_META_ATTR);
+		assert(!meta.empty());
+		dot = (boost::format(GraphTpl) % GetIDString(graph) % props % meta % content).str();
 	}
 	return dot.c_str();
 }
@@ -522,4 +499,52 @@ GRAPHDB_API const char * WriteLocalisedXGMML(const IGraph * graph, const IGraphI
 	return xgmml.c_str();
 }
 
+StringStringMap controlProps;
+const char * const emptyStr = "";
+void SetProperty(const std::string & key, const std::string & value)
+{
+	controlProps[key] = value;
+}
+
+const char * const DotMetaAttrs =
+"//  Reference:  http://www.graphviz.org/doc/info/attrs.html\r\n"
+"\r\n"
+"graph[fontname=\"Verdana\",fontsize=11,fontcolor=\"#000000\"];\r\n"
+"graph[bgcolor=\"#FFFFFF\"];\r\n"
+"//graph[nodesep=\"\"];\r\n"
+"//graph[ranksep=\".3\"];\r\n"
+"//graph[pad=\"0.01, 0.01\"];\r\n"
+"graph[rankdir=\"TB\"];\r\n"
+"graph[remincross=true];\r\n"
+"graph[mclimit=\"2.0\"];\r\n"
+"//graph[sep=\"0.1\"];\r\n"
+"//graph[overlap=\"scalexy\"];\r\n"
+"//graph[smoothing=\"spring\"];\r\n"
+"//graph[splines=\"line\"];\r\n"
+"\r\n"
+"node[fontname=\"Verdana\",fontsize=11,fontcolor=\"#000000\"];\r\n"
+"node[shape=\"box\"];\r\n"
+"//node[margin=\"0.1,0.05\"];\r\n"
+"//node[height=.3];\r\n"
+"//node[width=.3];\r\n"
+"node[style=\"filled,solid\"];\r\n"
+"node[fillcolor=\"#E6E6E6\",color=\"#000000\"];\r\n"
+"\r\n"
+"edge[fontname=\"Verdana\",fontsize=11,fontcolor=\"#000000\"];\r\n"
+"edge[arrowhead=\"normal\"]; \r\n"
+"edge[style=\"solid\"];\r\n"
+"edge[color=\"#000000\"];\r\n"
+"edge[arrowsize=\"1\"];\r\n";
+
+const char * GetProperty(const std::string & key)
+{
+	StringStringMap::const_iterator found = controlProps.find(key);
+	if (found != controlProps.end())
+		return found->second.c_str();
+
+	if (boost::algorithm::equals(key, DOT_META_ATTR))
+		return DotMetaAttrs;
+
+	return emptyStr;
+}
 }

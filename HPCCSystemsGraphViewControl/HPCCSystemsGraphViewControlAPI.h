@@ -70,7 +70,10 @@ public:
 		registerMethod("getSelectionAsGlobalID", make_method(this, &HPCCSystemsGraphViewControlAPI::getSelectionAsGlobalID));
 		registerMethod("setSelected", make_method(this, &HPCCSystemsGraphViewControlAPI::setSelected));
 		registerMethod("setSelectedAsGlobalID", make_method(this, &HPCCSystemsGraphViewControlAPI::setSelectedAsGlobalID));
+		registerMethod("setControlProperty", make_method(this, &HPCCSystemsGraphViewControlAPI::setControlProperty));
+		registerMethod("getControlProperty", make_method(this, &HPCCSystemsGraphViewControlAPI::getControlProperty));
 		registerMethod("getProperties", make_method(this, &HPCCSystemsGraphViewControlAPI::getProperties));
+		registerMethod("setProperty", make_method(this, &HPCCSystemsGraphViewControlAPI::setProperty));
 		registerMethod("getProperty", make_method(this, &HPCCSystemsGraphViewControlAPI::getProperty));
 		registerMethod("getItem", make_method(this, &HPCCSystemsGraphViewControlAPI::getItem));
 		registerMethod("getGlobalID", make_method(this, &HPCCSystemsGraphViewControlAPI::getGlobalID));
@@ -134,8 +137,11 @@ public:
 	bool setSelectedAsGlobalID(const std::vector<std::string> & items, boost::optional<bool> clearPrevious);
 	int getRunningSubgraph();
 
+	bool setControlProperty(const std::string & key, const std::string & value);
+	std::string getControlProperty(const std::string & key);
 	FB::VariantMap getProperties(int item);
 	FB::VariantList getPropertiesForItems(const std::vector<int> & items);
+	bool setProperty(int item, const std::string & key, const std::string & value);
 	std::string getProperty(int item, const std::string & key);
 
 	int getItem(const std::string & externalID);

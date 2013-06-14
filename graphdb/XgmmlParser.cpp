@@ -370,11 +370,15 @@ public:
 			if (m_merge)
 				UpdateVisibleLabel(top->item, e->m_attr["label"]);
 			top->item->SetProperty(DOT_VERTEX_SHAPE, g_shapes.get(e->m_attr["_kind"].c_str()));
-			if (top->item->GetProperty("_globalUsageCount"))
-				top->item->SetProperty(XGMML_GLOBAL_USAGE_COUNT, boost::lexical_cast<int>(top->item->GetProperty("_globalUsageCount")));
-			if (top->item->GetProperty("_isSpill"))
-				top->item->SetProperty(XGMML_IS_SPILL, boost::lexical_cast<bool>(top->item->GetProperty("_isSpill")));
-
+			try
+			{
+				if (top->item->HasProperty("_globalUsageCount"))
+					top->item->SetProperty(XGMML_GLOBAL_USAGE_COUNT, boost::lexical_cast<int>(top->item->GetProperty("_globalUsageCount")));
+				if (top->item->HasProperty("_isSpill"))
+					top->item->SetProperty(XGMML_IS_SPILL, boost::lexical_cast<bool>(top->item->GetProperty("_isSpill")));
+			} catch (boost::bad_lexical_cast &) {
+				assert(false);
+			}
 			m_giStack.pop_front();
 		}
 		else if (0 == e->m_tag.compare("edge"))
