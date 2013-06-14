@@ -227,7 +227,6 @@ void CGraph::SetExternalID(GRAPH_TYPE type, const std::string & id, IGraphItem *
 
 const char * CGraph::GetExternalID(int item) const
 {
-	assert(item != 0);
 	GraphItemExternalIDMap::const_iterator found = m_rexternalIDs.find(item);
 	if(found != m_rexternalIDs.end())
 		return found->second.second.c_str();
