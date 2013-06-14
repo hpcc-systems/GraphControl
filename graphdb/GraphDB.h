@@ -197,8 +197,13 @@ hpcc_interface GRAPHDB_API IGraph : public ICluster
 	virtual const char * GetExternalID(int item) const = 0;
 };
 
-//  ===  Factories  ===
 GRAPHDB_API IGraph * CreateGraph();
 GRAPHDB_API const char * WriteDOT(const IGraph * graph, std::string & dot);
 GRAPHDB_API const char * WriteLocalisedXGMML(const IGraph * graph, const IGraphItemSet & items, int localisationDepth, int localisationDistance, std::string & xgmml);
+
+//  Known control properties  ---
+const char * const DOT_META_ATTR = "DOT_META_ATTR";
+
+GRAPHDB_API void SetProperty(const std::string & key, const std::string & val);
+GRAPHDB_API const char * GetProperty(const std::string & key);
 }

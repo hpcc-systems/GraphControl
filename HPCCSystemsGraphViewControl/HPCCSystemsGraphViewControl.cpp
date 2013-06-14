@@ -36,6 +36,8 @@
 #include <XgmmlParser.h>
 #include <DotParser.h>
 
+const char * const emptyStr = "";
+
 ///////////////////////////////////////////////////////////////////////////////
 /// @fn HPCCSystemsGraphViewControl::StaticInitialize()
 ///
@@ -479,6 +481,21 @@ int HPCCSystemsGraphViewControl::GetProperties(int _item, hpcc::ciStringStringMa
 	if (item)
 		item->GetProperties(results);
 	return results.size();
+}
+
+void HPCCSystemsGraphViewControl::SetProperty(int _item, const std::string & key, const std::string & value)
+{
+	hpcc::IGraphItemPtr item = m_g->GetGraphItem(_item);
+	if (item)
+		item->SetProperty(key, value);
+}
+
+const char * HPCCSystemsGraphViewControl::GetProperty(int _item, const std::string & key)
+{
+	hpcc::IGraphItemPtr item = m_g->GetGraphItem(_item);
+	if (item && item->HasProperty(key))
+		return item->GetProperty(key);
+	return emptyStr;
 }
 
 unsigned int HPCCSystemsGraphViewControl::GetItem(const std::string &externalID)
