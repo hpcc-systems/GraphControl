@@ -507,10 +507,15 @@ Path::Path(const std::string& fill, const std::string & stroke, const std::strin
 		typedef boost::tokenizer<boost::char_separator<char>, std::string::const_iterator, std::string > Tokenizer;
 		Tokenizer tokens(stroke_dasharray, separators);
 		Tokenizer::iterator itr = tokens.begin();
-		assert(itr != tokens.end());
-		m_dash1 = boost::lexical_cast<int>(*itr++);
-		assert(itr != tokens.end());
-		m_dash2 = boost::lexical_cast<int>(*itr);
+		try
+		{
+			assert(itr != tokens.end());
+			m_dash1 = boost::lexical_cast<int>(*itr++);
+			assert(itr != tokens.end());
+			m_dash2 = boost::lexical_cast<int>(*itr);
+		} catch(boost::bad_lexical_cast &) {
+			assert(false);
+		}
 	}
 	if (stroke_width.empty())
 	{
