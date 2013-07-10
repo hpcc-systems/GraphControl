@@ -36,7 +36,11 @@ endif ( FB_PLATFORM_ARCH_32 )
 
 # these are the pieces that are relevant to using it from Javascript
 set(ACTIVEX_PROGID "HPCCSystems.HPCCSystemsGraphViewControl")
-set(MOZILLA_PLUGINID "hpccsystems.com/HPCCSystemsGraphViewControl")
+if ( FB_PLATFORM_ARCH_32 )
+    set(MOZILLA_PLUGINID "hpccsystems.com/HPCCSystemsGraphViewControl") # No 32bit postfix to maintain backward compatability.
+else ( FB_PLATFORM_ARCH_32 )
+    set(MOZILLA_PLUGINID "hpccsystems.com/HPCCSystemsGraphViewControl_${FB_PLATFORM_ARCH_NAME}")
+endif ( FB_PLATFORM_ARCH_32 )
 
 # strings
 set(FBSTRING_CompanyName "HPCC Systems")
