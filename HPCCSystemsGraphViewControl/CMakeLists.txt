@@ -249,7 +249,8 @@ elseif ( WIN32 )
     set ( CPACK_NSIS_URL_INFO_ABOUT "http:\\\\\\\\hpccsystems.com" )
     set ( CPACK_NSIS_CONTACT ${CPACK_PACKAGE_CONTACT} )
     set ( CPACK_PACKAGE_INSTALL_PLUGINFILE "bin\\\\npHPCCSystemsGraphViewControl.dll")
-    if ( "${FB_PLATFORM_ARCH_NAME}" EQUAL "x86_64" )
+    if ( "${FB_PLATFORM_ARCH_NAME}" STREQUAL "x86_64" )
+        set ( CPACK_NSIS_INSTALL_ROOT "$PROGRAMFILES64" )
         SET ( CPACK_NSIS_DISPLAY_NAME "Graph Control x64" )
         list ( APPEND CPACK_NSIS_EXTRA_INSTALL_COMMANDS "
             ExecWait '\\\"$SYSDIR\\\\regsvr32.exe\\\" /s \\\"$INSTDIR\\\\${CPACK_PACKAGE_INSTALL_PLUGINFILE}\\\"'
@@ -258,6 +259,7 @@ elseif ( WIN32 )
             ExecWait '\\\"$SYSDIR\\\\regsvr32.exe\\\" /s /u \\\"$INSTDIR\\\\${CPACK_PACKAGE_INSTALL_PLUGINFILE}\\\"'
         " )
     else ()
+        set ( CPACK_NSIS_INSTALL_ROOT "$PROGRAMFILES" )
         SET ( CPACK_NSIS_DISPLAY_NAME "Graph Control" )
         list ( APPEND CPACK_NSIS_EXTRA_INSTALL_COMMANDS "
             RegDLL '$INSTDIR\\\\${CPACK_PACKAGE_INSTALL_PLUGINFILE}'
