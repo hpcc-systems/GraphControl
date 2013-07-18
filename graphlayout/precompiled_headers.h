@@ -31,6 +31,7 @@
 #include <map>
 #include <iostream>
 
+#include <boost/smart_ptr/detail/atomic_count.hpp>
 #include <boost/lexical_cast.hpp>
 /*
 #include <set>
