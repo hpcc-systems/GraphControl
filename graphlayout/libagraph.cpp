@@ -246,3 +246,29 @@ int shortest_route(Ppoly_t **polys, int num_polys, Ppoint_t * src, Ppoint_t * ds
 	return 0;
 }
 
+#include <Unknown.h>
+using namespace hpcc;
+class MyString : public CUnknown, public IString {
+public:
+	std::string m_str;
+
+	BEGIN_CUNKNOWN
+	END_CUNKNOWN
+
+	virtual const char * c_str() const
+	{
+		return m_str.c_str();
+	};
+};
+IString * createIString()
+{
+	return new MyString();
+}
+
+bool DoLayout(const char * layout, const char* mem, const char* format, const char* scale, IString * result)
+{
+	MyString * myString = dynamic_cast<MyString*>(result);
+	assert(myString);
+	return DoLayout(layout, mem, format, scale, myString->m_str);
+};
+
