@@ -47,7 +47,16 @@
 #endif
 #endif
 
-LIBAGRAPH_API bool DoLayout(const char * layout, const char* mem, const char* format, const char* scale, std::string & result);
+interface IString {
+	virtual unsigned long AddRef() = 0;
+	virtual unsigned long Release() = 0;
+
+	virtual const char * c_str() const = 0;
+};
+LIBAGRAPH_API IString * createIString();
+LIBAGRAPH_API bool DoLayout(const char * layout, const char* mem, const char* format, const char* scale, IString * result);
+
+bool DoLayout(const char * layout, const char* mem, const char* format, const char* scale, std::string & result);
 
 typedef std::map<std::string, std::string> AttrMap;
 interface IGraphvizVisitor
