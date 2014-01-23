@@ -405,7 +405,7 @@ void HPCCSystemsGraphViewControl::StartLayout(const std::string & layout)
 	hpcc::DoGraphvizLayout(m_g, m_dot, boost::ref(*this));
 }
 
-void HPCCSystemsGraphViewControl::SetMessage(const std::string & msg)
+void HPCCSystemsGraphViewControl::SetMessage(const std::wstring & msg)
 {
 	m_gr->SetMessage(msg);
 	CalcScrollbars(true);

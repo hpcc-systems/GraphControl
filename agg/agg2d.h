@@ -408,9 +408,9 @@ public:
     void   textAlignment(TextAlignment alignX, TextAlignment alignY);
     bool   textHints() const;
     void   textHints(bool hints);
-    double textWidth(const char* str);
-    void   text(double x, double y, const char* str, bool roundOff=false, double dx=0.0, double dy=0.0);
-	bool hittestText(double hit_x, double hit_y, double x, double y, const char* str, bool roundOff=false, double dx=0.0, double dy=0.0);
+    double textWidth(const wchar_t* str);
+    void   text(double x, double y, const wchar_t* str, bool roundOff=false, double dx=0.0, double dy=0.0);
+	bool hittestText(double hit_x, double hit_y, double x, double y, const wchar_t* str, bool roundOff=false, double dx=0.0, double dy=0.0);
 
     // Path commands
     //-----------------------

@@ -961,6 +961,7 @@ void Agg2D::font(const char* fontName,
                                 agg::glyph_ren_agg_gray8);
     m_fontEngine.hinting(m_textHints);
     m_fontEngine.height((ch == VectorFontCache) ? height : worldToScreen(height));
+    m_fontEngine.char_map(FT_ENCODING_UNICODE);
 #else
     m_fontEngine.hinting(m_textHints);
 
@@ -990,7 +991,7 @@ void Agg2D::textAlignment(TextAlignment alignX, TextAlignment alignY)
 }
 
 //------------------------------------------------------------------------
-double Agg2D::textWidth(const char* str)
+double Agg2D::textWidth(const wchar_t* str)
 {
     double x = 0;
     double y = 0;
@@ -1025,7 +1026,7 @@ void Agg2D::textHints(bool hints)
 
 
 //------------------------------------------------------------------------
-void Agg2D::text(double x, double y, const char* str, bool roundOff, double ddx, double ddy)
+void Agg2D::text(double x, double y, const wchar_t* str, bool roundOff, double ddx, double ddy)
 {
    double dx = 0.0;
    double dy = 0.0;
@@ -1112,7 +1113,7 @@ void Agg2D::text(double x, double y, const char* str, bool roundOff, double ddx,
 }
 
 //------------------------------------------------------------------------
-bool Agg2D::hittestText(double hit_x, double hit_y, double x, double y, const char* str, bool roundOff, double ddx, double ddy)
+bool Agg2D::hittestText(double hit_x, double hit_y, double x, double y, const wchar_t* str, bool roundOff, double ddx, double ddy)
 {
    double dx = 0.0;
    double dy = 0.0;

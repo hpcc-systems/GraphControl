@@ -114,7 +114,7 @@ public:
 	void CenterOnGraphItem(hpcc::IGraphItem * item = NULL);
 	void CenterOnItem(int item, bool sizeToFit, bool widthOnly);
 	void StartLayout(const std::string & layout);
-	void SetMessage(const std::string & msg);
+	void SetMessage(const std::wstring & msg);
 	int Find(const std::string & text, bool includeProperties, std::vector<int> & results);
 	bool HasItems();
 	int GetSelection(std::vector<int> & results);

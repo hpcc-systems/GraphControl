@@ -156,7 +156,7 @@ public:
 	
 	bool onMouseWheel(unsigned int nFlags, short zDelta, int x, int y);
 
-	bool setMessage(const std::string& msg);
+	bool setMessage(const std::wstring& msg);
 
     FB::variant echo(const FB::variant& msg);
     
