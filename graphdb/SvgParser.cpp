@@ -205,7 +205,6 @@ void FixSubgraphSizes(ICluster * cluster, RectD  & parentRect)
 
 		if (ElementG * eg = GetElementG(cluster))
 		{
-			assert(eg->m_polygons.size() == 1);
 			if (eg->m_polygons.size() == 1)
 			{
 				eg->m_polygons[0]->m_points.clear();
