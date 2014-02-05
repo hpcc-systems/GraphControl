@@ -39,6 +39,7 @@ git checkout graphcontrol-3.10.x
 cd ..
 
 #### Get AT&T Graphviz libraries #### 
+#### Experimental support for graphviz-2.30.1  ####
 wget http://www.graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.26.3.tar.gz
 tar xf graphviz-2.26.3.tar.gz
 rm graphviz-2.26.3.tar.gz

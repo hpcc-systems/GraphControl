@@ -26,34 +26,22 @@ set (	SRCS
 	${GRAPHVIZSRC_DIRS}/lib/dotgen/sameport.c
 	)
 
-include_directories (
-	${GRAPHVIZSRC_DIRS}/lib/dotgen
-	${GRAPHVIZSRC_DIRS}/lib/common
-	${GRAPHVIZSRC_DIRS}/lib/cgraph
-	${GRAPHVIZSRC_DIRS}/lib/gd
-	${GRAPHVIZSRC_DIRS}/lib/cdt
-	${GRAPHVIZSRC_DIRS}/lib/graph
-	${GRAPHVIZSRC_DIRS}/lib/pathplan
-	${GRAPHVIZSRC_DIRS}/lib/gvc
-	${GRAPHVIZSRC_DIRS}/lib/ortho
-	${GRAPHVIZSRC_DIRS}
-	..
-	)
-
-if (WIN32)
-	ADD_DEFINITIONS( -DHAVE_CONFIG_H -DHAVE_SETMODE -DMSWIN32)
-else ()
-	ADD_DEFINITIONS( -DHAVE_CONFIG_H -DHAVE_SETMODE )
-endif ()
-
 add_library ( dotgen STATIC
 			${SRCS}
 			)
 target_link_libraries ( dotgen
 						common
-						graph
 						xdot
 						neatogen
 	)
+if ( GRAPHVIZ_VER_2_30_1 )
+	target_link_libraries ( dotgen
+		cgraph
+		)
+else ( GRAPHVIZ_VER_2_30_1 )
+	target_link_libraries ( dotgen
+		graph
+		)
+endif ( GRAPHVIZ_VER_2_30_1 )
 
 

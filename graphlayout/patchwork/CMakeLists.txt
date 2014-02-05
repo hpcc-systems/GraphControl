@@ -12,28 +12,11 @@ set (	SRCS
 	${GRAPHVIZSRC_DIRS}/lib/patchwork/patchworkinit.c
 	)
 
-include_directories (
-	${GRAPHVIZSRC_DIRS}/lib/patchwork
-	${GRAPHVIZSRC_DIRS}/lib/common
-	${GRAPHVIZSRC_DIRS}/lib/cgraph
-	${GRAPHVIZSRC_DIRS}/lib/neatogen
-	${GRAPHVIZSRC_DIRS}/lib/pack
-	${GRAPHVIZSRC_DIRS}/lib/gvc
-	${GRAPHVIZSRC_DIRS}/lib/gd
-	${GRAPHVIZSRC_DIRS}/lib/cdt
-	${GRAPHVIZSRC_DIRS}/lib/graph
-	${GRAPHVIZSRC_DIRS}/lib/pathplan
-	${GRAPHVIZSRC_DIRS}/lib/sparse
-	${GRAPHVIZSRC_DIRS}/lib/fdpgen
-	${GRAPHVIZSRC_DIRS}
-	..
+if ( GRAPHVIZ_VER_2_30_1 )
+	list ( APPEND SRCS
+		${GRAPHVIZSRC_DIRS}/lib/patchwork/tree_map.c
 	)
-
-if (WIN32)
-	ADD_DEFINITIONS( -DHAVE_CONFIG_H -DHAVE_SETMODE -DMSWIN32)
-else ()
-	ADD_DEFINITIONS( -DHAVE_CONFIG_H -DHAVE_SETMODE )
-endif ()
+endif ( GRAPHVIZ_VER_2_30_1 )
 
 add_library ( patchwork STATIC
 			${SRCS}

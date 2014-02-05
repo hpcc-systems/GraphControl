@@ -8,13 +8,14 @@
 project( cgraph ) 
 
 set (	SRCS 
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph/agerror.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph/agxbuf.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph/apply.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph/attr.c
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph/cgraph.def
-	${GRAPHVIZ_INCLUDE_DIRS}/lib/cgraph/edge.c
+	${GRAPHVIZSRC_DIRS}/lib/cgraph/agerror.c
+	${GRAPHVIZSRC_DIRS}/lib/cgraph/agxbuf.c
+	${GRAPHVIZSRC_DIRS}/lib/cgraph/apply.c
+	${GRAPHVIZSRC_DIRS}/lib/cgraph/attr.c
+	${GRAPHVIZSRC_DIRS}/lib/cgraph/cgraph.def
+	${GRAPHVIZSRC_DIRS}/lib/cgraph/edge.c
 	${GRAPHVIZSRC_DIRS}/lib/cgraph/flatten.c
+	${GRAPHVIZSRC_DIRS}/lib/cgraph/grammar.c
 	${GRAPHVIZSRC_DIRS}/lib/cgraph/graph.c
 	${GRAPHVIZSRC_DIRS}/lib/cgraph/id.c
 	${GRAPHVIZSRC_DIRS}/lib/cgraph/imap.c
@@ -25,28 +26,17 @@ set (	SRCS
 	${GRAPHVIZSRC_DIRS}/lib/cgraph/pend.c
 	${GRAPHVIZSRC_DIRS}/lib/cgraph/rec.c
 	${GRAPHVIZSRC_DIRS}/lib/cgraph/refstr.c
+	${GRAPHVIZSRC_DIRS}/lib/cgraph/scan.c
 	${GRAPHVIZSRC_DIRS}/lib/cgraph/subg.c
 	${GRAPHVIZSRC_DIRS}/lib/cgraph/utils.c
 	${GRAPHVIZSRC_DIRS}/lib/cgraph/write.c
 	)
 
-include_directories ( 
-	${GRAPHVIZSRC_DIRS}/lib/cgraph
-	${GRAPHVIZSRC_DIRS}/lib/cdt
-	${GRAPHVIZSRC_DIRS}/lib/common
-	${GRAPHVIZSRC_DIRS}
-	)
-
-if (WIN32)
-	ADD_DEFINITIONS( -DHAVE_CONFIG_H -DHAVE_SETMODE -DMSWIN32)
-else ()
-	ADD_DEFINITIONS( -DHAVE_CONFIG_H -DHAVE_SETMODE )
-endif ()
-
 add_library ( cgraph STATIC
 			${SRCS} 
 			)
 target_link_libraries ( cgraph 
+			cdt
 	)
 
 

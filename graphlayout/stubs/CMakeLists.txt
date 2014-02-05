@@ -1,0 +1,5 @@
+add_subdirectory ( gts )
+add_subdirectory ( glib-2.0 )
+add_subdirectory ( ltdl )
+add_subdirectory ( xml2 )
+add_subdirectory ( zdll )

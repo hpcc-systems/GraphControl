@@ -19,18 +19,6 @@ set (	SRCS
 	${GRAPHVIZSRC_DIRS}/lib/vpsc/variable.h
 	)
 
-include_directories (
-	${GRAPHVIZSRC_DIRS}/lib/vpsc
-	${GRAPHVIZSRC_DIRS}
-	..
-	)
-
-if (WIN32)
-	ADD_DEFINITIONS( -DHAVE_CONFIG_H -DHAVE_SETMODE -DMSWIN32)
-else ()
-	ADD_DEFINITIONS( -DHAVE_CONFIG_H -DHAVE_SETMODE )
-endif ()
-
 add_library ( vpsc STATIC
 			${SRCS}
 			)
