@@ -139,7 +139,7 @@ bool HPCCSystemsGraphViewControlAPI::centerOnItem(int item, boost::optional<bool
 	return true;
 }
 
-bool HPCCSystemsGraphViewControlAPI::setMessage(const std::string& msg)
+bool HPCCSystemsGraphViewControlAPI::setMessage(const std::wstring& msg)
 {
 	assert(getPlugin());
 	getPlugin()->SetMessage(msg);

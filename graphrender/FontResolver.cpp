@@ -6,14 +6,14 @@ namespace hpcc
 {
 #if defined FB_WIN
 #define DEFAULT_FONTPATH "C:/WINDOWS/FONTS;C:/WINNT/Fonts;C:/winnt/fonts"
-#define DEFAULT_FONT "Verdana;Arial"
+#define DEFAULT_FONT "ArialUni;Arial;Verdana"
 #elif defined FB_X11
 /* default fontpath for unix systems  - whatever happened to standards ! */
 #define DEFAULT_FONTPATH "/usr/X11R6/lib/X11/fonts/TrueType;/usr/X11R6/lib/X11/fonts/truetype;/usr/X11R6/lib/X11/fonts/TTF;/usr/share/fonts/TrueType;/usr/share/fonts/truetype;/usr/openwin/lib/X11/fonts/TrueType;/usr/X11R6/lib/X11/fonts/Type1;/usr/lib/X11/fonts/Type1;/usr/openwin/lib/X11/fonts/Type1"
-#define DEFAULT_FONT "Verdana;DejaVu Sans;Liberation Sans;FreeSans;DejaVuSans"
+#define DEFAULT_FONT "wqy-zenhei;DejaVu Sans;DejaVuSans;Liberation Sans;FreeSans;Verdana"
 #elif defined FB_MACOSX	
 #define DEFAULT_FONTPATH "/Library/Fonts;/System/Library/Fonts"
-#define DEFAULT_FONT "Verdana;DejaVu Sans;Liberation Sans;FreeSans;DejaVuSans"
+#define DEFAULT_FONT "Hei;LucidaGrande;DejaVu Sans;DejaVuSans;Liberation Sans;FreeSans;Verdana"
 #endif
 
 typedef std::vector<std::string> split_vector_type;
@@ -50,8 +50,10 @@ public:
 		split_vector_type searchFolders; 
 		boost::algorithm::split(searchFolders, DEFAULT_FONTPATH, boost::algorithm::is_any_of(";"), boost::algorithm::token_compress_on);
 
-		for(split_vector_type::const_iterator itr = searchFolders.begin(); itr != searchFolders.end(); ++itr)
+		for(split_vector_type::const_iterator itr = searchFolders.begin(); itr != searchFolders.end(); ++itr) {
 			findFilesByExt(*itr, ".ttf", m_stemPath);
+			findFilesByExt(*itr, ".ttc", m_stemPath);
+		}
 
 		split_vector_type defaultFonts; 
 		boost::algorithm::split(defaultFonts, DEFAULT_FONT, boost::algorithm::is_any_of(";"), boost::algorithm::token_compress_on);

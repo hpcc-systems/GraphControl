@@ -30,7 +30,7 @@ namespace hpcc
 {
 hpcc_interface GRAPHRENDER_API IGraphRender : public IUnknown
 {
-	virtual void SetMessage(const std::string & msg) = 0;
+	virtual void SetMessage(const std::wstring & msg) = 0;
 	virtual void SetOffset(const PointD & pt) = 0;
 	virtual PointD GetOffset() const = 0;
 

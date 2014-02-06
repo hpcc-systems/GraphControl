@@ -28,6 +28,7 @@
 #include <agg_math_stroke.h>
 #include <agg2d.h>
 #include "FontResolver.h"
+#include <util.h>
 
 namespace hpcc
 {
@@ -42,7 +43,7 @@ protected:
 	mutable Agg2D m_agg2d;
 	IFontResolverPtr m_fonts;
 
-	std::string m_message;
+	std::wstring m_message;
 	PointD m_offset;
 	double m_scale;
 
@@ -163,7 +164,7 @@ public:
 		m_badColour = Colour::Red;
 	}
 
-	void SetMessage(const std::string & msg)
+	void SetMessage(const std::wstring & msg)
 	{
 		m_message = msg;
 	}
@@ -266,7 +267,7 @@ public:
 		for (TextVector::const_iterator itr = elementG->m_lines.begin(); itr != elementG->m_lines.end(); ++itr)
 		{
 			Render(m_agg2d, *itr);
-			if (m_agg2d.hittestText(x, y, itr->get()->m_pos.x, itr->get()->m_pos.y, itr->get()->m_text.c_str()))
+			if (m_agg2d.hittestText(x, y, itr->get()->m_pos.x, itr->get()->m_pos.y, StringToWString(itr->get()->m_text).c_str()))
 				return true;
 		}
 
@@ -679,7 +680,7 @@ public:
 			for (TextVector::const_iterator itr = elementG->m_lines.begin(); itr != elementG->m_lines.end(); ++itr)
 			{
 				Render(agg2d, *itr);
-				agg2d.text(itr->get()->m_pos.x, itr->get()->m_pos.y, itr->get()->m_text.c_str());
+				agg2d.text(itr->get()->m_pos.x, itr->get()->m_pos.y, StringToWString(itr->get()->m_text).c_str());
 			}
 		}
 	}
