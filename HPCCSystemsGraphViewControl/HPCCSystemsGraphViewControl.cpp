@@ -309,6 +309,7 @@ bool HPCCSystemsGraphViewControl::MergeSVG(const std::string & svg)
 {
 	if (hpcc::MergeSVG(m_g, svg))
 	{
+		m_svg = svg;
 		CalcScrollbars();
 		CenterOnGraphItem(NULL);
 		Invalidate();
@@ -500,13 +501,15 @@ const char * HPCCSystemsGraphViewControl::GetProperty(int _item, const std::stri
 
 unsigned int HPCCSystemsGraphViewControl::GetItem(const std::string &externalID)
 {
+	if (externalID.compare("0") == 0)
+		return m_g->GetID();
 	if (hpcc::IGraphItem * item = m_g->GetVertex(externalID, true))
 		return item->GetID();
 	if (hpcc::IGraphItem * item = m_g->GetEdge(externalID, true))
 		return item->GetID();
 	if (hpcc::IGraphItem * item = m_g->GetCluster(externalID, true))
 		return item->GetID();
-	return 0;
+	return -1;
 }
 
 const char * HPCCSystemsGraphViewControl::GetGlobalID(int item)
@@ -687,16 +690,11 @@ void HPCCSystemsGraphViewControl::FinishLayout()
 			m_pendingSvg = "";
 			return;
 		}
-
-		m_svg = m_pendingSvg;
-		hpcc::MergeSVG(m_g, m_pendingSvg);
+		MergeSVG(m_pendingSvg);
 		m_pendingDot = "";
 		m_pendingSvg = "";
 	}
 
-	CalcScrollbars();
-	CenterOnGraphItem(NULL);
-	Invalidate();
 	boost::static_pointer_cast<HPCCSystemsGraphViewControlAPI>(getRootJSAPI())->fire_LayoutFinished();
 }
 
