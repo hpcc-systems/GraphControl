@@ -29,7 +29,7 @@ cd ..
 #### Get Firebreath library #### 
 git clone https://github.com/GordonSmith/FireBreath.git
 cd FireBreath
-git checkout closedown-4.0.x
+git checkout closedown-5.0.x
 cd ..
 
 #### Get unrestricted (2.4) agg libraries #### 

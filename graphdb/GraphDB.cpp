@@ -345,7 +345,7 @@ public:
 			}
 			else if (const ICluster * cluster = dynamic_cast<const ICluster *>(itr->get()))
 			{
-				CalcClusterVisibility(cluster, localisationDepth);
+				CalcClusterVisibility(cluster, localisationDepth - 1);
 			}
 		}
 
@@ -376,23 +376,32 @@ public:
 
 	void CalcClusterVisibility(const ICluster * cluster, int localisationDepth)
 	{
-		if (localisationDepth <= 0)
+		if (localisationDepth < 0)
 			return;
 
-		for (IClusterSet::const_iterator itr = cluster->GetClusters().begin(); itr != cluster->GetClusters().end(); ++itr)
+		if (localisationDepth > 0)
 		{
-			CalcClusterVisibility(itr->get(), localisationDepth - 1);
+			for (IClusterSet::const_iterator itr = cluster->GetClusters().begin(); itr != cluster->GetClusters().end(); ++itr)
+			{
+				CalcClusterVisibility(itr->get(), localisationDepth - 1);
+			}
 		}
 
 		m_visibleClusters.insert(cluster->GetClusters().begin(), cluster->GetClusters().end());
 		m_visibleVertices.insert(cluster->GetVertices().begin(), cluster->GetVertices().end());
 
 		//  Calculate edges that pass through the cluster  ---
+		std::map<std::pair<IClusterPtr, IClusterPtr>, bool> dedupEdges;
 		for(IEdgeSet::const_iterator itr = m_graph->GetAllEdges().begin(); itr != m_graph->GetAllEdges().end(); ++itr)
 		{
-			if (itr->get()->GetFromVertex()->GetParent() != itr->get()->GetToVertex()->GetParent() && isAncestor(cluster, GetCommonAncestor(itr->get())))
+			if (itr->get()->GetFromVertex()->GetParent() != itr->get()->GetToVertex()->GetParent() && cluster == GetCommonAncestor(itr->get()))
 			{
-				m_visibleEdges.insert(itr->get());
+				//  Only include one unique edge between clusters  ---
+				if (dedupEdges[std::make_pair(itr->get()->GetFromVertex()->GetParent(), itr->get()->GetToVertex()->GetParent())] != true)
+				{
+					dedupEdges[std::make_pair(itr->get()->GetFromVertex()->GetParent(), itr->get()->GetToVertex()->GetParent())] = true;
+					m_visibleEdges.insert(itr->get());
+				}
 			}
 		}
 	}
@@ -436,7 +445,7 @@ public:
 
 	void WriteXgmml() 
 	{
-		ItemVisited(const_cast<IGraph *>(m_graph));
+		static_cast<ICluster *>(const_cast<IGraph *>(m_graph))->Walk((IClusterVisitor *)this);
 		m_graph->Walk((IEdgeVisitor *)this);
 	}
 
