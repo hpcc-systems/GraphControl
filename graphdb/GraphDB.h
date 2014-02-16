@@ -81,6 +81,15 @@ enum GRAPH_TYPE
 	GRAPH_TYPE_EDGE,
 	GRAPH_TYPE_LAST
 };
+const char * const GRAPH_TYPE_STRING[] =
+{
+	"Unknown",
+	"Graph",
+	"Cluster",
+	"Vertex",
+	"Edge",
+	"Last"
+};
 //  ===========================================================================
 
 hpcc_interface GRAPHDB_API IClusterVisitor
@@ -193,6 +202,7 @@ hpcc_interface GRAPHDB_API IGraph : public ICluster
 	virtual IGraphItem * GetGraphItem(unsigned int id) const = 0;
 	virtual IGraphItem * GetGraphItem(GRAPH_TYPE type, const std::string & id) const = 0;
 
+	virtual const char * GetExternalType(int item) const = 0;
 	virtual void SetExternalID(GRAPH_TYPE type, const std::string & id, IGraphItem * item) = 0;
 	virtual const char * GetExternalID(int item) const = 0;
 };

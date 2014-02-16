@@ -116,6 +116,7 @@ public:
 	IGraphItem * GetGraphItem(GRAPH_TYPE type, const std::string & id) const;
 
 	//  ExternalID Helper  ---
+	const char * GetExternalType(int item) const;
 	void SetExternalID(GRAPH_TYPE type, const std::string & id, IGraphItem * item);
 	const char * GetExternalID(int item) const;
 };

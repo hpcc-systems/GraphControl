@@ -126,6 +126,7 @@ public:
 	void SetProperty(int item, const std::string & key, const std::string & value);
 	const char * GetProperty(int item, const std::string & key);
 	unsigned int GetItem(const std::string &externalID);
+	const char * GetGlobalType(int item);
 	const char * GetGlobalID(int item);
 	int GetClusters(std::vector<int> & results);
 	int GetVertices(std::vector<int> & results);

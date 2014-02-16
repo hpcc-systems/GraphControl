@@ -509,6 +509,11 @@ unsigned int HPCCSystemsGraphViewControl::GetItem(const std::string &externalID)
 	return 0;
 }
 
+const char * HPCCSystemsGraphViewControl::GetGlobalType(int item)
+{
+	return m_g->GetExternalType(item);
+}
+
 const char * HPCCSystemsGraphViewControl::GetGlobalID(int item)
 {
 	return m_g->GetExternalID(item);
