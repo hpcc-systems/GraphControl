@@ -76,6 +76,7 @@ public:
 		registerMethod("setProperty", make_method(this, &HPCCSystemsGraphViewControlAPI::setProperty));
 		registerMethod("getProperty", make_method(this, &HPCCSystemsGraphViewControlAPI::getProperty));
 		registerMethod("getItem", make_method(this, &HPCCSystemsGraphViewControlAPI::getItem));
+		registerMethod("getGlobalType", make_method(this, &HPCCSystemsGraphViewControlAPI::getGlobalType));
 		registerMethod("getGlobalID", make_method(this, &HPCCSystemsGraphViewControlAPI::getGlobalID));
 		registerMethod("getVertices", make_method(this, &HPCCSystemsGraphViewControlAPI::getVertices));
 		registerMethod("onMouseWheel", make_method(this, &HPCCSystemsGraphViewControlAPI::onMouseWheel));
@@ -145,6 +146,7 @@ public:
 	std::string getProperty(int item, const std::string & key);
 
 	int getItem(const std::string & externalID);
+	std::string getGlobalType(int item);
 	std::string getGlobalID(int item);
 
 	FB::VariantList getSubgraphsWithProperties();

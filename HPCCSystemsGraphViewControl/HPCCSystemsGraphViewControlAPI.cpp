@@ -225,6 +225,7 @@ FB::VariantMap HPCCSystemsGraphViewControlAPI::getProperties(int item)
 	assert(getPlugin());
 	FB::VariantMap retVal;
 	retVal["_internalID"] = item;
+	retVal["_globalType"] = getGlobalType(item);
 	retVal["_globalID"] = getGlobalID(item);
 
 	hpcc::ciStringStringMap properties;
@@ -258,6 +259,13 @@ std::string HPCCSystemsGraphViewControlAPI::getProperty(int item, const std::str
 int HPCCSystemsGraphViewControlAPI::getItem(const std::string & externalID)
 {
 	return getPlugin()->GetItem(externalID);
+}
+
+std::string HPCCSystemsGraphViewControlAPI::getGlobalType(int item)
+{
+	if (const char * globalTypeChar = getPlugin()->GetGlobalType(item))
+		return globalTypeChar;
+	return "";
 }
 
 std::string HPCCSystemsGraphViewControlAPI::getGlobalID(int item)
