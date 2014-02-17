@@ -409,9 +409,6 @@ void HPCCSystemsGraphViewControl::StartLayout(const std::string & layout)
 void HPCCSystemsGraphViewControl::SetMessage(const std::wstring & msg)
 {
 	m_gr->SetMessage(msg);
-	CalcScrollbars(true);
-	if (msg.empty())
-		CenterOnGraphItem(NULL);
 	Invalidate();
 }
 
