@@ -815,7 +815,7 @@ public:
 
 			if (!m_message.empty())
 			{
-				m_agg2d.text(12, 12, m_message.c_str());
+				m_agg2d.text(_rect.left + 2, _rect.top + 14, m_message.c_str());
 			}
 			else if (HitTestItemFast(m_g, m_renderRect))
 			{
