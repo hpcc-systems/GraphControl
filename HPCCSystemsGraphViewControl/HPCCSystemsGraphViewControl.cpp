@@ -499,6 +499,95 @@ const char * HPCCSystemsGraphViewControl::GetProperty(int _item, const std::stri
 	return emptyStr;
 }
 
+unsigned int HPCCSystemsGraphViewControl::GetParent(int _item)
+{
+	hpcc::IGraphItem * item = m_g->GetGraphItem(_item);
+	if (item)
+	{
+		hpcc::IGraphItem * parent = NULL;
+		if (hpcc::ICluster * cluster = dynamic_cast<hpcc::ICluster *>(item)) {
+			parent = cluster->GetParent();
+		} else if (hpcc::IVertex * vertex = dynamic_cast<hpcc::IVertex *>(item)) {
+			parent = vertex->GetParent();
+		}
+		if (parent)
+		{
+			return parent->GetID();
+		}
+	}
+	return -1;
+}
+
+int HPCCSystemsGraphViewControl::GetChildren(int _item, std::vector<int> & results)
+{
+	hpcc::IGraphItem * item = m_g->GetGraphItem(_item);
+	if (item)
+	{
+		if (hpcc::ICluster * cluster = dynamic_cast<hpcc::ICluster *>(item)) {
+			const hpcc::IClusterSet & cluster_children = cluster->GetClusters();
+			for(hpcc::IClusterSet::const_iterator itr = cluster_children.begin(); itr != cluster_children.end(); ++itr)
+				results.push_back(itr->get()->GetID());
+
+			const hpcc::IVertexSet & vertex_children = cluster->GetVertices();
+			for(hpcc::IVertexSet::const_iterator itr = vertex_children.begin(); itr != vertex_children.end(); ++itr)
+				results.push_back(itr->get()->GetID());
+		}
+	}
+	return results.size();
+}
+
+int HPCCSystemsGraphViewControl::GetInEdges(int _item, std::vector<int> & results)
+{
+	hpcc::IGraphItem * item = m_g->GetGraphItem(_item);
+	if (item)
+	{
+		if (hpcc::IVertex * vertex = dynamic_cast<hpcc::IVertex *>(item)) {
+			const hpcc::IEdgeSet & edges = vertex->GetInEdges();
+			for(hpcc::IEdgeSet::const_iterator itr = edges.begin(); itr != edges.end(); ++itr)
+				results.push_back(itr->get()->GetID());
+		}
+	}
+	return results.size();
+}
+
+int HPCCSystemsGraphViewControl::GetOutEdges(int _item, std::vector<int> & results)
+{
+	hpcc::IGraphItem * item = m_g->GetGraphItem(_item);
+	if (item)
+	{
+		if (hpcc::IVertex * vertex = dynamic_cast<hpcc::IVertex *>(item)) {
+			const hpcc::IEdgeSet & edges = vertex->GetOutEdges();
+			for(hpcc::IEdgeSet::const_iterator itr = edges.begin(); itr != edges.end(); ++itr)
+				results.push_back(itr->get()->GetID());
+		}
+	}
+	return results.size();
+}
+
+unsigned int HPCCSystemsGraphViewControl::GetSource(int _item)
+{
+	hpcc::IGraphItem * item = m_g->GetGraphItem(_item);
+	if (item)
+	{
+		if (hpcc::IEdge * edge = dynamic_cast<hpcc::IEdge *>(item)) {
+			return edge->GetFromVertex()->GetID();
+		}
+	}
+	return -1;
+}
+
+unsigned int HPCCSystemsGraphViewControl::GetTarget(int _item)
+{
+	hpcc::IGraphItem * item = m_g->GetGraphItem(_item);
+	if (item)
+	{
+		if (hpcc::IEdge * edge = dynamic_cast<hpcc::IEdge *>(item)) {
+			return edge->GetToVertex()->GetID();
+		}
+	}
+	return -1;
+}
+
 unsigned int HPCCSystemsGraphViewControl::GetItem(const std::string &externalID)
 {
 	if (externalID.compare("0") == 0)

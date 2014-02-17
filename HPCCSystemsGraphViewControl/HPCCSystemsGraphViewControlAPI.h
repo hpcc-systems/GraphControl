@@ -75,6 +75,12 @@ public:
 		registerMethod("getProperties", make_method(this, &HPCCSystemsGraphViewControlAPI::getProperties));
 		registerMethod("setProperty", make_method(this, &HPCCSystemsGraphViewControlAPI::setProperty));
 		registerMethod("getProperty", make_method(this, &HPCCSystemsGraphViewControlAPI::getProperty));
+		registerMethod("getParent", make_method(this, &HPCCSystemsGraphViewControlAPI::getParent));
+		registerMethod("getChildren", make_method(this, &HPCCSystemsGraphViewControlAPI::getChildren));
+		registerMethod("getInEdges", make_method(this, &HPCCSystemsGraphViewControlAPI::getInEdges));
+		registerMethod("getOutEdges", make_method(this, &HPCCSystemsGraphViewControlAPI::getOutEdges));
+		registerMethod("getSource", make_method(this, &HPCCSystemsGraphViewControlAPI::getSource));
+		registerMethod("getTarget", make_method(this, &HPCCSystemsGraphViewControlAPI::getTarget));
 		registerMethod("getItem", make_method(this, &HPCCSystemsGraphViewControlAPI::getItem));
 		registerMethod("getGlobalType", make_method(this, &HPCCSystemsGraphViewControlAPI::getGlobalType));
 		registerMethod("getGlobalID", make_method(this, &HPCCSystemsGraphViewControlAPI::getGlobalID));
@@ -145,6 +151,12 @@ public:
 	bool setProperty(int item, const std::string & key, const std::string & value);
 	std::string getProperty(int item, const std::string & key);
 
+	int getParent(int item);
+	FB::VariantList getChildren(int item);
+	FB::VariantList getInEdges(int item);
+	FB::VariantList getOutEdges(int item);
+	int getSource(int item);
+	int getTarget(int item);
 	int getItem(const std::string & externalID);
 	std::string getGlobalType(int item);
 	std::string getGlobalID(int item);

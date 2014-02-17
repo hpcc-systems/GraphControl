@@ -256,6 +256,57 @@ std::string HPCCSystemsGraphViewControlAPI::getProperty(int item, const std::str
 	return getPlugin()->GetProperty(item, key);
 }
 
+int HPCCSystemsGraphViewControlAPI::getParent(int item)
+{
+	return getPlugin()->GetParent(item);
+}
+
+FB::VariantList HPCCSystemsGraphViewControlAPI::getChildren(int item)
+{
+	FB::VariantList retVal;
+
+	std::vector<int> children;
+	getPlugin()->GetChildren(item, children);
+	for(std::vector<int>::const_iterator itr = children.begin(); itr != children.end(); ++itr)
+		retVal.push_back(*itr);
+
+	return retVal;
+}
+
+FB::VariantList HPCCSystemsGraphViewControlAPI::getInEdges(int item)
+{
+	FB::VariantList retVal;
+
+	std::vector<int> inEdges;
+	getPlugin()->GetInEdges(item, inEdges);
+	for(std::vector<int>::const_iterator itr = inEdges.begin(); itr != inEdges.end(); ++itr)
+		retVal.push_back(*itr);
+
+	return retVal;
+}
+
+FB::VariantList HPCCSystemsGraphViewControlAPI::getOutEdges(int item)
+{
+	FB::VariantList retVal;
+
+	std::vector<int> outEdges;
+	getPlugin()->GetOutEdges(item, outEdges);
+	for(std::vector<int>::const_iterator itr = outEdges.begin(); itr != outEdges.end(); ++itr)
+		retVal.push_back(*itr);
+
+	return retVal;
+}
+
+int HPCCSystemsGraphViewControlAPI::getSource(int item)
+{
+	return getPlugin()->GetSource(item);
+}
+
+int HPCCSystemsGraphViewControlAPI::getTarget(int item)
+{
+	return getPlugin()->GetTarget(item);
+}
+
 int HPCCSystemsGraphViewControlAPI::getItem(const std::string & externalID)
 {
 	return getPlugin()->GetItem(externalID);
