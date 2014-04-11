@@ -246,6 +246,19 @@ public:
 		PropigateState(edge->GetToVertex(), state);
 	}
 
+	void addCommas(std::string prettyCount)
+	{
+		std::string tmp;
+		int len = prettyCount.length();
+		for(int i = 0; i < len; ++i)
+		{
+			tmp += (char)prettyCount.at(i);
+			if ((len - 1 - i > 0) && (len - 1 - i) % 3 == 0)
+				tmp += ',';
+		}
+		prettyCount = tmp;
+	}
+
 	void ProcessEdges()
 	{
 		for (ElementVector::const_iterator itr = m_edgeElements.begin(); itr != m_edgeElements.end(); ++itr)
@@ -270,18 +283,19 @@ public:
 					(boost::algorithm::equals(prettyCount, "0") && boost::algorithm::equals(constGet(e->m_attr, "_eofSeen"), "1")) ||
 					(boost::algorithm::equals(prettyCount, "0") && boost::algorithm::equals(constGet(e->m_attr, "started"), "1"))))
 			{
-				std::string tmp;
-				int len = prettyCount.length();
-				for(int i = 0; i < len; ++i)
-				{
-					tmp += (char)prettyCount.at(i);
-					if ((len - 1 - i > 0) && (len - 1 - i) % 3 == 0)
-						tmp += ',';
-				}
-				prettyCount = tmp;
+				addCommas(prettyCount);
 			}
 			else
 				prettyCount = "";
+
+			std::string prettyInputProgress = constGet(e->m_attr, "inputProgress");
+			if (!prettyInputProgress.empty() && !boost::algorithm::equals(prettyInputProgress, "0") && !boost::algorithm::equals(constGet(e->m_attr, "_eofSeen"), "1"))
+			{
+				addCommas(prettyInputProgress);
+				if (!prettyCount.empty())
+					prettyCount += " ";
+				prettyCount += "[" + prettyInputProgress + "]";
+			}
 
 			std::string edgeLabel;
 			if (!prettyCount.empty() && edge->HasProperty("label") && edge->HasProperty("maxskew") && edge->HasProperty("minskew"))
