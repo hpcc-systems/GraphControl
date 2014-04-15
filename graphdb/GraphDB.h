@@ -136,6 +136,9 @@ hpcc_interface GRAPHDB_API IGraphItem : public IUnknown
 hpcc_interface GRAPHDB_API ICluster : public IGraphItem
 {
 	virtual ICluster * GetParent() const = 0;
+	virtual unsigned int GetDepth() const = 0;
+	virtual unsigned int GetChildCount() const = 0;
+	virtual unsigned int GetDescendentCount() const = 0;
 	virtual void MoveTo(ICluster * cluster) = 0;
 	virtual const IClusterSet & GetClusters() const = 0;
 	virtual const IVertexSet & GetVertices() const = 0;
@@ -152,6 +155,7 @@ hpcc_interface GRAPHDB_API ICluster : public IGraphItem
 hpcc_interface GRAPHDB_API IVertex : public IGraphItem
 {
 	virtual ICluster * GetParent() const = 0;
+	virtual unsigned int GetDepth() const = 0;
 	virtual void MoveTo(ICluster * cluster) = 0;
 	virtual unsigned int GetInEdgeCount() const = 0;
 	virtual unsigned int GetOutEdgeCount() const = 0;

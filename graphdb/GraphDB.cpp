@@ -453,6 +453,10 @@ public:
 	{
 		if (m_visibleClusters.find(cluster) != m_visibleClusters.end())
 		{
+			std::string propsStr;
+			ciStringStringMap props;
+			cluster->GetProperties(props);
+
 			m_xgmml += (boost::format("<node id=\"%1%\"><att><graph>") % cluster->GetProperty("id")).str();
 			int xgmmlLen = m_xgmml.length();
 			cluster->Walk((IClusterVisitor *) this);
@@ -467,7 +471,10 @@ public:
 					m_xgmml += vertexString;
 				}
 			}
-			m_xgmml += "</graph></att></node>";
+
+			for(ciStringStringMap::const_iterator itr = props.begin(); itr != props.end(); ++itr)
+				propsStr += (boost::format("<att name=\"%1%\" value=\"%2%\"/>") % itr->first % xmlEncode(itr->second)).str();
+			m_xgmml += (boost::format("</graph></att>%1%</node>") % propsStr).str();
 		}
 		return false;
 	}

@@ -43,6 +43,13 @@ enum XGMML_STATE_ENUM
 	XGMML_STATE_LAST
 };
 
+const char * const CALC_PROP_DEPTH = "Depth";
+const char * const CALC_PROP_SUBGRAPHCOUNT = "SubgraphCount";
+const char * const CALC_PROP_ACTIVITYCOUNT = "ActivityCount";
+const char * const CALC_PROP_CHILDCOUNT = "ChildCount";
+const char * const CALC_PROP_DESCENDANTCOUNT = "DescendantCount";
+const char * const CALC_PROP_CHILDREN = "_children";
+
 ICluster * GetCluster(IGraph* graph, ICluster* cluster, unsigned int id, const std::string & label, bool merge, bool appendMissing);
 ICluster * GetCluster(IGraph* graph, ICluster* cluster, const std::string & id, bool merge, bool appendMissing = true);
 IVertex * GetVertex(IGraph* graph, ICluster* cluster, const std::string & id, bool merge, bool appendMissing = true);

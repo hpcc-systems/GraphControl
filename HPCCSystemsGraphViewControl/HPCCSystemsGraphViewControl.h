@@ -126,9 +126,12 @@ public:
 	void SetProperty(int item, const std::string & key, const std::string & value);
 	const char * GetProperty(int item, const std::string & key);
 	unsigned int GetParent(int item);
+	int GetChildSubgraphs(int item, std::vector<int> & results);
+	int GetChildVertices(int item, std::vector<int> & results);
 	int GetChildren(int item, std::vector<int> & results);
 	int GetInEdges(int item, std::vector<int> & results);
 	int GetOutEdges(int item, std::vector<int> & results);
+	unsigned int GetGraph();
 	unsigned int GetSource(int item);
 	unsigned int GetTarget(int item);
 	unsigned int GetItem(const std::string &externalID);

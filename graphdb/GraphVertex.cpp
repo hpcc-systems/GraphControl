@@ -36,6 +36,10 @@ ICluster * CVertex::GetParent() const
 {
 	return m_parent;
 }
+unsigned int CVertex::GetDepth() const
+{
+	return m_parent->GetDepth() + 1;
+}
 
 void CVertex::MoveTo(ICluster * cluster) 
 {

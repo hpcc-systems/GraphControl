@@ -46,7 +46,10 @@ public:
 
 	//  ===  ICluster  ===
 	ICluster * GetParent() const;
+	unsigned int GetDepth() const;
 	void MoveTo(ICluster * cluster);
+	unsigned int GetChildCount() const;
+	unsigned int GetDescendentCount() const;
 	const IClusterSet & GetClusters() const;
 	const IVertexSet & GetVertices() const;
 	void AppendCluster(ICluster * cluster);
@@ -59,6 +62,9 @@ public:
 };
 
 #define ICLUSTER_IMPL	ICluster * GetParent() const { return CCluster::GetParent(); } \
+						unsigned int GetDepth() const {return CCluster::GetDepth(); } \
+						unsigned int GetChildCount() const {return CCluster::GetChildCount(); } \
+						unsigned int GetDescendentCount() const {return CCluster::GetDescendentCount(); } \
 						void MoveTo(ICluster * cluster) { CCluster::MoveTo(cluster); } \
 						const IClusterSet & GetClusters() const { return CCluster::GetClusters(); } \
 						const IVertexSet & GetVertices() const { return CCluster::GetVertices(); } \
