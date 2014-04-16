@@ -405,6 +405,15 @@ public:
 
 };
 
+void calcProps(ICluster * item)
+{
+	item->SetProperty(CALC_PROP_DEPTH, boost::lexical_cast<std::string>(item->GetDepth()));
+	item->SetProperty(CALC_PROP_SUBGRAPHCOUNT, boost::lexical_cast<std::string>(item->GetClusters().size()));
+	item->SetProperty(CALC_PROP_ACTIVITYCOUNT, boost::lexical_cast<std::string>(item->GetVertices().size()));
+	item->SetProperty(CALC_PROP_CHILDCOUNT, boost::lexical_cast<std::string>(item->GetChildCount()));
+	item->SetProperty(CALC_PROP_DESCENDANTCOUNT, boost::lexical_cast<std::string>(item->GetDescendentCount()));
+}
+
 GRAPHDB_API bool LoadXGMML(IGraph * graph, const std::string & xgmml)
 {
 	CXgmmlParser parser(graph, false);
@@ -448,6 +457,10 @@ GRAPHDB_API bool LoadXGMML(IGraph * graph, const std::string & xgmml)
 		}
 	}
 #endif
+
+	calcProps(graph);
+	for(IClusterSet::const_iterator itr = graph->GetAllClusters().begin(); itr != graph->GetAllClusters().end(); ++itr)
+		calcProps(itr->get());
 
 	return retVal;
 }

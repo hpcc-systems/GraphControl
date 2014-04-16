@@ -143,12 +143,12 @@ void HPCCSystemsGraphViewControl::InvalidateWorldRect(const hpcc::RectD & worldR
 
 int HPCCSystemsGraphViewControl::GetScrollOffsetX()
 {
-	return m_ptOffset.x;
+	return static_cast<int>(m_ptOffset.x);
 }
 
 int HPCCSystemsGraphViewControl::GetScrollOffsetY()
 {
-	return m_ptOffset.y;
+	return static_cast<int>(m_ptOffset.y);
 }
 
 void HPCCSystemsGraphViewControl::SetScrollOffset(int x, int y)
@@ -708,8 +708,8 @@ bool HPCCSystemsGraphViewControl::onMouseMove(FB::MouseMoveEvent *evt, FB::Plugi
 	case MOUSEDOWN_NORMAL:
 	case MOUSEDOWN_MOVED:
 		{
-			int deltaX = point.x - m_mouseDownPosX;
-			int deltaY = point.y - m_mouseDownPosY;
+			int deltaX = static_cast<int>(point.x - m_mouseDownPosX);
+			int deltaY = static_cast<int>(point.y - m_mouseDownPosY);
 
 			SetScrollOffset(m_scrollDownPosX - deltaX, m_scrollDownPosY - deltaY);
 			if (deltaX || deltaY)
@@ -754,7 +754,7 @@ bool HPCCSystemsGraphViewControl::onMouseScroll(FB::MouseScrollEvent *evt, FB::P
 			m_gr->SetScale(scale - 0.05 * scale);
 
 		CalcScrollbars();
-		MoveTo(worldDblClk, pt.x, pt.y);
+		MoveTo(worldDblClk, static_cast<int>(pt.x), static_cast<int>(pt.y));
 
 		boost::static_pointer_cast<HPCCSystemsGraphViewControlAPI>(getRootJSAPI())->fire_Scaled((int)(m_gr->GetScale() * 100));
 	} else {
@@ -766,7 +766,7 @@ bool HPCCSystemsGraphViewControl::onMouseScroll(FB::MouseScrollEvent *evt, FB::P
 		pt.x += delta.x;
 		pt.y += delta.y;
 
-		MoveTo(worldDblClk, pt.x, pt.y);
+		MoveTo(worldDblClk, static_cast<int>(pt.x), static_cast<int>(pt.y));
 	}
     return true;
 }
@@ -801,7 +801,7 @@ bool HPCCSystemsGraphViewControl::onRefresh(FB::RefreshEvent *evt, FB::PluginWin
 
 	hpcc::RectI bounds(0, 0, evt->bounds.right, evt->bounds.bottom);
 	hpcc::RectI rect(bounds);
-	rect.Offset(m_ptOffset.x, m_ptOffset.y);
+	rect.Offset(static_cast<int>(m_ptOffset.x), static_cast<int>(m_ptOffset.y));
 
 	m_buffer->Resize(rect.Width(), rect.Height());
 	m_gr->DoRender(rect, true);

@@ -95,6 +95,7 @@ public:
 		registerMethod("getDOT", make_method(this, &HPCCSystemsGraphViewControlAPI::getDOT));
 		registerMethod("getLocalisedXGMML", make_method(this, &HPCCSystemsGraphViewControlAPI::getLocalisedXGMML));
 
+		registerMethod("getTreeWithProperties", make_method(this, &HPCCSystemsGraphViewControlAPI::getTreeWithProperties));
 		registerMethod("getSubgraphsWithProperties", make_method(this, &HPCCSystemsGraphViewControlAPI::getSubgraphsWithProperties));
 		registerMethod("getVerticesWithProperties", make_method(this, &HPCCSystemsGraphViewControlAPI::getVerticesWithProperties));
 		registerMethod("getEdgesWithProperties", make_method(this, &HPCCSystemsGraphViewControlAPI::getEdgesWithProperties));
@@ -161,6 +162,8 @@ public:
 	std::string getGlobalType(int item);
 	std::string getGlobalID(int item);
 
+	FB::VariantMap walkTree(int parent);
+	FB::VariantList getTreeWithProperties();
 	FB::VariantList getSubgraphsWithProperties();
 
 	FB::VariantList getVertices();

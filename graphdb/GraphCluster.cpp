@@ -48,6 +48,28 @@ ICluster * CCluster::GetParent() const
 	return m_parent;
 }
 
+unsigned int CCluster::GetDepth() const
+{
+	if (m_parent)
+		return m_parent->GetDepth() + 1;
+
+	return 1;
+}
+
+unsigned int CCluster::GetChildCount() const
+{
+	return m_clusters.size() + m_vertices.size();
+}
+
+unsigned int CCluster::GetDescendentCount() const
+{
+	unsigned int retVal = GetChildCount();
+	for(IClusterSet::const_iterator itr = m_clusters.begin(); itr != m_clusters.end(); ++itr)
+		retVal += itr->get()->GetDescendentCount();
+
+	return retVal;
+}
+
 void CCluster::MoveTo(ICluster * cluster)
 {
 	if (m_parent != cluster)

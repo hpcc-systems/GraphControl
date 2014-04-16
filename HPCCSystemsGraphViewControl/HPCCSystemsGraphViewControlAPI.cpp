@@ -337,6 +337,27 @@ FB::VariantList HPCCSystemsGraphViewControlAPI::getVertices()
 	return items;
 }
 
+FB::VariantMap HPCCSystemsGraphViewControlAPI::walkTree(int parent)
+{
+	FB::VariantMap retVal = getProperties(parent);
+	std::vector<int> children;
+	getPlugin()->GetChildren(parent, children);
+	FB::VariantList childList;
+	for(std::vector<int>::const_iterator itr = children.begin(); itr != children.end(); ++itr)
+		childList.push_back(walkTree(*itr));
+	if (!childList.empty())
+		retVal[hpcc::CALC_PROP_CHILDREN] = childList;
+	return retVal;
+}
+
+FB::VariantList HPCCSystemsGraphViewControlAPI::getTreeWithProperties()
+{
+	FB::VariantList retVal;
+	unsigned int rootID = getPlugin()->GetItem("0");
+	retVal.push_back(walkTree(rootID));
+	return retVal;
+}
+
 FB::VariantList HPCCSystemsGraphViewControlAPI::getSubgraphsWithProperties()
 {
 	std::vector<int> subgraphs;
