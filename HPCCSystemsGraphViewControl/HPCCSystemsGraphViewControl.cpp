@@ -651,7 +651,7 @@ bool HPCCSystemsGraphViewControl::onMouseDoubleClick(FB::MouseDoubleClickEvent *
 	worldDblClk = m_gr->ScreenToWorld(worldDblClk);
 
 	hpcc::IGraphItem * item = m_gr->GetItemAt(worldDblClk.x, worldDblClk.y, true);
-	boost::static_pointer_cast<HPCCSystemsGraphViewControlAPI>(getRootJSAPI())->fire_MouseDoubleClick(item ? item->GetID() : 0);
+	boost::static_pointer_cast<HPCCSystemsGraphViewControlAPI>(getRootJSAPI())->fire_MouseDoubleClick(item ? item->GetID() : 0, evt->m_state);
 	return true;
 }
 

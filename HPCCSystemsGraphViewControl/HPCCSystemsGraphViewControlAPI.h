@@ -187,7 +187,7 @@ public:
 	//  Fire Events
 	FB_JSAPI_EVENT(Scaled, 1, (const int));
 	FB_JSAPI_EVENT(LayoutFinished, 0, ());
-	FB_JSAPI_EVENT(MouseDoubleClick, 1, (const int));
+	FB_JSAPI_EVENT(MouseDoubleClick, 2, (const int, const int));
 	FB_JSAPI_EVENT(SelectionChanged, 1, (const FB::VariantList &));
 
 private:
