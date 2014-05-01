@@ -71,4 +71,4 @@ set(FBMAC_USE_COREANIMATION 0)
 set(FBMAC_USE_INVALIDATINGCOREANIMATION 0)
 
 # If you want to register per-machine on Windows, uncomment this line
-#set (FB_ATLREG_MACHINEWIDE 1)
+set (FB_ATLREG_MACHINEWIDE 1)
