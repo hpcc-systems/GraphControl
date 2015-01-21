@@ -16,6 +16,27 @@ else ( APPLE )
   SET ( LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin/HPCCSystemsGraphViewControl" CACHE PATH "Location of LIB files" )
 endif ( APPLE )
 
+if ( UNIX )
+    EXECUTE_PROCESS (
+                COMMAND ${FB_PROJECTS_DIR}/cmake_utils/distrocheck.sh
+                    OUTPUT_VARIABLE packageManagement
+                        ERROR_VARIABLE  packageManagement
+                )
+    EXECUTE_PROCESS (
+                COMMAND ${FB_PROJECTS_DIR}/cmake_utils/getpackagerevisionarch.sh
+                    OUTPUT_VARIABLE packageRevisionArch
+                        ERROR_VARIABLE  packageRevisionArch
+                )
+    EXECUTE_PROCESS (
+                COMMAND ${FB_PROJECTS_DIR}/cmake_utils/getpackagerevisionarch.sh --noarch
+                    OUTPUT_VARIABLE packageRevision
+                        ERROR_VARIABLE  packageRevision
+                )
+
+    message ( "-- Auto Detecting Packaging type")
+    message ( "-- distro uses ${packageManagement}, revision is ${packageRevisionArch}" )
+endif()
+
 configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/Version.h.in ${CMAKE_CURRENT_SOURCE_DIR}/Version.h )
 
 file (GLOB GENERAL RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
@@ -67,8 +88,13 @@ if(NOT CPACK_GENERATOR)
         option(CPACK_BINARY_PACKAGEMAKER "Enable to build PackageMaker packages" ON)
         option(CPACK_BINARY_OSXX11       "Enable to build OSX X11 packages" OFF)
     elseif(UNIX)
-        option(CPACK_BINARY_DEB          "Enable to build Debian packages" ON)
-        option(CPACK_BINARY_RPM          "Enable to build RPM packages" OFF)
+        if ( "${packageManagement}" STREQUAL "DEB" )
+            option(CPACK_BINARY_DEB          "Enable to build Debian packages" ON)
+            option(CPACK_BINARY_RPM          "Disable to build RPM packages" OFF)
+        elseif ( "${packageManagement}" STREQUAL "RPM" )
+            option(CPACK_BINARY_RPM          "Enable to build RPM packages" ON)
+            option(CPACK_BINARY_DEB          "Disable to build Debian packages" OFF)
+        endif()
     endif()
 
     optional_append(CPACK_GENERATOR  CPACK_BINARY_NSIS         NSIS)
@@ -160,7 +186,7 @@ set ( CPACK_PACKAGE_VENDOR "HPCC Systems" )
 set ( CPACK_PACKAGE_NAME "hpccsystems-graphcontrol" )
 SET(CPACK_PACKAGE_VERSION_MAJOR ${majorver})
 SET(CPACK_PACKAGE_VERSION_MINOR ${minorver})
-SET(CPACK_PACKAGE_VERSION_PATCH ${point}${stagever})
+SET(CPACK_PACKAGE_VERSION_PATCH ${point}-${stagever})
 set ( CPACK_PACKAGE_DESCRIPTION_SUMMARY "HPCC Systems Graph Control." )
 
 set ( CPACK_PACKAGE_CONTACT "HPCCSystems <ossdevelopment@lexisnexis.com>" )
@@ -171,8 +197,9 @@ set ( CPACK_RESOURCE_FILE_LICENSE "${FB_PROJECTS_DIR}/License.txt" )
 set ( CPACK_RESOURCE_FILE_README "${FB_PROJECTS_DIR}/CPackReadMe.txt" )
 
 
-set ( CPACK_RPM_PACKAGE_VERSION "${projname}")
-SET(CPACK_RPM_PACKAGE_RELEASE "${version}${stagever}")
+set ( CPACK_RPM_PACKAGE_VERSION "${version}")
+SET(CPACK_RPM_PACKAGE_RELEASE "${stagever}")
+SET(CPACK_RPM_PACKAGE_VENDOR "HPCC Systems")
 if ( ${ARCH64BIT} EQUAL 1 )
     set ( CPACK_RPM_PACKAGE_ARCHITECTURE "x86_64")
 else( ${ARCH64BIT} EQUAL 1 )
@@ -183,33 +210,16 @@ if ("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
     set(CPACK_STRIP_FILES TRUE)
 endif()
 if ( APPLE OR WIN32)
-    set ( CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}_${CPACK_RPM_PACKAGE_VERSION}-${version}-${stagever}${CPACK_SYSTEM_NAME}" )
+    set ( CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${projname}_${CPACK_RPM_PACKAGE_VERSION}-${stagever}${CPACK_SYSTEM_NAME}" )
 elseif ( UNIX )
-    EXECUTE_PROCESS (
-                COMMAND ${FB_PROJECTS_DIR}/cmake_utils/distrocheck.sh
-                    OUTPUT_VARIABLE packageManagement
-                        ERROR_VARIABLE  packageManagement
-                )
-    EXECUTE_PROCESS (
-                COMMAND ${FB_PROJECTS_DIR}/cmake_utils/getpackagerevisionarch.sh
-                    OUTPUT_VARIABLE packageRevisionArch
-                        ERROR_VARIABLE  packageRevisionArch
-                )
-    EXECUTE_PROCESS (
-                COMMAND ${FB_PROJECTS_DIR}/cmake_utils/getpackagerevisionarch.sh --noarch
-                    OUTPUT_VARIABLE packageRevision
-                        ERROR_VARIABLE  packageRevision
-                )
-
-    message ( "-- Auto Detecting Packaging type")
-    message ( "-- distro uses ${packageManagement}, revision is ${packageRevisionArch}" )
-
     if ( "${packageManagement}" STREQUAL "DEB" )
-        set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}_${CPACK_RPM_PACKAGE_VERSION}-${version}-${stagever}${packageRevisionArch}")
+        set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${projname}_${CPACK_RPM_PACKAGE_VERSION}-${stagever}${packageRevisionArch}")
     elseif ( "${packageManagement}" STREQUAL "RPM" )
-        set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}_${CPACK_RPM_PACKAGE_VERSION}-${version}-${stagever}.${packageRevisionArch}")
+        set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${projname}_${CPACK_RPM_PACKAGE_VERSION}-${stagever}.${packageRevisionArch}")
+        set(CPACK_RPM_PACKAGE_VENDOR "HPCC Systems")
+        set(CPACK_RPM_PACKAGE_GROUP "development/libraries")
     else()
-        set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}_${CPACK_RPM_PACKAGE_VERSION}_${version}-${stagever}${CPACK_SYSTEM_NAME}")
+        set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${projname}_${CPACK_RPM_PACKAGE_VERSION}-${stagever}${CPACK_SYSTEM_NAME}")
     endif ()
 endif ()
 MESSAGE ("-- Current release version is ${CPACK_PACKAGE_FILE_NAME}")
@@ -218,7 +228,7 @@ MESSAGE ("-- Current release version is ${CPACK_PACKAGE_FILE_NAME}")
 ## Run file configuration to set build tag along with install lines for generated
 ## config files.
 ###
-set( BUILD_TAG "${CPACK_RPM_PACKAGE_VERSION}_${version}-${stagever}")
+set( BUILD_TAG "${projname}_${version}-${stagever}")
 if (USE_GIT_DESCRIBE OR CHECK_GIT_TAG)
     FETCH_GIT_TAG (${CMAKE_SOURCE_DIR} ${CPACK_RPM_PACKAGE_VERSION}_${version} GIT_BUILD_TAG)
     message ("-- Git tag is '${GIT_BUILD_TAG}'")

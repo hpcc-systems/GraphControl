@@ -34,5 +34,11 @@ target_link_libraries(${PROJECT_NAME}
 install ( TARGETS ${PROJECT_NAME} DESTINATION  "." )
 
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-	set(CMAKE_INSTALL_PREFIX "/usr/lib/mozilla/plugins" CACHE PATH "Install path prefix, prepended onto install directories." FORCE)
+    get_property(LIB64 GLOBAL PROPERTY FIND_LIBRARY_USE_LIB64_PATHS)
+    if("${LIB64}" STREQUAL "TRUE")
+        set(MOZILLA_PLUGINS_DIR "/usr/lib64/mozilla/plugins")
+    else()
+        set(MOZILLA_PLUGINS_DIR "/usr/lib/mozilla/plugins")
+    endif()
+    set(CMAKE_INSTALL_PREFIX "${MOZILLA_PLUGINS_DIR}" CACHE PATH "Install path prefix, prepended onto install directories." FORCE)
 endif(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
