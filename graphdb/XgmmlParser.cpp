@@ -278,10 +278,11 @@ public:
 				edge->SetProperty(itr->first, itr->second);
 
 			std::string prettyCount = constGet(e->m_attr, "count");
-			if (!prettyCount.empty() &&
-					(!boost::algorithm::equals(prettyCount, "0") ||
-					(boost::algorithm::equals(prettyCount, "0") && boost::algorithm::equals(constGet(e->m_attr, "_eofSeen"), "1")) ||
-					(boost::algorithm::equals(prettyCount, "0") && boost::algorithm::equals(constGet(e->m_attr, "started"), "1"))))
+			if (!prettyCount.empty() && (
+					!boost::algorithm::equals(prettyCount, "0") ||
+					boost::algorithm::equals(constGet(e->m_attr, "_eofSeen"), "1") ||
+					(!constGet(e->m_attr, "started").empty() && !boost::algorithm::equals(constGet(e->m_attr, "started"), "0")))
+				)
 			{
 				addCommas(prettyCount);
 			}
