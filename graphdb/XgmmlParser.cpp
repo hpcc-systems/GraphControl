@@ -246,7 +246,7 @@ public:
 		PropigateState(edge->GetToVertex(), state);
 	}
 
-	void addCommas(std::string prettyCount)
+	void addCommas(std::string & prettyCount)
 	{
 		std::string tmp;
 		int len = prettyCount.length();
