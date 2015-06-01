@@ -182,11 +182,16 @@ endif ( WIN32 AND WITH_DYNAMIC_MSVC_RUNTIME )
 
 set(CPACK_SYSTEM_NAME "${CMAKE_SYSTEM_NAME}_${FB_PLATFORM_ARCH_NAME}")
 
+set (VER_SEPARATOR "-")
+if ("${stagever}" MATCHES "^rc[0-9]+$")
+    set (VER_SEPARATOR "~")
+endif()
+
 set ( CPACK_PACKAGE_VENDOR "HPCC Systems" )
 set ( CPACK_PACKAGE_NAME "hpccsystems-graphcontrol" )
 SET(CPACK_PACKAGE_VERSION_MAJOR ${majorver})
 SET(CPACK_PACKAGE_VERSION_MINOR ${minorver})
-SET(CPACK_PACKAGE_VERSION_PATCH ${point}-${stagever})
+SET(CPACK_PACKAGE_VERSION_PATCH ${point}${VER_SEPARATOR}${stagever})
 set ( CPACK_PACKAGE_DESCRIPTION_SUMMARY "HPCC Systems Graph Control." )
 
 set ( CPACK_PACKAGE_CONTACT "HPCCSystems <ossdevelopment@lexisnexis.com>" )
@@ -209,6 +214,7 @@ set(CPACK_SYSTEM_NAME "${CMAKE_SYSTEM_NAME}-${CPACK_RPM_PACKAGE_ARCHITECTURE}")
 if ("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
     set(CPACK_STRIP_FILES TRUE)
 endif()
+
 if ( APPLE OR WIN32)
     set ( CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${projname}_${CPACK_RPM_PACKAGE_VERSION}-${stagever}${CPACK_SYSTEM_NAME}" )
 elseif ( UNIX )
