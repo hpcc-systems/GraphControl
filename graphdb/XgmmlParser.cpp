@@ -277,11 +277,18 @@ public:
 			for(ciStringStringMap::const_iterator itr = e->m_attr.begin(); itr != e->m_attr.end(); ++itr)
 				edge->SetProperty(itr->first, itr->second);
 
-			std::string prettyCount = constGet(e->m_attr, "count");
+			bool hasStarted = (!constGet(e->m_attr, "started").empty() && !boost::algorithm::equals(constGet(e->m_attr, "started"), "0")) ||
+								(!constGet(e->m_attr, "NumStarted").empty() && !boost::algorithm::equals(constGet(e->m_attr, "NumStarted"), "0"));
+
+			std::string prettyCount;
+			if (edge->HasProperty("count"))
+				prettyCount = constGet(e->m_attr, "count");
+			else if (edge->HasProperty("NumRowsProcessed"))
+				prettyCount = constGet(e->m_attr, "NumRowsProcessed");
 			if (!prettyCount.empty() && (
 					!boost::algorithm::equals(prettyCount, "0") ||
 					boost::algorithm::equals(constGet(e->m_attr, "_eofSeen"), "1") ||
-					(!constGet(e->m_attr, "started").empty() && !boost::algorithm::equals(constGet(e->m_attr, "started"), "0")))
+					hasStarted)
 				)
 			{
 				addCommas(prettyCount);
@@ -298,11 +305,17 @@ public:
 				prettyCount += "[" + prettyInputProgress + "]";
 			}
 
+			std::string skewLabel;
+			if (edge->HasProperty("maxskew") && edge->HasProperty("minskew"))
+				skewLabel = (boost::format("+%1%%%, -%2%%%") % constGet(e->m_attr, "maxskew") % constGet(e->m_attr, "minskew")).str();
+			else if (edge->HasProperty("SkewMaxRowsProcessed") && edge->HasProperty("SkewMinRowsProcessed"))
+				skewLabel = (boost::format("+%1%, %2%") % constGet(e->m_attr, "SkewMaxRowsProcessed") % constGet(e->m_attr, "SkewMinRowsProcessed")).str();
+
 			std::string edgeLabel;
-			if (!prettyCount.empty() && edge->HasProperty("label") && edge->HasProperty("maxskew") && edge->HasProperty("minskew"))
-				edgeLabel = (boost::format("%1%\n%2%\n+%3%%%, -%4%%%") % constGet(e->m_attr, "label") % prettyCount % constGet(e->m_attr, "maxskew") % constGet(e->m_attr, "minskew")).str();
-			else if (!prettyCount.empty() && edge->HasProperty("maxskew") && edge->HasProperty("minskew"))
-				edgeLabel = (boost::format("%1%\n+%2%%%, -%3%%%") % prettyCount % constGet(e->m_attr, "maxskew") % constGet(e->m_attr, "minskew")).str();
+			if (!prettyCount.empty() && edge->HasProperty("label") && !skewLabel.empty())
+				edgeLabel = (boost::format("%1%\n%2%\n%3%") % constGet(e->m_attr, "label") % prettyCount % skewLabel).str();
+			else if (!prettyCount.empty() && !skewLabel.empty())
+				edgeLabel = (boost::format("%1%\n%2%") % prettyCount % skewLabel).str();
 			else if (!prettyCount.empty() && edge->HasProperty("label"))
 				edgeLabel = (boost::format("%1%\n%2%") % constGet(e->m_attr, "label") % prettyCount).str();
 			else if (!prettyCount.empty())
